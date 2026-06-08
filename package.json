@@ -6,7 +6,9 @@
   "scripts": {
     "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter backend dev",
+    "dev:studio": "pnpm --filter backend exec prisma studio",
     "dev": "pnpm --parallel dev",
+    "dev:all": "pnpm --parallel --filter backend dev --filter frontend dev & pnpm --filter backend exec prisma studio",
     "setup": "node -e \"const fs = require('fs'); if (!fs.existsSync('backend/.env')) fs.copyFileSync('backend/.env.example', 'backend/.env')\" && pnpm --filter backend exec prisma generate",
     "build:frontend": "pnpm --filter frontend build",
     "build:backend": "pnpm --filter backend build",
