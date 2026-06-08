@@ -1,0 +1,16 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector] // Enable pgvector extension for embeddings
+}
+
+// NOTE: Models for Authentication, Profiles, Problems, Submissions, Recommendations, and Progress
+// will be defined here during implementation. Do NOT implement models at this stage.
