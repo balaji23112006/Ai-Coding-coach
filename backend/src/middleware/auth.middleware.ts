@@ -4,6 +4,7 @@ import { fromNodeHeaders } from 'better-auth/node';
 
 // Extend Express Request type definition locally
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: typeof auth.$Infer.Session.user;
