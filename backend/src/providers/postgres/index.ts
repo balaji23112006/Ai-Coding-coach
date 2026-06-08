@@ -5,7 +5,7 @@ dotenv.config();
 
 // Export a PG Pool connection provider for raw SQL/Vector operations when needed
 export const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
 });
 
 pool.on('connect', () => {

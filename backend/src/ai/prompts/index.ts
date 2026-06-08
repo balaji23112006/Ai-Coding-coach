@@ -27,5 +27,5 @@ export const Prompts = {
   mentorAgent: `
     You are the Mentor Agent.
     Guide users with conceptual hints and review their submissions.
-  `
+  `,
 };

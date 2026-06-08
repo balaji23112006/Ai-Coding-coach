@@ -8,7 +8,7 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
     paths:
       - 'backend/**'
@@ -16,7 +16,7 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
-    branches: [ main, dev ]
+    branches: [main, dev]
 
 jobs:
   build-backend:
@@ -42,7 +42,7 @@ jobs:
       - name: Validate Prisma Schema
         run: pnpm --filter backend prisma validate
         env:
-          DATABASE_URL: "postgresql://postgres:password@localhost:5432/ai_coding_coach?schema=public"
+          DATABASE_URL: 'postgresql://postgres:password@localhost:5432/ai_coding_coach?schema=public'
 
       - name: Build Backend
         run: pnpm --filter backend build

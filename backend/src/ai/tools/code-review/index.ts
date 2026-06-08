@@ -11,11 +11,12 @@ export interface ReviewIssue {
 
 export const codeReviewTool = {
   name: 'code_review',
-  description: 'Reviews user submissions, flagging syntax anti-patterns, style guide violations, and code quality issues.',
+  description:
+    'Reviews user submissions, flagging syntax anti-patterns, style guide violations, and code quality issues.',
   execute: async (_code: string): Promise<{ issues: ReviewIssue[] }> => {
     console.warn('[Tool: Code Review] Initiating code review...');
     return {
-      issues: []
+      issues: [],
     };
-  }
+  },
 };

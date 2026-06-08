@@ -13,5 +13,5 @@ export const authService = {
   },
   getSession: async (): Promise<{ user: { id: string; name: string } | null }> => {
     return { user: null };
-  }
+  },
 };

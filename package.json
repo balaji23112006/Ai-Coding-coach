@@ -11,8 +11,8 @@
     "build:backend": "pnpm --filter backend build",
     "build": "pnpm --filter backend build && pnpm --filter frontend build",
     "lint": "pnpm --filter frontend lint && pnpm --filter backend lint",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,yaml,yml,prisma}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md,yaml,yml,prisma}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md,yaml,yml}\""
   },
   "devDependencies": {
     "typescript": "^5.4.5",

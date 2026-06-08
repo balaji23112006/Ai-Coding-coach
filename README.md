@@ -5,18 +5,20 @@ A professional monorepo setup for an AI-Powered Coding Practice Coach. This plat
 ## 🚀 Technology Stack
 
 ### Frontend
-* **Core**: React 18, TypeScript, Vite
-* **Routing**: TanStack Router
-* **Styling**: Tailwind CSS & shadcn/ui components
-* **Editor**: Monaco Editor (`@monaco-editor/react`)
-* **Auth**: BetterAuth Client
+
+- **Core**: React 18, TypeScript, Vite
+- **Routing**: TanStack Router
+- **Styling**: Tailwind CSS & shadcn/ui components
+- **Editor**: Monaco Editor (`@monaco-editor/react`)
+- **Auth**: BetterAuth Client
 
 ### Backend
-* **Core**: Node.js, Express, TypeScript (pnpm workspaces)
-* **ORM & DB**: PostgreSQL with Prisma ORM and `pgvector` extension
-* **AI Orchestration**: LangGraph JS (`@langchain/langgraph`)
-* **LLM Engine**: Groq SDK (running Qwen 3 models)
-* **Observability**: Langfuse tracing and analytics
+
+- **Core**: Node.js, Express, TypeScript (pnpm workspaces)
+- **ORM & DB**: PostgreSQL with Prisma ORM and `pgvector` extension
+- **AI Orchestration**: LangGraph JS (`@langchain/langgraph`)
+- **LLM Engine**: Groq SDK (running Qwen 3 models)
+- **Observability**: Langfuse tracing and analytics
 
 ---
 
@@ -38,11 +40,11 @@ graph TD
     MentorAgent -->|Return Advice| User
 ```
 
-* **Supervisor Agent**: Parses user interactions, coordinates routing, updates high-level graph state, and determines the next specialized agent to execute.
-* **Profile & Skill Agent**: Tracks student proficiency across programming domains, updates skill vector embeddings, and pinpoints knowledge gaps.
-* **Problem Generation Agent**: Creates tailored, context-specific coding problems based on the student's current skill profile and historical attempts.
-* **Evaluation Agent**: Runs code execution safety checks, runs test suites, and assesses code complexity (time/space).
-* **Mentor Agent**: Formulates helpful conceptual advice, identifies design anti-patterns, and conducts simulated follow-up interview questions.
+- **Supervisor Agent**: Parses user interactions, coordinates routing, updates high-level graph state, and determines the next specialized agent to execute.
+- **Profile & Skill Agent**: Tracks student proficiency across programming domains, updates skill vector embeddings, and pinpoints knowledge gaps.
+- **Problem Generation Agent**: Creates tailored, context-specific coding problems based on the student's current skill profile and historical attempts.
+- **Evaluation Agent**: Runs code execution safety checks, runs test suites, and assesses code complexity (time/space).
+- **Mentor Agent**: Formulates helpful conceptual advice, identifies design anti-patterns, and conducts simulated follow-up interview questions.
 
 ---
 
@@ -96,39 +98,47 @@ ai-coding-practice-coach/
 ## ⚙️ Setup and Installation
 
 ### Prerequisites
-* **Node.js** (v20+ recommended)
-* **pnpm** (v9+ recommended)
-* **Docker & Docker Compose**
+
+- **Node.js** (v20+ recommended)
+- **pnpm** (v9+ recommended)
+- **Docker & Docker Compose**
 
 ### Running Locally
 
 1. **Install Dependencies**
+
    ```bash
    pnpm install
    ```
 
 2. **Start Infrastructure Services**
    Spin up the PostgreSQL database container with pgvector:
+
    ```bash
    docker-compose up -d
    ```
 
 3. **Configure Environment Variables**
    Create a `.env` file in the `backend/` directory:
+
    ```bash
    cp backend/.env.example backend/.env
    ```
+
    Add your respective Groq API Key and Langfuse tracking keys.
 
 4. **Initialize Database and Schema**
+
    ```bash
    pnpm --filter backend prisma migrate dev
    ```
 
 5. **Start Development Servers**
    To launch both frontend and backend concurrently:
+
    ```bash
    pnpm dev
    ```
-   * Frontend: `http://localhost:3000`
-   * Backend API: `http://localhost:8000`
+
+   - Frontend: `http://localhost:3000`
+   - Backend API: `http://localhost:8000`

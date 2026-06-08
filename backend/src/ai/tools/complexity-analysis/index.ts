@@ -5,12 +5,13 @@
 
 export const complexityAnalysisTool = {
   name: 'complexity_analysis',
-  description: 'Analyzes user-submitted code files to determine time and space complexity growth rates.',
+  description:
+    'Analyzes user-submitted code files to determine time and space complexity growth rates.',
   execute: async (_code: string): Promise<{ timeComplexity: string; spaceComplexity: string }> => {
     console.warn('[Tool: Complexity Analysis] Analyzing code complexity...');
     return {
       timeComplexity: 'O(N)',
-      spaceComplexity: 'O(1)'
+      spaceComplexity: 'O(1)',
     };
-  }
+  },
 };

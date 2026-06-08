@@ -12,7 +12,7 @@ export const graph = workflow
     'profile-agent': 'profile-agent',
     'problem-generation-agent': 'problem-generation-agent',
     'evaluation-agent': 'evaluation-agent',
-    'mentor-agent': 'mentor-agent'
+    'mentor-agent': 'mentor-agent',
   })
   .addEdge('profile-agent', 'supervisor')
   .addEdge('problem-generation-agent', 'supervisor')

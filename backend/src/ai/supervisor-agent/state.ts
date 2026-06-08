@@ -17,5 +17,5 @@ export const AgentState = Annotation.Root({
   currentProblem: Annotation<Record<string, unknown> | null>({
     reducer: (x, y) => y ?? x,
     default: () => null,
-  })
+  }),
 });

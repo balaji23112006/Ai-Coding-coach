@@ -9,8 +9,7 @@ async function main() {
   console.warn('[Database Seed] Seeding completed.');
 }
 
-main()
-  .catch((e) => {
-    console.error('[Database Seed] Seeding failed:', e);
-    process.exit(1);
-  });
+main().catch((e) => {
+  console.error('[Database Seed] Seeding failed:', e);
+  process.exit(1);
+});

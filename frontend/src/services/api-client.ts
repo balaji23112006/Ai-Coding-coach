@@ -19,5 +19,5 @@ export const apiClient = {
   delete: async <T>(endpoint: string): Promise<T> => {
     console.warn(`[API Client] Mock DELETE called for ${endpoint}`);
     return {} as T;
-  }
+  },
 };

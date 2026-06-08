@@ -5,7 +5,7 @@ import { graph } from '../../ai/supervisor-agent/graph.js';
  * Executes the compiled multi-agent state graph.
  */
 export const runAgentWorkflow = async (
-  inputState: Record<string, unknown>
+  inputState: Record<string, unknown>,
 ): Promise<Record<string, unknown>> => {
   console.warn('[LangGraph Provider] Invoking supervisor graph workflow...');
   try {
