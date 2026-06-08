@@ -1,15 +1,28 @@
-/**
- * Database Seeding Script Placeholder
- * Populates PostgreSQL database with initial data (e.g. system templates, demo coding challenges).
- */
+import { prisma } from './prisma';
 
 async function main() {
-  console.warn('[Database Seed] Starting database seeding placeholder...');
-  // Seed entries will be defined here
-  console.warn('[Database Seed] Seeding completed.');
+  console.log('[Database Seed] Starting database seeding...');
+  
+  const exampleUser = await prisma.user.upsert({
+    where: { email: 'aniket@example.com' },
+    update: {},
+    create: {
+      fullName: 'Aniket Kumar',
+      username: 'aniket12',
+      email: 'aniket@example.com',
+      password: 'hashedpassword123',
+    },
+  });
+
+  console.log('[Database Seed] Created/verified example user:', exampleUser);
+  console.log('[Database Seed] Seeding completed.');
 }
 
-main().catch((e) => {
-  console.error('[Database Seed] Seeding failed:', e);
-  process.exit(1);
-});
+main()
+  .catch((e) => {
+    console.error('[Database Seed] Seeding failed:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
