@@ -99,7 +99,9 @@ export class AuthController {
 
       if (!authResponse.ok) {
         const errData = await authResponse.json().catch(() => ({ message: 'Invalid credentials' }));
-        return res.status(authResponse.status).json({ error: errData.message || 'Invalid credentials' });
+        return res
+          .status(authResponse.status)
+          .json({ error: errData.message || 'Invalid credentials' });
       }
 
       const data = await authResponse.json();

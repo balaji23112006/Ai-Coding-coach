@@ -1,6 +1,6 @@
 # Authentication Testing Reference
 
-This document provides curl command examples to test all authentication endpoints. 
+This document provides curl command examples to test all authentication endpoints.
 
 Endpoints are exposed on `http://localhost:8000`.
 

@@ -2,7 +2,7 @@ import { prisma } from './prisma';
 
 async function main() {
   console.log('[Database Seed] Starting database seeding...');
-  
+
   const exampleUser = await prisma.user.upsert({
     where: { email: 'aniket@example.com' },
     update: {},
