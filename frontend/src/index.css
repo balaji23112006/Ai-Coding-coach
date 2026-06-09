@@ -33,10 +33,24 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  .auth-input:-webkit-autofill,
+  .auth-input:-webkit-autofill:hover,
+  .auth-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #020617;
+    caret-color: #020617;
+    box-shadow: 0 0 0 1000px #ffffff inset;
+  }
+
+  .auth-input {
+    color: #020617;
+    background-color: #ffffff;
   }
 }
 

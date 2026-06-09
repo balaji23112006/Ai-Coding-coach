@@ -96,8 +96,6 @@ function AuthLayout({ children }: AuthLayoutProps) {
   };
 
   return (
-    // FIXED: Changed `md:h-screen md:overflow-hidden` to `relative min-h-screen bg-[#050508] text-white antialiased`
-    // This allows natural page scrolling on desktop if contents exceed viewport limits.
     <main className="relative min-h-screen bg-[#050508] text-white antialiased">
       {/* Dynamic Keyframes */}
       <style>{`
@@ -132,7 +130,6 @@ function AuthLayout({ children }: AuthLayoutProps) {
         }}
       />
 
-      {/* FIXED: Changed `md:h-screen` to `min-h-screen py-10 lg:py-12` so the wrapper handles scrolling spacing safely */}
       <motion.section
         variants={containerVariants}
         initial="hidden"
@@ -234,7 +231,6 @@ function AuthLayout({ children }: AuthLayoutProps) {
         </header>
 
         {/* ==================== MAIN BODY ==================== */}
-        {/* FIXED: Changed `my-auto` to `py-12 md:py-20` to guarantee balanced structural spacing that ensures the signup button isn't squished */}
         <div className="grid w-full grid-cols-1 items-center gap-12 py-12 md:grid-cols-[1.15fr_0.85fr] md:gap-16 md:py-20">
           {/* LEFT SIDE BRANDING */}
           <div className="w-full max-w-2xl space-y-10">
