@@ -1,37 +1,30 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login';
+
+function MockPage({ title }: { title: string }) {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-[#0a0a0f] px-6 font-sans text-white">
+      <div className="max-w-md rounded-3xl border border-cyan-300/15 bg-slate-950/60 p-8 text-center shadow-2xl shadow-cyan-950/30 backdrop-blur-xl">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-200">
+          SKILL LENS
+        </p>
+        <h1 className="mt-3 text-3xl font-bold tracking-tight">{title}</h1>
+        <p className="mt-3 text-sm leading-6 text-slate-400">
+          Mock route for frontend demo navigation.
+        </p>
+      </div>
+    </main>
+  );
+}
+
 function App() {
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-col items-center justify-center p-6">
-      <div className="max-w-md space-y-6 text-center">
-        <div className="bg-primary/10 text-primary border-primary/20 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-8 w-8"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"
-            />
-          </svg>
-        </div>
-        <h1 className="from-primary bg-gradient-to-r to-purple-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent lg:text-5xl">
-          AI Coding Coach
-        </h1>
-        <p className="text-muted-foreground text-lg">
-          Premium react-vite setup configured. Workspaces, TanStack Router, Tailwind CSS, Monaco
-          Editor & BetterAuth client folders are initialized.
-        </p>
-        <div className="bg-muted border-border flex justify-center gap-4 rounded-lg border p-3 font-mono text-xs">
-          <span className="text-primary">pnpm dev</span>
-          <span className="text-muted-foreground">|</span>
-          <span className="text-green-400">workspace ready</span>
-        </div>
-      </div>
-    </div>
+    <Routes>
+      <Route element={<Navigate replace to="/login" />} path="/" />
+      <Route element={<Login />} path="/login" />
+      <Route element={<Login />} path="/signup" />
+      <Route element={<MockPage title="Dashboard" />} path="/dashboard" />
+    </Routes>
   );
 }
 
