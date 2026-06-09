@@ -34,9 +34,9 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-xl border border-white/[0.06] bg-[#1e1e1e]">
+    <div className="relative flex-grow flex-1 w-full overflow-hidden rounded-xl border border-white/[0.06] bg-[#1e1e1e] flex flex-col min-h-0">
       {/* Editor Header Overlay */}
-      <div className="flex h-9 items-center justify-between border-b border-white/[0.05] bg-slate-950/60 px-4">
+      <div className="flex h-9 items-center justify-between border-b border-white/[0.05] bg-slate-950/60 px-4 editor-header flex-shrink-0">
         <div className="flex items-center gap-1.5">
           <span className="h-2 w-2 rounded-full bg-rose-500" />
           <span className="h-2 w-2 rounded-full bg-amber-500" />
@@ -48,7 +48,7 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
       </div>
 
       {/* Monaco Editor component */}
-      <div className="h-[calc(100%-2.25rem)] w-full">
+      <div className="flex-grow flex-1 w-full relative min-h-0 editor-body">
         <Editor
           height="100%"
           language={monacoLanguages[language]}
