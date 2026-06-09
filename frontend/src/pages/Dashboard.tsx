@@ -131,7 +131,11 @@ function Dashboard() {
         <section className="mb-12">
           <h2 className="mb-6 text-lg font-semibold text-white">Quick Actions</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <Button variant="primary" className="gap-2">
+            <Button
+              variant="primary"
+              className="gap-2"
+              onClick={() => navigate({ to: '/editor' })}
+            >
               <Code2 className="h-4 w-4" />
               Start Practice
             </Button>
