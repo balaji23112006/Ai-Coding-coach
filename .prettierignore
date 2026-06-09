@@ -1,0 +1,10 @@
+# Ignore lockfiles and dependencies
+pnpm-lock.yaml
+node_modules/
+
+# Ignore build outputs and cache
+dist/
+build/
+.next/
+out/
+.pnpm-store/
