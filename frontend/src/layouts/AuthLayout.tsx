@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { motion, Variants, AnimatePresence } from 'framer-motion';
-import backgroundPhoto from '../premium_photo-1661877737564-3dfd7282efcb.avif';
+import backgroundPhoto from '../assets/premium_photo-1661877737564-3dfd7282efcb.avif';
 
 type AuthLayoutProps = {
   children: ReactNode;
@@ -16,6 +16,50 @@ function AuthLayout({ children }: AuthLayoutProps) {
   const [isFaqOpen, setIsFaqOpen] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [displayText, setDisplayText] = useState('');
+  const fullText = 'SKILL LENS';
+
+  useEffect(() => {
+    let isMounted = true;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let currentText = '';
+    let isDeleting = false;
+
+    function tick() {
+      if (!isMounted) return;
+
+      const speed = isDeleting ? 60 : 120;
+
+      if (!isDeleting && currentText === fullText) {
+        timeoutId = setTimeout(() => {
+          if (isMounted) {
+            isDeleting = true;
+            tick();
+          }
+        }, 2500);
+      } else if (isDeleting && currentText === '') {
+        isDeleting = false;
+        timeoutId = setTimeout(() => {
+          if (isMounted) tick();
+        }, 1000);
+      } else {
+        currentText = isDeleting
+          ? fullText.substring(0, currentText.length - 1)
+          : fullText.substring(0, currentText.length + 1);
+
+        setDisplayText(currentText);
+        timeoutId = setTimeout(tick, speed);
+      }
+    }
+
+    timeoutId = setTimeout(tick, 800);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const faqData: FAQItem[] = [
     {
@@ -96,16 +140,13 @@ function AuthLayout({ children }: AuthLayoutProps) {
   };
 
   return (
+    // FIXED: Changed `md:h-screen md:overflow-hidden` to `relative min-h-screen bg-[#050508] text-white antialiased`
+    // This allows natural page scrolling on desktop if contents exceed viewport limits.
     <main className="relative min-h-screen bg-[#050508] text-white antialiased">
       {/* Dynamic Keyframes */}
       <style>{`
         @keyframes blink { 50% { border-color: transparent } }
-        @keyframes typeText { 
-          0%, 90%, 100% { width: 0; } 
-          30%, 70% { width: 8.3em; } 
-        }
         .animate-premium-cursor { animation: blink 0.8s step-end infinite; }
-        .animate-infinite-typing { animation: typeText 7.5s steps(10, end) infinite; }
       `}</style>
 
       {/* Background Layer */}
@@ -130,6 +171,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
         }}
       />
 
+      {/* FIXED: Changed `md:h-screen` to `min-h-screen py-10 lg:py-12` so the wrapper handles scrolling spacing safely */}
       <motion.section
         variants={containerVariants}
         initial="hidden"
@@ -231,7 +273,8 @@ function AuthLayout({ children }: AuthLayoutProps) {
         </header>
 
         {/* ==================== MAIN BODY ==================== */}
-        <div className="grid w-full grid-cols-1 items-center gap-12 py-12 md:grid-cols-[1.15fr_0.85fr] md:gap-16 md:py-20">
+        {/* FIXED: Changed `my-auto` to `py-12 md:py-20` to guarantee balanced structural spacing that ensures the signup button isn't squished */}
+        <div className="grid w-full grid-cols-1 items-start gap-12 py-12 md:grid-cols-[1.15fr_0.85fr] md:gap-16 md:py-20">
           {/* LEFT SIDE BRANDING */}
           <div className="w-full max-w-2xl space-y-10">
             <motion.div variants={premiumFadeInItem} className="space-y-5">
@@ -241,10 +284,10 @@ function AuthLayout({ children }: AuthLayoutProps) {
 
               <div className="flex h-24 select-none items-center sm:h-28">
                 <h1
-                  className="animate-infinite-typing animate-premium-cursor overflow-hidden whitespace-nowrap border-r-[4px] border-cyan-400 bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text pr-2 font-sans text-6xl font-black tracking-tighter text-transparent drop-shadow-[0_4px_12px_rgba(34,211,238,0.15)] sm:text-7xl"
+                  className="animate-premium-cursor overflow-hidden whitespace-nowrap border-r-[4px] border-cyan-400 bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text pr-2 font-sans text-6xl font-black tracking-tighter text-transparent drop-shadow-[0_4px_12px_rgba(34,211,238,0.15)] sm:text-7xl"
                   style={{ display: 'inline-block', lineHeight: '1.1' }}
                 >
-                  SKILL LENS
+                  {displayText}
                 </h1>
               </div>
 
@@ -295,7 +338,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
           </div>
 
           {/* RIGHT SIDE: AUTH LOGIN CONTAINER ({children}) */}
-          <div className="flex h-full w-full items-center justify-center md:justify-end">
+          <div className="flex w-full items-start justify-center md:justify-end">
             <motion.div variants={premiumFadeInItem} className="w-full">
               {children}
             </motion.div>

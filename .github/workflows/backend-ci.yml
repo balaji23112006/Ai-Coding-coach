@@ -44,5 +44,8 @@ jobs:
         env:
           DATABASE_URL: 'postgresql://postgres:password@localhost:5432/ai_coding_coach?schema=public'
 
+      - name: Generate Prisma Client
+        run: pnpm --filter backend run prisma:generate
+
       - name: Build Backend
         run: pnpm --filter backend build

@@ -40,17 +40,14 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
-  .auth-input:-webkit-autofill,
-  .auth-input:-webkit-autofill:hover,
-  .auth-input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #020617;
-    caret-color: #020617;
-    box-shadow: 0 0 0 1000px #ffffff inset;
-  }
-
-  .auth-input {
-    color: #020617;
-    background-color: #ffffff;
+  /* Autofill style override to prevent white background with white text */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 100px #020617 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
 }
 
