@@ -7,7 +7,15 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   labelAction?: ReactNode;
 };
 
-function InputField({ error, icon, id, label, labelAction, className = '', ...props }: InputFieldProps) {
+function InputField({
+  error,
+  icon,
+  id,
+  label,
+  labelAction,
+  className = '',
+  ...props
+}: InputFieldProps) {
   const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
 
   return (
@@ -27,7 +35,7 @@ function InputField({ error, icon, id, label, labelAction, className = '', ...pr
         <input
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${inputId}-error` : undefined}
-          className={`min-h-12 w-full rounded-xl border bg-slate-950/68 px-4 text-sm text-white shadow-inner shadow-black/20 outline-none transition-all duration-200 placeholder:text-slate-500 focus:bg-slate-950/82 focus:ring-4 ${
+          className={`bg-slate-950/68 focus:bg-slate-950/82 min-h-12 w-full rounded-xl border px-4 text-sm text-white shadow-inner shadow-black/20 outline-none transition-all duration-200 placeholder:text-slate-500 focus:ring-4 ${
             icon ? 'pl-11' : ''
           } ${
             error
