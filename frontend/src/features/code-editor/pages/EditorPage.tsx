@@ -77,7 +77,7 @@ export default function EditorPage() {
       />
 
       {/* Editor Header */}
-      <header className="relative z-10 flex h-14 items-center justify-between border-b border-white/[0.06] bg-slate-950/40 px-6 backdrop-blur-xl">
+      <header className="relative z-30 flex h-14 items-center justify-between border-b border-white/[0.06] bg-slate-950/40 px-6 backdrop-blur-xl">
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate({ to: '/dashboard' })}
@@ -112,7 +112,7 @@ export default function EditorPage() {
         {/* Right Panel - Editor & Console (60%) */}
         <div className="w-full md:w-[60%] flex flex-col h-[50vh] md:h-full overflow-hidden gap-4">
           {/* Code Editor Container (Flex child 1) */}
-          <div className="flex-1 min-h-[200px] overflow-hidden">
+          <div className="flex-grow flex-1 min-h-[300px] flex flex-col overflow-hidden">
             <CodeEditor
               language={selectedLanguage}
               value={currentCode}
