@@ -1,5 +1,9 @@
-import Editor from '@monaco-editor/react';
+import Editor, { loader } from '@monaco-editor/react';
+import * as monaco from 'monaco-editor';
 import type { SupportedLanguage } from '../types/editor.types';
+
+// Enforce local monaco-editor bundle loading (fully offline compatible)
+loader.config({ monaco });
 
 interface CodeEditorProps {
   language: SupportedLanguage;
