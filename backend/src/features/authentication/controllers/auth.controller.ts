@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { fromNodeHeaders } from 'better-auth/node';
-import { auth } from '../../lib/auth.js';
-import { signupSchema, loginSchema } from './auth.validation.js';
-import { AuthService } from './auth.service.js';
+import { auth } from '../../../lib/auth.js';
+import { signupSchema, loginSchema } from '../schemas/auth.validation.js';
+import { AuthService } from '../services/auth.service.js';
 
 const authService = new AuthService();
 
@@ -43,7 +43,7 @@ export class AuthController {
       });
 
       // Forward headers (e.g. Set-Cookie)
-      authResponse.headers.forEach((value, key) => {
+      authResponse.headers.forEach((value: string, key: string) => {
         res.setHeader(key, value);
       });
 
@@ -93,7 +93,7 @@ export class AuthController {
       });
 
       // Forward headers
-      authResponse.headers.forEach((value, key) => {
+      authResponse.headers.forEach((value: string, key: string) => {
         res.setHeader(key, value);
       });
 
@@ -119,7 +119,7 @@ export class AuthController {
         asResponse: true,
       });
 
-      authResponse.headers.forEach((value, key) => {
+      authResponse.headers.forEach((value: string, key: string) => {
         res.setHeader(key, value);
       });
 

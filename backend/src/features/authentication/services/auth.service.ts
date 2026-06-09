@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prisma.js';
+import { prisma } from '../../../database/prisma.js';
 
 export class AuthService {
   async findUserByEmail(email: string) {
