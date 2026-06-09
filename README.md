@@ -108,11 +108,13 @@ ai-coding-practice-coach/
 Copy and run the appropriate one-liner for your OS to install all packages, set up `.env` from the template, and generate the Prisma Client:
 
 **macOS / Linux (Bash):**
+
 ```bash
 pnpm install && pnpm setup
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 pnpm install; pnpm setup
 ```
@@ -122,28 +124,34 @@ pnpm install; pnpm setup
 ### 🛠️ Detailed Installation Steps
 
 1. **Install Dependencies**
+
    ```bash
    pnpm install
    ```
 
 2. **Configure Environment Variables**
    Create a `.env` file in the `backend/` directory (automatically handled by `pnpm setup` above):
+
    ```bash
    cp backend/.env.example backend/.env
    ```
+
    Add your respective Database credentials, Groq API Key, and Langfuse tracking keys.
 
 3. **Initialize Database Schema**
    Sync the schema to your PostgreSQL database:
+
    ```bash
    pnpm --filter backend exec prisma db push
    ```
 
 4. **Start Development Servers**
    To launch both frontend and backend concurrently:
+
    ```bash
    pnpm dev
    ```
+
    - Frontend: `http://localhost:3000`
    - Backend API: `http://localhost:8000`
 
@@ -151,11 +159,13 @@ pnpm install; pnpm setup
 
 ### ⚠️ Database & `pgvector` Compatibility Note
 
-By default, the database setup is configured to work out-of-the-box with standard local PostgreSQL installations (like PostgreSQL 18 on Windows) which do not include `pgvector` by default. 
+By default, the database setup is configured to work out-of-the-box with standard local PostgreSQL installations (like PostgreSQL 18 on Windows) which do not include `pgvector` by default.
 
 If you prefer to run PostgreSQL with vector support via Docker:
+
 1. Spin up the container: `docker-compose up -d`
 2. Enable `postgresqlExtensions` preview feature and the `pgvector` extension inside [backend/prisma/schema.prisma](file:///c:/A/PROJECT/Ai-Coding-coach/backend/prisma/schema.prisma):
+
    ```prisma
    generator client {
      provider        = "prisma-client-js"
@@ -168,5 +178,5 @@ If you prefer to run PostgreSQL with vector support via Docker:
      extensions = [pgvector]
    }
    ```
-3. Run `pnpm --filter backend exec prisma db push` again to apply.
 
+3. Run `pnpm --filter backend exec prisma db push` again to apply.

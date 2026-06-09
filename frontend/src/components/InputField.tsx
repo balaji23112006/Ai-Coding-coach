@@ -8,7 +8,15 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   labelAction?: ReactNode;
 };
 
-function InputField({ error, icon, id, label, labelAction, className = '', ...props }: InputFieldProps) {
+function InputField({
+  error,
+  icon,
+  id,
+  label,
+  labelAction,
+  className = '',
+  ...props
+}: InputFieldProps) {
   const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
   const isPassword = props.type === 'password';
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
