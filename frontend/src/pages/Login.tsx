@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { Github, LockKeyhole, Mail, User } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/AuthLayout';
 import Button from '../components/Button';
 import InputField from '../components/InputField';
@@ -69,9 +69,11 @@ function validateSignup(form: SignupForm) {
 }
 
 function Login() {
-  const location = useLocation();
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
   const navigate = useNavigate();
-  const [mode, setMode] = useState<AuthMode>(location.pathname === '/signup' ? 'signup' : 'login');
+  const [mode, setMode] = useState<AuthMode>(pathname === '/signup' ? 'signup' : 'login');
   const [loginForm, setLoginForm] = useState<LoginForm>({ identifier: '', password: '' });
   const [signupForm, setSignupForm] = useState<SignupForm>({
     confirmPassword: '',
@@ -84,12 +86,15 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setMode(location.pathname === '/signup' ? 'signup' : 'login');
-  }, [location.pathname]);
+    setMode(pathname === '/signup' ? 'signup' : 'login');
+  }, [pathname]);
 
   const switchMode = (nextMode: AuthMode) => {
     setMode(nextMode);
-    navigate(nextMode === 'signup' ? '/signup' : '/login', { replace: true });
+    void navigate({
+      to: nextMode === 'signup' ? '/signup' : '/login',
+      replace: true,
+    });
   };
 
   const completeAuth = (payload: Record<string, string>, authType: AuthMode) => {
@@ -98,7 +103,7 @@ function Login() {
 
     window.setTimeout(() => {
       setIsLoading(false);
-      navigate('/dashboard');
+      void navigate({ to: '/dashboard' });
     }, 650);
   };
 
