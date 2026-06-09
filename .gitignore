@@ -51,3 +51,6 @@ Thumbs.db
 # Langfuse / Cache
 .cache/
 .langfuse/
+
+# Temporary pgweb binary
+.pgweb/
