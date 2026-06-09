@@ -49,39 +49,41 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
 
       {/* Monaco Editor component */}
       <div className="flex-grow flex-1 w-full relative min-h-0 editor-body">
-        <Editor
-          height="100%"
-          language={monacoLanguages[language]}
-          value={value}
-          onChange={handleEditorChange}
-          theme="vs-dark"
-          options={{
-            fontSize: 14,
-            fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
-            minimap: { enabled: false },
-            lineNumbers: 'on',
-            roundedSelection: false,
-            scrollBeyondLastLine: false,
-            readOnly: false,
-            automaticLayout: true,
-            cursorBlinking: 'blink',
-            cursorStyle: 'line',
-            tabSize: 4,
-            insertSpaces: true,
-            autoIndent: 'full',
-            suggestOnTriggerCharacters: true,
-            scrollbar: {
-              verticalScrollbarSize: 10,
-              horizontalScrollbarSize: 10,
-            },
-          }}
-          loading={
-            <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[#1e1e1e] text-slate-400">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
-              <p className="font-mono text-xs tracking-wider">Configuring environment...</p>
-            </div>
-          }
-        />
+        <div className="absolute inset-0">
+          <Editor
+            height="100%"
+            language={monacoLanguages[language]}
+            value={value}
+            onChange={handleEditorChange}
+            theme="vs-dark"
+            options={{
+              fontSize: 14,
+              fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+              minimap: { enabled: false },
+              lineNumbers: 'on',
+              roundedSelection: false,
+              scrollBeyondLastLine: false,
+              readOnly: false,
+              automaticLayout: true,
+              cursorBlinking: 'blink',
+              cursorStyle: 'line',
+              tabSize: 4,
+              insertSpaces: true,
+              autoIndent: 'full',
+              suggestOnTriggerCharacters: true,
+              scrollbar: {
+                verticalScrollbarSize: 10,
+                horizontalScrollbarSize: 10,
+              },
+            }}
+            loading={
+              <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[#1e1e1e] text-slate-400">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+                <p className="font-mono text-xs tracking-wider">Configuring environment...</p>
+              </div>
+            }
+          />
+        </div>
       </div>
     </div>
   );
