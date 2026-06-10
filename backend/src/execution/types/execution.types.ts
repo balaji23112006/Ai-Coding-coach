@@ -15,7 +15,7 @@ export interface CodeExecutionResult {
   stdout: string;
   stderr: string;
   executionTime: number; // in milliseconds
-  memoryUsed: number;    // in bytes
+  memoryUsed: number; // in bytes
   outputTruncated: boolean;
 }
 

@@ -67,11 +67,11 @@ export default function EditorPage() {
   } = useCodeEditor(problem.id);
 
   return (
-    <main className="h-screen bg-[#070a13] text-white flex flex-col antialiased overflow-hidden">
+    <main className="flex h-screen flex-col overflow-hidden bg-[#070a13] text-white antialiased">
       {/* Premium Background Grid */}
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(148,163,184,0.06),_transparent_40%),radial-gradient(circle_at_70%_70%,_rgba(147,197,253,0.06),_transparent_40%)]" />
       <div
-        className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.003)_1px,_transparent_1px),linear-gradient(90deg,_rgba(255,255,255,0.003)_1px,_transparent_1px)] bg-[size:40px_40px] opacity-40 pointer-events-none"
+        className="pointer-events-none fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.003)_1px,_transparent_1px),linear-gradient(90deg,_rgba(255,255,255,0.003)_1px,_transparent_1px)] bg-[size:40px_40px] opacity-40"
         style={{
           maskImage: 'radial-gradient(circle at 50% 50%, black 70%, transparent 100%)',
           WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 70%, transparent 100%)',
@@ -83,15 +83,15 @@ export default function EditorPage() {
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate({ to: '/dashboard' })}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/20 px-2.5 py-1 text-[10px] font-bold text-slate-400 tracking-wider uppercase hover:border-slate-700 hover:text-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:border-slate-700 hover:text-white"
           >
             <ArrowLeft className="h-3 w-3" />
             <span>Dashboard</span>
           </button>
-          
+
           <div className="flex items-center gap-2">
             <BrainCircuit className="h-3.5 w-3.5 text-amber-400" />
-            <span className="font-mono text-[9px] font-bold tracking-wider text-slate-500 uppercase">
+            <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
               SKILL LENS // PRACTICE ARENA
             </span>
           </div>
@@ -105,17 +105,16 @@ export default function EditorPage() {
       </header>
 
       {/* Main Workspace Split Layout */}
-      <div className="relative z-10 flex-1 flex flex-col md:flex-row overflow-hidden p-2 gap-2 min-h-0">
-        
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col gap-2 overflow-hidden p-2 md:flex-row">
         {/* Left Column: Problem description when coach is closed, editor when coach is open */}
         {!isCoachOpen ? (
-          <div className="w-full md:w-[35%] flex flex-col h-[50vh] md:h-full overflow-hidden rounded-2xl">
+          <div className="flex h-[50vh] w-full flex-col overflow-hidden rounded-2xl md:h-full md:w-[35%]">
             <ProblemPanel problem={problem} />
           </div>
         ) : (
-          <div className="w-full md:w-[58%] flex flex-col h-[50vh] md:h-full overflow-hidden gap-2">
+          <div className="flex h-[50vh] w-full flex-col gap-2 overflow-hidden md:h-full md:w-[58%]">
             {/* Code Editor Container */}
-            <div className="flex-1 min-h-0 relative">
+            <div className="relative min-h-0 flex-1">
               <div className="absolute inset-0">
                 <CodeEditor
                   language={selectedLanguage}
@@ -126,7 +125,7 @@ export default function EditorPage() {
             </div>
 
             {/* Output Console & Actions */}
-            <div className="h-[280px] shrink-0 flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/20 backdrop-blur-xl">
+            <div className="flex h-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/20 backdrop-blur-xl">
               <div className="flex-1 overflow-hidden">
                 <OutputConsole
                   activeTab={activeConsoleTab}
@@ -153,8 +152,8 @@ export default function EditorPage() {
 
         {/* Right Column: Editor when coach is closed, AI coach review panel when coach is open */}
         {!isCoachOpen ? (
-          <div className="w-full md:w-[65%] flex flex-col md:h-full overflow-hidden gap-2">
-            <div className="flex-1 min-h-0 relative">
+          <div className="flex w-full flex-col gap-2 overflow-hidden md:h-full md:w-[65%]">
+            <div className="relative min-h-0 flex-1">
               <div className="absolute inset-0">
                 <CodeEditor
                   language={selectedLanguage}
@@ -164,7 +163,7 @@ export default function EditorPage() {
               </div>
             </div>
 
-            <div className="h-[280px] shrink-0 flex flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/20 backdrop-blur-xl">
+            <div className="flex h-[280px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/20 backdrop-blur-xl">
               <div className="flex-1 overflow-hidden">
                 <OutputConsole
                   activeTab={activeConsoleTab}
@@ -188,35 +187,39 @@ export default function EditorPage() {
             </div>
           </div>
         ) : (
-          <div className="w-full md:w-[42%] flex flex-col h-full overflow-hidden">
+          <div className="flex h-full w-full flex-col overflow-hidden md:w-[42%]">
             {/* Empty section for future coach review */}
-            <div className="flex h-full flex-col border border-slate-800 bg-slate-900/40 rounded-2xl backdrop-blur-xl p-6">
-              <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6">
+            <div className="flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-6 backdrop-blur-xl">
+              <div className="mb-6 flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
-                  <h2 className="text-xs font-semibold tracking-wider text-slate-300 uppercase">AI Coach Review</h2>
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+                    AI Coach Review
+                  </h2>
                 </div>
                 <button
                   onClick={() => setIsCoachOpen(false)}
-                  className="rounded border border-slate-700/60 bg-slate-800/20 px-2 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider hover:bg-slate-800/50 hover:text-slate-200 transition"
+                  className="rounded border border-slate-700/60 bg-slate-800/20 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 transition hover:bg-slate-800/50 hover:text-slate-200"
                 >
                   Close Panel
                 </button>
               </div>
 
-              <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border border-dashed border-slate-800/60 rounded-xl bg-slate-950/10">
-                <div className="h-10 w-10 rounded-full bg-slate-900/40 flex items-center justify-center mb-4 border border-slate-800/60">
+              <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-slate-800/60 bg-slate-950/10 p-6 text-center">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full border border-slate-800/60 bg-slate-900/40">
                   <BrainCircuit className="h-5 w-5 text-slate-400" />
                 </div>
-                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest">Coach Ready</h3>
-                <p className="max-w-xs text-[11px] text-slate-500 mt-2 leading-relaxed">
-                  Workspace shifted. The AI Coach review panel has been initialized. Submit your code to receive feedback and conceptual guidance here.
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-300">
+                  Coach Ready
+                </h3>
+                <p className="mt-2 max-w-xs text-[11px] leading-relaxed text-slate-500">
+                  Workspace shifted. The AI Coach review panel has been initialized. Submit your
+                  code to receive feedback and conceptual guidance here.
                 </p>
               </div>
             </div>
           </div>
         )}
-
       </div>
     </main>
   );

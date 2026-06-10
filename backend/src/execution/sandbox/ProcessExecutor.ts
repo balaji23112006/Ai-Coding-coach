@@ -115,7 +115,8 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
         isTruncated = true;
       }
       if (stderr.length > MAX_OUTPUT_SIZE) {
-        stderr = stderr.slice(0, MAX_OUTPUT_SIZE) + '\n[Error output truncated: Exceeded 1MB limit]';
+        stderr =
+          stderr.slice(0, MAX_OUTPUT_SIZE) + '\n[Error output truncated: Exceeded 1MB limit]';
         isTruncated = true;
       }
 

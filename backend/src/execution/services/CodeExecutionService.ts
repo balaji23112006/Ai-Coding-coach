@@ -35,7 +35,7 @@ export class CodeExecutionService {
     } else if (finalStatus === SubmissionStatus.RUNTIME_ERROR || !result.success) {
       finalSuccess = false;
       const stderr = result.stderr;
-      
+
       if (language === 'javascript') {
         if (
           stderr.includes('SyntaxError:') ||

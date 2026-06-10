@@ -9,7 +9,16 @@ export class PythonRunner implements ICodeRunner {
     if (useDocker) {
       return executeProcess({
         command: 'docker',
-        args: ['run', '-i', '--rm', '--memory=128m', '--cpus=0.5', 'python:3.10-alpine', 'python', '-'],
+        args: [
+          'run',
+          '-i',
+          '--rm',
+          '--memory=128m',
+          '--cpus=0.5',
+          'python:3.10-alpine',
+          'python',
+          '-',
+        ],
         stdin: sourceCode,
         timeoutMs,
       });

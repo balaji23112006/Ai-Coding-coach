@@ -70,8 +70,8 @@ export function ActionButtons({
           disabled={isPending}
           className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
             isCoachOpen
-              ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20'
-              : 'bg-slate-900/40 border-slate-700/50 text-slate-300 hover:bg-slate-800/40 hover:text-slate-100'
+              ? 'border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20'
+              : 'border-slate-700/50 bg-slate-900/40 text-slate-300 hover:bg-slate-800/40 hover:text-slate-100'
           }`}
         >
           <BrainCircuit className="h-3.5 w-3.5" />
@@ -81,4 +81,3 @@ export function ActionButtons({
     </div>
   );
 }
-

@@ -3,7 +3,7 @@ export class AppError extends Error {
     public message: string,
     public statusCode: number = 500,
     public errorCode: string = 'INTERNAL_SERVER_ERROR',
-    public details: any = null
+    public details: any = null,
   ) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);

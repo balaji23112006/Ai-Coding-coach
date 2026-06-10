@@ -1,4 +1,5 @@
 # Project Memory: AI-Powered Coding Practice Coach
+
 **Squad:** Skill Lens (SQUAD-02)
 
 ---
@@ -6,31 +7,37 @@
 ## 1. Project Overview
 
 ### Problem Statement
+
 Self-directed coding practice platforms (e.g., LeetCode, HackerRank) present users with static test suites and pass/fail outputs. They lack contextual mentoring, conceptual debug guidance, personalized problem recommendation based on skill gaps, and secure real-time code sandboxing. Users often get stuck, look up solutions directly, and bypass the critical "struggle" phase of learning.
 
 ### Target Users
+
 - Aspiring software engineers looking to build core programming proficiency.
 - Intermediate developers practicing data structures, algorithms, and secure coding patterns.
 - Students needing immediate conceptual debugging guidance without relying on copy-paste code generators.
 
 ### Key Objectives
+
 - **Interactive Mentorship**: Introduce a conversational AI coach that provides conceptual advice and progressive hints rather than direct answers.
 - **Dynamic Curriculum**: Automatically suggest coding problems targeted at addressing detected user skill gaps.
 - **Secure Sandboxed Execution**: Allow users to run code dynamically in isolated environments (Docker/local fallbacks) with strict constraints.
 - **Actionable Complexity Analysis**: Measure code runtime, memory usage, and structural complexity.
 
 ### Core Features
+
 - Monaco Editor-based workspace with support for JavaScript and Python.
 - Dynamic sandbox process execution (via Docker or local fallback).
 - Global Request ID logging and robust error handling.
 - Multi-agent routing graph for profiling, problem generation, evaluation, and mentoring.
 
 ### MVP Scope
+
 - **Languages**: JavaScript (Node.js) and Python.
 - **API Endpoints**: Run code (transient), submit code (persistent), retrieve submissions, register/authenticate users, fetch problems, request hints.
 - **Runners**: Standard child process spawner with CPU/memory limits, 5s timeout, 1MB output cap, and Docker container isolation.
 
 ### Out-of-Scope Features
+
 - Multi-language compilers (e.g., C++, Java, Rust) for initial versions.
 - Interactive multi-user coding rooms / WebSocket collaborative editor sessions.
 - Direct code generation features (to prevent cheating).
@@ -49,6 +56,7 @@ graph TD
 ```
 
 ### Frontend
+
 - **React 18 & TypeScript**: Chosen for component reusability, rich developer tooling, static type safety, and fast rendering.
 - **Vite**: Provides ultra-fast hot module replacement (HMR) and optimized production bundles, replacing bulky Webpack builds.
 - **Tailwind CSS & shadcn/ui**: Offers modern, Harmonious styles and standard accessible components out-of-the-box, saving frontend layout design overhead.
@@ -56,6 +64,7 @@ graph TD
 - **Monaco Editor (`@monaco-editor/react`)**: The industry standard for online editors, providing syntax highlighting, autocomplete, and editor layout parity with VS Code.
 
 ### Backend
+
 - **Node.js & Express.js**: High-throughput asynchronous runtime allowing fast API request-response handling and simple integration with child process streams and the Docker CLI.
 - **TypeScript**: Establishes typing standards across routes, validators, repositories, and services, preventing runtime spelling and null-reference bugs.
 - **PostgreSQL**: Robust relational database ideal for transactions, linked relational data (users, profiles, submissions, problems), and supports vector extensions (`pgvector`) for storing skill embeddings.
@@ -63,7 +72,9 @@ graph TD
 - **Zod**: Type-safe parsing and schema validation middleware for API request payloads.
 
 ### AI Layer (Multi-Agent Architecture)
+
 Our AI orchestrator is built on **LangGraph JS** and structured around a **Supervisor Agent** coordinating routing logic:
+
 - **Supervisor Agent**: The coordinator. Parses user workspace events, coordinates data flow, and routes queries to specific child agents.
 - **Profile & Skill Agent**: Evaluates user profiles, calculates progress embeddings, and maintains user skill profiles (identifying weak/strong concepts).
 - **Problem Generation Agent**: Crafts personalized programming questions fitting the student's proficiency level and concepts to review.
@@ -71,6 +82,7 @@ Our AI orchestrator is built on **LangGraph JS** and structured around a **Super
 - **Mentor Agent**: Acts as the user's tutor. Inspects code execution failures and provides progressive, conceptual hinting without leaking direct solutions.
 
 ### Observability
+
 - **Langfuse**: Captures agent tracing, prompt inputs/outputs, latency, tokens consumed, and cost metrics to ensure AI agent performance and monitor prompt quality.
 
 ---
@@ -132,6 +144,7 @@ erDiagram
 7. **Recommendation**: Targeted questions queued for a user based on their skill profile.
 
 ### Enums
+
 - **Language**:
   ```prisma
   enum Language {
@@ -170,6 +183,7 @@ ExecutionResult (truncates output, maps errors, returns response)
 ```
 
 ### Execution-Related Decisions
+
 - **Docker Sandbox Mode**: Executes code in an isolated container using `--memory=128m --cpus=0.5` limits and standard alpine packages (`node:18-alpine` or `python:3.10-alpine`).
 - **Local Fallback Mode**: Fallback to local host binaries (`node` with `--max-old-space-size=128`, `python3` or `python` on Windows) if the Docker daemon is unavailable, printing a startup warning.
 - **Stdin Pipe Injection**: Code is streamed to the executor process stdin instead of writing a local file, completely avoiding file layout and shell quote-escaping vulnerabilities.
@@ -183,6 +197,7 @@ ExecutionResult (truncates output, maps errors, returns response)
 ## 6. API Contracts
 
 ### `GET /api/questions`
+
 - **Purpose**: Retrieve a list of programming problems. Supports pagination and difficulty filters.
 - **Request Query**: `?page=1&limit=10&difficulty=MEDIUM`
 - **Response (200)**:
@@ -202,6 +217,7 @@ ExecutionResult (truncates output, maps errors, returns response)
   ```
 
 ### `GET /api/questions/:id`
+
 - **Purpose**: Get detail of a specific problem.
 - **Response (200)**:
   ```json
@@ -218,6 +234,7 @@ ExecutionResult (truncates output, maps errors, returns response)
   ```
 
 ### `POST /api/run`
+
 - **Purpose**: Execute code in the sandbox without saving it in the database.
 - **Request Body**:
   ```json
@@ -240,6 +257,7 @@ ExecutionResult (truncates output, maps errors, returns response)
   ```
 
 ### `POST /api/submit`
+
 - **Purpose**: Execute code, evaluate against test suites, save results, and return submission details.
 - **Request Body**:
   ```json
@@ -260,6 +278,7 @@ ExecutionResult (truncates output, maps errors, returns response)
   ```
 
 ### `GET /api/submissions/:id`
+
 - **Purpose**: Fetch details of a previous submission.
 - **Response (200)**:
   ```json
@@ -282,6 +301,7 @@ ExecutionResult (truncates output, maps errors, returns response)
   ```
 
 ### `GET /api/progress/:userId`
+
 - **Purpose**: Retrieve the user's solved statistics and skill radar details.
 - **Response (200)**:
   ```json
@@ -297,6 +317,7 @@ ExecutionResult (truncates output, maps errors, returns response)
   ```
 
 ### `GET /api/recommendations/:userId`
+
 - **Purpose**: Fetch recommended problems queued by the AI profiling system.
 - **Response (200)**:
   ```json
@@ -317,6 +338,7 @@ ExecutionResult (truncates output, maps errors, returns response)
 ## 7. Folder Structure
 
 ### Frontend (`/frontend`)
+
 ```text
 src/
 ├── assets/                 # SVGs, images, static styles
@@ -335,6 +357,7 @@ src/
 ```
 
 ### Backend (`/backend`)
+
 ```text
 src/
 ├── config/                 # Server environment maps
@@ -363,23 +386,27 @@ src/
 ├── app.ts                  # App initializers
 └── server.ts               # HTTP startup server
 ```
-*Feature-based Architecture*: Groups files together by feature domain (e.g., `submissions/`) rather than by code category (`routes/`, `controllers/` globally). This makes features self-contained and easy to modularize or scale into separate microservices later if necessary.
+
+_Feature-based Architecture_: Groups files together by feature domain (e.g., `submissions/`) rather than by code category (`routes/`, `controllers/` globally). This makes features self-contained and easy to modularize or scale into separate microservices later if necessary.
 
 ---
 
 ## 8. Development Standards
 
 ### Coding Standards
+
 - **TypeScript Strict Mode**: Enable strict checks (`noImplicitAny`, `strictNullChecks`, `strictBindCallApply`).
 - **ESLint**: Enforces clean import order, catches unsanctioned `console.log` statements, and requires TS standards.
 - **Prettier**: Consistent styling with `printWidth: 100`, `singleQuote: true`, `semi: true`, and `trailingComma: all`.
 
 ### Architecture Standards
+
 - **Controller → Service → Repository**: Controllers parse requests, services process domain business logic, and repositories query database structures.
 - **Zod Validation**: Guard all endpoint entries with Zod middleware.
 - **Centralized Error Handling**: Express controllers throw custom `AppError` subclasses. The global `errorMiddleware` formats these exceptions into clean, unified JSON structures.
 
 ### Naming Conventions
+
 - **Components**: PascalCase (e.g., `LanguageSelector.tsx`).
 - **Services/Repositories/Controllers**: camelCase (e.g., `submissionRepository`, `submissionController`).
 - **Routes**: kebab-case URLs, e.g., `/api/submissions/:id`.
@@ -406,6 +433,7 @@ src/
 ---
 
 ## 10. Security Decisions
+
 - **Docker Sandboxing**: Executes untrusted code inside isolated containers with limited memory and CPU.
 - **Input Sanitization**: Rejects payloads exceeding 64KB, preventing RAM attacks.
 - **Timeout Enforcer**: Process is killed using `SIGKILL` if it runs longer than 5 seconds.
@@ -417,16 +445,18 @@ src/
 ## 11. Risks & Assumptions
 
 ### Risks
+
 - **AI Hallucination**: The Mentor Agent might suggest incorrect hints or evaluate code complexity wrongly.
-  - *Mitigation*: Strictly configure LLM temperature parameters (< `0.2`) and validate responses against structured JSON schemas.
+  - _Mitigation_: Strictly configure LLM temperature parameters (< `0.2`) and validate responses against structured JSON schemas.
 - **Third-Party AI Dependency**: Rate limiting or downtime on Groq API.
-  - *Mitigation*: Implement runtime retries with exponential backoffs and build fallback local rules for standard exceptions.
+  - _Mitigation_: Implement runtime retries with exponential backoffs and build fallback local rules for standard exceptions.
 - **Prompt Injection**: Users might prompt the mentor chat to reveal the final code solution.
-  - *Mitigation*: Prepend strong system prompts instruction sets forbidding code leaks, and run prompt filters.
+  - _Mitigation_: Prepend strong system prompts instruction sets forbidding code leaks, and run prompt filters.
 
 ---
 
 ## 12. Team Responsibilities
+
 - **Frontend**: UX layouts, Monaco component integration, dashboard.
 - **Backend & Database**: Express routes, Prisma schema migrations, global exception handling.
 - **Execution Engine**: Process executors, Docker sandbox configurations, environment fallbacks.
@@ -437,16 +467,19 @@ src/
 ## 13. Future Roadmap
 
 ### Phase 1 (Core Infrastructure)
+
 - Monaco Editor integrations.
 - Secure sandboxed execution engine (JavaScript & Python).
 - Core REST API endpoints and database schema migrations.
 
 ### Phase 2 (AI Orchestrator)
+
 - Evaluation Agent integration to check correctness.
 - Mentor Agent interface for conversational help.
 - Profiler recommendations pipeline.
 
 ### Phase 3 (Advanced Features)
+
 - Multi-language compilation (Java, C++, Go).
 - Interactive peer programming workspaces.
 - Real-time learning analytical dashboards.
@@ -456,19 +489,25 @@ src/
 ## 14. Critical Decisions Log
 
 ### 1. Multi-Agent Architecture over Single-Agent Architecture
+
 - **Reason**: Single prompts struggle to handle grading, profiling, hint generation, and question generation concurrently without degradation. Dividing roles among specialized agents ensures prompt efficiency and improves debugging accuracy.
 
 ### 2. PostgreSQL over MongoDB
+
 - **Reason**: Strong relational constraints (users, attempts, profiles, and problem sets) prevent structural desyncs. PostgreSQL also supports `pgvector` for comparing skill profiles, keeping data logic unified.
 
 ### 3. Monaco Editor
+
 - **Reason**: Industry standard with rich auto-completion, VS Code keyboard shortcut bindings, and clean modular component wrappers.
 
 ### 4. Docker Sandboxing (Piped Stdin)
+
 - **Reason**: Writing files dynamically on Windows/Linux host platforms introduces race conditions and directory leaks. Passing code directly via stdin prevents shell escaping injection completely.
 
 ### 5. Groq + Qwen 3
+
 - **Reason**: Exceedingly high throughput speed (token generation rates) with strong performance on code translation and classification, reducing latency.
 
 ### 6. Prisma ORM
+
 - **Reason**: Simplifies PostgreSQL modeling, generates TypeScript clients automatically, and maintains structural parity across migrations.

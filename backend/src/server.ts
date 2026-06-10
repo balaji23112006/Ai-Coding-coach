@@ -29,8 +29,5 @@ logsApp.delete('/clear', (req, res) => {
 
 const LOGS_PORT = process.env.LOGS_PORT || 8001;
 logsApp.listen(LOGS_PORT, () => {
-  console.log(
-    `[Logs Server] Running on http://localhost:${LOGS_PORT}`
-  );
+  console.log(`[Logs Server] Running on http://localhost:${LOGS_PORT}`);
 });
-

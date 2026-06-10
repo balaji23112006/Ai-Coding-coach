@@ -100,13 +100,13 @@ export function useCodeEditor(problemId: string) {
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>('javascript');
   const [codeMap, setCodeMap] = useState<Record<SupportedLanguage, string>>(STARTER_TEMPLATES);
   const [currentCode, setCurrentCode] = useState<string>(STARTER_TEMPLATES.javascript);
-  
+
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  
+
   const [runResult, setRunResult] = useState<ExecutionResult | null>(null);
   const [submitResult, setSubmitResult] = useState<Submission | null>(null);
-  
+
   const [activeConsoleTab, setActiveConsoleTab] = useState<'testcase' | 'result'>('testcase');
 
   // Synchronize current code when language changes
