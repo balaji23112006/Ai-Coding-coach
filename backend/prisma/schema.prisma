@@ -81,8 +81,33 @@ model Profile {
   user   User   @relation(fields: [userId], references: [id])
 }
 
-model Submission {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+enum Language {
+  JAVASCRIPT
+  PYTHON
 }
+
+enum SubmissionStatus {
+  ACCEPTED
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+  TIMEOUT
+  FAILED
+}
+
+model Submission {
+  id              String           @id @default(cuid())
+  language        Language
+  status          SubmissionStatus
+  sourceCode      String
+  stdout          String?
+  stderr          String?
+  executionTime   Int
+  memoryUsed      Int
+  outputTruncated Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  userId          String?
+  user            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("submission")
+}
+

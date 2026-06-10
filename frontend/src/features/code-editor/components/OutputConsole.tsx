@@ -55,28 +55,26 @@ export function OutputConsole({
         {/* Status Indicator */}
         <div className="flex items-center gap-2">
           {isPending && (
-            <span className="flex items-center gap-1.5 font-mono text-[10px] text-cyan-400 uppercase tracking-widest">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400" />
+            <span className="inline-flex items-center gap-1.5 rounded-md bg-slate-900/60 px-2 py-0.5 border border-slate-800 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+              <span className="h-1 w-1 animate-pulse rounded-full bg-slate-400" />
               Processing
             </span>
           )}
           {!isPending && runResult && (
-            <span className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest ${
-              runResult.status === 'Success' ? 'text-emerald-400' : 'text-rose-400'
+            <span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 border text-[9px] font-bold uppercase tracking-widest ${
+              runResult.status === 'Success'
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
             }`}>
-              <span className={`h-1.5 w-1.5 rounded-full ${
-                runResult.status === 'Success' ? 'bg-emerald-400' : 'bg-rose-400'
-              }`} />
-              {runResult.status}
+              {runResult.status === 'Success' ? 'Accepted' : runResult.status}
             </span>
           )}
           {!isPending && submitResult && (
-            <span className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest ${
-              submitResult.status === 'Accepted' ? 'text-emerald-400' : 'text-rose-400'
+            <span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 border text-[9px] font-bold uppercase tracking-widest ${
+              submitResult.status === 'Accepted'
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
             }`}>
-              <span className={`h-1.5 w-1.5 rounded-full ${
-                submitResult.status === 'Accepted' ? 'bg-emerald-400' : 'bg-rose-400'
-              }`} />
               {submitResult.status}
             </span>
           )}
