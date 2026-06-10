@@ -98,4 +98,3 @@ app.get('/api/version', (_req, res) => {
 app.use(errorMiddleware);
 
 export default app;
-

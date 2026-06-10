@@ -23,13 +23,13 @@ export function OutputConsole({
   const hasResult = runResult || submitResult;
 
   return (
-    <div className="flex h-full flex-col border border-white/[0.06] bg-slate-950/60 rounded-xl backdrop-blur-xl">
+    <div className="flex h-full flex-col rounded-xl border border-white/[0.06] bg-slate-950/60 backdrop-blur-xl">
       {/* Tab Navigation */}
       <div className="flex h-10 items-center justify-between border-b border-white/[0.05] bg-slate-950/40 px-4">
         <div className="flex items-center gap-1">
           <button
             onClick={() => setActiveTab('testcase')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+            className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
               activeTab === 'testcase'
                 ? 'bg-white/5 text-slate-100'
                 : 'text-slate-400 hover:text-slate-200'
@@ -39,7 +39,7 @@ export function OutputConsole({
           </button>
           <button
             onClick={() => setActiveTab('result')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors relative ${
+            className={`relative rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
               activeTab === 'result'
                 ? 'bg-white/5 text-slate-100'
                 : 'text-slate-400 hover:text-slate-200'
@@ -47,34 +47,38 @@ export function OutputConsole({
           >
             Result
             {hasResult && !isPending && (
-              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-cyan-400" />
+              <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-cyan-400" />
             )}
           </button>
         </div>
-        
+
         {/* Status Indicator */}
         <div className="flex items-center gap-2">
           {isPending && (
-            <span className="inline-flex items-center gap-1.5 rounded-md bg-slate-900/60 px-2 py-0.5 border border-slate-800 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-slate-800 bg-slate-900/60 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-slate-400">
               <span className="h-1 w-1 animate-pulse rounded-full bg-slate-400" />
               Processing
             </span>
           )}
           {!isPending && runResult && (
-            <span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 border text-[9px] font-bold uppercase tracking-widest ${
-              runResult.status === 'Success'
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-            }`}>
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-widest ${
+                runResult.status === 'Success'
+                  ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-400'
+                  : 'border-rose-500/20 bg-rose-500/10 text-rose-400'
+              }`}
+            >
               {runResult.status === 'Success' ? 'Accepted' : runResult.status}
             </span>
           )}
           {!isPending && submitResult && (
-            <span className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 border text-[9px] font-bold uppercase tracking-widest ${
-              submitResult.status === 'Accepted'
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
-            }`}>
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-widest ${
+                submitResult.status === 'Accepted'
+                  ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-400'
+                  : 'border-rose-500/20 bg-rose-500/10 text-rose-400'
+              }`}
+            >
               {submitResult.status}
             </span>
           )}
@@ -82,13 +86,15 @@ export function OutputConsole({
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+      <div className="custom-scrollbar flex-1 overflow-y-auto p-4">
         {/* Loading State */}
         {isPending && (
           <div className="flex h-full flex-col items-center justify-center gap-3 py-6 text-slate-400">
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
             <p className="font-mono text-xs tracking-wider">
-              {isRunning ? 'Compiling & running tests...' : 'Running solution against target tests...'}
+              {isRunning
+                ? 'Compiling & running tests...'
+                : 'Running solution against target tests...'}
             </p>
           </div>
         )}
@@ -97,17 +103,20 @@ export function OutputConsole({
         {!isPending && activeTab === 'testcase' && (
           <div className="space-y-4">
             {examples.map((example, i) => (
-              <div key={example.id} className="rounded-lg bg-slate-900/30 border border-white/[0.03] p-3">
-                <span className="font-mono text-[10px] font-bold text-slate-400 uppercase">
+              <div
+                key={example.id}
+                className="rounded-lg border border-white/[0.03] bg-slate-900/30 p-3"
+              >
+                <span className="font-mono text-[10px] font-bold uppercase text-slate-400">
                   CASE {i + 1}
                 </span>
                 <div className="mt-2 space-y-1 font-mono text-xs">
                   <div>
-                    <span className="text-slate-400 mr-2">Input:</span>
+                    <span className="mr-2 text-slate-400">Input:</span>
                     <span className="text-slate-200">{example.input}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 mr-2">Expected:</span>
+                    <span className="mr-2 text-slate-400">Expected:</span>
                     <span className="text-emerald-400/90">{example.output}</span>
                   </div>
                 </div>
@@ -123,7 +132,7 @@ export function OutputConsole({
             {!hasResult && (
               <div className="flex h-full flex-col items-center justify-center py-8 text-center text-slate-500">
                 <svg
-                  className="h-8 w-8 text-slate-600 mb-2"
+                  className="mb-2 h-8 w-8 text-slate-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -136,7 +145,9 @@ export function OutputConsole({
                   />
                 </svg>
                 <p className="text-xs font-medium">No results to show</p>
-                <p className="text-[11px] text-slate-600 mt-1">Run or submit your solution to generate output logs.</p>
+                <p className="mt-1 text-[11px] text-slate-600">
+                  Run or submit your solution to generate output logs.
+                </p>
               </div>
             )}
 
@@ -144,33 +155,35 @@ export function OutputConsole({
             {runResult && (
               <div className="space-y-4 font-mono text-xs">
                 {runResult.status === 'Success' ? (
-                  <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-4">
+                  <div className="rounded-lg border border-emerald-500/10 bg-emerald-500/5 p-4">
                     <p className="text-sm font-bold text-emerald-400">All Test Cases Passed</p>
                     <div className="mt-3 grid grid-cols-2 gap-4 border-t border-white/[0.05] pt-3 text-slate-300">
                       <div>
-                        <p className="text-[10px] text-slate-500 uppercase">Runtime</p>
+                        <p className="text-[10px] uppercase text-slate-500">Runtime</p>
                         <p className="mt-0.5 font-bold text-white">{runResult.runtime} ms</p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-500 uppercase">Memory</p>
+                        <p className="text-[10px] uppercase text-slate-500">Memory</p>
                         <p className="mt-0.5 font-bold text-white">{runResult.memory} MB</p>
                       </div>
                     </div>
                     {runResult.stdout && (
                       <div className="mt-4">
-                        <p className="text-[10px] text-slate-500 uppercase">Console Output</p>
-                        <pre className="mt-1.5 overflow-x-auto rounded bg-slate-950/80 p-3 text-[11px] leading-relaxed text-slate-300 border border-white/[0.04]">
+                        <p className="text-[10px] uppercase text-slate-500">Console Output</p>
+                        <pre className="mt-1.5 overflow-x-auto rounded border border-white/[0.04] bg-slate-950/80 p-3 text-[11px] leading-relaxed text-slate-300">
                           {runResult.stdout}
                         </pre>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="rounded-lg bg-rose-500/5 border border-rose-500/10 p-4">
+                  <div className="rounded-lg border border-rose-500/10 bg-rose-500/5 p-4">
                     <p className="text-sm font-bold text-rose-400">{runResult.status}</p>
                     <div className="mt-3">
-                      <p className="text-[10px] text-slate-500 uppercase">Compiler Logs / Error Stack</p>
-                      <pre className="mt-1.5 overflow-x-auto rounded bg-slate-950/80 p-3 text-[11px] leading-relaxed text-rose-300/95 border border-white/[0.04] whitespace-pre-wrap">
+                      <p className="text-[10px] uppercase text-slate-500">
+                        Compiler Logs / Error Stack
+                      </p>
+                      <pre className="mt-1.5 overflow-x-auto whitespace-pre-wrap rounded border border-white/[0.04] bg-slate-950/80 p-3 text-[11px] leading-relaxed text-rose-300/95">
                         {runResult.stderr}
                       </pre>
                     </div>
@@ -183,38 +196,51 @@ export function OutputConsole({
             {submitResult && (
               <div className="space-y-4 font-mono text-xs">
                 {submitResult.status === 'Accepted' ? (
-                  <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-4">
+                  <div className="rounded-lg border border-emerald-500/10 bg-emerald-500/5 p-4">
                     <p className="text-sm font-bold text-emerald-400">Submission Accepted 🎉</p>
-                    <p className="mt-1 text-[11px] text-slate-400">Your solution was successfully compiled and passed all tests.</p>
-                    
+                    <p className="mt-1 text-[11px] text-slate-400">
+                      Your solution was successfully compiled and passed all tests.
+                    </p>
+
                     <div className="mt-4 grid grid-cols-2 gap-4 border-t border-white/[0.05] pt-3 text-slate-300">
                       <div>
-                        <p className="text-[10px] text-slate-500 uppercase">Runtime Performance</p>
+                        <p className="text-[10px] uppercase text-slate-500">Runtime Performance</p>
                         <p className="mt-0.5 font-bold text-white">{submitResult.runtime} ms</p>
-                        <span className="text-[10px] text-slate-500">Beats 84.5% of JavaScript entries</span>
+                        <span className="text-[10px] text-slate-500">
+                          Beats 84.5% of JavaScript entries
+                        </span>
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-500 uppercase">Memory Footprint</p>
+                        <p className="text-[10px] uppercase text-slate-500">Memory Footprint</p>
                         <p className="mt-0.5 font-bold text-white">{submitResult.memory} MB</p>
-                        <span className="text-[10px] text-slate-500">Beats 76.2% of JavaScript entries</span>
+                        <span className="text-[10px] text-slate-500">
+                          Beats 76.2% of JavaScript entries
+                        </span>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-lg bg-rose-500/5 border border-rose-500/10 p-4">
+                  <div className="rounded-lg border border-rose-500/10 bg-rose-500/5 p-4">
                     <p className="text-sm font-bold text-rose-400">Submission Rejected ❌</p>
                     <p className="mt-1 text-[11px] text-rose-300/80">
-                      {submitResult.status === 'Wrong Answer' 
+                      {submitResult.status === 'Wrong Answer'
                         ? 'Your code output did not match the expected answer for some test cases.'
                         : 'Your solution threw a runtime exception during batch execution.'}
                     </p>
-                    
+
                     <div className="mt-4 border-t border-white/[0.05] pt-3">
-                      <p className="text-[10px] text-slate-500 uppercase">Submission Details</p>
+                      <p className="text-[10px] uppercase text-slate-500">Submission Details</p>
                       <div className="mt-2 space-y-1.5 text-[11px] text-slate-300">
-                        <p><span className="text-slate-500">ID:</span> {submitResult.id}</p>
-                        <p><span className="text-slate-500">Language:</span> {submitResult.language}</p>
-                        <p><span className="text-slate-500">Timestamp:</span> {new Date(submitResult.submittedAt).toLocaleTimeString()}</p>
+                        <p>
+                          <span className="text-slate-500">ID:</span> {submitResult.id}
+                        </p>
+                        <p>
+                          <span className="text-slate-500">Language:</span> {submitResult.language}
+                        </p>
+                        <p>
+                          <span className="text-slate-500">Timestamp:</span>{' '}
+                          {new Date(submitResult.submittedAt).toLocaleTimeString()}
+                        </p>
                       </div>
                     </div>
                   </div>

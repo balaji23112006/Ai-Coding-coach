@@ -39,16 +39,13 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
     [onChange],
   );
 
-  const handleEditorDidMount = useCallback(
-    (editor: monaco.editor.IStandaloneCodeEditor) => {
-      editorInstanceRef.current = editor;
-      // Force an initial layout pass after mount
-      requestAnimationFrame(() => {
-        editor.layout();
-      });
-    },
-    [],
-  );
+  const handleEditorDidMount = useCallback((editor: monaco.editor.IStandaloneCodeEditor) => {
+    editorInstanceRef.current = editor;
+    // Force an initial layout pass after mount
+    requestAnimationFrame(() => {
+      editor.layout();
+    });
+  }, []);
 
   // ResizeObserver to force Monaco to re-layout whenever the wrapper size changes
   useEffect(() => {
@@ -59,9 +56,7 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
     monaco.editor.defineTheme('nordic-dark', {
       base: 'vs-dark',
       inherit: true,
-      rules: [
-        { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
-      ],
+      rules: [{ token: 'comment', foreground: '64748b', fontStyle: 'italic' }],
       colors: {
         'editor.background': '#070a13', // Deep slate navy to match branding
         'editorLineNumber.foreground': '#475569', // Soft contrast slate-600 line numbers
@@ -80,16 +75,16 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
   }, []);
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden rounded-xl border border-slate-800/80 bg-[#070a13]">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-slate-800/80 bg-[#070a13]">
       {/* Clean, modern tab bar */}
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-slate-800/80 bg-slate-900/10 px-4">
         <div className="flex items-center gap-2">
-          <div className="flex h-9 items-center bg-slate-950/20 px-3 text-xs font-semibold text-slate-300 gap-2 border-r border-slate-800/40">
+          <div className="flex h-9 items-center gap-2 border-r border-slate-800/40 bg-slate-950/20 px-3 text-xs font-semibold text-slate-300">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
             <span>source_file.{FILE_EXTENSIONS[language]}</span>
           </div>
         </div>
-        <div className="text-[9px] font-mono tracking-widest text-slate-500 uppercase">
+        <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500">
           {MONACO_LANGUAGES[language]}
         </div>
       </div>
@@ -102,7 +97,7 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
         • The inner div is position:absolute;inset:0, giving Monaco an exact
           width × height in pixels — which is what its canvas renderer needs.
       */}
-      <div ref={wrapperRef} className="relative flex-1 min-h-0 overflow-hidden">
+      <div ref={wrapperRef} className="relative min-h-0 flex-1 overflow-hidden">
         <div className="absolute inset-0">
           <Editor
             width="100%"

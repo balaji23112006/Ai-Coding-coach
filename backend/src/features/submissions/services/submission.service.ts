@@ -2,7 +2,10 @@ import { Submission } from '@prisma/client';
 import { submissionRepository } from '../repository/submission.repository.js';
 import { codeExecutionService } from '../../../execution/services/CodeExecutionService.js';
 import { RunCodeInput, SubmitCodeInput } from '../schemas/submission.schema.js';
-import { mapStringToLanguage, CodeExecutionResult } from '../../../execution/types/execution.types.js';
+import {
+  mapStringToLanguage,
+  CodeExecutionResult,
+} from '../../../execution/types/execution.types.js';
 import { NotFoundError } from '../../../shared/errors/custom.errors.js';
 import { prisma } from '../../../database/prisma.js';
 import { logger } from '../../../shared/utils/logger.js';

@@ -50,7 +50,7 @@ export function LanguageSelector({ selectedLanguage, onLanguageChange }: Languag
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 origin-top-right rounded-lg border border-white/[0.08] bg-slate-950/95 p-1.5 shadow-2xl backdrop-blur-xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="absolute right-0 mt-2 w-40 origin-top-right rounded-lg border border-white/[0.08] bg-slate-950/95 p-1.5 shadow-2xl ring-1 ring-black ring-opacity-5 backdrop-blur-xl focus:outline-none">
           {(Object.keys(LANGUAGES) as SupportedLanguage[]).map((lang) => (
             <button
               key={lang}
