@@ -11,6 +11,7 @@ import { useAuth } from './features/authentication/hooks/useAuth';
 import type { AuthContextType } from './providers/AuthProvider';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import EditorPage from './features/code-editor/pages/EditorPage';
 
 // Define context type for the router
 interface MyRouterContext {
@@ -71,8 +72,26 @@ const dashboardRoute = createRoute({
   component: Dashboard,
 });
 
+// 5b. Editor Route (protected, redirects to login if not authenticated)
+const editorRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/editor',
+  beforeLoad: ({ context }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({ to: '/login' });
+    }
+  },
+  component: EditorPage,
+});
+
 // 6. Create Route Tree
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, signupRoute, dashboardRoute]);
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  loginRoute,
+  signupRoute,
+  dashboardRoute,
+  editorRoute,
+]);
 
 // 7. Create Router Instance
 const router = createRouter({
