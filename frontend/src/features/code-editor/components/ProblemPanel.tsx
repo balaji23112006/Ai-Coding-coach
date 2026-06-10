@@ -12,49 +12,49 @@ export function ProblemPanel({ problem }: ProblemPanelProps) {
   };
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto border border-white/[0.06] bg-slate-950/40 p-6 backdrop-blur-xl custom-scrollbar">
+    <div className="flex h-full flex-col overflow-y-auto border border-slate-800 bg-slate-950/20 p-6 backdrop-blur-xl custom-scrollbar">
       {/* Title & Badge */}
       <div className="mb-6">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-xs text-slate-500">PROBLEM SET</span>
+          <span className="font-mono text-[10px] font-bold tracking-wider text-slate-500 uppercase">PROBLEM</span>
           <span
-            className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider ${difficultyColors[problem.difficulty]}`}
+            className={`rounded border px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest ${difficultyColors[problem.difficulty]}`}
           >
             {problem.difficulty}
           </span>
         </div>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+        <h1 className="mt-3 text-xl font-semibold tracking-tight text-slate-100 sm:text-2xl">
           {problem.title}
         </h1>
       </div>
 
       {/* Description */}
-      <div className="prose prose-invert max-w-none text-slate-300">
-        <p className="whitespace-pre-line leading-relaxed">{problem.description}</p>
+      <div className="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed">
+        <p className="whitespace-pre-line">{problem.description}</p>
       </div>
 
       {/* Examples */}
-      <div className="mt-8 space-y-6">
-        <h3 className="text-lg font-semibold text-white">Examples</h3>
+      <div className="mt-8 space-y-4">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Examples</h3>
         {problem.examples.map((example) => (
           <div
             key={example.id}
-            className="rounded-xl border border-white/[0.05] bg-slate-950/60 p-4 shadow-sm"
+            className="rounded-xl bg-slate-900/40 p-4"
           >
-            <p className="text-sm font-semibold text-slate-200">Example {example.id}:</p>
+            <span className="font-mono text-[10px] font-bold text-slate-500 uppercase">Example {example.id}:</span>
             <div className="mt-3 space-y-2 font-mono text-xs">
               <div className="flex gap-2">
-                <span className="text-slate-500 select-none">Input:</span>
-                <span className="text-slate-200">{example.input}</span>
+                <span className="text-blue-300/80 font-sans font-semibold select-none">Input:</span>
+                <span className="text-slate-300">{example.input}</span>
               </div>
               <div className="flex gap-2">
-                <span className="text-slate-500 select-none">Output:</span>
-                <span className="text-slate-200">{example.output}</span>
+                <span className="text-amber-400/80 font-sans font-semibold select-none">Output:</span>
+                <span className="text-slate-300">{example.output}</span>
               </div>
               {example.explanation && (
-                <div className="mt-2 border-t border-white/[0.05] pt-2 text-slate-400">
+                <div className="mt-3 border-t border-slate-800/40 pt-3 text-slate-400">
                   <span className="font-sans font-semibold text-slate-500">Explanation: </span>
-                  <span className="font-sans leading-relaxed">{example.explanation}</span>
+                  <span className="font-sans leading-relaxed text-[11px] text-slate-400/90">{example.explanation}</span>
                 </div>
               )}
             </div>
@@ -63,11 +63,11 @@ export function ProblemPanel({ problem }: ProblemPanelProps) {
       </div>
 
       {/* Constraints */}
-      <div className="mt-8 border-t border-white/[0.06] pt-6">
-        <h3 className="text-lg font-semibold text-white">Constraints</h3>
-        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-slate-400">
+      <div className="mt-8 border-t border-slate-800/40 pt-6">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Constraints</h3>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-xs text-slate-400">
           {problem.constraints.map((constraint, index) => (
-            <li key={index} className="font-mono text-xs leading-relaxed">
+            <li key={index} className="font-mono leading-relaxed">
               <span className="font-sans text-slate-300">{constraint}</span>
             </li>
           ))}
