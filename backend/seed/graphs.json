@@ -1,0 +1,1150 @@
+[
+  {
+    "slug": "find-if-path-exists-in-graph",
+    "title": "Find if Path Exists in Graph",
+    "difficulty": "Easy",
+    "description": "There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1. You are given an array edges where edges[i] = [ui, vi] indicates that there is an undirected edge between vertices ui and vi. Given integers source and destination, return true if there is a valid path from source to destination, or false otherwise.",
+    "constraints": [
+      "1 <= n <= 200000",
+      "0 <= edges.length <= 200000",
+      "edges[i].length == 2",
+      "0 <= ui, vi < n",
+      "ui != vi",
+      "0 <= source, destination < n"
+    ],
+    "topics": ["Graphs", "DFS", "BFS"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function validPath(n, edges, source, destination) {\n\n}",
+      "typescript": "function validPath(n: number, edges: number[][], source: number, destination: number): boolean {\n\n}",
+      "python": "def validPath(n, edges, source, destination):\n    pass",
+      "java": "public class Solution {\n    public boolean validPath(int n, int[][] edges, int source, int destination) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {\n        \n    }\n};",
+      "go": "func validPath(n int, edges [][]int, source int, destination int) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn valid_path(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "3, [[0,1],[1,2]], 0, 2",
+        "output": "true",
+        "explanation": "A path exists: 0 -> 1 -> 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "3, [[0,1],[1,2]], 0, 2",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "6, [[0,1],[0,2],[3,5],[5,4],[4,3]], 0, 5",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "1, [], 0, 0",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "2, [[0,1]], 0, 1",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "4, [[0,1],[2,3]], 0, 3",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "5, [[0,1],[1,2],[2,3],[3,4]], 0, 4",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "5, [[0,1],[1,2],[2,3],[3,4]], 4, 0",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "7, [[0,1],[1,2],[3,4],[4,5]], 2, 6",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "7, [[0,1],[1,2],[2,0],[3,4]], 0, 2",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "8, [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]], 0, 7",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "8, [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7]], 0, 7",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[0,1],[1,2],[2,3],[3,0]], 1, 3",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "10, [], 2, 9",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "3, [[0,1]], 2, 2",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "100000, [[0,1],[1,2],[2,3],[3,4]], 0, 99999",
+        "expected_output": "false",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Represent the graph using an adjacency list.",
+      "Starting from the source node, explore all reachable nodes.",
+      "A visited array prevents revisiting nodes.",
+      "Use either DFS or BFS to determine reachability."
+    ],
+    "explanation": "Build an adjacency list from the given edges. Starting from the source node, perform either Depth-First Search (DFS) or Breadth-First Search (BFS) while marking visited nodes. If the destination node is reached during traversal, return true. If the traversal finishes without reaching the destination, return false. Since every node and edge is processed at most once, the time complexity is O(V + E), where V is the number of vertices and E is the number of edges."
+  },
+  {
+    "slug": "number-of-connected-components",
+    "title": "Number of Connected Components",
+    "difficulty": "Easy",
+    "description": "Given an undirected graph with n nodes labeled from 0 to n - 1 and an array of edges where edges[i] = [ui, vi] represents a connection between nodes ui and vi, return the number of connected components in the graph.",
+    "constraints": [
+      "1 <= n <= 200000",
+      "0 <= edges.length <= 200000",
+      "0 <= ui, vi < n",
+      "ui != vi",
+      "No duplicate edges"
+    ],
+    "topics": ["Graphs", "DFS", "BFS"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function countComponents(n, edges) {\n\n}",
+      "typescript": "function countComponents(n: number, edges: number[][]): number {\n\n}",
+      "python": "def countComponents(n, edges):\n    pass",
+      "java": "public class Solution {\n    public int countComponents(int n, int[][] edges) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int countComponents(int n, vector<vector<int>>& edges) {\n        \n    }\n};",
+      "go": "func countComponents(n int, edges [][]int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn count_components(n: i32, edges: Vec<Vec<i32>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "5, [[0,1],[1,2],[3,4]]",
+        "output": "2",
+        "explanation": "The graph contains two connected components: {0,1,2} and {3,4}."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "5, [[0,1],[1,2],[3,4]]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "5, [[0,1],[1,2],[2,3],[3,4]]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "5, []",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "1, []",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "6, [[0,1],[2,3],[4,5]]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "7, [[0,1],[1,2],[2,0],[3,4],[5,6]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "8, [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "10, [[0,1],[2,3],[4,5],[6,7],[8,9]]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[0,1],[1,2],[2,3],[3,0]]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "9, [[0,1],[2,3],[3,4],[5,6]]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "12, [[0,1],[1,2],[3,4],[4,5],[6,7],[7,8],[8,6]]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "6, [[0,1],[1,2],[2,0],[3,4],[4,5],[5,3]]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "15, []",
+        "expected_output": "15",
+        "is_hidden": true
+      },
+      {
+        "input": "2, [[0,1]]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "100000, []",
+        "expected_output": "100000",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Build an adjacency list for the graph.",
+      "Keep track of which nodes have already been visited.",
+      "Every time you start a new DFS/BFS from an unvisited node, you have found a new component.",
+      "Count how many independent traversals are required to visit all nodes."
+    ],
+    "explanation": "A connected component is a group of nodes where every node is reachable from every other node in the group. Build an adjacency list and maintain a visited array. Iterate through all nodes. Whenever an unvisited node is encountered, perform a DFS or BFS to visit its entire component and increment the component count. After all nodes have been processed, the count represents the total number of connected components. The algorithm runs in O(V + E) time, where V is the number of vertices and E is the number of edges."
+  },
+  {
+    "slug": "number-of-islands",
+    "title": "Number of Islands",
+    "difficulty": "Medium",
+    "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
+    "constraints": ["1 <= m, n <= 300", "grid[i][j] is either '0' or '1'"],
+    "topics": ["Graphs", "DFS", "BFS", "Grid"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function numIslands(grid) {\n\n}",
+      "typescript": "function numIslands(grid: string[][]): number {\n\n}",
+      "python": "def numIslands(grid):\n    pass",
+      "java": "public class Solution {\n    public int numIslands(char[][] grid) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int numIslands(vector<vector<char>>& grid) {\n        \n    }\n};",
+      "go": "func numIslands(grid [][]byte) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[['1','1','1','1','0'],['1','1','0','1','0'],['1','1','0','0','0'],['0','0','0','0','0']]",
+        "output": "1",
+        "explanation": "All land cells are connected, forming a single island."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[['1','1','1','1','0'],['1','1','0','1','0'],['1','1','0','0','0'],['0','0','0','0','0']]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[['1','1','0','0','0'],['1','1','0','0','0'],['0','0','1','0','0'],['0','0','0','1','1']]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[['0']]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[['1']]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[['1','0'],['0','1']]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[['1','1'],['1','1']]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[['0','0'],['0','0']]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1','0','1','0','1']]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1'],['0'],['1'],['1']]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1','1','0'],['0','1','0'],['0','1','1']]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1','0','0'],['0','1','0'],['0','0','1']]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1','1','1'],['1','0','1'],['1','1','1']]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[['0','1','0'],['1','1','1'],['0','1','0']]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1','0','1'],['1','0','1'],['1','0','1']]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[['1','1','0','0'],['1','0','0','1'],['0','0','1','1'],['0','0','0','0']]",
+        "expected_output": "2",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Treat each land cell as a graph node.",
+      "Two land cells are connected if they are adjacent horizontally or vertically.",
+      "When an unvisited land cell is found, explore its entire island.",
+      "Use DFS or BFS to mark all cells belonging to the same island."
+    ],
+    "explanation": "Iterate through every cell in the grid. Whenever an unvisited land cell ('1') is encountered, increment the island count and perform a DFS or BFS to visit all connected land cells. Mark visited cells so they are not processed again. Each traversal completely explores one island. Since every cell is visited at most once, the algorithm runs in O(m × n) time with O(m × n) worst-case auxiliary space due to recursion stack or queue usage."
+  },
+  {
+    "slug": "clone-graph",
+    "title": "Clone Graph",
+    "difficulty": "Medium",
+    "description": "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node contains an integer value and a list of its neighbors. The cloned graph should contain completely new nodes with the same values and connections as the original graph.",
+    "constraints": [
+      "0 <= number of nodes <= 100",
+      "1 <= Node.val <= 100",
+      "Node.val is unique for each node",
+      "The graph is connected"
+    ],
+    "topics": ["Graphs", "DFS", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function cloneGraph(node) {\n\n}",
+      "typescript": "function cloneGraph(node: Node | null): Node | null {\n\n}",
+      "python": "def cloneGraph(node):\n    pass",
+      "java": "public class Solution {\n    public Node cloneGraph(Node node) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    Node* cloneGraph(Node* node) {\n        \n    }\n};",
+      "go": "func cloneGraph(node *Node) *Node {\n\n}",
+      "rust": "impl Solution {\n    pub fn clone_graph(node: Option<Rc<RefCell<Node>>>) -> Option<Rc<RefCell<Node>>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[2,4],[1,3],[2,4],[1,3]]",
+        "output": "[[2,4],[1,3],[2,4],[1,3]]",
+        "explanation": "The cloned graph has the same structure as the original graph but consists of entirely new nodes."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[2,4],[1,3],[2,4],[1,3]]",
+        "expected_output": "[[2,4],[1,3],[2,4],[1,3]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[]]",
+        "expected_output": "[[]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[2],[1,3],[2]]",
+        "expected_output": "[[2],[1,3],[2]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[2,3],[1],[1]]",
+        "expected_output": "[[2,3],[1],[1]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[2],[1]]",
+        "expected_output": "[[2],[1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,3,4],[1],[1],[1]]",
+        "expected_output": "[[2,3,4],[1],[1],[1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,5],[1,3],[2,4],[3,5],[1,4]]",
+        "expected_output": "[[2,5],[1,3],[2,4],[3,5],[1,4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,3],[1,4],[1,4],[2,3]]",
+        "expected_output": "[[2,3],[1,4],[1,4],[2,3]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2],[1,3],[2,4],[3,5],[4]]",
+        "expected_output": "[[2],[1,3],[2,4],[3,5],[4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,3,4,5],[1],[1],[1],[1]]",
+        "expected_output": "[[2,3,4,5],[1],[1],[1],[1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]]",
+        "expected_output": "[[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,3],[1,3],[1,2]]",
+        "expected_output": "[[2,3],[1,3],[1,2]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2],[1,3,4],[2],[2]]",
+        "expected_output": "[[2],[1,3,4],[2],[2]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,4],[1,3],[2,4,5],[1,3],[3]]",
+        "expected_output": "[[2,4],[1,3],[2,4,5],[1,3],[3]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "You must create new nodes instead of reusing existing ones.",
+      "The graph may contain cycles.",
+      "Keep track of already cloned nodes.",
+      "A HashMap can map original nodes to their cloned counterparts."
+    ],
+    "explanation": "Use DFS or BFS to traverse the graph. Maintain a HashMap where the key is an original node and the value is its cloned node. When visiting a node for the first time, create its clone and store it in the map. Then recursively or iteratively clone all of its neighbors and connect them to the cloned node. The HashMap prevents infinite loops caused by cycles and ensures each node is cloned exactly once. The algorithm runs in O(V + E) time, where V is the number of vertices and E is the number of edges."
+  },
+  {
+    "slug": "course-schedule",
+    "title": "Course Schedule",
+    "difficulty": "Medium",
+    "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b before course a. Return true if it is possible to finish all courses, otherwise return false.",
+    "constraints": [
+      "1 <= numCourses <= 100000",
+      "0 <= prerequisites.length <= 200000",
+      "prerequisites[i].length == 2",
+      "0 <= ai, bi < numCourses",
+      "ai != bi"
+    ],
+    "topics": ["Graphs", "Directed Graph", "Cycle Detection"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function canFinish(numCourses, prerequisites) {\n\n}",
+      "typescript": "function canFinish(numCourses: number, prerequisites: number[][]): boolean {\n\n}",
+      "python": "def canFinish(numCourses, prerequisites):\n    pass",
+      "java": "public class Solution {\n    public boolean canFinish(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};",
+      "go": "func canFinish(numCourses int, prerequisites [][]int) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "2, [[1,0]]",
+        "output": "true",
+        "explanation": "Take course 0 first, then course 1."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "2, [[1,0]]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "2, [[1,0],[0,1]]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "3, [[1,0],[2,1]]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "4, [[1,0],[2,1],[3,2]]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "3, [[1,0],[2,1],[0,2]]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "1, []",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "5, [[1,0],[2,1],[3,2],[4,3]]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "5, [[1,0],[2,1],[3,2],[1,3]]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "6, [[1,0],[2,0],[3,1],[3,2],[4,3],[5,4]]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "6, [[1,0],[2,1],[3,2],[4,3],[2,4]]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[0,1],[1,2],[2,3],[3,0]]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "7, [[1,0],[2,0],[3,1],[4,2],[5,3],[6,4]]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "3, [[0,1],[1,2],[2,0]]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "8, [[1,0],[2,1],[3,2],[4,3],[5,4],[6,5],[7,6]]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "100000, []",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Think of courses as nodes in a directed graph.",
+      "A prerequisite relationship creates a directed edge.",
+      "Can all courses be completed if the graph contains a cycle?",
+      "Use DFS cycle detection or Topological Sorting."
+    ],
+    "explanation": "Model the courses as a directed graph where an edge b → a means course b must be completed before course a. The problem reduces to determining whether the directed graph contains a cycle. If a cycle exists, the courses in that cycle depend on each other and cannot be completed. Use DFS with three states (unvisited, visiting, visited) to detect cycles, or perform Kahn's Topological Sort. If all courses can be processed without encountering a cycle, return true; otherwise return false. The algorithm runs in O(V + E) time."
+  },
+  {
+    "slug": "course-schedule-ii",
+    "title": "Course Schedule II",
+    "difficulty": "Medium",
+    "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b before course a. Return any valid ordering of courses that allows you to finish all courses. If it is impossible, return an empty array.",
+    "constraints": [
+      "1 <= numCourses <= 100000",
+      "0 <= prerequisites.length <= 200000",
+      "prerequisites[i].length == 2",
+      "0 <= ai, bi < numCourses",
+      "ai != bi"
+    ],
+    "topics": ["Graphs", "Topological Sort", "BFS"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findOrder(numCourses, prerequisites) {\n\n}",
+      "typescript": "function findOrder(numCourses: number, prerequisites: number[][]): number[] {\n\n}",
+      "python": "def findOrder(numCourses, prerequisites):\n    pass",
+      "java": "public class Solution {\n    public int[] findOrder(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};",
+      "go": "func findOrder(numCourses int, prerequisites [][]int) []int {\n\n}",
+      "rust": "impl Solution {\n    pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "2, [[1,0]]",
+        "output": "[0,1]",
+        "explanation": "Course 0 must be completed before course 1."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "2, [[1,0]]",
+        "expected_output": "[0,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "4, [[1,0],[2,0],[3,1],[3,2]]",
+        "expected_output": "[0,1,2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "1, []",
+        "expected_output": "[0]",
+        "is_hidden": false
+      },
+      {
+        "input": "2, [[1,0],[0,1]]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "3, [[1,0],[2,1]]",
+        "expected_output": "[0,1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "5, [[1,0],[2,1],[3,2],[4,3]]",
+        "expected_output": "[0,1,2,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "5, [[1,0],[2,1],[3,2],[1,3]]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "6, [[1,0],[2,0],[3,1],[3,2],[4,3],[5,4]]",
+        "expected_output": "[0,1,2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "3, []",
+        "expected_output": "[0,1,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[2,0],[2,1],[3,2]]",
+        "expected_output": "[0,1,2,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[0,1],[1,2],[2,3],[3,0]]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "7, [[1,0],[2,0],[3,1],[4,1],[5,3],[6,5]]",
+        "expected_output": "[0,1,2,3,4,5,6]",
+        "is_hidden": true
+      },
+      {
+        "input": "8, [[1,0],[2,1],[3,2],[4,3],[5,4],[6,5],[7,6]]",
+        "expected_output": "[0,1,2,3,4,5,6,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "3, [[0,1],[1,2],[2,0]]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "100000, []",
+        "expected_output": "[0,1,2,...,99999]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "This is an ordering problem on a directed graph.",
+      "Nodes with no incoming edges can be taken immediately.",
+      "Track the indegree of every node.",
+      "Use Kahn's Algorithm (BFS Topological Sort)."
+    ],
+    "explanation": "Represent courses as nodes in a directed graph where an edge b → a indicates that course b must be completed before course a. Compute the indegree of every node and place all nodes with indegree 0 into a queue. Repeatedly remove a node from the queue, add it to the answer, and reduce the indegree of its neighbors. If a neighbor's indegree becomes 0, add it to the queue. If all courses are processed, the generated order is a valid topological ordering. If some nodes remain unprocessed, a cycle exists and no valid ordering is possible, so return an empty array. The algorithm runs in O(V + E) time."
+  },
+  {
+    "slug": "network-delay-time",
+    "title": "Network Delay Time",
+    "difficulty": "Medium",
+    "description": "You are given a network of n nodes labeled from 1 to n. You are also given a list of travel times as directed edges times where times[i] = [ui, vi, wi] represents the time it takes for a signal to travel from node ui to node vi. A signal is sent from a given node k. Return the minimum time needed for all nodes to receive the signal. If it is impossible for all nodes to receive the signal, return -1.",
+    "constraints": [
+      "1 <= n <= 10000",
+      "1 <= times.length <= 100000",
+      "times[i].length == 3",
+      "1 <= ui, vi <= n",
+      "ui != vi",
+      "0 <= wi <= 100",
+      "1 <= k <= n"
+    ],
+    "topics": ["Graphs", "Dijkstra", "Shortest Path"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function networkDelayTime(times, n, k) {\n\n}",
+      "typescript": "function networkDelayTime(times: number[][], n: number, k: number): number {\n\n}",
+      "python": "def networkDelayTime(times, n, k):\n    pass",
+      "java": "public class Solution {\n    public int networkDelayTime(int[][] times, int n, int k) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int networkDelayTime(vector<vector<int>>& times, int n, int k) {\n        \n    }\n};",
+      "go": "func networkDelayTime(times [][]int, n int, k int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn network_delay_time(times: Vec<Vec<i32>>, n: i32, k: i32) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[2,1,1],[2,3,1],[3,4,1]],4,2",
+        "output": "2",
+        "explanation": "The signal starts at node 2. Node 1 receives it in 1 unit, node 3 in 1 unit, and node 4 in 2 units. The maximum arrival time is 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[2,1,1],[2,3,1],[3,4,1]],4,2",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,2,1]],2,1",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,2,1]],2,2",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,2,1],[2,3,2],[1,3,4]],3,1",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,2,5],[1,3,2],[3,2,1]],3,1",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,2,1],[2,3,1],[3,4,1],[4,5,1]],5,1",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,10],[1,3,1],[3,2,1],[2,4,1]],4,1",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,1],[2,1,1]],2,1",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,1],[2,3,1],[1,3,10]],3,1",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,1,1],[2,3,1],[3,4,1],[4,5,1]],5,2",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,2],[1,3,4],[2,3,1],[3,4,1]],4,1",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,1],[2,3,1],[3,1,1]],3,1",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,1],[3,4,1]],4,1",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,0],[2,3,0],[3,4,0]],4,1",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,5],[1,3,2],[3,4,2],[4,5,2],[2,5,1]],5,1",
+        "expected_output": "6",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "You need the shortest distance from the source node to every other node.",
+      "All edge weights are non-negative.",
+      "A priority queue can always expand the currently closest node.",
+      "Dijkstra's algorithm efficiently computes shortest paths in weighted graphs."
+    ],
+    "explanation": "Model the network as a directed weighted graph. Use Dijkstra's algorithm starting from node k to compute the shortest time required to reach every node. Maintain a priority queue that always processes the node with the smallest known distance. After the algorithm finishes, if any node remains unreachable, return -1. Otherwise, the answer is the maximum shortest-path distance among all nodes because the signal reaches all nodes only after the slowest node receives it. The time complexity is O((V + E) log V) using a priority queue."
+  },
+  {
+    "slug": "rotting-oranges",
+    "title": "Rotting Oranges",
+    "difficulty": "Medium",
+    "description": "You are given an m x n grid where each cell can have one of three values: 0 representing an empty cell, 1 representing a fresh orange, and 2 representing a rotten orange. Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes required until no fresh orange remains. If this is impossible, return -1.",
+    "constraints": ["1 <= m, n <= 100", "grid[i][j] is 0, 1, or 2"],
+    "topics": ["Graphs", "BFS", "Multi-Source BFS", "Grid"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function orangesRotting(grid) {\n\n}",
+      "typescript": "function orangesRotting(grid: number[][]): number {\n\n}",
+      "python": "def orangesRotting(grid):\n    pass",
+      "java": "public class Solution {\n    public int orangesRotting(int[][] grid) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int orangesRotting(vector<vector<int>>& grid) {\n        \n    }\n};",
+      "go": "func orangesRotting(grid [][]int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn oranges_rotting(grid: Vec<Vec<i32>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[2,1,1],[1,1,0],[0,1,1]]",
+        "output": "4",
+        "explanation": "All fresh oranges become rotten after 4 minutes."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[2,1,1],[1,1,0],[0,1,1]]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[[2,1,1],[0,1,1],[1,0,1]]",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,2]]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1]]",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[2]]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[[2,1,1,1]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1,1,2]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,1],[1,1]]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,0,1]]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0],[0,0]]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,1,1],[1,1,1],[1,1,1]]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,1,1],[1,0,1],[1,1,1]]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2,1],[1,1,1],[1,1,2]]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,2,2],[2,2,2]]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[[2,1,0,1],[1,1,0,1],[0,1,1,1]]",
+        "expected_output": "-1",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "All rotten oranges start spreading simultaneously.",
+      "Think of each rotten orange as a BFS starting point.",
+      "Place all initially rotten oranges into the queue before starting BFS.",
+      "Process the grid level by level, where each BFS level represents one minute."
+    ],
+    "explanation": "This is a Multi-Source BFS problem. Instead of starting BFS from a single source, add all initially rotten oranges to the queue at the beginning. Count the number of fresh oranges. During each minute (BFS level), rotten oranges infect their adjacent fresh neighbors. Whenever a fresh orange becomes rotten, add it to the queue and decrease the fresh count. After BFS completes, if fresh oranges still remain, return -1 because some oranges are unreachable. Otherwise, return the number of minutes required. Each cell is processed at most once, giving O(m × n) time complexity."
+  },
+  {
+    "slug": "word-ladder",
+    "title": "Word Ladder",
+    "difficulty": "Hard",
+    "description": "A transformation sequence from beginWord to endWord using a dictionary wordList is a sequence of words such that only one letter changes at each step and every transformed word exists in wordList. Return the length of the shortest transformation sequence from beginWord to endWord. If no such sequence exists, return 0.",
+    "constraints": [
+      "1 <= beginWord.length <= 10",
+      "endWord.length == beginWord.length",
+      "1 <= wordList.length <= 5000",
+      "All words consist of lowercase English letters",
+      "All words in wordList are unique"
+    ],
+    "topics": ["Graphs", "BFS", "Shortest Path"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function ladderLength(beginWord, endWord, wordList) {\n\n}",
+      "typescript": "function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {\n\n}",
+      "python": "def ladderLength(beginWord, endWord, wordList):\n    pass",
+      "java": "public class Solution {\n    public int ladderLength(String beginWord, String endWord, List<String> wordList) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {\n        \n    }\n};",
+      "go": "func ladderLength(beginWord string, endWord string, wordList []string) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn ladder_length(begin_word: String, end_word: String, word_list: Vec<String>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]",
+        "output": "5",
+        "explanation": "One shortest transformation sequence is hit → hot → dot → dog → cog, which contains 5 words."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\", \"c\", [\"a\",\"b\",\"c\"]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "\"cat\", \"dog\", [\"cat\",\"cot\",\"cog\",\"dog\"]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "\"same\", \"same\", [\"same\"]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "\"red\", \"tax\", [\"ted\",\"tex\",\"red\",\"tax\",\"tad\",\"den\",\"rex\",\"pee\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "\"lost\", \"cost\", [\"lost\",\"cost\"]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "\"game\", \"math\", [\"fame\",\"fate\",\"mate\",\"math\",\"game\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"cold\", \"warm\", [\"cold\",\"cord\",\"card\",\"ward\",\"warm\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"lead\", \"gold\", [\"load\",\"goad\",\"gold\",\"lead\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abc\", \"xyz\", [\"xbc\",\"xyc\",\"xyz\"]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "\"toon\", \"plea\", [\"poon\",\"plee\",\"same\",\"poie\",\"plea\",\"plie\",\"poin\"]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "\"hot\", \"dog\", [\"hot\",\"dot\",\"dog\"]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abc\", \"abd\", [\"abd\"]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "\"start\", \"end\", [\"stark\",\"stack\",\"slack\",\"black\",\"blank\",\"blink\",\"slink\"]",
+        "expected_output": "0",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Think of every word as a graph node.",
+      "Two words are connected if they differ by exactly one character.",
+      "You need the shortest transformation sequence.",
+      "Breadth-First Search (BFS) naturally finds shortest paths in an unweighted graph."
+    ],
+    "explanation": "Model the problem as an unweighted graph where each word is a node. An edge exists between two words if they differ by exactly one character. Starting from beginWord, perform a BFS because BFS always discovers the shortest path first in an unweighted graph. To efficiently find neighboring words, generate all possible one-character transformations of the current word and check whether they exist in the dictionary. The first time endWord is reached, return the current transformation length. If BFS finishes without reaching endWord, return 0."
+  },
+  {
+    "slug": "minimum-cost-to-connect-all-points",
+    "title": "Minimum Cost to Connect All Points",
+    "difficulty": "Hard",
+    "description": "You are given an array points where points[i] = [xi, yi] represents a point on a 2D plane. The cost of connecting two points is the Manhattan distance between them: |xi - xj| + |yi - yj|. Return the minimum cost required to connect all points such that there is exactly one simple path between any two points.",
+    "constraints": [
+      "1 <= points.length <= 1000",
+      "-1000000 <= xi, yi <= 1000000",
+      "All points are unique"
+    ],
+    "topics": ["Graphs", "Minimum Spanning Tree", "Prim's Algorithm"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function minCostConnectPoints(points) {\n\n}",
+      "typescript": "function minCostConnectPoints(points: number[][]): number {\n\n}",
+      "python": "def minCostConnectPoints(points):\n    pass",
+      "java": "public class Solution {\n    public int minCostConnectPoints(int[][] points) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int minCostConnectPoints(vector<vector<int>>& points) {\n        \n    }\n};",
+      "go": "func minCostConnectPoints(points [][]int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn min_cost_connect_points(points: Vec<Vec<i32>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[0,0],[2,2],[3,10],[5,2],[7,0]]",
+        "output": "20",
+        "explanation": "The minimum spanning tree connects all points with a total cost of 20."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[0,0],[2,2],[3,10],[5,2],[7,0]]",
+        "expected_output": "20",
+        "is_hidden": false
+      },
+      {
+        "input": "[[3,12],[-2,5],[-4,1]]",
+        "expected_output": "18",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,0]]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,0],[1,1]]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,1],[3,4],[-1,0]]",
+        "expected_output": "8",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,0],[1,0],[2,0],[3,0]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0],[0,1],[0,2],[0,3]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1],[2,2],[3,3],[4,4]]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[[-1,-1],[1,1],[3,3]]",
+        "expected_output": "8",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0],[100,100],[200,200]]",
+        "expected_output": "400",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0],[2,2],[2,0],[0,2]]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[[5,5],[5,10],[10,5],[10,10]]",
+        "expected_output": "15",
+        "is_hidden": true
+      },
+      {
+        "input": "[[-1000000,-1000000],[1000000,1000000]]",
+        "expected_output": "4000000",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0],[1,2],[3,1],[5,2],[6,0]]",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0],[2,2],[4,4],[6,6],[8,8]]",
+        "expected_output": "16",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Treat every point as a graph node.",
+      "The cost between two points is their Manhattan distance.",
+      "You need to connect all nodes with minimum total cost and no cycles.",
+      "This is a Minimum Spanning Tree (MST) problem. Prim's Algorithm is a good choice."
+    ],
+    "explanation": "The problem asks for the minimum total cost required to connect all points while ensuring every point remains reachable. This is exactly the definition of a Minimum Spanning Tree (MST). Using Prim's Algorithm, start from any point and repeatedly add the cheapest edge that connects a new point to the growing MST. Maintain the minimum connection cost for every unvisited point and always select the point with the smallest available cost. Once all points are included, the accumulated cost is the answer. The algorithm constructs an MST and guarantees the minimum possible total connection cost."
+  }
+]

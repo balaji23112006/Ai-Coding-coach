@@ -1,0 +1,1113 @@
+[
+  {
+    "slug": "valid-palindrome",
+    "title": "Valid Palindrome",
+    "difficulty": "Easy",
+    "description": "Given a string s, determine whether it is a palindrome after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters. Return true if it is a palindrome, otherwise return false.",
+    "constraints": ["1 <= s.length <= 100000", "s consists of printable ASCII characters"],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isPalindrome(s) {\n\n}",
+      "typescript": "function isPalindrome(s: string): boolean {\n\n}",
+      "python": "def isPalindrome(s):\n    pass",
+      "java": "public class Solution {\n    public static boolean isPalindrome(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPalindrome(string s) {\n        \n    }\n};",
+      "go": "func isPalindrome(s string) bool {\n\n}",
+      "rust": "fn is_palindrome(s: String) -> bool {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"A man, a plan, a canal: Panama\"",
+        "output": "true",
+        "explanation": "After removing non-alphanumeric characters and converting to lowercase, the string becomes 'amanaplanacanalpanama', which is a palindrome."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"A man, a plan, a canal: Panama\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"race a car\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"madam\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"hello\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"Was it a car or a cat I saw?\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\".\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\" , : ; ! ? \"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"0P\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"1221\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"12321\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"123421\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"No lemon, no melon\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"Able was I ere I saw Elba\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefgfedcba\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefgXfedcba\"",
+        "expected_output": "false",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Only alphanumeric characters should be considered.",
+      "Uppercase and lowercase letters should be treated as the same.",
+      "Try using two pointers, one from the beginning and one from the end.",
+      "Skip non-alphanumeric characters while comparing."
+    ],
+    "explanation": "First preprocess the string by ignoring all non-alphanumeric characters and treating uppercase and lowercase letters as equal. Then use two pointers: one starting from the beginning and one from the end. Move both pointers toward the center while comparing characters. If all corresponding characters match, the string is a palindrome; otherwise, it is not."
+  },
+  {
+    "slug": "reverse-words-in-a-string",
+    "title": "Reverse Words in a String",
+    "difficulty": "Easy",
+    "description": "Given an input string s, reverse the order of the words. A word is defined as a sequence of non-space characters. The returned string should contain the words in reverse order separated by a single space. Leading, trailing, and multiple spaces between words should be removed.",
+    "constraints": [
+      "1 <= s.length <= 100000",
+      "s contains English letters, digits, punctuation, and spaces"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function reverseWords(s) {\n\n}",
+      "typescript": "function reverseWords(s: string): string {\n\n}",
+      "python": "def reverseWords(s):\n    pass",
+      "java": "public class Solution {\n    public static String reverseWords(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string reverseWords(string s) {\n        \n    }\n};",
+      "go": "func reverseWords(s string) string {\n\n}",
+      "rust": "fn reverse_words(s: String) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"the sky is blue\"",
+        "output": "\"blue is sky the\"",
+        "explanation": "The words are reversed while maintaining a single space between them."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"the sky is blue\"",
+        "expected_output": "\"blue is sky the\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"  hello world  \"",
+        "expected_output": "\"world hello\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a good   example\"",
+        "expected_output": "\"example good a\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"ChatGPT\"",
+        "expected_output": "\"ChatGPT\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"one two three four five\"",
+        "expected_output": "\"five four three two one\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"    \"",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"a\"",
+        "expected_output": "\"a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"    a    \"",
+        "expected_output": "\"a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"a    b\"",
+        "expected_output": "\"b a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"I love programming\"",
+        "expected_output": "\"programming love I\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"123 456 789\"",
+        "expected_output": "\"789 456 123\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"hello, world!\"",
+        "expected_output": "\"world! hello,\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"first second third fourth fifth sixth\"",
+        "expected_output": "\"sixth fifth fourth third second first\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"   multiple      spaces      everywhere   \"",
+        "expected_output": "\"everywhere spaces multiple\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Split the string into words.",
+      "Ignore extra spaces.",
+      "Reverse the order of the words.",
+      "Join the words using a single space."
+    ],
+    "explanation": "Extract all valid words from the string while ignoring extra spaces. Reverse the order of these words and join them together with a single space between each word. The final result should not contain leading, trailing, or multiple consecutive spaces."
+  },
+  {
+    "slug": "longest-common-prefix",
+    "title": "Longest Common Prefix",
+    "difficulty": "Medium",
+    "description": "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.",
+    "constraints": [
+      "1 <= strs.length <= 10000",
+      "0 <= strs[i].length <= 1000",
+      "strs[i] consists of lowercase English letters"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function longestCommonPrefix(strs) {\n\n}",
+      "typescript": "function longestCommonPrefix(strs: string[]): string {\n\n}",
+      "python": "def longestCommonPrefix(strs):\n    pass",
+      "java": "public class Solution {\n    public static String longestCommonPrefix(String[] strs) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        \n    }\n};",
+      "go": "func longestCommonPrefix(strs []string) string {\n\n}",
+      "rust": "fn longest_common_prefix(strs: Vec<String>) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"flower\",\"flow\",\"flight\"]",
+        "output": "\"fl\"",
+        "explanation": "The longest common prefix shared by all strings is 'fl'."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"flower\",\"flow\",\"flight\"]",
+        "expected_output": "\"fl\"",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"dog\",\"racecar\",\"car\"]",
+        "expected_output": "\"\"",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"apple\",\"app\",\"application\"]",
+        "expected_output": "\"app\"",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"a\"]",
+        "expected_output": "\"a\"",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"test\",\"test\",\"test\"]",
+        "expected_output": "\"test\"",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"\",\"abc\",\"abcd\"]",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"a\",\"b\"]",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"prefix\",\"prefixes\",\"prefixation\"]",
+        "expected_output": "\"prefix\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"interview\",\"internet\",\"internal\",\"interval\"]",
+        "expected_output": "\"inte\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"same\",\"same\"]",
+        "expected_output": "\"same\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"ab\",\"abc\",\"abcd\",\"abcde\"]",
+        "expected_output": "\"ab\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"xylophone\",\"xylitol\",\"xylem\"]",
+        "expected_output": "\"xyl\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"common\",\"commonality\",\"commonly\",\"commoner\"]",
+        "expected_output": "\"common\"",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"zebra\",\"zeb\",\"ze\"]",
+        "expected_output": "\"ze\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The common prefix cannot be longer than the shortest string.",
+      "Compare characters position by position across all strings.",
+      "Stop as soon as a mismatch is found.",
+      "Try using the first string as a reference."
+    ],
+    "explanation": "Use the first string as a reference and compare each character position with the corresponding character in all other strings. If every string contains the same character at that position, continue. As soon as a mismatch occurs or a string ends, return the prefix built so far. If no common prefix exists, return an empty string."
+  },
+  {
+    "slug": "isomorphic-strings",
+    "title": "Isomorphic Strings",
+    "difficulty": "Medium",
+    "description": "Given two strings s and t, determine if they are isomorphic. Two strings are isomorphic if the characters in s can be replaced to get t. Each character must map to exactly one character, and no two characters may map to the same character. The order of characters must be preserved.",
+    "constraints": [
+      "1 <= s.length <= 50000",
+      "t.length == s.length",
+      "s and t consist of any valid ASCII characters"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isIsomorphic(s, t) {\n\n}",
+      "typescript": "function isIsomorphic(s: string, t: string): boolean {\n\n}",
+      "python": "def isIsomorphic(s, t):\n    pass",
+      "java": "public class Solution {\n    public static boolean isIsomorphic(String s, String t) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isIsomorphic(string s, string t) {\n        \n    }\n};",
+      "go": "func isIsomorphic(s string, t string) bool {\n\n}",
+      "rust": "fn is_isomorphic(s: String, t: String) -> bool {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"egg\",\"add\"",
+        "output": "true",
+        "explanation": "Character 'e' maps to 'a' and 'g' maps to 'd'. The mapping is consistent and one-to-one."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"egg\",\"add\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"foo\",\"bar\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"paper\",\"title\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"badc\",\"baba\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\",\"b\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"ab\",\"aa\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aa\",\"ab\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abc\",\"def\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abba\",\"cddc\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abba\",\"cddd\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefghijklmnopqrstuvwxyz\",\"bcdefghijklmnopqrstuvwxyza\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abababab\",\"xyxyxyxy\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abababab\",\"xyxyxyxz\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"112233\",\"aabbcc\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"112233\",\"aabbbc\"",
+        "expected_output": "false",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A character from s must always map to the same character in t.",
+      "No two different characters in s can map to the same character in t.",
+      "Consider maintaining mappings in both directions.",
+      "Check consistency at every position."
+    ],
+    "explanation": "Traverse both strings simultaneously. Maintain a mapping from characters in s to characters in t, and another mapping from t to s. For each position, verify that existing mappings remain consistent. If a conflict occurs in either direction, the strings are not isomorphic. If the traversal completes successfully, the strings are isomorphic."
+  },
+  {
+    "slug": "string-compression",
+    "title": "String Compression",
+    "difficulty": "Medium",
+    "description": "Given a string s consisting of lowercase English letters, compress it using run-length encoding. Replace each sequence of consecutive identical characters with the character followed by its count. Return the compressed string.",
+    "constraints": ["1 <= s.length <= 100000", "s consists of lowercase English letters only"],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function compressString(s) {\n\n}",
+      "typescript": "function compressString(s: string): string {\n\n}",
+      "python": "def compressString(s):\n    pass",
+      "java": "public class Solution {\n    public static String compressString(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string compressString(string s) {\n        \n    }\n};",
+      "go": "func compressString(s string) string {\n\n}",
+      "rust": "fn compress_string(s: String) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"aaabbc\"",
+        "output": "\"a3b2c1\"",
+        "explanation": "The character 'a' appears 3 times consecutively, 'b' appears 2 times, and 'c' appears 1 time."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"aaabbc\"",
+        "expected_output": "\"a3b2c1\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\"",
+        "expected_output": "\"a1\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abcdef\"",
+        "expected_output": "\"a1b1c1d1e1f1\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aabbcc\"",
+        "expected_output": "\"a2b2c2\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"zzzzzz\"",
+        "expected_output": "\"z6\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aaaaaaaaaa\"",
+        "expected_output": "\"a10\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abbbbbbbbbbbb\"",
+        "expected_output": "\"a1b12\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"cccccccccccccccccccc\"",
+        "expected_output": "\"c20\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aabbaa\"",
+        "expected_output": "\"a2b2a2\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdddddde\"",
+        "expected_output": "\"a1b1c1d6e1\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"mmmmnnnnooopppqq\"",
+        "expected_output": "\"m4n4o3p3q2\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"bbbbbaaaaacccdd\"",
+        "expected_output": "\"b5a5c3d2\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"xyyyyyyyyyyyyyyyyyz\"",
+        "expected_output": "\"x1y17z1\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"kkkkkkkkkkkkkkkkkkkkkkkkk\"",
+        "expected_output": "\"k25\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aabcccccaaa\"",
+        "expected_output": "\"a2b1c5a3\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Process the string from left to right.",
+      "Count consecutive occurrences of the same character.",
+      "When the character changes, append the previous character and its count.",
+      "Don't forget to process the final group after the loop ends."
+    ],
+    "explanation": "Traverse the string while maintaining a count of consecutive occurrences of the current character. Whenever the character changes, append the current character followed by its count to the result. Reset the count for the new character and continue. After processing the entire string, append the last character group and return the compressed string."
+  },
+  {
+    "slug": "longest-substring-without-repeating-characters",
+    "title": "Longest Substring Without Repeating Characters",
+    "difficulty": "Medium",
+    "description": "Given a string s, find the length of the longest substring without repeating characters.",
+    "constraints": [
+      "0 <= s.length <= 100000",
+      "s consists of English letters, digits, symbols and spaces"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function lengthOfLongestSubstring(s) {\n\n}",
+      "typescript": "function lengthOfLongestSubstring(s: string): number {\n\n}",
+      "python": "def lengthOfLongestSubstring(s):\n    pass",
+      "java": "public class Solution {\n    public static int lengthOfLongestSubstring(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        \n    }\n};",
+      "go": "func lengthOfLongestSubstring(s string) int {\n\n}",
+      "rust": "fn length_of_longest_substring(s: String) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"abcabcbb\"",
+        "output": "3",
+        "explanation": "The longest substring without repeating characters is \"abc\", which has length 3."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"abcabcbb\"",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "\"bbbbb\"",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "\"pwwkew\"",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abcdef\"",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "\"dvdf\"",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "\"\"",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "\"a\"",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aa\"",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abba\"",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "\"tmmzuxt\"",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"anviaj\"",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefghijklmnopqrstuvwxyz\"",
+        "expected_output": "26",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdeafghijk\"",
+        "expected_output": "11",
+        "is_hidden": true
+      },
+      {
+        "input": "\"123451234\"",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\" !@# $%^&*() \"",
+        "expected_output": "11",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A brute-force solution checking all substrings will be too slow.",
+      "Try maintaining a window containing unique characters.",
+      "When a duplicate character is found, move the left boundary of the window.",
+      "Track the maximum window size encountered during traversal."
+    ],
+    "explanation": "Use the sliding window technique. Maintain a window containing only unique characters. Expand the right pointer while characters remain unique. When a duplicate character is encountered, move the left pointer until the duplicate is removed. The maximum size of this valid window during traversal is the answer."
+  },
+  {
+    "slug": "group-anagrams",
+    "title": "Group Anagrams",
+    "difficulty": "Medium",
+    "description": "Given an array of strings strs, group the anagrams together. Two strings are anagrams if they contain the same characters with the same frequencies. Return the groups in any order.",
+    "constraints": [
+      "1 <= strs.length <= 10000",
+      "0 <= strs[i].length <= 100",
+      "strs[i] consists of lowercase English letters"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function groupAnagrams(strs) {\n\n}",
+      "typescript": "function groupAnagrams(strs: string[]): string[][] {\n\n}",
+      "python": "def groupAnagrams(strs):\n    pass",
+      "java": "import java.util.*;\n\npublic class Solution {\n    public static List<List<String>> groupAnagrams(String[] strs) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        \n    }\n};",
+      "go": "func groupAnagrams(strs []string) [][]string {\n\n}",
+      "rust": "fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "output": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]",
+        "explanation": "Words that contain the same characters are grouped together."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "expected_output": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"\"]",
+        "expected_output": "[[\"\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"a\"]",
+        "expected_output": "[[\"a\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"abc\",\"bca\",\"cab\"]",
+        "expected_output": "[[\"abc\",\"bca\",\"cab\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"cat\",\"dog\",\"rat\"]",
+        "expected_output": "[[\"cat\"],[\"dog\"],[\"rat\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"listen\",\"silent\",\"enlist\"]",
+        "expected_output": "[[\"listen\",\"silent\",\"enlist\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"aa\",\"aa\",\"aa\"]",
+        "expected_output": "[[\"aa\",\"aa\",\"aa\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"ab\",\"ba\",\"abc\",\"cab\",\"bca\"]",
+        "expected_output": "[[\"ab\",\"ba\"],[\"abc\",\"cab\",\"bca\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"zzz\",\"zzz\",\"zz\"]",
+        "expected_output": "[[\"zzz\",\"zzz\"],[\"zz\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abcd\",\"dcba\",\"bcad\",\"xy\",\"yx\",\"z\"]",
+        "expected_output": "[[\"abcd\",\"dcba\",\"bcad\"],[\"xy\",\"yx\"],[\"z\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"aabb\",\"bbaa\",\"abab\",\"baba\"]",
+        "expected_output": "[[\"aabb\",\"bbaa\",\"abab\",\"baba\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abc\",\"def\",\"ghi\",\"jkl\"]",
+        "expected_output": "[[\"abc\"],[\"def\"],[\"ghi\"],[\"jkl\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"race\",\"care\",\"acre\",\"hello\",\"olleh\"]",
+        "expected_output": "[[\"race\",\"care\",\"acre\"],[\"hello\",\"olleh\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"x\",\"x\",\"y\",\"y\",\"z\"]",
+        "expected_output": "[[\"x\",\"x\"],[\"y\",\"y\"],[\"z\"]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Anagrams have the same characters with the same frequencies.",
+      "Think about creating a unique signature for each word.",
+      "Sorting the characters of a word can help identify anagrams.",
+      "Use a hash map to group words sharing the same signature."
+    ],
+    "explanation": "Two words are anagrams if they contain the same characters in a different order. Create a canonical representation for each word, such as its sorted character sequence. Use this representation as a key in a hash map and group all words with the same key together. Finally, return all the groups."
+  },
+  {
+    "slug": "minimum-window-substring",
+    "title": "Minimum Window Substring",
+    "difficulty": "Medium",
+    "description": "Given two strings s and t, return the smallest substring of s that contains all the characters in t (including duplicates). If no such substring exists, return an empty string.",
+    "constraints": [
+      "1 <= s.length <= 100000",
+      "1 <= t.length <= 100000",
+      "s and t consist of English letters"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function minWindow(s, t) {\n\n}",
+      "typescript": "function minWindow(s: string, t: string): string {\n\n}",
+      "python": "def minWindow(s, t):\n    pass",
+      "java": "public class Solution {\n    public static String minWindow(String s, String t) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string minWindow(string s, string t) {\n        \n    }\n};",
+      "go": "func minWindow(s string, t string) string {\n\n}",
+      "rust": "fn min_window(s: String, t: String) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"ADOBECODEBANC\",\"ABC\"",
+        "output": "\"BANC\"",
+        "explanation": "The smallest substring containing A, B, and C is \"BANC\"."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"ADOBECODEBANC\",\"ABC\"",
+        "expected_output": "\"BANC\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\",\"a\"",
+        "expected_output": "\"a\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\",\"aa\"",
+        "expected_output": "\"\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"ab\",\"b\"",
+        "expected_output": "\"b\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aa\",\"aa\"",
+        "expected_output": "\"aa\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abc\",\"d\"",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abbbcabbc\",\"abc\"",
+        "expected_output": "\"cab\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaaaaaaaaabbbbbcdd\",\"abcdd\"",
+        "expected_output": "\"abbbbbcdd\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"thisisateststring\",\"tist\"",
+        "expected_output": "\"tstri\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdef\",\"f\"",
+        "expected_output": "\"f\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdef\",\"abcdef\"",
+        "expected_output": "\"abcdef\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaabbbbbccccc\",\"abc\"",
+        "expected_output": "\"abbbbbc\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"xyyzyzyx\",\"xyz\"",
+        "expected_output": "\"zyx\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"cabefgecdaecf\",\"cae\"",
+        "expected_output": "\"aec\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"zzzzzzzzabc\",\"abc\"",
+        "expected_output": "\"abc\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A brute-force approach checking all substrings will be too slow.",
+      "Use a sliding window with two pointers.",
+      "Track the frequency of required characters.",
+      "Try shrinking the window whenever it already satisfies all requirements."
+    ],
+    "explanation": "Use a sliding window approach. Maintain character frequencies for the target string and expand the right pointer until the window contains all required characters. Once valid, move the left pointer to minimize the window while preserving validity. Keep track of the smallest valid window found during the process and return it."
+  },
+  {
+    "slug": "longest-palindromic-substring",
+    "title": "Longest Palindromic Substring",
+    "difficulty": "Hard",
+    "description": "Given a string s, return the longest palindromic substring in s. If multiple answers exist, return any one of them.",
+    "constraints": ["1 <= s.length <= 1000", "s consists of English letters and digits"],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function longestPalindrome(s) {\n\n}",
+      "typescript": "function longestPalindrome(s: string): string {\n\n}",
+      "python": "def longestPalindrome(s):\n    pass",
+      "java": "public class Solution {\n    public static String longestPalindrome(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestPalindrome(string s) {\n        \n    }\n};",
+      "go": "func longestPalindrome(s string) string {\n\n}",
+      "rust": "fn longest_palindrome(s: String) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"babad\"",
+        "output": "\"bab\"",
+        "explanation": "\"bab\" and \"aba\" are both valid answers because they are the longest palindromic substrings."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"babad\"",
+        "expected_output": "\"bab\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"cbbd\"",
+        "expected_output": "\"bb\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\"",
+        "expected_output": "\"a\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"racecar\"",
+        "expected_output": "\"racecar\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abba\"",
+        "expected_output": "\"abba\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"ac\"",
+        "expected_output": "\"a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaaa\"",
+        "expected_output": "\"aaaaaa\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefg\"",
+        "expected_output": "\"a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"forgeeksskeegfor\"",
+        "expected_output": "\"geeksskeeg\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"banana\"",
+        "expected_output": "\"anana\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abacdfgdcaba\"",
+        "expected_output": "\"aba\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcbaabcdcba\"",
+        "expected_output": "\"abcdcba\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"noonmadamracecar\"",
+        "expected_output": "\"racecar\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaaaaaaab\"",
+        "expected_output": "\"aaaaaaaaaa\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abaxyzzyxf\"",
+        "expected_output": "\"xyzzyx\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Every palindrome has a center.",
+      "Try expanding around each character.",
+      "Remember that palindromes can have odd or even lengths.",
+      "Track the longest palindrome found during expansion."
+    ],
+    "explanation": "A palindrome reads the same forward and backward. For each position in the string, consider it as the center of a palindrome and expand outward while the characters match. Perform this for both odd-length and even-length palindromes. Track the longest palindrome encountered and return it at the end."
+  },
+  {
+    "slug": "find-all-anagrams-in-a-string",
+    "title": "Find All Anagrams in a String",
+    "difficulty": "Hard",
+    "description": "Given two strings s and p, return an array of all starting indices of p's anagrams in s. The order of the output does not matter.",
+    "constraints": [
+      "1 <= s.length <= 100000",
+      "1 <= p.length <= 100000",
+      "s and p consist of lowercase English letters"
+    ],
+    "topics": ["Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findAnagrams(s, p) {\n\n}",
+      "typescript": "function findAnagrams(s: string, p: string): number[] {\n\n}",
+      "python": "def findAnagrams(s, p):\n    pass",
+      "java": "import java.util.*;\n\npublic class Solution {\n    public static List<Integer> findAnagrams(String s, String p) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> findAnagrams(string s, string p) {\n        \n    }\n};",
+      "go": "func findAnagrams(s string, p string) []int {\n\n}",
+      "rust": "fn find_anagrams(s: String, p: String) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"cbaebabacd\",\"abc\"",
+        "output": "[0,6]",
+        "explanation": "The substrings \"cba\" and \"bac\" are anagrams of \"abc\"."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"cbaebabacd\",\"abc\"",
+        "expected_output": "[0,6]",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abab\",\"ab\"",
+        "expected_output": "[0,1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aaaaa\",\"aa\"",
+        "expected_output": "[0,1,2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abc\",\"abc\"",
+        "expected_output": "[0]",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abcdef\",\"gh\"",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\",\"a\"",
+        "expected_output": "[0]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"a\",\"b\"",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"baa\",\"aa\"",
+        "expected_output": "[1]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abababab\",\"aab\"",
+        "expected_output": "[0,2,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaaaaaaa\",\"aaa\"",
+        "expected_output": "[0,1,2,3,4,5,6,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"xyzabczyx\",\"zyx\"",
+        "expected_output": "[0,6]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"ababcbabc\",\"abc\"",
+        "expected_output": "[2,4,5,6,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"mississippi\",\"iss\"",
+        "expected_output": "[1,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefghijklmnop\",\"pon\"",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "\"zzzzzzzzzz\",\"zzz\"",
+        "expected_output": "[0,1,2,3,4,5,6,7]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "An anagram has exactly the same character frequencies.",
+      "Comparing every substring individually will be too slow.",
+      "Use a sliding window of length p.length.",
+      "Track character frequencies inside the current window and compare them with p."
+    ],
+    "explanation": "Use a sliding window of size equal to the length of p. Maintain character frequency counts for both p and the current window in s. As the window moves, update the frequencies by adding the new character and removing the old one. Whenever the two frequency maps match, record the starting index of the window. This approach runs efficiently in linear time."
+  }
+]

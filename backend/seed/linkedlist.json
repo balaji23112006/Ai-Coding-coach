@@ -1,0 +1,1153 @@
+[
+  {
+    "slug": "reverse-linked-list",
+    "title": "Reverse Linked List",
+    "difficulty": "Easy",
+    "description": "Given the head of a singly linked list, reverse the list and return the new head.",
+    "constraints": ["0 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function reverseList(head) {\n\n}",
+      "typescript": "function reverseList(head: ListNode | null): ListNode | null {\n\n}",
+      "python": "def reverseList(head):\n    pass",
+      "java": "public class Solution {\n    public ListNode reverseList(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    ListNode* reverseList(ListNode* head) {\n        \n    }\n};",
+      "go": "func reverseList(head *ListNode) *ListNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5]",
+        "output": "[5,4,3,2,1]",
+        "explanation": "The linked list is reversed by changing the direction of every pointer."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "[5,4,3,2,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "[2,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,30]",
+        "expected_output": "[30,20,10]",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1,-2,-3,-4]",
+        "expected_output": "[-4,-3,-2,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000]",
+        "expected_output": "[100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-100000]",
+        "expected_output": "[-100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1]",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7]",
+        "expected_output": "[7,7,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,9,11]",
+        "expected_output": "[11,9,7,5,3,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0,0]",
+        "expected_output": "[0,0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,-1,2,-2,3,-3]",
+        "expected_output": "[-3,3,-2,2,-1,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,40,30,20,10]",
+        "expected_output": "[10,20,30,40,50]",
+        "is_hidden": true
+      },
+      {
+        "input": "[99999,88888,77777,66666]",
+        "expected_output": "[66666,77777,88888,99999]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "You only need three pointers.",
+      "Keep track of the previous node while traversing.",
+      "Store the next node before changing any links.",
+      "Reverse one pointer at a time."
+    ],
+    "explanation": "Traverse the linked list while maintaining three pointers: prev, curr, and next. For each node, save the next node, reverse the current node's pointer to point to the previous node, then move all pointers one step forward. When the traversal finishes, prev will point to the new head of the reversed linked list. This solution runs in O(n) time and O(1) extra space."
+  },
+  {
+    "slug": "merge-two-sorted-lists",
+    "title": "Merge Two Sorted Lists",
+    "difficulty": "Easy",
+    "description": "You are given the heads of two sorted singly linked lists list1 and list2. Merge the two lists into one sorted linked list and return its head. The merged list should be formed by splicing together the nodes of the original lists.",
+    "constraints": [
+      "0 <= number of nodes in each list <= 50000",
+      "-100000 <= Node.val <= 100000",
+      "Both linked lists are sorted in non-decreasing order"
+    ],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function mergeTwoLists(list1, list2) {\n\n}",
+      "typescript": "function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {\n\n}",
+      "python": "def mergeTwoLists(list1, list2):\n    pass",
+      "java": "public class Solution {\n    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n        \n    }\n};",
+      "go": "func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,4],[1,3,4]",
+        "output": "[1,1,2,3,4,4]",
+        "explanation": "The two sorted lists are merged while preserving sorted order."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,4],[1,3,4]",
+        "expected_output": "[1,1,2,3,4,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[],[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[],[0]",
+        "expected_output": "[0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],[2]",
+        "expected_output": "[1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2],[1]",
+        "expected_output": "[1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3,5],[2,4,6]",
+        "expected_output": "[1,2,3,4,5,6]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1],[1,1]",
+        "expected_output": "[1,1,1,1,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5,-3,-1],[0,2,4]",
+        "expected_output": "[-5,-3,-1,0,2,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,0],[ -8,-4,2 ]",
+        "expected_output": "[-10,-8,-5,-4,0,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],[]",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[],[1,2,3,4,5]",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,8,9],[1,2,3]",
+        "expected_output": "[1,2,3,7,8,9]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0],[0,0]",
+        "expected_output": "[0,0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-100000],[100000]",
+        "expected_output": "[-100000,100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40],[15,25,35,45]",
+        "expected_output": "[10,15,20,25,30,35,40,45]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Since both lists are already sorted, always choose the smaller current node.",
+      "A dummy node can simplify handling the head of the merged list.",
+      "Move the pointer forward in the list from which a node was selected.",
+      "When one list ends, append the remaining nodes from the other list."
+    ],
+    "explanation": "Create a dummy node to serve as the starting point of the merged list. Compare the current nodes of both lists and attach the smaller node to the merged list. Move the corresponding pointer forward and continue until one list is exhausted. Finally, attach any remaining nodes from the other list. The algorithm processes each node exactly once, resulting in O(n + m) time complexity and O(1) extra space."
+  },
+  {
+    "slug": "middle-of-the-linked-list",
+    "title": "Middle of the Linked List",
+    "difficulty": "Medium",
+    "description": "Given the head of a singly linked list, return the middle node of the linked list. If there are two middle nodes, return the second middle node.",
+    "constraints": ["1 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function middleNode(head) {\n\n}",
+      "typescript": "function middleNode(head: ListNode | null): ListNode | null {\n\n}",
+      "python": "def middleNode(head):\n    pass",
+      "java": "public class Solution {\n    public ListNode middleNode(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    ListNode* middleNode(ListNode* head) {\n        \n    }\n};",
+      "go": "func middleNode(head *ListNode) *ListNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn middle_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5]",
+        "output": "[3,4,5]",
+        "explanation": "The middle node is 3. Return the linked list starting from node 3."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "[3,4,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6]",
+        "expected_output": "[4,5,6]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "[2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,30]",
+        "expected_output": "[20,30]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4]",
+        "expected_output": "[3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5]",
+        "expected_output": "[-3,-4,-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100]",
+        "expected_output": "[100]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,10,15,20,25,30,35]",
+        "expected_output": "[20,25,30,35]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7]",
+        "expected_output": "[7,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6,7,8]",
+        "expected_output": "[4,5,6,7,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5,4,3,2]",
+        "expected_output": "[5,4,3,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-100000,0,100000]",
+        "expected_output": "[0,100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10]",
+        "expected_output": "[6,7,8,9,10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,40,30,20,10]",
+        "expected_output": "[30,20,10]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Counting all nodes first works, but requires two traversals.",
+      "Can you find the middle in a single traversal?",
+      "Use two pointers moving at different speeds.",
+      "When the fast pointer reaches the end, the slow pointer will be at the middle."
+    ],
+    "explanation": "Use two pointers: slow and fast. Initialize both at the head. Move slow one step at a time and fast two steps at a time. When fast reaches the end of the list (or can no longer move two steps), slow will be positioned at the middle node. For even-length lists, this naturally returns the second middle node as required. The algorithm runs in O(n) time and O(1) extra space."
+  },
+  {
+    "slug": "remove-nth-node-from-end",
+    "title": "Remove Nth Node From End of List",
+    "difficulty": "Medium",
+    "description": "Given the head of a linked list, remove the nth node from the end of the list and return the head of the modified list.",
+    "constraints": [
+      "1 <= number of nodes <= 100000",
+      "-100000 <= Node.val <= 100000",
+      "1 <= n <= number of nodes"
+    ],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function removeNthFromEnd(head, n) {\n\n}",
+      "typescript": "function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {\n\n}",
+      "python": "def removeNthFromEnd(head, n):\n    pass",
+      "java": "public class Solution {\n    public ListNode removeNthFromEnd(ListNode head, int n) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    ListNode* removeNthFromEnd(ListNode* head, int n) {\n        \n    }\n};",
+      "go": "func removeNthFromEnd(head *ListNode, n int) *ListNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<ListNode>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5],2",
+        "output": "[1,2,3,5]",
+        "explanation": "The 2nd node from the end is 4, so it is removed."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5],2",
+        "expected_output": "[1,2,3,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],1",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],2",
+        "expected_output": "[2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,30],2",
+        "expected_output": "[10,30]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],5",
+        "expected_output": "[2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],1",
+        "expected_output": "[1,2,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7],3",
+        "expected_output": "[7,7,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5],4",
+        "expected_output": "[-1,-3,-4,-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000],1",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,10,15,20,25,30],6",
+        "expected_output": "[10,15,20,25,30]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,10,15,20,25,30],3",
+        "expected_output": "[5,10,15,25,30]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6],7",
+        "expected_output": "[1,2,3,4,5,6]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6],4",
+        "expected_output": "[0,1,2,4,5,6]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5,4,3,2,1],9",
+        "expected_output": "[8,7,6,5,4,3,2,1]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A two-pass solution is possible by first counting the nodes.",
+      "Can you solve it in one pass?",
+      "Maintain a fixed gap of n nodes between two pointers.",
+      "When the fast pointer reaches the end, the slow pointer will be just before the node to remove."
+    ],
+    "explanation": "Use a dummy node before the head to simplify edge cases. Move a fast pointer n+1 steps ahead. Then move both fast and slow pointers together until the fast pointer reaches the end. At this point, the slow pointer will be positioned just before the node that must be removed. Update the links to skip that node and return the modified list. This approach runs in O(n) time and O(1) extra space."
+  },
+  {
+    "slug": "linked-list-cycle",
+    "title": "Linked List Cycle",
+    "difficulty": "Medium",
+    "description": "Given the head of a linked list, determine whether the linked list contains a cycle. A cycle exists if some node in the list can be reached again by continuously following the next pointer. Return true if there is a cycle; otherwise, return false.",
+    "constraints": ["0 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function hasCycle(head) {\n\n}",
+      "typescript": "function hasCycle(head: ListNode | null): boolean {\n\n}",
+      "python": "def hasCycle(head):\n    pass",
+      "java": "public class Solution {\n    public boolean hasCycle(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool hasCycle(ListNode *head) {\n        \n    }\n};",
+      "go": "func hasCycle(head *ListNode) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn has_cycle(head: Option<Box<ListNode>>) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,2,0,-4], pos = 1",
+        "output": "true",
+        "explanation": "The tail connects to the node at index 1, forming a cycle."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,2,0,-4], pos = 1",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2], pos = 0",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1], pos = -1",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5], pos = -1",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5], pos = 2",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[10], pos = 0",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[10], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6], pos = 5",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6], pos = 3",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7], pos = 0",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,99999,99998], pos = 1",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10], pos = 4",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Using a HashSet works, but requires extra memory.",
+      "Can you detect a cycle using only pointers?",
+      "Use two pointers moving at different speeds.",
+      "If a cycle exists, the fast pointer will eventually meet the slow pointer."
+    ],
+    "explanation": "Use Floyd's Cycle Detection Algorithm (Tortoise and Hare). Maintain two pointers: slow moves one step at a time, while fast moves two steps at a time. If the linked list contains a cycle, the fast pointer will eventually catch up to the slow pointer and they will meet. If the fast pointer reaches the end of the list, no cycle exists. This solution runs in O(n) time and O(1) extra space."
+  },
+  {
+    "slug": "palindrome-linked-list",
+    "title": "Palindrome Linked List",
+    "difficulty": "Medium",
+    "description": "Given the head of a singly linked list, return true if the linked list is a palindrome, and false otherwise. A palindrome reads the same forward and backward.",
+    "constraints": ["1 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isPalindrome(head) {\n\n}",
+      "typescript": "function isPalindrome(head: ListNode | null): boolean {\n\n}",
+      "python": "def isPalindrome(head):\n    pass",
+      "java": "public class Solution {\n    public boolean isPalindrome(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool isPalindrome(ListNode* head) {\n        \n    }\n};",
+      "go": "func isPalindrome(head *ListNode) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,2,1]",
+        "output": "true",
+        "explanation": "The sequence reads the same from left to right and right to left."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,2,1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[7,7,7,7]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,8]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,2,1]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-2,-1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-2,-1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0,0]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,200000,200000,100000]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,4,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,4,3,2,2]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,7,8,9]",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Comparing values from both ends is difficult in a singly linked list.",
+      "Find the middle of the linked list first.",
+      "Reverse the second half of the list.",
+      "Compare nodes from the first half and the reversed second half."
+    ],
+    "explanation": "Use the fast and slow pointer technique to find the middle of the linked list. Reverse the second half of the list in-place. Then compare corresponding nodes from the beginning of the first half and the beginning of the reversed second half. If all values match, the list is a palindrome. This approach runs in O(n) time and O(1) extra space."
+  },
+  {
+    "slug": "reorder-list",
+    "title": "Reorder List",
+    "difficulty": "Medium",
+    "description": "Given the head of a singly linked list L0 → L1 → ... → Ln-1 → Ln, reorder the list to the form L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ... . You may not modify the values in the nodes. Only the links between nodes may be changed.",
+    "constraints": ["1 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function reorderList(head) {\n\n}",
+      "typescript": "function reorderList(head: ListNode | null): void {\n\n}",
+      "python": "def reorderList(head):\n    pass",
+      "java": "public class Solution {\n    public void reorderList(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    void reorderList(ListNode* head) {\n        \n    }\n};",
+      "go": "func reorderList(head *ListNode) {\n\n}",
+      "rust": "impl Solution {\n    pub fn reorder_list(head: &mut Option<Box<ListNode>>) {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4]",
+        "output": "[1,4,2,3]",
+        "explanation": "Take the last node and place it after the first node, then continue inward."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4]",
+        "expected_output": "[1,4,2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "[1,5,2,4,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "[1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,30]",
+        "expected_output": "[10,30,20]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6]",
+        "expected_output": "[1,6,2,5,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7]",
+        "expected_output": "[7,7,7,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6]",
+        "expected_output": "[0,6,1,5,2,4,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4]",
+        "expected_output": "[-1,-4,-2,-3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400,500]",
+        "expected_output": "[100,500,200,400,300]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[1,7,2,6,3,5,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5]",
+        "expected_output": "[9,5,8,6,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,40,30,20,10]",
+        "expected_output": "[50,10,40,20,30]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8]",
+        "expected_output": "[1,8,2,7,3,6,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[999,888,777,666,555,444]",
+        "expected_output": "[999,444,888,555,777,666]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The last node must come immediately after the first node.",
+      "Accessing the last node repeatedly would be inefficient.",
+      "Split the list into two halves.",
+      "Reverse the second half and merge the two halves alternately."
+    ],
+    "explanation": "First find the middle of the linked list using the slow and fast pointer technique. Split the list into two halves. Reverse the second half in-place. Then merge the first half and the reversed second half by alternating nodes from each list. This produces the required order in O(n) time and O(1) extra space."
+  },
+  {
+    "slug": "add-two-numbers",
+    "title": "Add Two Numbers",
+    "difficulty": "Medium",
+    "description": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each node contains a single digit. Add the two numbers and return the sum as a linked list in the same reverse order. You may assume the two numbers do not contain leading zeros except for the number 0 itself.",
+    "constraints": [
+      "1 <= number of nodes in each list <= 100000",
+      "0 <= Node.val <= 9",
+      "The represented number does not have leading zeros"
+    ],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function addTwoNumbers(l1, l2) {\n\n}",
+      "typescript": "function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {\n\n}",
+      "python": "def addTwoNumbers(l1, l2):\n    pass",
+      "java": "public class Solution {\n    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {\n        \n    }\n};",
+      "go": "func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn add_two_numbers(l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[2,4,3],[5,6,4]",
+        "output": "[7,0,8]",
+        "explanation": "342 + 465 = 807, so the result is represented as 7 -> 0 -> 8."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[2,4,3],[5,6,4]",
+        "expected_output": "[7,0,8]",
+        "is_hidden": false
+      },
+      {
+        "input": "[0],[0]",
+        "expected_output": "[0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[9,9,9,9,9,9,9],[9,9,9,9]",
+        "expected_output": "[8,9,9,9,0,0,0,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],[9]",
+        "expected_output": "[0,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5],[5]",
+        "expected_output": "[0,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,8],[0]",
+        "expected_output": "[1,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9],[1]",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,9],[1]",
+        "expected_output": "[0,0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3],[4,5,6]",
+        "expected_output": "[5,7,9]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0],[9,9,9]",
+        "expected_output": "[9,9,9]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,9,9],[9,9,9]",
+        "expected_output": "[8,9,9,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,4,9],[5,6,4,9]",
+        "expected_output": "[7,0,4,0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,7,6,5],[2,3,4,5]",
+        "expected_output": "[0,1,1,1,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,9,9,9],[9,9,9,9]",
+        "expected_output": "[8,9,9,9,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[3,1,4,1,5],[2,7,1,8,2]",
+        "expected_output": "[5,8,5,9,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,0,0,0,0,0,0,0,0,0],[9]",
+        "expected_output": "[0,1,0,0,0,0,0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,9,9,9,9],[1]",
+        "expected_output": "[0,0,0,0,0,1]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Process both linked lists digit by digit.",
+      "Keep track of any carry generated during addition.",
+      "The lists may have different lengths.",
+      "Don't forget to create a final node if a carry remains after processing all digits."
+    ],
+    "explanation": "Traverse both linked lists simultaneously while maintaining a carry value. At each step, add the current digits from both lists along with the carry. Create a new node containing the ones digit of the sum and update the carry with the tens digit. Continue until both lists are exhausted and no carry remains. A dummy node can simplify result construction. This approach runs in O(max(n, m)) time and O(max(n, m)) space for the output list."
+  },
+  {
+    "slug": "reverse-nodes-in-k-group",
+    "title": "Reverse Nodes in K Group",
+    "difficulty": "Hard",
+    "description": "Given the head of a linked list, reverse the nodes of the list k at a time and return the modified list. If the number of nodes remaining is less than k, leave those nodes as they are. You may not modify node values; only node connections may be changed.",
+    "constraints": [
+      "1 <= number of nodes <= 100000",
+      "1 <= k <= number of nodes",
+      "-1000 <= Node.val <= 1000"
+    ],
+    "topics": ["Linked List"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function reverseKGroup(head, k) {\n\n}",
+      "typescript": "function reverseKGroup(head: ListNode | null, k: number): ListNode | null {\n\n}",
+      "python": "def reverseKGroup(head, k):\n    pass",
+      "java": "public class Solution {\n    public ListNode reverseKGroup(ListNode head, int k) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    ListNode* reverseKGroup(ListNode* head, int k) {\n        \n    }\n};",
+      "go": "func reverseKGroup(head *ListNode, k int) *ListNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5],2",
+        "output": "[2,1,4,3,5]",
+        "explanation": "Nodes are reversed in groups of size 2. The final node remains unchanged because it does not form a complete group."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5],2",
+        "expected_output": "[2,1,4,3,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],3",
+        "expected_output": "[3,2,1,4,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],2",
+        "expected_output": "[2,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3],4",
+        "expected_output": "[1,2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6],3",
+        "expected_output": "[3,2,1,6,5,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8],4",
+        "expected_output": "[4,3,2,1,8,7,6,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7],3",
+        "expected_output": "[3,2,1,6,5,4,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1],2",
+        "expected_output": "[4,5,2,3,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50,60],1",
+        "expected_output": "[10,20,30,40,50,60]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50,60],6",
+        "expected_output": "[60,50,40,30,20,10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7],3",
+        "expected_output": "[7,7,7,7,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5],2",
+        "expected_output": "[-2,-1,-4,-3,-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9],5",
+        "expected_output": "[5,4,3,2,1,6,7,8,9]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400,500,600,700],7",
+        "expected_output": "[700,600,500,400,300,200,100]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10],4",
+        "expected_output": "[4,3,2,1,8,7,6,5,9,10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[999],1",
+        "expected_output": "[999]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Before reversing, check whether k nodes are available.",
+      "Reverse only complete groups of size k.",
+      "Keep track of the node before the current group and the node after the group.",
+      "After reversing a group, reconnect it to the rest of the list."
+    ],
+    "explanation": "Process the linked list one group at a time. For each group, first verify that k nodes exist. Reverse the k nodes in-place using standard linked list reversal techniques. After reversal, reconnect the reversed group with the previous part of the list and the remaining nodes. If fewer than k nodes remain, leave them unchanged. The algorithm visits each node a constant number of times, resulting in O(n) time complexity and O(1) extra space."
+  },
+  {
+    "slug": "lru-cache",
+    "title": "LRU Cache",
+    "difficulty": "Hard",
+    "description": "Design and implement a data structure for a Least Recently Used (LRU) Cache. Implement the LRUCache class with the following operations: get(key) and put(key, value). The cache has a fixed capacity. When the capacity is exceeded, the least recently used item must be removed. Both operations must run in O(1) average time complexity.",
+    "constraints": [
+      "1 <= capacity <= 3000",
+      "0 <= key <= 10000",
+      "0 <= value <= 100000",
+      "At most 200000 operations will be performed"
+    ],
+    "topics": ["Linked List", "HashMap", "Design"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "class LRUCache {\n    constructor(capacity) {\n\n    }\n\n    get(key) {\n\n    }\n\n    put(key, value) {\n\n    }\n}",
+      "typescript": "class LRUCache {\n    constructor(capacity: number) {\n\n    }\n\n    get(key: number): number {\n\n    }\n\n    put(key: number, value: number): void {\n\n    }\n}",
+      "python": "class LRUCache:\n    def __init__(self, capacity: int):\n        pass\n\n    def get(self, key: int) -> int:\n        pass\n\n    def put(self, key: int, value: int) -> None:\n        pass",
+      "java": "class LRUCache {\n    public LRUCache(int capacity) {\n\n    }\n\n    public int get(int key) {\n\n    }\n\n    public void put(int key, int value) {\n\n    }\n}",
+      "cpp": "class LRUCache {\npublic:\n    LRUCache(int capacity) {\n\n    }\n\n    int get(int key) {\n\n    }\n\n    void put(int key, int value) {\n\n    }\n};",
+      "go": "type LRUCache struct {\n}\n\nfunc Constructor(capacity int) LRUCache {\n\n}\n\nfunc (this *LRUCache) Get(key int) int {\n\n}\n\nfunc (this *LRUCache) Put(key int, value int) {\n\n}",
+      "rust": "struct LRUCache {\n}\n\nimpl LRUCache {\n    fn new(capacity: i32) -> Self {\n\n    }\n\n    fn get(&mut self, key: i32) -> i32 {\n\n    }\n\n    fn put(&mut self, key: i32, value: i32) {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\",\"get\",\"get\"],[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]",
+        "output": "[null,null,null,1,null,-1,null,-1,3,4]",
+        "explanation": "When capacity is exceeded, the least recently used key is evicted."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\",\"get\",\"get\"],[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]",
+        "expected_output": "[null,null,null,1,null,-1,null,-1,3,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"get\"],[[1],[1,100],[1]]",
+        "expected_output": "[null,null,100]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"get\"],[[2],[1,10],[2,20],[1],[2]]",
+        "expected_output": "[null,null,null,10,20]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"put\",\"get\"],[[1],[1,1],[2,2],[3,3],[1]]",
+        "expected_output": "[null,null,null,null,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"get\",\"put\",\"get\"],[[1],[5,50],[5],[5,100],[5]]",
+        "expected_output": "[null,null,50,null,100]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"put\",\"get\",\"get\"],[[2],[1,1],[2,2],[3,3],[2],[3]]",
+        "expected_output": "[null,null,null,null,2,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"get\"],[[2],[1,1],[2,2],[1],[3,3],[2],[3]]",
+        "expected_output": "[null,null,null,1,null,-1,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"put\",\"put\",\"get\"],[[3],[1,1],[2,2],[3,3],[4,4],[1]]",
+        "expected_output": "[null,null,null,null,null,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\"],[[2],[2,1],[1,1],[2],[4,1],[1],[2,3],[4]]",
+        "expected_output": "[null,null,null,1,null,-1,null,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"put\",\"get\",\"put\",\"get\",\"get\"],[[2],[1,10],[2,20],[3,30],[2],[4,40],[1],[4]]",
+        "expected_output": "[null,null,null,null,20,null,-1,40]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"get\",\"get\",\"get\"],[[1],[99,999],[99],[99],[99]]",
+        "expected_output": "[null,null,999,999,999]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\",\"get\"],[[2],[1,5],[2,6],[1],[3,7],[2],[4,8],[3],[4]]",
+        "expected_output": "[null,null,null,5,null,-1,null,7,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"put\",\"get\",\"put\",\"get\",\"get\",\"get\"],[[3],[1,10],[2,20],[3,30],[1],[4,40],[2],[3],[4]]",
+        "expected_output": "[null,null,null,null,10,null,-1,30,40]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"put\",\"put\",\"get\",\"get\"],[[3],[10,100],[20,200],[30,300],[40,400],[10],[40]]",
+        "expected_output": "[null,null,null,null,null,-1,400]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"put\",\"get\",\"get\"],[[2],[1,100],[2,200],[1],[3,300],[4,400],[3],[4]]",
+        "expected_output": "[null,null,null,100,null,null,300,400]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Finding the least recently used item by scanning all entries is too slow.",
+      "You need O(1) access by key and O(1) updates to usage order.",
+      "A HashMap can provide O(1) lookup.",
+      "A Doubly Linked List can maintain the usage order efficiently."
+    ],
+    "explanation": "Use a HashMap to map keys to nodes in a Doubly Linked List. The linked list maintains the usage order, with the most recently used item near the front and the least recently used item near the back. Whenever an item is accessed or updated, move it to the front. When the cache exceeds its capacity, remove the node at the back of the list and delete its entry from the HashMap. This combination ensures both get() and put() operations run in O(1) average time."
+  }
+]

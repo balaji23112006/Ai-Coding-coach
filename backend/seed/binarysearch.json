@@ -1,0 +1,1211 @@
+[
+  {
+    "slug": "binary-search",
+    "title": "Binary Search",
+    "difficulty": "Easy",
+    "description": "Given a sorted array of integers nums sorted in ascending order and an integer target, return the index of target if it exists in the array. Otherwise, return -1. Your solution must run in O(log n) time complexity.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "nums is sorted in strictly increasing order",
+      "-1000000000 <= target <= 1000000000"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function search(nums, target) {\n\n}",
+      "typescript": "function search(nums: number[], target: number): number {\n\n}",
+      "python": "def search(nums, target):\n    pass",
+      "java": "public class Solution {\n    public static int search(int[] nums, int target) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};",
+      "go": "func search(nums []int, target int) int {\n\n}",
+      "rust": "fn search(nums: Vec<i32>, target: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[-1,0,3,5,9,12],9",
+        "output": "4",
+        "explanation": "The target value 9 exists at index 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[-1,0,3,5,9,12],9",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1,0,3,5,9,12],2",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3,5,7,9],7",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[-10,-5,0,5,10],-10",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[-10,-5,0,5,10],10",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[100],50",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-100,-50,-25,-10,-5],-25",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10],1",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10],10",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10],11",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,0,1000000000],1000000000",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,0,1000000000],-1000000000",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,4,6,8,10,12,14,16],13",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,15,25,35,45,55,65,75,85,95],65",
+        "expected_output": "6",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The array is already sorted.",
+      "Checking every element results in O(n) complexity.",
+      "Compare the target with the middle element.",
+      "Discard half of the search space after each comparison."
+    ],
+    "explanation": "Binary Search works on sorted arrays by repeatedly dividing the search space into two halves. Compare the target with the middle element. If they are equal, return the index. If the target is smaller, continue searching in the left half; otherwise, search in the right half. Repeat until the target is found or the search space becomes empty. This approach runs in O(log n) time."
+  },
+  {
+    "slug": "search-insert-position",
+    "title": "Search Insert Position",
+    "difficulty": "Easy",
+    "description": "Given a sorted array of distinct integers nums and a target value, return the index if the target is found. If not, return the index where it would be inserted to maintain the sorted order. Your solution must run in O(log n) time.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "nums is sorted in strictly increasing order",
+      "-1000000000 <= target <= 1000000000"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function searchInsert(nums, target) {\n\n}",
+      "typescript": "function searchInsert(nums: number[], target: number): number {\n\n}",
+      "python": "def searchInsert(nums, target):\n    pass",
+      "java": "public class Solution {\n    public static int searchInsert(int[] nums, int target) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int searchInsert(vector<int>& nums, int target) {\n        \n    }\n};",
+      "go": "func searchInsert(nums []int, target int) int {\n\n}",
+      "rust": "fn search_insert(nums: Vec<i32>, target: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,3,5,6],5",
+        "output": "2",
+        "explanation": "The target 5 already exists at index 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,3,5,6],5",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3,5,6],2",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3,5,6],7",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3,5,6],0",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],0",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1],2",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,0,5,10],-7",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,0,5,10],3",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,0,5,10],15",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50],35",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50],5",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50],60",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,0,1000000000],500000000",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,4,6,8,10,12,14,16],9",
+        "expected_output": "4",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The array is already sorted.",
+      "You do not need to scan the entire array.",
+      "Think about finding the first position where target could be placed.",
+      "Binary Search can identify this position in O(log n) time."
+    ],
+    "explanation": "Use Binary Search to locate the target. If the target exists, return its index. Otherwise, continue narrowing the search space until the insertion position is determined. At the end of the search, the left boundary represents the correct position where the target should be inserted while maintaining sorted order."
+  },
+  {
+    "slug": "find-first-and-last-position-of-element",
+    "title": "Find First and Last Position of Element",
+    "difficulty": "Medium",
+    "description": "Given a sorted array of integers nums sorted in non-decreasing order and a target value, find the starting and ending position of the target value. If the target is not found in the array, return [-1, -1]. Your solution must run in O(log n) time.",
+    "constraints": [
+      "0 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "nums is sorted in non-decreasing order",
+      "-1000000000 <= target <= 1000000000"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function searchRange(nums, target) {\n\n}",
+      "typescript": "function searchRange(nums: number[], target: number): number[] {\n\n}",
+      "python": "def searchRange(nums, target):\n    pass",
+      "java": "public class Solution {\n    public static int[] searchRange(int[] nums, int target) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> searchRange(vector<int>& nums, int target) {\n        \n    }\n};",
+      "go": "func searchRange(nums []int, target int) []int {\n\n}",
+      "rust": "fn search_range(nums: Vec<i32>, target: i32) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[5,7,7,8,8,10],8",
+        "output": "[3,4]",
+        "explanation": "The value 8 appears from index 3 through index 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[5,7,7,8,8,10],8",
+        "expected_output": "[3,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,7,7,8,8,10],6",
+        "expected_output": "[-1,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[],0",
+        "expected_output": "[-1,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "[0,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,2,2,2,2],2",
+        "expected_output": "[0,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],3",
+        "expected_output": "[2,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,2,2,2,3,3],2",
+        "expected_output": "[2,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,1],2",
+        "expected_output": "[-1,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,20,20,30,40],20",
+        "expected_output": "[1,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,20,20,30,40],40",
+        "expected_output": "[5,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,20,20,30,40],10",
+        "expected_output": "[0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5,-5,-5,-3,-1],-5",
+        "expected_output": "[0,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-8,-8,-8,-2,0,5],-8",
+        "expected_output": "[1,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000,1000000000],1000000000",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,3,3,3,4,5,6],3",
+        "expected_output": "[2,5]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Finding any occurrence of the target is not enough.",
+      "You need to locate both the leftmost and rightmost occurrences.",
+      "Try performing binary search twice.",
+      "One search finds the first occurrence, and another finds the last occurrence."
+    ],
+    "explanation": "Use two separate binary searches. The first binary search finds the leftmost occurrence of the target by continuing to search toward the left even after finding the target. The second binary search finds the rightmost occurrence by continuing toward the right. If the target does not exist, return [-1, -1]. This approach maintains O(log n) time complexity."
+  },
+  {
+    "slug": "find-peak-element",
+    "title": "Find Peak Element",
+    "difficulty": "Medium",
+    "description": "A peak element is an element that is strictly greater than its adjacent neighbors. Given an integer array nums, find the index of any peak element and return it. You may assume nums[-1] = nums[n] = -∞. Your solution must run in O(log n) time.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "nums[i] != nums[i + 1] for all valid i"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findPeakElement(nums) {\n\n}",
+      "typescript": "function findPeakElement(nums: number[]): number {\n\n}",
+      "python": "def findPeakElement(nums):\n    pass",
+      "java": "public class Solution {\n    public static int findPeakElement(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findPeakElement(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func findPeakElement(nums []int) int {\n\n}",
+      "rust": "fn find_peak_element(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,1]",
+        "output": "2",
+        "explanation": "nums[2] = 3 is greater than both neighboring elements, making it a peak."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,1]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,1,3,5,6,4]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,1]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3,2]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,4,2,5,3]",
+        "expected_output": "1|3",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,15,2,23,90,67]",
+        "expected_output": "1|5",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,-20]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,6,4,2]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,10,9,11,7,12,6]",
+        "expected_output": "1|3|5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,5,2,6,3,7,4]",
+        "expected_output": "1|3|5",
+        "is_hidden": true
+      }
+    ],
+    "special_judge": {
+      "enabled": true,
+      "note": "For arrays containing multiple valid peak elements, any valid peak index should be accepted."
+    },
+    "hints": [
+      "A peak is greater than its immediate neighbors.",
+      "You do not need to find the highest element in the array.",
+      "Compare the middle element with its right neighbor.",
+      "If nums[mid] < nums[mid + 1], a peak must exist on the right side."
+    ],
+    "explanation": "Use Binary Search on the array. At each step, compare nums[mid] with nums[mid + 1]. If nums[mid] is smaller, then a peak must exist somewhere on the right side because the sequence is increasing. Otherwise, a peak must exist on the left side (including mid). Repeatedly shrink the search space until a single index remains. That index will be a valid peak element. This approach runs in O(log n) time."
+  },
+  {
+    "slug": "search-in-rotated-sorted-array",
+    "title": "Search in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "description": "There is an integer array nums sorted in ascending order with distinct values. Before being passed to your function, nums is rotated at an unknown pivot index. Given the rotated array nums and an integer target, return the index of target if it exists in the array. Otherwise, return -1. Your solution must run in O(log n) time.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "All values in nums are unique",
+      "nums is originally sorted in ascending order and then rotated",
+      "-1000000000 <= target <= 1000000000"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function search(nums, target) {\n\n}",
+      "typescript": "function search(nums: number[], target: number): number {\n\n}",
+      "python": "def search(nums, target):\n    pass",
+      "java": "public class Solution {\n    public static int search(int[] nums, int target) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};",
+      "go": "func search(nums []int, target int) int {\n\n}",
+      "rust": "fn search(nums: Vec<i32>, target: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[4,5,6,7,0,1,2],0",
+        "output": "4",
+        "explanation": "The target value 0 exists at index 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[4,5,6,7,0,1,2],0",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,5,6,7,0,1,2],3",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],0",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,1,3],5",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,1,3],3",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[6,7,8,1,2,3,4,5],2",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[6,7,8,1,2,3,4,5],7",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[30,40,50,10,20],10",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[30,40,50,10,20],35",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7],6",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7],8",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,9,10,11,12,1,2,3,4,5,6,7],3",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,9,10,11,12,1,2,3,4,5,6,7],12",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,0,1,2,-4,-3,-2],-3",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000,-1000000000],-1000000000",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[15,18,2,3,6,12],12",
+        "expected_output": "5",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Even after rotation, one half of the array remains sorted.",
+      "Use binary search to determine which half is sorted.",
+      "Check whether the target lies inside the sorted half.",
+      "Discard the half that cannot contain the target."
+    ],
+    "explanation": "At each step of Binary Search, one side of the array is guaranteed to be sorted. Compare nums[left], nums[mid], and nums[right] to determine which half is sorted. If the target lies within the sorted half, continue searching there; otherwise search the other half. By eliminating half of the search space on every iteration, the solution achieves O(log n) time complexity."
+  },
+  {
+    "slug": "single-element-in-sorted-array",
+    "title": "Single Element in Sorted Array",
+    "difficulty": "Medium",
+    "description": "You are given a sorted array consisting of only integers where every element appears exactly twice except for one element which appears exactly once. Return the single element that appears only once. Your solution must run in O(log n) time and O(1) space.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "nums.length is odd",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "nums is sorted in non-decreasing order",
+      "Exactly one element appears once",
+      "All other elements appear exactly twice"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function singleNonDuplicate(nums) {\n\n}",
+      "typescript": "function singleNonDuplicate(nums: number[]): number {\n\n}",
+      "python": "def singleNonDuplicate(nums):\n    pass",
+      "java": "public class Solution {\n    public static int singleNonDuplicate(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int singleNonDuplicate(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func singleNonDuplicate(nums []int) int {\n\n}",
+      "rust": "fn single_non_duplicate(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,1,2,3,3,4,4,8,8]",
+        "output": "2",
+        "explanation": "All elements appear twice except 2, which appears exactly once."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,1,2,3,3,4,4,8,8]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,3,7,7,10,11,11]",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,1,2]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,2]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,1,1,2,3,3,4,4]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,5,6,7,7,8,8]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,2,2,3,3,4]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,10,10,11,11,12,12]",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5,-5,-3,-3,-1,0,0]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-10,-5,-5,0,1,1]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,100,200,300,300,400,400]",
+        "expected_output": "200",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,-1000000000,0,1,1]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,2,2,3,4,4,5,5]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,4,4,6,6,8,8,10]",
+        "expected_output": "10",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A linear scan works, but does not satisfy the O(log n) requirement.",
+      "Observe how pairs are positioned before and after the unique element.",
+      "Before the single element, pairs start at even indices.",
+      "After the single element, this pattern breaks."
+    ],
+    "explanation": "In a perfectly paired sorted array, the first occurrence of each pair appears at an even index and the second occurrence appears at the next odd index. Once the single element appears, this pattern shifts. Use Binary Search to identify where the pattern breaks. Compare the middle element with its neighboring pair and decide which half still contains the single element. This allows finding the answer in O(log n) time and O(1) space."
+  },
+  {
+    "slug": "koko-eating-bananas",
+    "title": "Koko Eating Bananas",
+    "difficulty": "Medium",
+    "description": "Koko loves to eat bananas. There are n piles of bananas, where the i-th pile contains piles[i] bananas. The guards will return in h hours. Koko can decide her eating speed k (bananas per hour). Each hour, she chooses one pile and eats up to k bananas from it. If the pile has fewer than k bananas, she eats all bananas in that pile and spends the rest of the hour doing nothing. Return the minimum integer k such that Koko can eat all the bananas within h hours.",
+    "constraints": [
+      "1 <= piles.length <= 100000",
+      "1 <= piles[i] <= 1000000000",
+      "piles.length <= h <= 1000000000"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function minEatingSpeed(piles, h) {\n\n}",
+      "typescript": "function minEatingSpeed(piles: number[], h: number): number {\n\n}",
+      "python": "def minEatingSpeed(piles, h):\n    pass",
+      "java": "public class Solution {\n    public static int minEatingSpeed(int[] piles, int h) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int minEatingSpeed(vector<int>& piles, int h) {\n        \n    }\n};",
+      "go": "func minEatingSpeed(piles []int, h int) int {\n\n}",
+      "rust": "fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,6,7,11],8",
+        "output": "4",
+        "explanation": "At speed 4, Koko spends 1 + 2 + 2 + 3 = 8 hours, which is the minimum possible speed."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,6,7,11],8",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[30,11,23,4,20],5",
+        "expected_output": "30",
+        "is_hidden": false
+      },
+      {
+        "input": "[30,11,23,4,20],6",
+        "expected_output": "23",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[10],5",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,1,1,1],4",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000],1",
+        "expected_output": "1000000000",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000],1000000000",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,5,5,5],8",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,8,8,8],4",
+        "expected_output": "8",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,8,8,8],16",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,2,2,2],5",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,2,2,2],10",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,7,5,3],8",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[312884470],312884469",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400],10",
+        "expected_output": "100",
+        "is_hidden": true
+      },
+      {
+        "input": "[25,10,23,4],7",
+        "expected_output": "10",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Instead of searching for the answer directly, search for the eating speed.",
+      "If Koko can finish all bananas at speed k, she can also finish at any speed greater than k.",
+      "This monotonic property makes Binary Search applicable.",
+      "For a given speed k, calculate the total hours needed using ceiling division."
+    ],
+    "explanation": "The answer lies between 1 and the largest pile size. For a candidate speed k, compute the total hours required to finish all piles using ceil(pile / k). If the total hours are less than or equal to h, then k is a valid speed and we try to find a smaller one. Otherwise, we need a larger speed. Use Binary Search on the answer space to find the minimum valid speed in O(n log M), where M is the maximum pile size."
+  },
+  {
+    "slug": "capacity-to-ship-packages-within-d-days",
+    "title": "Capacity To Ship Packages Within D Days",
+    "difficulty": "Medium",
+    "description": "A conveyor belt has packages that must be shipped from one port to another within days days. The i-th package has weight weights[i]. Packages must be shipped in the given order and cannot be split. Each day, the ship loads packages until adding another package would exceed its capacity. Return the least ship capacity required to ship all packages within the given number of days.",
+    "constraints": [
+      "1 <= weights.length <= 100000",
+      "1 <= weights[i] <= 100000",
+      "1 <= days <= weights.length"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function shipWithinDays(weights, days) {\n\n}",
+      "typescript": "function shipWithinDays(weights: number[], days: number): number {\n\n}",
+      "python": "def shipWithinDays(weights, days):\n    pass",
+      "java": "public class Solution {\n    public static int shipWithinDays(int[] weights, int days) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int shipWithinDays(vector<int>& weights, int days) {\n        \n    }\n};",
+      "go": "func shipWithinDays(weights []int, days int) int {\n\n}",
+      "rust": "fn ship_within_days(weights: Vec<i32>, days: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10],5",
+        "output": "15",
+        "explanation": "A ship capacity of 15 allows all packages to be delivered within 5 days while preserving order."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10],5",
+        "expected_output": "15",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,2,2,4,1,4],3",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,1,1],4",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[10],1",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,5,5,5],2",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,1,1,1,1],5",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,1],1",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400,500],5",
+        "expected_output": "500",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400,500],1",
+        "expected_output": "1500",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,2,5,10,8],2",
+        "expected_output": "18",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,2,5,10,8],5",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5,4,3,2,1],3",
+        "expected_output": "17",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,50,50,50,50],3",
+        "expected_output": "100",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,100000,100000,100000],2",
+        "expected_output": "200000",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,100000,100000,100000],4",
+        "expected_output": "100000",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1],2",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50],4",
+        "expected_output": "50",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The answer cannot be smaller than the heaviest package.",
+      "The answer cannot be larger than the sum of all package weights.",
+      "If a ship capacity works, then any larger capacity will also work.",
+      "Use Binary Search on the answer space and simulate shipping for each candidate capacity."
+    ],
+    "explanation": "The minimum valid capacity lies between max(weights) and sum(weights). For a candidate capacity, simulate loading packages in order and count how many days are required. If the packages can be shipped within the given number of days, try a smaller capacity. Otherwise, increase the capacity. Since the feasibility condition is monotonic, Binary Search can efficiently find the minimum valid capacity."
+  },
+  {
+    "slug": "median-of-two-sorted-arrays",
+    "title": "Median of Two Sorted Arrays",
+    "difficulty": "Hard",
+    "description": "Given two sorted arrays nums1 and nums2 of sizes m and n respectively, return the median of the two sorted arrays. The overall run time complexity must be O(log(min(m, n))).",
+    "constraints": [
+      "0 <= m <= 100000",
+      "0 <= n <= 100000",
+      "1 <= m + n <= 100000",
+      "-1000000 <= nums1[i], nums2[i] <= 1000000",
+      "nums1 and nums2 are sorted in non-decreasing order"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findMedianSortedArrays(nums1, nums2) {\n\n}",
+      "typescript": "function findMedianSortedArrays(nums1: number[], nums2: number[]): number {\n\n}",
+      "python": "def findMedianSortedArrays(nums1, nums2):\n    pass",
+      "java": "public class Solution {\n    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {\n        \n    }\n};",
+      "go": "func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {\n\n}",
+      "rust": "fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,3],[2]",
+        "output": "2.0",
+        "explanation": "The merged sorted array would be [1,2,3]. The median is 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,3],[2]",
+        "expected_output": "2.0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],[3,4]",
+        "expected_output": "2.5",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0],[0,0]",
+        "expected_output": "0.0",
+        "is_hidden": false
+      },
+      {
+        "input": "[],[1]",
+        "expected_output": "1.0",
+        "is_hidden": false
+      },
+      {
+        "input": "[2],[]",
+        "expected_output": "2.0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],[2]",
+        "expected_output": "1.5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3],[4,5,6]",
+        "expected_output": "3.5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3],[4,5]",
+        "expected_output": "3.0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5,-3,-1],[0,2,4]",
+        "expected_output": "-0.5",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5],[0,5,10]",
+        "expected_output": "0.0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000],[1000000]",
+        "expected_output": "1000000.0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1],[1,1]",
+        "expected_output": "1.0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8],[9]",
+        "expected_output": "5.0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1],[2,3,4,5,6,7,8,9]",
+        "expected_output": "5.0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000],[-999999]",
+        "expected_output": "-999999.5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,9],[2,4,6,8,10]",
+        "expected_output": "5.5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4],[5,6,7,8,9,10]",
+        "expected_output": "5.5",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Merging both arrays works, but does not satisfy the required complexity.",
+      "Think about partitioning the two arrays into left and right halves.",
+      "The median is correct when every element on the left side is less than or equal to every element on the right side.",
+      "Perform Binary Search on the smaller array to find the correct partition."
+    ],
+    "explanation": "Use Binary Search on the smaller array to determine a partition point. The partition divides both arrays into left and right halves such that the total number of elements on the left equals the total number on the right (or differs by one for odd lengths). The correct partition is reached when the largest element on the left side is less than or equal to the smallest element on the right side. Once found, compute the median based on whether the total number of elements is odd or even. This achieves O(log(min(m, n))) time complexity."
+  },
+  {
+    "slug": "split-array-largest-sum",
+    "title": "Split Array Largest Sum",
+    "difficulty": "Hard",
+    "description": "Given an integer array nums and an integer k, split nums into exactly k non-empty contiguous subarrays. Minimize the largest sum among these subarrays and return that minimum possible largest sum.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "1 <= nums[i] <= 100000",
+      "1 <= k <= min(50, nums.length)"
+    ],
+    "topics": ["Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function splitArray(nums, k) {\n\n}",
+      "typescript": "function splitArray(nums: number[], k: number): number {\n\n}",
+      "python": "def splitArray(nums, k):\n    pass",
+      "java": "public class Solution {\n    public static int splitArray(int[] nums, int k) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int splitArray(vector<int>& nums, int k) {\n        \n    }\n};",
+      "go": "func splitArray(nums []int, k int) int {\n\n}",
+      "rust": "fn split_array(nums: Vec<i32>, k: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[7,2,5,10,8],2",
+        "output": "18",
+        "explanation": "Split into [7,2,5] and [10,8]. The largest subarray sum is 18, which is the minimum possible."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[7,2,5,10,8],2",
+        "expected_output": "18",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],2",
+        "expected_output": "9",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,4,4],3",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[10],1",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,5,5,5],2",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],1",
+        "expected_output": "15",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],5",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,2,2,2],2",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400,500],2",
+        "expected_output": "900",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400,500],3",
+        "expected_output": "600",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,1,1,1,1,1,1],3",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5,4,3,2,1],3",
+        "expected_output": "17",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,100,1,100,1,100],3",
+        "expected_output": "101",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,100000,100000,100000],2",
+        "expected_output": "200000",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,100000,100000,100000],4",
+        "expected_output": "100000",
+        "is_hidden": true
+      },
+      {
+        "input": "[3,1,4,1,5,9,2,6],4",
+        "expected_output": "11",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,7,6,5,4,3,2,1],4",
+        "expected_output": "11",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,50,50,50,50,50],3",
+        "expected_output": "100",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The answer is not a position in the array; it is a possible maximum subarray sum.",
+      "The minimum answer cannot be smaller than the largest element.",
+      "The maximum answer cannot exceed the sum of the entire array.",
+      "Use Binary Search on the answer space and check whether a candidate maximum sum allows splitting into at most k subarrays."
+    ],
+    "explanation": "The answer lies between max(nums) and sum(nums). For a candidate value mid, greedily form subarrays while ensuring each subarray sum does not exceed mid. Count how many subarrays are needed. If more than k subarrays are required, mid is too small and must be increased. Otherwise, mid is a valid answer and we try to find a smaller one. This monotonic property allows Binary Search on the answer space, yielding an efficient O(n log(sum(nums))) solution."
+  }
+]

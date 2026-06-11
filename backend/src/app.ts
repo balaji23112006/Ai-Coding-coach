@@ -6,6 +6,7 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth.js';
 import authRoutes from './features/authentication/routes/auth.routes.js';
 import submissionRoutes from './features/submissions/routes/submission.routes.js';
+import problemRoutes from './features/problems/routes/problem.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
@@ -73,6 +74,9 @@ app.use('/api/auth', authRoutes);
 
 // Mount submission & code execution routes
 app.use('/api', submissionRoutes);
+
+// Mount problem & question bank routes
+app.use('/api', problemRoutes);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

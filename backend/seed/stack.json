@@ -1,0 +1,1162 @@
+[
+  {
+    "slug": "valid-parentheses",
+    "title": "Valid Parentheses",
+    "difficulty": "Easy",
+    "description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if every opening bracket has a corresponding closing bracket of the same type and the brackets are closed in the correct order.",
+    "constraints": [
+      "1 <= s.length <= 100000",
+      "s consists only of '(', ')', '{', '}', '[' and ']'"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isValid(s) {\n\n}",
+      "typescript": "function isValid(s: string): boolean {\n\n}",
+      "python": "def isValid(s):\n    pass",
+      "java": "public class Solution {\n    public static boolean isValid(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isValid(string s) {\n        \n    }\n};",
+      "go": "func isValid(s string) bool {\n\n}",
+      "rust": "fn is_valid(s: String) -> bool {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"()[]{}\"",
+        "output": "true",
+        "explanation": "Every opening bracket is matched by a closing bracket of the same type in the correct order."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"()\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"()[]{}\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"(]\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"([{}])\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"([)]\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"(\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\")\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"{{{{}}}}\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"{{{{}}}\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"[]{}()\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"[(])\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"[({})]\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"(((((((((())))))))))\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"(((((((((()))))))))))\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"{}{}{}{}[][]()()\"",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Opening brackets should be stored until their matching closing bracket appears.",
+      "The most recently opened bracket must be closed first.",
+      "A stack naturally follows this Last-In-First-Out behavior.",
+      "At the end, the stack should be empty for a valid string."
+    ],
+    "explanation": "Use a stack to keep track of opening brackets. When an opening bracket is encountered, push it onto the stack. When a closing bracket is encountered, check whether it matches the most recent opening bracket on the stack. If it does not match or the stack is empty, the string is invalid. After processing all characters, the string is valid only if the stack is empty."
+  },
+  {
+    "slug": "remove-adjacent-duplicates",
+    "title": "Remove Adjacent Duplicates",
+    "difficulty": "Easy",
+    "description": "Given a string s consisting of lowercase English letters, repeatedly remove adjacent duplicate characters until no such duplicates remain. Return the final string after all possible removals have been performed.",
+    "constraints": ["1 <= s.length <= 100000", "s consists of lowercase English letters"],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function removeDuplicates(s) {\n\n}",
+      "typescript": "function removeDuplicates(s: string): string {\n\n}",
+      "python": "def removeDuplicates(s):\n    pass",
+      "java": "public class Solution {\n    public static String removeDuplicates(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    string removeDuplicates(string s) {\n        \n    }\n};",
+      "go": "func removeDuplicates(s string) string {\n\n}",
+      "rust": "fn remove_duplicates(s: String) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"abbaca\"",
+        "output": "\"ca\"",
+        "explanation": "Remove 'bb' to get 'aaca', then remove 'aa' to get 'ca'."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"abbaca\"",
+        "expected_output": "\"ca\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"azxxzy\"",
+        "expected_output": "\"ay\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aabb\"",
+        "expected_output": "\"\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abc\"",
+        "expected_output": "\"abc\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aaaa\"",
+        "expected_output": "\"\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\"",
+        "expected_output": "\"a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aa\"",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abba\"",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abccba\"",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"mississippi\"",
+        "expected_output": "\"m\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaaaaaaa\"",
+        "expected_output": "\"\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdedcba\"",
+        "expected_output": "\"abcdedcba\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abbccddeeffgghh\"",
+        "expected_output": "\"a\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"zyyxwwx\"",
+        "expected_output": "\"x\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"qqqrrrsssttt\"",
+        "expected_output": "\"qrst\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "When two adjacent characters are equal, they cancel each other out.",
+      "The most recently processed character is the only one that can form a new duplicate.",
+      "A stack naturally keeps track of the most recent character.",
+      "Push characters when they don't match the top of the stack, otherwise remove the top."
+    ],
+    "explanation": "Use a stack to process the string from left to right. For each character, compare it with the character at the top of the stack. If they are the same, remove the top element from the stack; otherwise, push the current character. After processing the entire string, the remaining characters in the stack form the final string after all adjacent duplicate removals."
+  },
+  {
+    "slug": "next-greater-element-i",
+    "title": "Next Greater Element I",
+    "difficulty": "Medium",
+    "description": "You are given two integer arrays nums1 and nums2 where nums1 is a subset of nums2. For each element in nums1, find the first greater element to its right in nums2. If no greater element exists, return -1 for that element.",
+    "constraints": [
+      "1 <= nums1.length <= nums2.length <= 100000",
+      "-100000 <= nums1[i], nums2[i] <= 100000",
+      "All elements in nums1 and nums2 are unique"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function nextGreaterElement(nums1, nums2) {\n\n}",
+      "typescript": "function nextGreaterElement(nums1: number[], nums2: number[]): number[] {\n\n}",
+      "python": "def nextGreaterElement(nums1, nums2):\n    pass",
+      "java": "public class Solution {\n    public static int[] nextGreaterElement(int[] nums1, int[] nums2) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <stack>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {\n        \n    }\n};",
+      "go": "func nextGreaterElement(nums1 []int, nums2 []int) []int {\n\n}",
+      "rust": "fn next_greater_element(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[4,1,2],[1,3,4,2]",
+        "output": "[-1,3,-1]",
+        "explanation": "For 4 there is no greater element. For 1 the next greater element is 3. For 2 there is no greater element."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[4,1,2],[1,3,4,2]",
+        "expected_output": "[-1,3,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,4],[1,2,3,4]",
+        "expected_output": "[3,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,3],[1,2,3,4]",
+        "expected_output": "[2,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5],[1,2,3,4,5]",
+        "expected_output": "[-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],[1]",
+        "expected_output": "[-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,1],[3,2,1]",
+        "expected_output": "[-1,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,1],[2,3,1]",
+        "expected_output": "[3,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20],[5,10,15,20,25]",
+        "expected_output": "[15,25]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-2,-1],[-3,-2,-1]",
+        "expected_output": "[-1,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100],[100,200]",
+        "expected_output": "[200]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,5],[1,3,5,7,9]",
+        "expected_output": "[9,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,4,2],[2,4,6,8,10]",
+        "expected_output": "[10,6,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50],[10,20,30,40,50]",
+        "expected_output": "[-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,5,3],[1,2,3,4,5]",
+        "expected_output": "[2,-1,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[90,70],[50,60,70,80,90,100]",
+        "expected_output": "[100,80]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "For each element, finding the next greater element naively can take O(n²).",
+      "Think about processing elements from left to right using a stack.",
+      "A monotonic decreasing stack helps identify next greater elements efficiently.",
+      "Store the next greater element for each value in a map for quick lookup."
+    ],
+    "explanation": "Use a monotonic decreasing stack while traversing nums2. Whenever the current element is greater than the top of the stack, it becomes the next greater element for that stack element. Store these relationships in a HashMap. After processing nums2, use the map to answer queries for each element in nums1. This achieves O(n) time complexity."
+  },
+  {
+    "slug": "evaluate-reverse-polish-notation",
+    "title": "Evaluate Reverse Polish Notation",
+    "difficulty": "Medium",
+    "description": "You are given an array of strings tokens representing an arithmetic expression in Reverse Polish Notation (RPN). Evaluate the expression and return the result. Valid operators are '+', '-', '*', and '/'. Division between two integers should truncate toward zero.",
+    "constraints": [
+      "1 <= tokens.length <= 100000",
+      "tokens[i] is either an integer or one of '+', '-', '*', '/'",
+      "The expression is always valid",
+      "No division by zero will occur"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function evalRPN(tokens) {\n\n}",
+      "typescript": "function evalRPN(tokens: string[]): number {\n\n}",
+      "python": "def evalRPN(tokens):\n    pass",
+      "java": "public class Solution {\n    public static int evalRPN(String[] tokens) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    int evalRPN(vector<string>& tokens) {\n        \n    }\n};",
+      "go": "func evalRPN(tokens []string) int {\n\n}",
+      "rust": "fn eval_rpn(tokens: Vec<String>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"2\",\"1\",\"+\",\"3\",\"*\"]",
+        "output": "9",
+        "explanation": "((2 + 1) * 3) = 9"
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"2\",\"1\",\"+\",\"3\",\"*\"]",
+        "expected_output": "9",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"4\",\"13\",\"5\",\"/\",\"+\"]",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"10\",\"6\",\"9\",\"3\",\"+\",\"-11\",\"*\",\"/\",\"*\",\"17\",\"+\",\"5\",\"+\"]",
+        "expected_output": "22",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"3\",\"4\",\"+\"]",
+        "expected_output": "7",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"5\",\"1\",\"2\",\"+\",\"4\",\"*\",\"+\",\"3\",\"-\"]",
+        "expected_output": "14",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"7\"]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"5\",\"3\",\"-\"]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"3\",\"5\",\"-\"]",
+        "expected_output": "-2",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"6\",\"-132\",\"/\"]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"18\",\"4\",\"/\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"2\",\"3\",\"*\",\"4\",\"5\",\"*\",\"+\"]",
+        "expected_output": "26",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"100\",\"20\",\"/\",\"5\",\"*\"]",
+        "expected_output": "25",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"-10\",\"2\",\"/\"]",
+        "expected_output": "-5",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"15\",\"7\",\"1\",\"1\",\"+\",\"-\",\"/\",\"3\",\"*\",\"2\",\"1\",\"1\",\"+\",\"+\",\"-\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"9\",\"3\",\"/\",\"2\",\"*\"]",
+        "expected_output": "6",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Operands should be stored until an operator is encountered.",
+      "When an operator appears, it always uses the two most recent operands.",
+      "A stack naturally supports this behavior.",
+      "Be careful with the order of operands for subtraction and division."
+    ],
+    "explanation": "Traverse the tokens from left to right. If a token is a number, push it onto the stack. If it is an operator, pop the top two values from the stack, apply the operator, and push the result back onto the stack. At the end of the traversal, the stack will contain exactly one value, which is the result of the expression."
+  },
+  {
+    "slug": "daily-temperatures",
+    "title": "Daily Temperatures",
+    "difficulty": "Medium",
+    "description": "Given an array of integers temperatures representing the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the i-th day to get a warmer temperature. If there is no future day with a warmer temperature, answer[i] should be 0.",
+    "constraints": ["1 <= temperatures.length <= 100000", "-100 <= temperatures[i] <= 150"],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function dailyTemperatures(temperatures) {\n\n}",
+      "typescript": "function dailyTemperatures(temperatures: number[]): number[] {\n\n}",
+      "python": "def dailyTemperatures(temperatures):\n    pass",
+      "java": "public class Solution {\n    public static int[] dailyTemperatures(int[] temperatures) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> dailyTemperatures(vector<int>& temperatures) {\n        \n    }\n};",
+      "go": "func dailyTemperatures(temperatures []int) []int {\n\n}",
+      "rust": "fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[73,74,75,71,69,72,76,73]",
+        "output": "[1,1,4,2,1,1,0,0]",
+        "explanation": "For each day, find the next day with a higher temperature and calculate the number of days between them."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[73,74,75,71,69,72,76,73]",
+        "expected_output": "[1,1,4,2,1,1,0,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[30,40,50,60]",
+        "expected_output": "[1,1,1,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[30,60,90]",
+        "expected_output": "[1,1,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[90,80,70,60]",
+        "expected_output": "[0,0,0,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[50]",
+        "expected_output": "[0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[70,70,70,70]",
+        "expected_output": "[0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[70,71,70,71,70,72]",
+        "expected_output": "[1,4,1,2,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,99,98,97,101]",
+        "expected_output": "[4,3,2,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,0,5]",
+        "expected_output": "[1,1,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[80,81,82,83,84]",
+        "expected_output": "[1,1,1,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[84,83,82,81,80]",
+        "expected_output": "[0,0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[75,74,73,76]",
+        "expected_output": "[3,2,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[60,62,61,63,60,65]",
+        "expected_output": "[1,2,1,2,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,100,101,99,102]",
+        "expected_output": "[2,1,2,1,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[20,25,20,25,20,30]",
+        "expected_output": "[1,4,1,2,1,0]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Checking every future day for each temperature leads to O(n²) complexity.",
+      "You only need to remember temperatures that have not yet found a warmer day.",
+      "A monotonic decreasing stack can help process temperatures efficiently.",
+      "Store indices in the stack instead of temperatures."
+    ],
+    "explanation": "Use a monotonic decreasing stack that stores indices of temperatures. As you iterate through the array, whenever the current temperature is higher than the temperature at the index on top of the stack, you have found the next warmer day for that index. Pop the index and calculate the difference in days. Continue until the stack becomes empty or the current temperature is no longer warmer. Any indices remaining in the stack at the end have no future warmer day, so their answer remains 0."
+  },
+  {
+    "slug": "decode-string",
+    "title": "Decode String",
+    "difficulty": "Medium",
+    "description": "Given an encoded string, return its decoded version. The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is repeated exactly k times. You may assume that the input string is always valid, the brackets are well-formed, and k is a positive integer.",
+    "constraints": [
+      "1 <= s.length <= 100000",
+      "s consists of lowercase English letters, digits, and square brackets",
+      "1 <= k <= 1000",
+      "The input is always valid"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function decodeString(s) {\n\n}",
+      "typescript": "function decodeString(s: string): string {\n\n}",
+      "python": "def decodeString(s):\n    pass",
+      "java": "public class Solution {\n    public static String decodeString(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    string decodeString(string s) {\n        \n    }\n};",
+      "go": "func decodeString(s string) string {\n\n}",
+      "rust": "fn decode_string(s: String) -> String {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"3[a]2[bc]\"",
+        "output": "\"aaabcbc\"",
+        "explanation": "The substring 'a' is repeated 3 times and 'bc' is repeated 2 times."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"3[a]2[bc]\"",
+        "expected_output": "\"aaabcbc\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"3[a2[c]]\"",
+        "expected_output": "\"accaccacc\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"2[abc]3[cd]ef\"",
+        "expected_output": "\"abcabccdcdcdef\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"10[a]\"",
+        "expected_output": "\"aaaaaaaaaa\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"1[x]\"",
+        "expected_output": "\"x\"",
+        "is_hidden": false
+      },
+      {
+        "input": "\"2[3[a]b]\"",
+        "expected_output": "\"aaabaaab\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"4[z]\"",
+        "expected_output": "\"zzzz\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"2[a2[b2[c]]]\"",
+        "expected_output": "\"abccbccabccbcc\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"3[ab]\"",
+        "expected_output": "\"ababab\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"2[x3[y]]\"",
+        "expected_output": "\"xyyyxyyy\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"12[a]\"",
+        "expected_output": "\"aaaaaaaaaaaa\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"2[a]3[b]4[c]\"",
+        "expected_output": "\"aabbbcccc\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"3[a2[b]c]\"",
+        "expected_output": "\"abbcabbcabbc\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"2[abc3[d]]\"",
+        "expected_output": "\"abcdddabcddd\"",
+        "is_hidden": true
+      },
+      {
+        "input": "\"5[a2[b]]\"",
+        "expected_output": "\"abbabbabbabbabb\"",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Nested brackets suggest a Last-In-First-Out processing order.",
+      "Store previous strings and repetition counts when encountering '['.",
+      "When encountering ']', build the repeated substring and combine it with the previous string.",
+      "A stack can help manage nested structures efficiently."
+    ],
+    "explanation": "Use two stacks: one for repetition counts and another for previously built strings. As you traverse the input, build numbers for repetition counts and accumulate characters for the current substring. When '[' is encountered, push the current count and string onto their respective stacks and reset them. When ']' is encountered, pop the count and previous string, repeat the current substring accordingly, and append it to the previous string. Continue until the entire input has been processed."
+  },
+  {
+    "slug": "min-stack",
+    "title": "Min Stack",
+    "difficulty": "Medium",
+    "description": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. Implement the MinStack class with the following methods: push(val), pop(), top(), and getMin(). All operations must run in O(1) time.",
+    "constraints": [
+      "-100000 <= val <= 100000",
+      "At most 100000 operations will be performed",
+      "pop(), top(), and getMin() will only be called on non-empty stacks"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "class MinStack {\n    constructor() {\n\n    }\n\n    push(val) {\n\n    }\n\n    pop() {\n\n    }\n\n    top() {\n\n    }\n\n    getMin() {\n\n    }\n}",
+      "typescript": "class MinStack {\n    constructor() {\n\n    }\n\n    push(val: number): void {\n\n    }\n\n    pop(): void {\n\n    }\n\n    top(): number {\n\n    }\n\n    getMin(): number {\n\n    }\n}",
+      "python": "class MinStack:\n    def __init__(self):\n        pass\n\n    def push(self, val: int) -> None:\n        pass\n\n    def pop(self) -> None:\n        pass\n\n    def top(self) -> int:\n        pass\n\n    def getMin(self) -> int:\n        pass",
+      "java": "class MinStack {\n    public MinStack() {\n\n    }\n\n    public void push(int val) {\n\n    }\n\n    public void pop() {\n\n    }\n\n    public int top() {\n\n    }\n\n    public int getMin() {\n\n    }\n}",
+      "cpp": "#include <stack>\nusing namespace std;\n\nclass MinStack {\npublic:\n    MinStack() {\n\n    }\n\n    void push(int val) {\n\n    }\n\n    void pop() {\n\n    }\n\n    int top() {\n\n    }\n\n    int getMin() {\n\n    }\n};",
+      "go": "type MinStack struct {\n}\n\nfunc Constructor() MinStack {\n\n}\n\nfunc (this *MinStack) Push(val int) {\n\n}\n\nfunc (this *MinStack) Pop() {\n\n}\n\nfunc (this *MinStack) Top() int {\n\n}\n\nfunc (this *MinStack) GetMin() int {\n\n}",
+      "rust": "struct MinStack {\n}\n\nimpl MinStack {\n    fn new() -> Self {\n\n    }\n\n    fn push(&mut self, val: i32) {\n\n    }\n\n    fn pop(&mut self) {\n\n    }\n\n    fn top(&self) -> i32 {\n\n    }\n\n    fn get_min(&self) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"getMin\",\"pop\",\"top\",\"getMin\"],[[],[-2],[0],[-3],[],[],[],[]]",
+        "output": "[null,null,null,null,-3,null,0,-2]",
+        "explanation": "After pushing -2, 0, and -3, the minimum is -3. After popping -3, the minimum becomes -2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"getMin\",\"pop\",\"top\",\"getMin\"],[[],[-2],[0],[-3],[],[],[],[]]",
+        "expected_output": "[null,null,null,null,-3,null,0,-2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"getMin\",\"top\"],[[],[5],[],[]]",
+        "expected_output": "[null,null,5,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"getMin\",\"pop\",\"getMin\"],[[],[10],[20],[],[],[]]",
+        "expected_output": "[null,null,null,10,null,10]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"getMin\"],[[],[3],[2],[1],[]]",
+        "expected_output": "[null,null,null,null,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"pop\",\"top\"],[[],[7],[8],[],[]]",
+        "expected_output": "[null,null,null,null,7]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"push\",\"getMin\"],[[],[5],[4],[3],[2],[]]",
+        "expected_output": "[null,null,null,null,null,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"pop\",\"getMin\"],[[],[2],[1],[3],[],[]]",
+        "expected_output": "[null,null,null,null,null,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"pop\",\"pop\",\"getMin\"],[[],[-1],[-2],[-3],[],[],[]]",
+        "expected_output": "[null,null,null,null,null,null,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"getMin\",\"push\",\"getMin\"],[[],[100],[50],[],[-10],[]]",
+        "expected_output": "[null,null,null,50,null,-10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"top\",\"getMin\"],[[],[9],[8],[7],[],[]]",
+        "expected_output": "[null,null,null,null,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"pop\",\"top\"],[[],[1],[2],[3],[],[]]",
+        "expected_output": "[null,null,null,null,null,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"getMin\",\"pop\",\"getMin\"],[[],[-5],[0],[-10],[],[],[]]",
+        "expected_output": "[null,null,null,null,-10,null,-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"getMin\",\"push\",\"getMin\"],[[],[-100000],[],[100000],[]]",
+        "expected_output": "[null,null,-100000,null,-100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"push\",\"pop\",\"pop\",\"getMin\"],[[],[8],[6],[7],[5],[],[],[]]",
+        "expected_output": "[null,null,null,null,null,null,null,6]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"MinStack\",\"push\",\"push\",\"push\",\"getMin\",\"pop\",\"getMin\",\"pop\",\"getMin\"],[[],[3],[1],[2],[],[],[],[],[]]",
+        "expected_output": "[null,null,null,null,1,null,1,null,3]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A normal stack can return the top element in O(1), but not the minimum.",
+      "Think about storing extra information along with each element.",
+      "Maintain another stack that tracks minimum values.",
+      "Whenever a new minimum is pushed, record it."
+    ],
+    "explanation": "Maintain two stacks. The first stack stores all elements normally. The second stack stores the minimum value seen so far at each level. When pushing a new value, compare it with the current minimum and store the smaller value in the minimum stack. When popping, remove elements from both stacks. The top of the minimum stack always contains the current minimum element, allowing getMin() to run in O(1) time."
+  },
+  {
+    "slug": "asteroid-collision",
+    "title": "Asteroid Collision",
+    "difficulty": "Medium",
+    "description": "We are given an array asteroids of integers representing asteroids in a row. The absolute value represents the size of the asteroid, and the sign represents its direction (positive means moving right, negative means moving left). Each asteroid moves at the same speed. When two asteroids collide, the smaller one explodes. If both are the same size, both explode. Return the state of the asteroids after all collisions.",
+    "constraints": [
+      "1 <= asteroids.length <= 100000",
+      "-1000 <= asteroids[i] <= 1000",
+      "asteroids[i] != 0"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function asteroidCollision(asteroids) {\n\n}",
+      "typescript": "function asteroidCollision(asteroids: number[]): number[] {\n\n}",
+      "python": "def asteroidCollision(asteroids):\n    pass",
+      "java": "public class Solution {\n    public static int[] asteroidCollision(int[] asteroids) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> asteroidCollision(vector<int>& asteroids) {\n        \n    }\n};",
+      "go": "func asteroidCollision(asteroids []int) []int {\n\n}",
+      "rust": "fn asteroid_collision(asteroids: Vec<i32>) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[5,10,-5]",
+        "output": "[5,10]",
+        "explanation": "The asteroid -5 collides with 10 and explodes because it is smaller."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[5,10,-5]",
+        "expected_output": "[5,10]",
+        "is_hidden": false
+      },
+      {
+        "input": "[8,-8]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,2,-5]",
+        "expected_output": "[10]",
+        "is_hidden": false
+      },
+      {
+        "input": "[-2,-1,1,2]",
+        "expected_output": "[-2,-1,1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,-2]",
+        "expected_output": "[-2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,-1]",
+        "expected_output": "[2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,-1]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "[3,5,-2]",
+        "expected_output": "[3,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[3,5,-5]",
+        "expected_output": "[3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[3,5,-10]",
+        "expected_output": "[-10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,-10]",
+        "expected_output": "[-10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,-2,-3,-4]",
+        "expected_output": "[10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,3,2,1,-5]",
+        "expected_output": "[-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000,-999]",
+        "expected_output": "[1000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,-2,-1]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,8,-8,-5]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,-1,-2,-3]",
+        "expected_output": "[]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A collision can only occur when a right-moving asteroid meets a left-moving asteroid.",
+      "Previously processed asteroids may still participate in future collisions.",
+      "A stack can help keep track of surviving asteroids.",
+      "When a collision occurs, compare asteroid sizes and continue checking if necessary."
+    ],
+    "explanation": "Use a stack to store surviving asteroids. For each asteroid, if it is moving right, push it onto the stack. If it is moving left, repeatedly compare it with right-moving asteroids at the top of the stack. The smaller asteroid explodes. If both have the same size, both explode. Continue until no collision is possible. The remaining asteroids in the stack form the final state after all collisions."
+  },
+  {
+    "slug": "largest-rectangle-in-histogram",
+    "title": "Largest Rectangle in Histogram",
+    "difficulty": "Hard",
+    "description": "Given an array of integers heights representing the heights of histogram bars where the width of each bar is 1, return the area of the largest rectangle that can be formed within the histogram.",
+    "constraints": ["1 <= heights.length <= 100000", "0 <= heights[i] <= 100000"],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function largestRectangleArea(heights) {\n\n}",
+      "typescript": "function largestRectangleArea(heights: number[]): number {\n\n}",
+      "python": "def largestRectangleArea(heights):\n    pass",
+      "java": "public class Solution {\n    public static int largestRectangleArea(int[] heights) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    int largestRectangleArea(vector<int>& heights) {\n        \n    }\n};",
+      "go": "func largestRectangleArea(heights []int) int {\n\n}",
+      "rust": "fn largest_rectangle_area(heights: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[2,1,5,6,2,3]",
+        "output": "10",
+        "explanation": "The largest rectangle is formed using bars of heights 5 and 6, giving an area of 5 × 2 = 10."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[2,1,5,6,2,3]",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,4]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,1,1,1]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[5]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,2,2,2,2]",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[6,5,4,3,2,1]",
+        "expected_output": "12",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6]",
+        "expected_output": "12",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,1,2]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,2,0,3,2,5]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000]",
+        "expected_output": "100000",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,100000]",
+        "expected_output": "200000",
+        "is_hidden": true
+      },
+      {
+        "input": "[3,6,5,7,4,8,1,0]",
+        "expected_output": "20",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,2,1,2]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,1,2]",
+        "expected_output": "8",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,3,3,2]",
+        "expected_output": "8",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,2,1]",
+        "expected_output": "6",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "For every bar, determine how far it can extend left and right while maintaining its height.",
+      "A brute-force solution checking all rectangles is O(n²).",
+      "A monotonic increasing stack can help find boundaries efficiently.",
+      "When a smaller height is encountered, rectangles for taller bars can be finalized."
+    ],
+    "explanation": "Maintain a monotonic increasing stack storing indices of histogram bars. When a bar shorter than the top of the stack is encountered, repeatedly pop bars and calculate the maximum rectangle area using the popped height as the limiting height. The width is determined by the current index and the new top of the stack. After processing all bars, handle any remaining bars in the stack. This approach computes the largest rectangle area in O(n) time."
+  },
+  {
+    "slug": "basic-calculator",
+    "title": "Basic Calculator",
+    "difficulty": "Hard",
+    "description": "Given a string expression containing non-negative integers, '+', '-', '(', ')', and spaces, evaluate the expression and return its result. You may assume the expression is always valid.",
+    "constraints": [
+      "1 <= expression.length <= 100000",
+      "expression consists of digits, '+', '-', '(', ')', and spaces",
+      "The expression is valid",
+      "Intermediate and final results fit within a 32-bit signed integer"
+    ],
+    "topics": ["Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function calculate(expression) {\n\n}",
+      "typescript": "function calculate(expression: string): number {\n\n}",
+      "python": "def calculate(expression):\n    pass",
+      "java": "public class Solution {\n    public static int calculate(String expression) {\n        \n    }\n}",
+      "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    int calculate(string expression) {\n        \n    }\n};",
+      "go": "func calculate(expression string) int {\n\n}",
+      "rust": "fn calculate(expression: String) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"(1+(4+5+2)-3)+(6+8)\"",
+        "output": "23",
+        "explanation": "Evaluate the nested expressions step by step to obtain the final result 23."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"1 + 1\"",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "\" 2-1 + 2 \"",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "\"(1+(4+5+2)-3)+(6+8)\"",
+        "expected_output": "23",
+        "is_hidden": false
+      },
+      {
+        "input": "\"10-(2+3)\"",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "\"(7)\"",
+        "expected_output": "7",
+        "is_hidden": false
+      },
+      {
+        "input": "\"((1+2)+(3+4))\"",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "\"1-(2-(3-(4-(5))))\"",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "\"100-(50+25)+(10-5)\"",
+        "expected_output": "30",
+        "is_hidden": true
+      },
+      {
+        "input": "\"((((10))))\"",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "\"0-(1+2+3)\"",
+        "expected_output": "-6",
+        "is_hidden": true
+      },
+      {
+        "input": "\"99999\"",
+        "expected_output": "99999",
+        "is_hidden": true
+      },
+      {
+        "input": "\"(1000-(200+300))+((50+50)-25)\"",
+        "expected_output": "575",
+        "is_hidden": true
+      },
+      {
+        "input": "\"1-(1-(1-(1-(1))))\"",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "\"50-(20-(10-(5)))\"",
+        "expected_output": "45",
+        "is_hidden": true
+      },
+      {
+        "input": "\"(12345+67890)-(11111+22222)\"",
+        "expected_output": "46902",
+        "is_hidden": true
+      },
+      {
+        "input": "\"((20+30)-(10+5))+((8-3)+(2+1))\"",
+        "expected_output": "43",
+        "is_hidden": true
+      },
+      {
+        "input": "\"1-(2+3-(4+5-(6-7)))\"",
+        "expected_output": "8",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Parentheses change the current evaluation context.",
+      "When entering a parenthesis, save the current result and sign.",
+      "Use a stack to restore the previous state when a closing parenthesis is encountered.",
+      "Process multi-digit numbers carefully."
+    ],
+    "explanation": "Traverse the expression from left to right while maintaining the current result, current number, and current sign. When encountering '(', push the current result and sign onto a stack and reset the evaluation context. When encountering ')', complete the current subexpression and combine it with the previous context stored on the stack. This stack-based approach correctly handles nested parentheses and evaluates the expression in O(n) time."
+  }
+]
