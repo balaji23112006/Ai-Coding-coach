@@ -1,0 +1,989 @@
+[
+  {
+    "slug": "largest-element-in-array",
+    "title": "Largest Element in Array",
+    "difficulty": "Easy",
+    "description": "Given an integer array nums, return the largest element present in the array.",
+    "constraints": ["1 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function largestElement(nums) {\n\n}",
+      "typescript": "function largestElement(nums: number[]): number {\n\n}",
+      "python": "def largestElement(nums):\n    pass",
+      "java": "public class Solution {\n    public static int largestElement(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int largestElement(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func largestElement(nums []int) int {\n\n}",
+      "rust": "fn largest_element(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5]",
+        "output": "5",
+        "explanation": "5 is the largest element in the array."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[10]",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,5,5,5]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1,-2,-3,-4]",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[100,20,300,40,50]",
+        "expected_output": "300",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,0,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,-999999999,-999999998]",
+        "expected_output": "-999999998",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000]",
+        "expected_output": "1000000000",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,1000000000]",
+        "expected_output": "1000000000",
+        "is_hidden": true
+      },
+      {
+        "input": "[999999999,1000000000,999999998]",
+        "expected_output": "1000000000",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5]",
+        "expected_output": "-5",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,6,5,4,3,2,1]",
+        "expected_output": "7",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Traverse the array once.",
+      "Keep track of the maximum value seen so far.",
+      "Update the maximum whenever a larger element is found."
+    ],
+    "explanation": "Iterate through the array and maintain the largest value encountered. After processing all elements, return the maximum value."
+  },
+  {
+    "slug": "maximum-consecutive-ones",
+    "title": "Maximum Consecutive Ones",
+    "difficulty": "Easy",
+    "description": "Given a binary array nums, return the maximum number of consecutive 1's in the array.",
+    "constraints": ["1 <= nums.length <= 100000", "nums[i] is either 0 or 1"],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findMaxConsecutiveOnes(nums) {\n\n}",
+      "typescript": "function findMaxConsecutiveOnes(nums: number[]): number {\n\n}",
+      "python": "def findMaxConsecutiveOnes(nums):\n    pass",
+      "java": "public class Solution {\n    public static int findMaxConsecutiveOnes(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findMaxConsecutiveOnes(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func findMaxConsecutiveOnes(nums []int) int {\n\n}",
+      "rust": "fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,1,0,1,1,1]",
+        "output": "3",
+        "explanation": "The longest sequence of consecutive 1's has length 3."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,1,0,1,1,1]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,0,1,1,0,1]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[0]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,1,1,1,1]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,0,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,0,0,0,1]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,1,1,1,0,1]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,0,1,1,1,1,1]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,1,1,1,1,1,0,0]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,0,1,0,1,0,1,0,1]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,0,0,1,1]",
+        "expected_output": "4",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Traverse the array from left to right.",
+      "Maintain a count of the current streak of 1's.",
+      "Reset the count whenever a 0 is encountered.",
+      "Keep track of the maximum streak seen so far."
+    ],
+    "explanation": "Iterate through the array while counting consecutive 1's. Whenever a 0 is encountered, reset the current count. Continuously update the maximum count found during traversal and return it at the end."
+  },
+  {
+    "slug": "maximum-subarray",
+    "title": "Maximum Subarray",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, find the contiguous subarray with the largest sum and return its sum.",
+    "constraints": ["1 <= nums.length <= 100000", "-100000 <= nums[i] <= 100000"],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function maxSubArray(nums) {\n\n}",
+      "typescript": "function maxSubArray(nums: number[]): number {\n\n}",
+      "python": "def maxSubArray(nums):\n    pass",
+      "java": "public class Solution {\n    public static int maxSubArray(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxSubArray(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func maxSubArray(nums []int) int {\n\n}",
+      "rust": "fn max_sub_array(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[-2,1,-3,4,-1,2,1,-5,4]",
+        "output": "6",
+        "explanation": "The subarray [4,-1,2,1] has the largest sum, which is 6."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[-2,1,-3,4,-1,2,1,-5,4]",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,4,-1,7,8]",
+        "expected_output": "23",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1]",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "15",
+        "is_hidden": false
+      },
+      {
+        "input": "[-2,-3,-1,-5]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,0,-2,0,-3]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,-100000,100000,-100000,100000]",
+        "expected_output": "100000",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,-19,5,-4,20]",
+        "expected_output": "21",
+        "is_hidden": true
+      },
+      {
+        "input": "[-2,11,-4,13,-5,2]",
+        "expected_output": "20",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,-1,1,-1,1,-1,1]",
+        "expected_output": "1",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Consider whether you should extend the current subarray or start a new one.",
+      "Keep track of the best sum ending at the current position.",
+      "Maintain the maximum sum seen so far.",
+      "Try solving it in O(n) time."
+    ],
+    "explanation": "Use Kadane's Algorithm. Traverse the array while maintaining the maximum subarray sum ending at the current index. At each element, decide whether to extend the existing subarray or start a new one. Track the overall maximum sum encountered during the traversal."
+  },
+  {
+    "slug": "rotate-array",
+    "title": "Rotate Array",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums and a non-negative integer k, rotate the array to the right by k steps.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-100000 <= nums[i] <= 100000",
+      "0 <= k <= 100000"
+    ],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function rotateArray(nums, k) {\n\n}",
+      "typescript": "function rotateArray(nums: number[], k: number): number[] {\n\n}",
+      "python": "def rotateArray(nums, k):\n    pass",
+      "java": "public class Solution {\n    public static int[] rotateArray(int[] nums, int k) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> rotateArray(vector<int>& nums, int k) {\n        \n    }\n};",
+      "go": "func rotateArray(nums []int, k int) []int {\n\n}",
+      "rust": "fn rotate_array(nums: Vec<i32>, k: i32) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,5,6,7],3",
+        "output": "[5,6,7,1,2,3,4]",
+        "explanation": "Rotating the array 3 times to the right moves the last 3 elements to the front."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,5,6,7],3",
+        "expected_output": "[5,6,7,1,2,3,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1,-100,3,99],2",
+        "expected_output": "[3,99,-1,-100]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],1",
+        "expected_output": "[5,1,2,3,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],5",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],0",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],100",
+        "expected_output": "[1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2],3",
+        "expected_output": "[2,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],0",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50],7",
+        "expected_output": "[40,50,10,20,30]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0],2",
+        "expected_output": "[0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5,-4,-3,-2,-1],8",
+        "expected_output": "[-3,-2,-1,-5,-4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,-100000,50000,-50000],6",
+        "expected_output": "[50000,-50000,100000,-100000]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Rotating by n positions results in the same array.",
+      "Consider using k % nums.length before performing the rotation.",
+      "Can you solve it without rotating one step at a time?",
+      "Think about reversing parts of the array."
+    ],
+    "explanation": "A common O(n) solution uses the reversal technique. First compute k % n. Reverse the entire array, then reverse the first k elements, and finally reverse the remaining elements. This rotates the array to the right in linear time and constant extra space."
+  },
+  {
+    "slug": "move-zeroes",
+    "title": "Move Zeroes",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, move all 0's to the end of the array while maintaining the relative order of the non-zero elements. Return the modified array.",
+    "constraints": ["1 <= nums.length <= 100000", "-100000 <= nums[i] <= 100000"],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function moveZeroes(nums) {\n\n}",
+      "typescript": "function moveZeroes(nums: number[]): number[] {\n\n}",
+      "python": "def moveZeroes(nums):\n    pass",
+      "java": "public class Solution {\n    public static int[] moveZeroes(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> moveZeroes(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func moveZeroes(nums []int) []int {\n\n}",
+      "rust": "fn move_zeroes(nums: Vec<i32>) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[0,1,0,3,12]",
+        "output": "[1,3,12,0,0]",
+        "explanation": "All non-zero elements retain their order while zeros are moved to the end."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[0,1,0,3,12]",
+        "expected_output": "[1,3,12,0,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[0]",
+        "expected_output": "[0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3]",
+        "expected_output": "[1,2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,1]",
+        "expected_output": "[1,0,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,0,5,0,3,0]",
+        "expected_output": "[4,5,3,0,0,0]",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,0,0]",
+        "expected_output": "[0,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,0,0,0]",
+        "expected_output": "[1,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,1]",
+        "expected_output": "[1,0,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,0,0,3,4]",
+        "expected_output": "[1,2,3,4,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,0,-2,0,-3]",
+        "expected_output": "[-1,-2,-3,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,0,-100000,0,50000]",
+        "expected_output": "[100000,-100000,50000,0,0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,0,2,0,3,0,4,0,5]",
+        "expected_output": "[1,2,3,4,5,0,0,0,0]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The relative order of non-zero elements must remain unchanged.",
+      "Try keeping track of where the next non-zero element should be placed.",
+      "Can you solve it in O(n) time?",
+      "Aim for O(1) extra space."
+    ],
+    "explanation": "Traverse the array and maintain a pointer indicating where the next non-zero element should be placed. Move all non-zero elements to the front while preserving their order. After processing all elements, fill the remaining positions with zeros."
+  },
+  {
+    "slug": "best-time-to-buy-and-sell-stock",
+    "title": "Best Time to Buy and Sell Stock",
+    "difficulty": "Medium",
+    "description": "You are given an array prices where prices[i] represents the price of a stock on the i-th day. You may choose one day to buy one stock and a different future day to sell that stock. Return the maximum profit you can achieve. If no profit can be made, return 0.",
+    "constraints": ["1 <= prices.length <= 100000", "0 <= prices[i] <= 100000"],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function maxProfit(prices) {\n\n}",
+      "typescript": "function maxProfit(prices: number[]): number {\n\n}",
+      "python": "def maxProfit(prices):\n    pass",
+      "java": "public class Solution {\n    public static int maxProfit(int[] prices) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        \n    }\n};",
+      "go": "func maxProfit(prices []int) int {\n\n}",
+      "rust": "fn max_profit(prices: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[7,1,5,3,6,4]",
+        "output": "5",
+        "explanation": "Buy on day 2 at price 1 and sell on day 5 at price 6 for a profit of 5."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[7,1,5,3,6,4]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[7,6,4,3,1]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,4,1]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,2,6,5,0,3]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,5,5,5]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,100000]",
+        "expected_output": "100000",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,1,2,3,4,5]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,2,4,1,7]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,1,2,10]",
+        "expected_output": "9",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Keep track of the minimum stock price seen so far.",
+      "For each day, calculate the profit if you sold on that day.",
+      "Update the maximum profit whenever a better profit is found.",
+      "You only need one pass through the array."
+    ],
+    "explanation": "Traverse the array while maintaining the minimum stock price encountered so far. For each price, calculate the profit that would result from selling on that day. Track the maximum profit found during the traversal. If no positive profit is possible, return 0."
+  },
+  {
+    "slug": "majority-element",
+    "title": "Majority Element",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums of size n, return the majority element. The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "A majority element always exists"
+    ],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function majorityElement(nums) {\n\n}",
+      "typescript": "function majorityElement(nums: number[]): number {\n\n}",
+      "python": "def majorityElement(nums):\n    pass",
+      "java": "public class Solution {\n    public static int majorityElement(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int majorityElement(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func majorityElement(nums []int) int {\n\n}",
+      "rust": "fn majority_element(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,2,3]",
+        "output": "3",
+        "explanation": "The element 3 appears 2 times out of 3 elements, which is more than n/2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,2,3]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,2,1,1,1,2,2]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,5,5,1,2]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[7,7,8]",
+        "expected_output": "7",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,0,1,2]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-1,-1,2,3]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000,1000000000,2]",
+        "expected_output": "1000000000",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,4,4,4,2,3,4]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,1,9,2,9,3,9,4,9]",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,8,8,8,8,1,2,3,4]",
+        "expected_output": "8",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,-1000000000,-1000000000,1]",
+        "expected_output": "-1000000000",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The majority element appears more than half the time.",
+      "Can you solve this without using extra space proportional to the array size?",
+      "Think about how pairs of different elements affect the majority element.",
+      "Try to find a candidate first, then reason why it works."
+    ],
+    "explanation": "A common O(n) time and O(1) space solution is the Boyer-Moore Voting Algorithm. Since the majority element appears more than n/2 times, repeatedly canceling out different elements will leave the majority element as the final candidate."
+  },
+  {
+    "slug": "rearrange-array-elements-by-sign",
+    "title": "Rearrange Array Elements by Sign",
+    "difficulty": "Medium",
+    "description": "Given an array nums containing an equal number of positive and negative integers, rearrange the array such that positive and negative numbers appear alternately, starting with a positive number. The relative order of positive numbers and negative numbers must be preserved.",
+    "constraints": [
+      "2 <= nums.length <= 100000",
+      "nums.length is even",
+      "-100000 <= nums[i] <= 100000",
+      "The number of positive and negative integers is equal",
+      "0 is not present in the array"
+    ],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function rearrangeArray(nums) {\n\n}",
+      "typescript": "function rearrangeArray(nums: number[]): number[] {\n\n}",
+      "python": "def rearrangeArray(nums):\n    pass",
+      "java": "public class Solution {\n    public static int[] rearrangeArray(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> rearrangeArray(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func rearrangeArray(nums []int) []int {\n\n}",
+      "rust": "fn rearrange_array(nums: Vec<i32>) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,1,-2,-5,2,-4]",
+        "output": "[3,-2,1,-5,2,-4]",
+        "explanation": "Positive and negative numbers are placed alternately while preserving their relative order."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,1,-2,-5,2,-4]",
+        "expected_output": "[3,-2,1,-5,2,-4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1,1]",
+        "expected_output": "[1,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,-1]",
+        "expected_output": "[1,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,-3,7,-8]",
+        "expected_output": "[5,-3,7,-8]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,-1,-2]",
+        "expected_output": "[10,-1,20,-2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,-1,-2,-3]",
+        "expected_output": "[1,-1,2,-2,3,-3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,-100000]",
+        "expected_output": "[100000,-100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,5,6,7,-1,-2,-3,-4]",
+        "expected_output": "[4,-1,5,-2,6,-3,7,-4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,-1,-2,-3,-4]",
+        "expected_output": "[9,-1,8,-2,7,-3,6,-4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,9,-2,-4,-6,-8,-10]",
+        "expected_output": "[1,-2,3,-4,5,-6,7,-8,9,-10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[11,22,33,44,-11,-22,-33,-44]",
+        "expected_output": "[11,-11,22,-22,33,-33,44,-44]",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,4,6,8,10,12,-1,-3,-5,-7,-9,-11]",
+        "expected_output": "[2,-1,4,-3,6,-5,8,-7,10,-9,12,-11]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Separate positive and negative numbers first.",
+      "Preserve the relative order within positive and negative groups.",
+      "Place positives at even indices and negatives at odd indices.",
+      "Use an additional result array to simplify the implementation."
+    ],
+    "explanation": "Store positive and negative numbers separately while maintaining their original order. Then build the result array by alternately placing positive and negative elements, starting with a positive element. Since the number of positive and negative elements is equal, every position can be filled correctly."
+  },
+  {
+    "slug": "maximum-product-subarray",
+    "title": "Maximum Product Subarray",
+    "difficulty": "Hard",
+    "description": "Given an integer array nums, find the contiguous subarray within the array that has the largest product and return that product.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-10 <= nums[i] <= 10",
+      "The answer will fit in a 32-bit signed integer"
+    ],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function maxProduct(nums) {\n\n}",
+      "typescript": "function maxProduct(nums: number[]): number {\n\n}",
+      "python": "def maxProduct(nums):\n    pass",
+      "java": "public class Solution {\n    public static int maxProduct(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProduct(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func maxProduct(nums []int) int {\n\n}",
+      "rust": "fn max_product(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[2,3,-2,4]",
+        "output": "6",
+        "explanation": "The subarray [2,3] has the largest product, which is 6."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[2,3,-2,4]",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "[-2,0,-1]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[-2,3,-4]",
+        "expected_output": "24",
+        "is_hidden": false
+      },
+      {
+        "input": "[5]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,2]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[-2]",
+        "expected_output": "-2",
+        "is_hidden": true
+      },
+      {
+        "input": "[-2,-3,-4]",
+        "expected_output": "12",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4]",
+        "expected_output": "24",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-9,-6]",
+        "expected_output": "108",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,-5,-2,-4,3]",
+        "expected_output": "24",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-1,-1,-1,-1,-1]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,-10,10,-10,10]",
+        "expected_output": "100000",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,0,-10,-10]",
+        "expected_output": "100",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A negative number can turn the smallest product into the largest product.",
+      "Track both the maximum and minimum product ending at the current position.",
+      "When you encounter a negative number, the roles of maximum and minimum may swap.",
+      "Think about how zeros affect the product."
+    ],
+    "explanation": "Unlike the Maximum Subarray problem, negative numbers make this problem more challenging. At each index, maintain both the maximum and minimum product ending at that position. A negative number can turn a large positive product into a negative one and a small negative product into a large positive one. Update both values while traversing the array and keep track of the global maximum product."
+  },
+  {
+    "slug": "merge-overlapping-intervals",
+    "title": "Merge Overlapping Intervals",
+    "difficulty": "Hard",
+    "description": "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+    "constraints": ["1 <= intervals.length <= 100000", "0 <= starti <= endi <= 1000000"],
+    "topics": ["Arrays"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function mergeIntervals(intervals) {\n\n}",
+      "typescript": "function mergeIntervals(intervals: number[][]): number[][] {\n\n}",
+      "python": "def mergeIntervals(intervals):\n    pass",
+      "java": "public class Solution {\n    public static int[][] mergeIntervals(int[][] intervals) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> mergeIntervals(vector<vector<int>>& intervals) {\n        \n    }\n};",
+      "go": "func mergeIntervals(intervals [][]int) [][]int {\n\n}",
+      "rust": "fn merge_intervals(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[1,3],[2,6],[8,10],[15,18]]",
+        "output": "[[1,6],[8,10],[15,18]]",
+        "explanation": "Intervals [1,3] and [2,6] overlap, so they are merged into [1,6]."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[1,3],[2,6],[8,10],[15,18]]",
+        "expected_output": "[[1,6],[8,10],[15,18]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,4],[4,5]]",
+        "expected_output": "[[1,5]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,4],[2,3]]",
+        "expected_output": "[[1,4]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,2],[3,4],[5,6]]",
+        "expected_output": "[[1,2],[3,4],[5,6]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,10],[2,3],[4,5],[6,7]]",
+        "expected_output": "[[1,10]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[5,5]]",
+        "expected_output": "[[5,5]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2],[2,3],[3,4]]",
+        "expected_output": "[[1,4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[10,20],[1,5],[6,9]]",
+        "expected_output": "[[1,5],[6,9],[10,20]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,100],[20,30],[40,50],[60,70]]",
+        "expected_output": "[[1,100]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,4],[0,4]]",
+        "expected_output": "[[0,4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,4],[0,0]]",
+        "expected_output": "[[0,0],[1,4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1000000,1000000],[999999,1000000]]",
+        "expected_output": "[[999999,1000000]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,3],[5,7],[2,4],[6,8]]",
+        "expected_output": "[[1,4],[5,8]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,5],[2,3],[4,8],[10,12],[11,15]]",
+        "expected_output": "[[1,8],[10,15]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Sorting the intervals can simplify the problem significantly.",
+      "After sorting, compare each interval with the last merged interval.",
+      "If intervals overlap, extend the end of the merged interval.",
+      "If they do not overlap, start a new interval."
+    ],
+    "explanation": "First sort the intervals by their starting value. Then iterate through them while maintaining a list of merged intervals. If the current interval overlaps with the last merged interval, update the ending value of the merged interval. Otherwise, add the current interval as a new merged interval. This approach runs in O(n log n) time due to sorting."
+  }
+]

@@ -21,7 +21,9 @@ export const submitCodeSchema = z.object({
     .min(1, 'Source code must not be empty')
     .max(65536, 'Source code size must be under 64KB'),
   userId: z.string().optional().nullable(),
+  questionId: z.string().optional().nullable(),
 });
 
 export type RunCodeInput = z.infer<typeof runCodeSchema>;
 export type SubmitCodeInput = z.infer<typeof submitCodeSchema>;
+

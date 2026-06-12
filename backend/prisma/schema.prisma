@@ -107,7 +107,62 @@ model Submission {
   createdAt       DateTime         @default(now())
   userId          String?
   user            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  questionId      String?
+  question        Question?        @relation(fields: [questionId], references: [id], onDelete: SetNull)
 
   @@map("submission")
 }
+
+enum Difficulty {
+  Easy
+  Medium
+  Hard
+}
+
+model Question {
+  id          String          @id @default(uuid())
+  slug        String          @unique
+  title       String
+  difficulty  Difficulty
+  description String
+  constraints String
+  starterCode Json            @map("starter_code")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  topics      QuestionTopic[]
+  testCases   TestCase[]
+  submissions Submission[]
+
+  @@map("questions")
+}
+
+model Topic {
+  id        String          @id @default(uuid())
+  name      String          @unique
+  questions QuestionTopic[]
+
+  @@map("topics")
+}
+
+model QuestionTopic {
+  questionId String   @map("question_id")
+  topicId    String   @map("topic_id")
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  topic      Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, topicId])
+  @@map("question_topics")
+}
+
+model TestCase {
+  id             String   @id @default(uuid())
+  questionId     String   @map("question_id")
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  input          String
+  expectedOutput String   @map("expected_output")
+  isHidden       Boolean  @map("is_hidden")
+
+  @@map("test_cases")
+}
+
 

@@ -1,0 +1,2263 @@
+[
+  {
+    "slug": "binary-tree-zigzag-level-order-traversal",
+    "title": "Binary Tree Zigzag Level Order Traversal",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. The first level should be traversed from left to right, the second level from right to left, the third level from left to right, and so on.",
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function zigzagLevelOrder(root) {\n\n}",
+      "typescript": "function zigzagLevelOrder(root: TreeNode | null): number[][] {\n\n}",
+      "python": "def zigzagLevelOrder(root):\n    pass",
+      "java": "public class Solution {\n    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {\n        \n    }\n};",
+      "go": "func zigzagLevelOrder(root *TreeNode) [][]int {\n\n}",
+      "rust": "impl Solution {\n    pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "output": "[[3],[20,9],[15,7]]",
+        "explanation": "Level 1 is traversed left-to-right, level 2 right-to-left, and level 3 left-to-right."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "expected_output": "[[3],[20,9],[15,7]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[[1]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3]",
+        "expected_output": "[[1],[3,2]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[[1],[3,2],[4,5,6,7]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,null,3,null,4,null]",
+        "expected_output": "[[1],[2],[3],[4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "expected_output": "[[1],[2],[3],[4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,5,15,3,7,12,18]",
+        "expected_output": "[[10],[15,5],[3,7,12,18]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5,-6,-7]",
+        "expected_output": "[[-1],[-3,-2],[-4,-5,-6,-7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1]",
+        "expected_output": "[[5],[8,4],[11,13,4],[1,5,2,7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6,7,8]",
+        "expected_output": "[[0],[2,1],[3,4,5,6],[8,7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100]",
+        "expected_output": "[[100]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,null,null,5]",
+        "expected_output": "[[1],[3,2],[4,5]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7,7]",
+        "expected_output": "[[7],[7,7],[7,7,7,7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80,10,25]",
+        "expected_output": "[[50],[70,30],[20,40,60,80],[25,10]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Process the tree level by level.",
+      "The traversal direction alternates after every level.",
+      "A stack or deque can help reverse the order efficiently.",
+      "Keep track of whether the current level should be traversed left-to-right or right-to-left."
+    ],
+    "explanation": "Perform a level-order traversal using BFS. For each level, collect the node values. If the current level is being traversed from left to right, append values normally. Otherwise, insert values in reverse order or use a stack/deque to build the level efficiently. After processing a level, flip the traversal direction for the next level. Since each node is visited exactly once, the time complexity is O(n), where n is the number of nodes in the tree."
+  },
+  {
+    "slug": "binary-tree-vertical-order-traversal",
+    "title": "Binary Tree Vertical Order Traversal",
+    "difficulty": "Hard",
+    "description": "Given the root of a binary tree, return its vertical order traversal. For each column, list the node values from top to bottom. If two nodes are in the same row and column, they should appear from left to right based on their position in the tree.",
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function verticalOrder(root) {\n\n}",
+      "typescript": "function verticalOrder(root: TreeNode | null): number[][] {\n\n}",
+      "python": "def verticalOrder(root):\n    pass",
+      "java": "public class Solution {\n    public List<List<Integer>> verticalOrder(TreeNode root) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> verticalOrder(TreeNode* root) {\n        \n    }\n};",
+      "go": "func verticalOrder(root *TreeNode) [][]int {\n\n}",
+      "rust": "impl Solution {\n    pub fn vertical_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "output": "[[9],[3,15],[20],[7]]",
+        "explanation": "Nodes are grouped by their vertical columns from leftmost to rightmost."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "expected_output": "[[9],[3,15],[20],[7]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[[4],[2],[1,5,6],[3],[7]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[[1]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,null,4,5,null]",
+        "expected_output": "[[2],[1,4,5],[3]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15,3,7,12,18]",
+        "expected_output": "[[3],[5],[10,7,12],[15],[18]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null]",
+        "expected_output": "[[4],[3],[2],[1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "expected_output": "[[1],[2],[3],[4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6]",
+        "expected_output": "[[3],[1],[0,4,5],[2],[6]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5,-6,-7]",
+        "expected_output": "[[-4],[-2],[-1,-5,-6],[-3],[-7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1]",
+        "expected_output": "[[7],[11],[4,2],[5,13],[8,5],[4],[1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100]",
+        "expected_output": "[[100]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80]",
+        "expected_output": "[[20],[30],[50,40,60],[70],[80]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7,7]",
+        "expected_output": "[[7],[7],[7,7,7],[7],[7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,null,null,5,6,null,null,7]",
+        "expected_output": "[[6],[4],[2],[1],[3],[5],[7]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Each node belongs to a vertical column.",
+      "Assign column 0 to the root.",
+      "The left child belongs to column -1 and the right child to column +1.",
+      "A HashMap can group nodes belonging to the same column."
+    ],
+    "explanation": "Use BFS to traverse the tree while tracking the column index of each node. The root starts at column 0. For every node, the left child is assigned column -1 and the right child column +1 relative to the current node. Store node values in a HashMap where the key is the column index. Keep track of the minimum and maximum column encountered. After traversal, iterate from the minimum column to the maximum column and collect the values in order. BFS naturally preserves top-to-bottom and left-to-right ordering for nodes sharing the same column."
+  },
+  {
+    "slug": "palindrome-linked-list",
+    "title": "Palindrome Linked List",
+    "difficulty": "Medium",
+    "description": "Given the head of a singly linked list, return true if the sequence of node values forms a palindrome. Otherwise, return false.",
+    "constraints": ["0 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isPalindrome(head) {\n\n}",
+      "typescript": "function isPalindrome(head: ListNode | null): boolean {\n\n}",
+      "python": "def isPalindrome(head):\n    pass",
+      "java": "public class Solution {\n    public boolean isPalindrome(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool isPalindrome(ListNode* head) {\n        \n    }\n};",
+      "go": "func isPalindrome(head *ListNode) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn is_palindrome(head: Option<Box<ListNode>>) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,2,1]",
+        "output": "true",
+        "explanation": "Reading the list from left to right and right to left produces the same sequence."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,2,1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,3,2,1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,2,1]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-2,-1]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-1]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,20,10]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,200,100]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,2,1]",
+        "expected_output": "false",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A stack can help compare values from both ends.",
+      "Use slow and fast pointers to locate the middle of the list.",
+      "Push the first half of the values onto a stack.",
+      "Compare the second half of the list against the values popped from the stack."
+    ],
+    "explanation": "Use the slow and fast pointer technique to locate the middle of the linked list. While moving toward the middle, push the values of the first half onto a stack. If the list length is odd, skip the middle node. Then continue traversing the second half of the list, comparing each node's value with the top of the stack. If any values differ, the list is not a palindrome. If all comparisons match and the stack becomes empty, the list is a palindrome. This approach runs in O(n) time and O(n) extra space."
+  },
+  {
+    "slug": "linked-list-cycle-detection",
+    "title": "Linked List Cycle Detection",
+    "difficulty": "Medium",
+    "description": "Given the head of a singly linked list, determine whether the linked list contains a cycle. A cycle exists if a node can be reached again by continuously following the next pointers. Return true if a cycle exists; otherwise, return false.",
+    "constraints": ["0 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function hasCycle(head) {\n\n}",
+      "typescript": "function hasCycle(head: ListNode | null): boolean {\n\n}",
+      "python": "def hasCycle(head):\n    pass",
+      "java": "public class Solution {\n    public boolean hasCycle(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool hasCycle(ListNode* head) {\n        \n    }\n};",
+      "go": "func hasCycle(head *ListNode) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn has_cycle(head: Option<Box<ListNode>>) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,2,0,-4], pos = 1",
+        "output": "true",
+        "explanation": "The tail connects back to the node at index 1, creating a cycle."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,2,0,-4], pos = 1",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2], pos = 0",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1], pos = -1",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5], pos = -1",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1], pos = 0",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5], pos = 2",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40], pos = 1",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4], pos = 0",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8], pos = 4",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[42], pos = -1",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[42], pos = 0",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1], pos = 3",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "If you visit the same node more than once, a cycle exists.",
+      "Store visited node references in a HashMap or HashSet.",
+      "Before moving to the next node, check whether it has already been seen.",
+      "Node values may repeat, so store node references, not values."
+    ],
+    "explanation": "Traverse the linked list while storing every visited node reference in a HashSet. For each node, check whether it already exists in the set. If it does, a cycle has been detected and the answer is true. Otherwise, add the node to the set and continue traversing. If the traversal reaches a null pointer, the list ends normally and no cycle exists. This approach visits each node at most once and runs in O(n) time with O(n) additional space."
+  },
+  {
+    "slug": "search-in-rotated-sorted-array",
+    "title": "Search in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "description": "You are given an integer array nums sorted in ascending order and then rotated at an unknown pivot. Given an integer target, return the index of target if it exists in the array; otherwise return -1. You must solve the problem in O(log n) time complexity.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-10000 <= nums[i] <= 10000",
+      "All values in nums are unique",
+      "nums is sorted and rotated",
+      "-10000 <= target <= 10000"
+    ],
+    "topics": ["Arrays", "Binary Search"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function search(nums, target) {\n\n}",
+      "typescript": "function search(nums: number[], target: number): number {\n\n}",
+      "python": "def search(nums, target):\n    pass",
+      "java": "public class Solution {\n    public int search(int[] nums, int target) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};",
+      "go": "func search(nums []int, target int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn search(nums: Vec<i32>, target: i32) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[4,5,6,7,0,1,2], 0",
+        "output": "4",
+        "explanation": "The target value 0 is located at index 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[4,5,6,7,0,1,2], 0",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,5,6,7,0,1,2], 3",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1], 0",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1], 1",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,1,3], 5",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[6,7,8,1,2,3,4,5], 3",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[6,7,8,1,2,3,4,5], 9",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[30,40,50,10,20], 10",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[30,40,50,10,20], 35",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,3,4,5,6,7,8,1], 1",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,1,2,3,4,5,6,7], 8",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,0,1,2,-4,-3,-2], -3",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[100], 100",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,10,11,12,1,2,3,4,5,6,7,8], 6",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[15,18,2,3,6,12], 15",
+        "expected_output": "0",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A rotated sorted array still contains one sorted half.",
+      "Use binary search to identify which half is sorted.",
+      "Check whether the target lies inside the sorted half.",
+      "Discard the half that cannot contain the target."
+    ],
+    "explanation": "A rotated sorted array consists of two sorted portions. During binary search, at least one half of the current search range is always sorted. Compare nums[left], nums[mid], and nums[right] to determine which half is sorted. If the target lies within the sorted half, continue searching there; otherwise search the other half. This approach eliminates half of the search space in every step, achieving O(log n) time complexity and O(1) extra space."
+  },
+  {
+    "slug": "group-anagrams",
+    "title": "Group Anagrams",
+    "difficulty": "Medium",
+    "description": "Given an array of strings strs, group the anagrams together. Two strings are anagrams if they contain the same characters with the same frequencies, regardless of order. Return the groups in any order.",
+    "constraints": [
+      "1 <= strs.length <= 10000",
+      "0 <= strs[i].length <= 100",
+      "strs[i] consists of lowercase English letters"
+    ],
+    "topics": ["Strings", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function groupAnagrams(strs) {\n\n}",
+      "typescript": "function groupAnagrams(strs: string[]): string[][] {\n\n}",
+      "python": "def groupAnagrams(strs):\n    pass",
+      "java": "public class Solution {\n    public List<List<String>> groupAnagrams(String[] strs) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        \n    }\n};",
+      "go": "func groupAnagrams(strs []string) [][]string {\n\n}",
+      "rust": "impl Solution {\n    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "output": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]",
+        "explanation": "Words with the same character frequencies belong to the same group."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "expected_output": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"\"]",
+        "expected_output": "[[\"\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"a\"]",
+        "expected_output": "[[\"a\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"abc\",\"bca\",\"cab\"]",
+        "expected_output": "[[\"abc\",\"bca\",\"cab\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"rat\",\"tar\",\"art\",\"car\"]",
+        "expected_output": "[[\"rat\",\"tar\",\"art\"],[\"car\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"listen\",\"silent\",\"enlist\",\"google\",\"gogole\"]",
+        "expected_output": "[[\"listen\",\"silent\",\"enlist\"],[\"google\",\"gogole\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abc\",\"def\",\"ghi\"]",
+        "expected_output": "[[\"abc\"],[\"def\"],[\"ghi\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"aaa\",\"aaa\",\"aaa\"]",
+        "expected_output": "[[\"aaa\",\"aaa\",\"aaa\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abcd\",\"dcba\",\"bcad\",\"xy\",\"yx\"]",
+        "expected_output": "[[\"abcd\",\"dcba\",\"bcad\"],[\"xy\",\"yx\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"aabb\",\"bbaa\",\"abab\",\"baba\",\"xyz\"]",
+        "expected_output": "[[\"aabb\",\"bbaa\",\"abab\",\"baba\"],[\"xyz\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"z\",\"zz\",\"zzz\"]",
+        "expected_output": "[[\"z\"],[\"zz\"],[\"zzz\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"dusty\",\"study\",\"night\",\"thing\"]",
+        "expected_output": "[[\"dusty\",\"study\"],[\"night\",\"thing\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abcde\",\"edcba\",\"bcdea\",\"xyzab\"]",
+        "expected_output": "[[\"abcde\",\"edcba\",\"bcdea\"],[\"xyzab\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"loop\",\"pool\",\"polo\",\"lopo\"]",
+        "expected_output": "[[\"loop\",\"pool\",\"polo\",\"lopo\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"anagram\",\"nagaram\",\"manager\"]",
+        "expected_output": "[[\"anagram\",\"nagaram\"],[\"manager\"]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Anagrams have identical character counts.",
+      "Create a unique key that represents the character composition of a word.",
+      "Words producing the same key belong in the same group.",
+      "A HashMap can map each key to its corresponding group."
+    ],
+    "explanation": "Use a HashMap to group words by their character composition. For each string, create a canonical representation such as its sorted form or a frequency-count signature. Use this representation as the HashMap key. All words producing the same key are anagrams and belong to the same group. After processing all strings, return the values of the HashMap. If sorting is used, the time complexity is O(n × k log k), where n is the number of strings and k is the maximum string length."
+  },
+  {
+    "slug": "word-search",
+    "title": "Word Search",
+    "difficulty": "Medium",
+    "description": "Given an m x n grid of characters board and a string word, return true if the word exists in the grid. The word can be constructed from sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same cell may not be used more than once in a single word path.",
+    "constraints": [
+      "1 <= m, n <= 20",
+      "1 <= word.length <= 300",
+      "board and word consist of English letters"
+    ],
+    "topics": ["Strings", "Graphs"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function exist(board, word) {\n\n}",
+      "typescript": "function exist(board: string[][], word: string): boolean {\n\n}",
+      "python": "def exist(board, word):\n    pass",
+      "java": "public class Solution {\n    public boolean exist(char[][] board, String word) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool exist(vector<vector<char>>& board, string word) {\n        \n    }\n};",
+      "go": "func exist(board [][]byte, word string) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn exist(board: Vec<Vec<char>>, word: String) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], \"ABCCED\"",
+        "output": "true",
+        "explanation": "The word can be formed by following a valid path through adjacent cells."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], \"ABCCED\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], \"SEE\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], \"ABCB\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[['A']], \"A\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[['A']], \"B\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[['C','A','T']], \"CAT\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[['C'],['A'],['T']], \"CAT\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[['D','O','G'],['A','T','S']], \"DOG\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[['D','O','G'],['A','T','S']], \"DOT\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[['A','B'],['C','D']], \"ABDC\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[['A','B'],['C','D']], \"ABCD\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[['H','E','L','L','O']], \"HELLO\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[['X','Y','Z'],['A','B','C'],['D','E','F']], \"XYZABC\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[['N','A','V'],['A','N','E'],['V','E','T']], \"NAV\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[['A','A','A'],['A','A','A'],['A','A','A']], \"AAAAAAAAA\"",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Treat the board as a graph where each cell is a node.",
+      "Start searching from every cell matching the first character.",
+      "Use DFS to explore possible paths.",
+      "Mark cells as visited during the current search path to avoid reusing them."
+    ],
+    "explanation": "Model the board as a graph where each cell is connected to its horizontal and vertical neighbors. For every cell that matches the first character of the target word, perform a DFS. At each step, check whether the current character matches the corresponding character in the word. Temporarily mark the cell as visited so it cannot be reused within the same path. If all characters are matched, return true. If no valid path exists after exploring all possibilities, return false. The solution combines string matching with graph traversal and runs using DFS with backtracking."
+  },
+  {
+    "slug": "copy-list-with-random-pointer",
+    "title": "Copy List with Random Pointer",
+    "difficulty": "Medium",
+    "description": "A linked list is given where each node contains an additional random pointer that can point to any node in the list or null. Construct a deep copy of the list. The copied list must contain entirely new nodes, and both the next and random pointer relationships must match the original list.",
+    "constraints": [
+      "0 <= number of nodes <= 1000",
+      "-10000 <= Node.val <= 10000",
+      "random is either null or points to a valid node in the list"
+    ],
+    "topics": ["Linked List", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function copyRandomList(head) {\n\n}",
+      "typescript": "function copyRandomList(head: Node | null): Node | null {\n\n}",
+      "python": "def copyRandomList(head):\n    pass",
+      "java": "public class Solution {\n    public Node copyRandomList(Node head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    Node* copyRandomList(Node* head) {\n        \n    }\n};",
+      "go": "func copyRandomList(head *Node) *Node {\n\n}",
+      "rust": "impl Solution {\n    pub fn copy_random_list(head: Option<Rc<RefCell<Node>>>) -> Option<Rc<RefCell<Node>>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[7,null],[13,0],[11,4],[10,2],[1,0]]",
+        "output": "[[7,null],[13,0],[11,4],[10,2],[1,0]]",
+        "explanation": "The returned list contains new nodes but preserves all next and random pointer relationships."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[7,null],[13,0],[11,4],[10,2],[1,0]]",
+        "expected_output": "[[7,null],[13,0],[11,4],[10,2],[1,0]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,1],[2,1]]",
+        "expected_output": "[[1,1],[2,1]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[3,null],[3,0],[3,null]]",
+        "expected_output": "[[3,null],[3,0],[3,null]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,null]]",
+        "expected_output": "[[1,null]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[[5,0]]",
+        "expected_output": "[[5,0]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,2],[2,0],[3,1]]",
+        "expected_output": "[[1,2],[2,0],[3,1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[10,null],[20,null],[30,null]]",
+        "expected_output": "[[10,null],[20,null],[30,null]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[-1,1],[-2,0]]",
+        "expected_output": "[[-1,1],[-2,0]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[100,3],[200,2],[300,1],[400,0]]",
+        "expected_output": "[[100,3],[200,2],[300,1],[400,0]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,null],[2,2],[3,1]]",
+        "expected_output": "[[1,null],[2,2],[3,1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[7,4],[13,0],[11,4],[10,2],[1,1]]",
+        "expected_output": "[[7,4],[13,0],[11,4],[10,2],[1,1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[42,null],[43,0],[44,1],[45,2]]",
+        "expected_output": "[[42,null],[43,0],[44,1],[45,2]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,4],[2,3],[3,2],[4,1],[5,0]]",
+        "expected_output": "[[1,4],[2,3],[3,2],[4,1],[5,0]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[[9,null],[8,0],[7,1],[6,2],[5,3]]",
+        "expected_output": "[[9,null],[8,0],[7,1],[6,2],[5,3]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Each original node should correspond to exactly one copied node.",
+      "Create all copied nodes before setting random pointers.",
+      "A HashMap can store the mapping between original nodes and copied nodes.",
+      "After cloning the nodes, connect both next and random pointers using the map."
+    ],
+    "explanation": "Use a HashMap where each original node maps to its copied node. In the first pass, traverse the original list and create a new node for every original node. Store each original-to-copy mapping in the HashMap. In the second pass, use the map to assign the next and random pointers for every copied node. Since every original node has a unique corresponding copy, both relationships can be reconstructed correctly. This approach runs in O(n) time and O(n) additional space."
+  },
+  {
+    "slug": "binary-tree-paths",
+    "title": "Binary Tree Paths",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, return all root-to-leaf paths as strings. A leaf is a node with no children. Each path should be represented in the format \"node1->node2->node3\".",
+    "constraints": ["0 <= number of nodes <= 10000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function binaryTreePaths(root) {\n\n}",
+      "typescript": "function binaryTreePaths(root: TreeNode | null): string[] {\n\n}",
+      "python": "def binaryTreePaths(root):\n    pass",
+      "java": "public class Solution {\n    public List<String> binaryTreePaths(TreeNode root) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    vector<string> binaryTreePaths(TreeNode* root) {\n        \n    }\n};",
+      "go": "func binaryTreePaths(root *TreeNode) []string {\n\n}",
+      "rust": "impl Solution {\n    pub fn binary_tree_paths(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<String> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,null,5]",
+        "output": "[\"1->2->5\",\"1->3\"]",
+        "explanation": "There are two root-to-leaf paths in the tree."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,null,5]",
+        "expected_output": "[\"1->2->5\",\"1->3\"]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[\"1\"]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "[\"1->2\"]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,null,2]",
+        "expected_output": "[\"1->2\"]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[\"1->2->4\",\"1->2->5\",\"1->3->6\",\"1->3->7\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,5,15,3,7]",
+        "expected_output": "[\"10->5->3\",\"10->5->7\",\"10->15\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null]",
+        "expected_output": "[\"1->2->3->4\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "expected_output": "[\"1->2->3->4\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3]",
+        "expected_output": "[\"-1->-2\",\"-1->-3\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1]",
+        "expected_output": "[\"5->4->11->7\",\"5->4->11->2\",\"5->8->13\",\"5->8->4->5\",\"5->8->4->1\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100]",
+        "expected_output": "[\"100\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7]",
+        "expected_output": "[\"7->7->7\",\"7->7->7\",\"7->7\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80]",
+        "expected_output": "[\"50->30->20\",\"50->30->40\",\"50->70->60\",\"50->70->80\"]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4]",
+        "expected_output": "[\"0->1->3\",\"0->1->4\",\"0->2\"]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A root-to-leaf path can be built while traversing the tree.",
+      "Use DFS to explore every path.",
+      "Keep track of the current path as a string.",
+      "When a leaf node is reached, add the completed path to the result."
+    ],
+    "explanation": "Perform a Depth-First Search starting from the root. Maintain the current path string as you traverse the tree. At each node, append its value to the path. If a leaf node is reached, add the completed path string to the result list. Otherwise, continue recursively into the left and right subtrees. Since every node is visited exactly once, the traversal runs in O(n) time, while the total output size depends on the number and length of root-to-leaf paths."
+  },
+  {
+    "slug": "course-dependency-query",
+    "title": "Course Dependency Query",
+    "difficulty": "Medium",
+    "description": "There are n courses labeled from 0 to n - 1. You are given a list of prerequisite relationships where prerequisites[i] = [a, b] means course a must be completed before course b. You are also given multiple queries where queries[i] = [u, v]. For each query, determine whether course u is a prerequisite (directly or indirectly) of course v.",
+    "constraints": [
+      "2 <= n <= 1000",
+      "0 <= prerequisites.length <= 5000",
+      "0 <= queries.length <= 10000",
+      "0 <= ai, bi < n",
+      "0 <= ui, vi < n",
+      "The prerequisite graph is a Directed Acyclic Graph (DAG)"
+    ],
+    "topics": ["Graphs", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function checkIfPrerequisite(n, prerequisites, queries) {\n\n}",
+      "typescript": "function checkIfPrerequisite(n: number, prerequisites: number[][], queries: number[][]): boolean[] {\n\n}",
+      "python": "def checkIfPrerequisite(n, prerequisites, queries):\n    pass",
+      "java": "public class Solution {\n    public List<Boolean> checkIfPrerequisite(int n, int[][] prerequisites, int[][] queries) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {\n        \n    }\n};",
+      "go": "func checkIfPrerequisite(n int, prerequisites [][]int, queries [][]int) []bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn check_if_prerequisite(n: i32, prerequisites: Vec<Vec<i32>>, queries: Vec<Vec<i32>>) -> Vec<bool> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "3, [[0,1],[1,2]], [[0,2],[1,0],[0,1]]",
+        "output": "[true,false,true]",
+        "explanation": "Course 0 is an indirect prerequisite of 2, course 1 is not a prerequisite of 0, and course 0 is a direct prerequisite of 1."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "3, [[0,1],[1,2]], [[0,2],[1,0],[0,1]]",
+        "expected_output": "[true,false,true]",
+        "is_hidden": false
+      },
+      {
+        "input": "2, [[0,1]], [[0,1],[1,0]]",
+        "expected_output": "[true,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "4, [[0,1],[1,2],[2,3]], [[0,3],[1,3],[3,0]]",
+        "expected_output": "[true,true,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "3, [], [[0,1],[1,2]]",
+        "expected_output": "[false,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "5, [[0,1],[0,2],[1,3],[2,4]], [[0,4],[1,4],[2,3]]",
+        "expected_output": "[true,false,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "6, [[0,1],[1,2],[2,3],[3,4],[4,5]], [[0,5],[2,5],[5,0]]",
+        "expected_output": "[true,true,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[0,1],[0,2],[1,3],[2,3]], [[0,3],[1,2],[2,1]]",
+        "expected_output": "[true,false,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "5, [[0,1],[1,2],[2,3],[1,4]], [[0,4],[4,3],[1,3]]",
+        "expected_output": "[true,false,true]",
+        "is_hidden": true
+      },
+      {
+        "input": "7, [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]], [[0,6],[2,6],[6,0]]",
+        "expected_output": "[true,true,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "4, [[0,1],[2,3]], [[0,3],[2,3],[1,0]]",
+        "expected_output": "[false,true,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "5, [[0,1],[1,2],[0,3],[3,4]], [[0,4],[1,4],[3,4]]",
+        "expected_output": "[true,false,true]",
+        "is_hidden": true
+      },
+      {
+        "input": "3, [[0,1],[0,2]], [[0,2],[2,0],[1,2]]",
+        "expected_output": "[true,false,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "8, [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7]], [[0,3],[4,7],[0,7]]",
+        "expected_output": "[true,true,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "6, [[0,1],[1,2],[0,3],[3,4],[4,5]], [[0,5],[3,5],[2,5]]",
+        "expected_output": "[true,true,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "10, [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9]], [[0,9],[4,9],[9,0]]",
+        "expected_output": "[true,true,false]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The prerequisites form a directed graph.",
+      "A course is a prerequisite if there exists a path between two nodes.",
+      "Store prerequisite relationships efficiently.",
+      "Graph traversal combined with memoization or reachability caching can help answer many queries quickly."
+    ],
+    "explanation": "Model the courses as a directed graph where an edge a → b indicates that course a must be completed before course b. For each course, determine all courses reachable from it using DFS or BFS and store the results in a HashMap or reachability structure. Once reachability information has been computed, each query can be answered in O(1) time by checking whether v is reachable from u. This combines graph traversal with efficient lookup using hashing."
+  },
+  {
+    "slug": "largest-connected-region",
+    "title": "Largest Connected Region",
+    "difficulty": "Medium",
+    "description": "Given an m x n binary matrix grid, return the size of the largest connected region of 1s. Two cells belong to the same region if they are connected horizontally or vertically. If the grid contains no 1s, return 0.",
+    "constraints": ["1 <= m, n <= 300", "grid[i][j] is either 0 or 1"],
+    "topics": ["Arrays", "Graphs"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function largestConnectedRegion(grid) {\n\n}",
+      "typescript": "function largestConnectedRegion(grid: number[][]): number {\n\n}",
+      "python": "def largestConnectedRegion(grid):\n    pass",
+      "java": "public class Solution {\n    public int largestConnectedRegion(int[][] grid) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int largestConnectedRegion(vector<vector<int>>& grid) {\n        \n    }\n};",
+      "go": "func largestConnectedRegion(grid [][]int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn largest_connected_region(grid: Vec<Vec<i32>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[1,1,0],[0,1,0],[1,0,1]]",
+        "output": "3",
+        "explanation": "The largest connected region consists of the three connected cells in the top-left area."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[1,1,0],[0,1,0],[1,0,1]]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,0,0],[0,1,1],[0,1,1]]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,0],[0,0]]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1]]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,1],[1,1]]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,0,1],[0,0,0],[1,0,1]]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1,1],[1,1,1],[1,1,1]]",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,0,0,1],[1,1,0,1],[0,1,0,0]]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,1,0],[1,1,1],[0,1,0]]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1,0,0],[0,1,0,1],[0,0,0,1],[1,1,1,1]]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0]]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1,1,0],[0,0,1,0],[1,1,1,0]]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,0],[0,1]]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1,0],[1,0,0],[0,0,1]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[1,1,1,1,1],[1,0,0,0,1],[1,1,1,1,1]]",
+        "expected_output": "11",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Treat each cell containing 1 as a graph node.",
+      "Use DFS or BFS to explore an entire connected region.",
+      "Count how many cells belong to the current region.",
+      "Track the maximum region size encountered."
+    ],
+    "explanation": "View the grid as a graph where each cell containing 1 is a node connected to its horizontal and vertical neighbors. Iterate through the grid and whenever an unvisited cell containing 1 is found, perform a DFS or BFS to explore the entire connected component. Count the number of cells visited during that traversal and update the maximum region size. Since each cell is visited at most once, the overall time complexity is O(m × n)."
+  },
+  {
+    "slug": "next-greater-element-ii",
+    "title": "Next Greater Element II",
+    "difficulty": "Medium",
+    "description": "Given a circular integer array nums, return an array answer where answer[i] is the first greater element to the right of nums[i]. Since the array is circular, you may continue searching from the beginning after reaching the end. If no greater element exists, answer[i] should be -1.",
+    "constraints": ["1 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["Arrays", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function nextGreaterElements(nums) {\n\n}",
+      "typescript": "function nextGreaterElements(nums: number[]): number[] {\n\n}",
+      "python": "def nextGreaterElements(nums):\n    pass",
+      "java": "public class Solution {\n    public int[] nextGreaterElements(int[] nums) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    vector<int> nextGreaterElements(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func nextGreaterElements(nums []int) []int {\n\n}",
+      "rust": "impl Solution {\n    pub fn next_greater_elements(nums: Vec<i32>) -> Vec<i32> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,1]",
+        "output": "[2,-1,2]",
+        "explanation": "For the last element 1, the search wraps around and finds 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,1]",
+        "expected_output": "[2,-1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,3]",
+        "expected_output": "[2,3,4,-1,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5]",
+        "expected_output": "[-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,1,2,4,3]",
+        "expected_output": "[4,2,4,-1,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,3,3]",
+        "expected_output": "[-1,-1,-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "[2,3,4,5,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1]",
+        "expected_output": "[-1,5,5,5,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,2,1]",
+        "expected_output": "[2,2,-1,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,10]",
+        "expected_output": "[20,30,-1,20]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,5,3,8]",
+        "expected_output": "[8,8,8,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,25,75]",
+        "expected_output": "[-1,75,75,100]",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,2,3]",
+        "expected_output": "[3,3,3,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5,10]",
+        "expected_output": "[10,10,10,10,10,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4]",
+        "expected_output": "[-1,-1,-1,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,1,2,3]",
+        "expected_output": "[-1,2,3,4]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Brute force checking every element would be too slow.",
+      "A monotonic decreasing stack helps track unresolved elements.",
+      "Since the array is circular, think about traversing it twice.",
+      "Store indices instead of values in the stack."
+    ],
+    "explanation": "Use a monotonic decreasing stack to keep track of indices whose next greater element has not yet been found. Traverse the array twice (from 0 to 2*n-1) using modulo arithmetic to simulate the circular behavior. While the current element is greater than the element at the index on the top of the stack, it becomes the next greater element for that index. Store the result and remove the index from the stack. During the first pass, push indices onto the stack. Every index is pushed and popped at most once, resulting in O(n) time complexity and O(n) extra space."
+  },
+  {
+    "slug": "kth-smallest-element-in-a-bst",
+    "title": "Kth Smallest Element in a BST",
+    "difficulty": "Medium",
+    "description": "Given the root of a Binary Search Tree (BST) and an integer k, return the kth smallest value among all the nodes in the tree.",
+    "constraints": [
+      "1 <= number of nodes <= 100000",
+      "1 <= k <= number of nodes",
+      "-100000 <= Node.val <= 100000",
+      "The tree is a valid Binary Search Tree"
+    ],
+    "topics": ["Trees", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function kthSmallest(root, k) {\n\n}",
+      "typescript": "function kthSmallest(root: TreeNode | null, k: number): number {\n\n}",
+      "python": "def kthSmallest(root, k):\n    pass",
+      "java": "public class Solution {\n    public int kthSmallest(TreeNode root, int k) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int kthSmallest(TreeNode* root, int k) {\n        \n    }\n};",
+      "go": "func kthSmallest(root *TreeNode, k int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,1,4,null,2], 1",
+        "output": "1",
+        "explanation": "The sorted order of BST values is [1,2,3,4]. The 1st smallest value is 1."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,1,4,null,2], 1",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,3,6,2,4,null,null,1], 3",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[1], 1",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,1,3], 2",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15,3,7,12,18], 5",
+        "expected_output": "10",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,2,6,1,3,5,7], 7",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,2,6,1,3,5,7], 4",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80], 2",
+        "expected_output": "30",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80], 6",
+        "expected_output": "70",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175], 1",
+        "expected_output": "25",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175], 7",
+        "expected_output": "175",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,3,10,1,6,null,14,null,null,4,7,13], 5",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4], 3",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,3,null,2,null,1], 2",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,-3,9,-10,null,5], 4",
+        "expected_output": "5",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "What traversal of a BST visits nodes in sorted order?",
+      "You do not need to store all node values.",
+      "Use a stack to perform iterative inorder traversal.",
+      "Stop as soon as the kth node is visited."
+    ],
+    "explanation": "A Binary Search Tree has the property that an inorder traversal visits nodes in ascending order. Perform an iterative inorder traversal using a stack. Continuously move left while pushing nodes onto the stack. When a node is popped, it represents the next smallest element in sorted order. Decrement k each time a node is visited. When k becomes 0, return that node's value. Since only the necessary nodes are processed, the algorithm runs in O(h + k) time where h is the tree height, and uses O(h) stack space."
+  },
+  {
+    "slug": "reorder-list",
+    "title": "Reorder List",
+    "difficulty": "Medium",
+    "description": "You are given the head of a singly linked list. Reorder the list in-place to follow the pattern: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ... Continue alternating nodes from the beginning and end until all nodes are used.",
+    "constraints": ["1 <= number of nodes <= 50000", "1 <= Node.val <= 1000"],
+    "topics": ["Linked List", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function reorderList(head) {\n\n}",
+      "typescript": "function reorderList(head: ListNode | null): void {\n\n}",
+      "python": "def reorderList(head):\n    pass",
+      "java": "public class Solution {\n    public void reorderList(ListNode head) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    void reorderList(ListNode* head) {\n        \n    }\n};",
+      "go": "func reorderList(head *ListNode) {\n\n}",
+      "rust": "impl Solution {\n    pub fn reorder_list(head: &mut Option<Box<ListNode>>) {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4]",
+        "output": "[1,4,2,3]",
+        "explanation": "Nodes are reordered by alternately taking from the front and back of the list."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4]",
+        "expected_output": "[1,4,2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "[1,5,2,4,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2]",
+        "expected_output": "[1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3]",
+        "expected_output": "[1,3,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,30,40,50,60]",
+        "expected_output": "[10,60,20,50,30,40]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7]",
+        "expected_output": "[7,7,7,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[1,7,2,6,3,5,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,200,300,400]",
+        "expected_output": "[100,400,200,300]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,10,15,20,25]",
+        "expected_output": "[5,25,10,20,15]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6]",
+        "expected_output": "[1,6,2,5,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5]",
+        "expected_output": "[9,5,8,6,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[11,22,33,44,55,66,77,88]",
+        "expected_output": "[11,88,22,77,33,66,44,55]",
+        "is_hidden": true
+      },
+      {
+        "input": "[42]",
+        "expected_output": "[42]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,9,11,13,15,17]",
+        "expected_output": "[1,17,3,15,5,13,7,11,9]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The last node is needed immediately after the first node.",
+      "A stack provides easy access to nodes from the end of the list.",
+      "Push all nodes into a stack first.",
+      "Then alternately connect nodes from the front and top of the stack."
+    ],
+    "explanation": "Store all nodes of the linked list inside a stack. Then start from the head and repeatedly take the next node from the front of the list and the next node from the top of the stack. Reconnect pointers in the required order: first node, last node, second node, second-last node, and so on. Continue until all nodes are placed correctly. Finally, terminate the list by setting the last node's next pointer to null. Since each node is processed once, the algorithm runs in O(n) time and uses O(n) additional stack space."
+  },
+  {
+    "slug": "word-ladder",
+    "title": "Word Ladder",
+    "difficulty": "Hard",
+    "description": "A transformation sequence from beginWord to endWord is a sequence of words such that only one character can be changed at a time and every intermediate word must exist in the given wordList. Return the length of the shortest transformation sequence. If no valid transformation exists, return 0.",
+    "constraints": [
+      "1 <= beginWord.length <= 10",
+      "endWord.length == beginWord.length",
+      "1 <= wordList.length <= 5000",
+      "All words consist of lowercase English letters",
+      "All words in wordList are unique"
+    ],
+    "topics": ["Strings", "Graphs"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function ladderLength(beginWord, endWord, wordList) {\n\n}",
+      "typescript": "function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {\n\n}",
+      "python": "def ladderLength(beginWord, endWord, wordList):\n    pass",
+      "java": "public class Solution {\n    public int ladderLength(String beginWord, String endWord, List<String> wordList) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {\n        \n    }\n};",
+      "go": "func ladderLength(beginWord string, endWord string, wordList []string) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn ladder_length(begin_word: String, end_word: String, word_list: Vec<String>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]",
+        "output": "5",
+        "explanation": "One shortest transformation is hit → hot → dot → dog → cog."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\", \"c\", [\"a\",\"b\",\"c\"]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "\"cat\", \"dog\", [\"cat\",\"cot\",\"cog\",\"dog\"]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "\"lost\", \"cost\", [\"lost\",\"cost\"]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "\"red\", \"tax\", [\"ted\",\"tex\",\"red\",\"tax\",\"tad\",\"den\",\"rex\",\"pee\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "\"cold\", \"warm\", [\"cold\",\"cord\",\"card\",\"ward\",\"warm\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"lead\", \"gold\", [\"load\",\"goad\",\"gold\",\"lead\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "\"hot\", \"dog\", [\"hot\",\"dot\",\"dog\"]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abc\", \"abd\", [\"abd\"]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "\"toon\", \"plea\", [\"poon\",\"plee\",\"same\",\"poie\",\"plea\",\"plie\",\"poin\"]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "\"game\", \"math\", [\"fame\",\"fate\",\"mate\",\"math\",\"game\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"spin\", \"spot\", [\"spin\",\"spit\",\"spat\",\"spot\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "\"code\", \"data\", [\"cade\",\"cate\",\"date\",\"data\"]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "\"same\", \"same\", [\"same\"]",
+        "expected_output": "1",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Treat each word as a node in a graph.",
+      "Two words are connected if they differ by exactly one character.",
+      "You need the shortest transformation sequence.",
+      "BFS naturally finds the shortest path in an unweighted graph."
+    ],
+    "explanation": "Model the dictionary as a graph where each word is a node. An edge exists between two words if they differ by exactly one character. Starting from beginWord, perform a Breadth-First Search. For each word, generate all possible one-character transformations and check whether they exist in the dictionary. Since BFS explores level by level, the first time endWord is reached corresponds to the shortest transformation sequence. If endWord is never reached, return 0. The problem combines string manipulation with graph traversal."
+  },
+  {
+    "slug": "bst-iterator",
+    "title": "BST Iterator",
+    "difficulty": "Medium",
+    "description": "Implement the BSTIterator class that represents an iterator over the inorder traversal of a Binary Search Tree (BST). The iterator should return the next smallest number in the BST each time next() is called.",
+    "constraints": [
+      "1 <= number of nodes <= 100000",
+      "0 <= Node.val <= 1000000",
+      "At most 100000 calls will be made to next() and hasNext()"
+    ],
+    "topics": ["Trees", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "class BSTIterator {\n    constructor(root) {\n        \n    }\n\n    next() {\n        \n    }\n\n    hasNext() {\n        \n    }\n}",
+      "typescript": "class BSTIterator {\n    constructor(root: TreeNode | null) {\n        \n    }\n\n    next(): number {\n        \n    }\n\n    hasNext(): boolean {\n        \n    }\n}",
+      "python": "class BSTIterator:\n    def __init__(self, root):\n        pass\n\n    def next(self):\n        pass\n\n    def hasNext(self):\n        pass",
+      "java": "class BSTIterator {\n    public BSTIterator(TreeNode root) {\n        \n    }\n\n    public int next() {\n        \n    }\n\n    public boolean hasNext() {\n        \n    }\n}",
+      "cpp": "class BSTIterator {\npublic:\n    BSTIterator(TreeNode* root) {\n        \n    }\n\n    int next() {\n        \n    }\n\n    bool hasNext() {\n        \n    }\n};",
+      "go": "type BSTIterator struct {\n}\n\nfunc Constructor(root *TreeNode) BSTIterator {\n\n}\n\nfunc (this *BSTIterator) Next() int {\n\n}\n\nfunc (this *BSTIterator) HasNext() bool {\n\n}",
+      "rust": "struct BSTIterator {}\n\nimpl BSTIterator {\n    fn new(root: Option<Rc<RefCell<TreeNode>>>) -> Self {\n\n    }\n\n    fn next(&mut self) -> i32 {\n\n    }\n\n    fn has_next(&self) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[7,3,15,null,null,9,20]",
+        "operations": "[next,next,hasNext,next,hasNext,next,hasNext,next,hasNext]",
+        "output": "[3,7,true,9,true,15,true,20,false]",
+        "explanation": "The iterator returns values in sorted inorder order."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[7,3,15,null,null,9,20]",
+        "operations": "[next,next,hasNext,next,hasNext,next,hasNext,next,hasNext]",
+        "expected_output": "[3,7,true,9,true,15,true,20,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "operations": "[hasNext,next,hasNext]",
+        "expected_output": "[true,1,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,1,3]",
+        "operations": "[next,next,next,hasNext]",
+        "expected_output": "[1,2,3,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,3,7,2,4,6,8]",
+        "operations": "[next,next,next,next,next,next,next,hasNext]",
+        "expected_output": "[2,3,4,5,6,7,8,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15]",
+        "operations": "[hasNext,next,next,next,hasNext]",
+        "expected_output": "[true,5,10,15,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "[50,30,70,20,40,60,80]",
+        "operations": "[next,next,next,next,next,next,next]",
+        "expected_output": "[20,30,40,50,60,70,80]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,2,6,1,3,5,7]",
+        "operations": "[next,next,next,next,next,next,next,hasNext]",
+        "expected_output": "[1,2,3,4,5,6,7,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100]",
+        "operations": "[next]",
+        "expected_output": "[100]",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,3,10,1,6,null,14,null,null,4,7,13]",
+        "operations": "[next,next,next,next,next,next,next,next,next]",
+        "expected_output": "[1,3,4,6,7,8,10,13,14]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "operations": "[next,next,next,next,hasNext]",
+        "expected_output": "[1,2,3,4,false]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,3,null,2,null,1]",
+        "operations": "[next,next,next,next]",
+        "expected_output": "[1,2,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[20,10,30,5,15,25,35]",
+        "operations": "[next,next,next,next,next,next,next]",
+        "expected_output": "[5,10,15,20,25,30,35]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,5,12,3,7,10,15]",
+        "operations": "[next,next,next,next,next,next,next]",
+        "expected_output": "[3,5,7,9,10,12,15]",
+        "is_hidden": true
+      },
+      {
+        "input": "[42]",
+        "operations": "[hasNext,next]",
+        "expected_output": "[true,42]",
+        "is_hidden": true
+      },
+      {
+        "input": "[6,2,8,0,4,7,9,3,5]",
+        "operations": "[next,next,next,next,next,next,next,next,next]",
+        "expected_output": "[0,2,3,4,5,6,7,8,9]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Inorder traversal of a BST produces values in sorted order.",
+      "You do not need to store the entire traversal result.",
+      "Maintain a stack containing the path to the next smallest node.",
+      "Whenever moving to a right subtree, push all left descendants."
+    ],
+    "explanation": "A BST iterator can be implemented using an iterative inorder traversal. Initially, push all left descendants of the root onto a stack. The top of the stack always contains the next smallest element. When next() is called, pop the top node and return its value. If the popped node has a right child, push that right child and all of its left descendants onto the stack. The hasNext() operation simply checks whether the stack is empty. Each node is pushed and popped at most once, resulting in O(1) amortized time per operation and O(h) space, where h is the height of the tree."
+  },
+  {
+    "slug": "shortest-path-in-binary-matrix",
+    "title": "Shortest Path in Binary Matrix",
+    "difficulty": "Medium",
+    "description": "Given an n x n binary matrix grid, return the length of the shortest clear path from the top-left cell (0,0) to the bottom-right cell (n-1,n-1). A clear path consists only of cells containing 0. You may move in any of the 8 directions: up, down, left, right, and the 4 diagonals. If no such path exists, return -1.",
+    "constraints": ["1 <= n <= 100", "grid[i][j] is either 0 or 1"],
+    "topics": ["Arrays", "Graphs"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function shortestPathBinaryMatrix(grid) {\n\n}",
+      "typescript": "function shortestPathBinaryMatrix(grid: number[][]): number {\n\n}",
+      "python": "def shortestPathBinaryMatrix(grid):\n    pass",
+      "java": "public class Solution {\n    public int shortestPathBinaryMatrix(int[][] grid) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {\n        \n    }\n};",
+      "go": "func shortestPathBinaryMatrix(grid [][]int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn shortest_path_binary_matrix(grid: Vec<Vec<i32>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[[0,1],[1,0]]",
+        "output": "2",
+        "explanation": "The shortest path is (0,0) → (1,1)."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[[0,1],[1,0]]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,0,0],[1,1,0],[1,1,0]]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1,0],[0,0]]",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0]]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[1]]",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "[[0,0],[0,0]]",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,1,0],[0,1,0],[0,0,0]]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0,1],[1,0,1],[1,0,0]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,1,1],[1,1,1],[1,1,0]]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0,0],[0,0,0],[0,0,0]]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,1,0,0],[0,1,0,1],[0,0,0,1],[1,1,0,0]]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0,1,1],[1,0,1,1],[1,0,0,0],[1,1,1,0]]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,1],[1,1]]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0,0,0],[1,1,1,0],[1,1,1,0],[1,1,1,0]]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[[0,0,0],[1,0,1],[1,0,0]]",
+        "expected_output": "3",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Think of each valid cell as a node in a graph.",
+      "Every move has equal cost.",
+      "BFS is ideal for finding the shortest path in an unweighted graph.",
+      "Remember that movement is allowed in 8 directions, not just 4."
+    ],
+    "explanation": "Model the matrix as a graph where every cell containing 0 represents a node. A node is connected to up to 8 neighboring cells. Since every move has the same cost, Breadth-First Search (BFS) guarantees that the first time the destination cell is reached, the shortest path has been found. Start BFS from (0,0), track visited cells, and process nodes level by level. The level number corresponds to the path length. If the destination cannot be reached, return -1. The algorithm runs in O(n²) time because each cell is visited at most once."
+  },
+  {
+    "slug": "longest-consecutive-sequence",
+    "title": "Longest Consecutive Sequence",
+    "difficulty": "Medium",
+    "description": "Given an unsorted integer array nums, return the length of the longest sequence of consecutive integers. The sequence elements do not need to appear consecutively in the array. You must design an algorithm that runs in O(n) time.",
+    "constraints": ["0 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["Arrays", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function longestConsecutive(nums) {\n\n}",
+      "typescript": "function longestConsecutive(nums: number[]): number {\n\n}",
+      "python": "def longestConsecutive(nums):\n    pass",
+      "java": "public class Solution {\n    public int longestConsecutive(int[] nums) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int longestConsecutive(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func longestConsecutive(nums []int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn longest_consecutive(nums: Vec<i32>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[100,4,200,1,3,2]",
+        "output": "4",
+        "explanation": "The longest consecutive sequence is [1,2,3,4], which has length 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[100,4,200,1,3,2]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,3,7,2,5,8,4,6,0,1]",
+        "expected_output": "9",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,0,1]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,12,3,55,30,4,11,2]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,1,4,7,3,-1,0,5,8,-1,6]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,9]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-3,-2,-1,0,1,2,3]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,51,52,100,101,102,103]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,7,6,5,4,3,2,1]",
+        "expected_output": "8",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,10,11,12,13,14]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,-1,1,2,-2,-3,3]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000,999,998,997,1,2,3]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,5,5,5,5]",
+        "expected_output": "1",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Fast lookup of numbers is important.",
+      "A HashSet can determine whether a number exists in O(1) time.",
+      "Only start counting a sequence from its smallest element.",
+      "A number is the start of a sequence if x - 1 does not exist."
+    ],
+    "explanation": "Store all numbers in a HashSet for O(1) lookups. For each number, check whether it is the start of a sequence by verifying that num - 1 does not exist in the set. If it is a starting point, repeatedly check for num + 1, num + 2, and so on to determine the sequence length. Track the maximum length found. Since each number is processed at most once as part of a sequence, the algorithm runs in O(n) time and O(n) extra space."
+  },
+  {
+    "slug": "evaluate-reverse-polish-notation",
+    "title": "Evaluate Reverse Polish Notation",
+    "difficulty": "Medium",
+    "description": "You are given an array of strings tokens representing an arithmetic expression in Reverse Polish Notation (RPN). Evaluate the expression and return the result. Valid operators are '+', '-', '*', and '/'. Division between two integers should truncate toward zero.",
+    "constraints": [
+      "1 <= tokens.length <= 10000",
+      "tokens[i] is either an operator or an integer in the range [-200, 200]",
+      "The input is always a valid RPN expression",
+      "There will not be any division by zero"
+    ],
+    "topics": ["Strings", "Stack"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function evalRPN(tokens) {\n\n}",
+      "typescript": "function evalRPN(tokens: string[]): number {\n\n}",
+      "python": "def evalRPN(tokens):\n    pass",
+      "java": "public class Solution {\n    public int evalRPN(String[] tokens) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int evalRPN(vector<string>& tokens) {\n        \n    }\n};",
+      "go": "func evalRPN(tokens []string) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn eval_rpn(tokens: Vec<String>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"2\",\"1\",\"+\",\"3\",\"*\"]",
+        "output": "9",
+        "explanation": "((2 + 1) * 3) = 9"
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"2\",\"1\",\"+\",\"3\",\"*\"]",
+        "expected_output": "9",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"4\",\"13\",\"5\",\"/\",\"+\"]",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"10\",\"6\",\"9\",\"3\",\"+\",\"-11\",\"*\",\"/\",\"*\",\"17\",\"+\",\"5\",\"+\"]",
+        "expected_output": "22",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"3\"]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"5\",\"1\",\"2\",\"+\",\"4\",\"*\",\"+\",\"3\",\"-\"]",
+        "expected_output": "14",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"2\",\"3\",\"+\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"8\",\"2\",\"/\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"7\",\"3\",\"-\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"5\",\"6\",\"*\"]",
+        "expected_output": "30",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"15\",\"7\",\"1\",\"1\",\"+\",\"-\",\"/\",\"3\",\"*\",\"2\",\"1\",\"1\",\"+\",\"+\",\"-\"]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"18\",\"4\",\"/\"]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"-4\",\"2\",\"/\"]",
+        "expected_output": "-2",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"2\",\"3\",\"4\",\"*\",\"+\"]",
+        "expected_output": "14",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"9\",\"3\",\"/\",\"2\",\"*\"]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"100\",\"20\",\"/\",\"5\",\"+\"]",
+        "expected_output": "10",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Operands appear before their operator.",
+      "A stack is ideal for storing intermediate values.",
+      "When an operator is encountered, pop the required operands.",
+      "Push the computed result back onto the stack."
+    ],
+    "explanation": "Reverse Polish Notation eliminates the need for parentheses because operators always appear after their operands. Traverse the tokens from left to right. If a token is a number, push it onto the stack. If it is an operator, pop the top two values, apply the operation in the correct order, and push the result back onto the stack. After processing all tokens, the stack contains exactly one value, which is the final answer. Each token is processed once, resulting in O(n) time complexity and O(n) auxiliary space."
+  },
+  {
+    "slug": "find-duplicate-subtrees",
+    "title": "Find Duplicate Subtrees",
+    "difficulty": "Hard",
+    "description": "Given the root of a binary tree, return all duplicate subtrees. For each kind of duplicate subtree, return the root node of any one of them. Two subtrees are considered duplicate if they have the same structure and node values.",
+    "constraints": ["1 <= number of nodes <= 10000", "-200 <= Node.val <= 200"],
+    "topics": ["Trees", "HashMap", "Strings"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findDuplicateSubtrees(root) {\n\n}",
+      "typescript": "function findDuplicateSubtrees(root: TreeNode | null): TreeNode[] {\n\n}",
+      "python": "def findDuplicateSubtrees(root):\n    pass",
+      "java": "public class Solution {\n    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {\n        \n    }\n};",
+      "go": "func findDuplicateSubtrees(root *TreeNode) []*TreeNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn find_duplicate_subtrees(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Option<Rc<RefCell<TreeNode>>>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,4,null,2,4,null,null,4]",
+        "output": "[2,4]",
+        "explanation": "There are two duplicate subtree patterns: the subtree rooted at value 4 and the subtree rooted at value 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,4,null,2,4,null,null,4]",
+        "expected_output": "[2,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,1,1]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,2,2,3,null,3,null]",
+        "expected_output": "[3,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,0,0,null,null,0]",
+        "expected_output": "[0]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,3,3,2,4,2,4]",
+        "expected_output": "[2,4,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,2,3,4,3,4]",
+        "expected_output": "[3,4,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,20,30,null,30,null]",
+        "expected_output": "[30,20]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7,7]",
+        "expected_output": "[7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,2,6,1,3,2,6,1,3]",
+        "expected_output": "[1,3,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,4,4,2,6,2,6]",
+        "expected_output": "[2,6,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,null,null,1]",
+        "expected_output": "[1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,30,20,40,20,40]",
+        "expected_output": "[20,40,30]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175]",
+        "expected_output": "[]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Two subtrees are identical if both their structure and values match.",
+      "Generate a unique representation for every subtree.",
+      "A postorder traversal naturally builds subtree representations.",
+      "Use a HashMap to count how many times each subtree representation appears."
+    ],
+    "explanation": "Perform a postorder traversal of the tree. For each node, create a serialization string that uniquely represents the subtree rooted at that node. A common format is: value,leftSubtree,rightSubtree. Store each serialization in a HashMap along with its frequency. Whenever a serialization is encountered for the second time, add the current subtree root to the answer. Postorder traversal ensures that the serializations of the left and right subtrees are available before processing the current node. This solution combines tree traversal, string serialization, and hashing to efficiently identify duplicate subtrees."
+  }
+]

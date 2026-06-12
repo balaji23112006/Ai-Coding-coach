@@ -26,21 +26,24 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
   let isTruncated = false;
   let finished = false;
 
-  // Start memory sampling at 50ms intervals
-  const intervalId = setInterval(async () => {
-    if (finished || !child.pid) {
-      clearInterval(intervalId);
-      return;
-    }
-    try {
-      const stats = await pidusage(child.pid);
-      if (stats.memory > maxMemory) {
-        maxMemory = stats.memory;
+  // Start memory sampling at 50ms intervals (only for local non-docker runs to avoid performance hit and useless docker CLI metrics)
+  let intervalId: NodeJS.Timeout | undefined;
+  if (command !== 'docker') {
+    intervalId = setInterval(async () => {
+      if (finished || !child.pid) {
+        if (intervalId) clearInterval(intervalId);
+        return;
       }
-    } catch {
-      // Process probably finished between checks
-    }
-  }, 50);
+      try {
+        const stats = await pidusage(child.pid);
+        if (stats.memory > maxMemory) {
+          maxMemory = stats.memory;
+        }
+      } catch {
+        // Process probably finished between checks
+      }
+    }, 50);
+  }
 
   // Set timeout monitor
   const timeoutId = setTimeout(() => {
@@ -84,9 +87,11 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
   return new Promise<CodeExecutionResult>((resolve) => {
     const cleanUp = () => {
       finished = true;
-      clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
       clearTimeout(timeoutId);
-      if (child.pid) {
+      if (child.pid && command !== 'docker') {
         try {
           pidusage.clear();
         } catch {
