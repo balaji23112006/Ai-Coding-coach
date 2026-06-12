@@ -7,6 +7,8 @@ import { auth } from './lib/auth.js';
 import authRoutes from './features/authentication/routes/auth.routes.js';
 import submissionRoutes from './features/submissions/routes/submission.routes.js';
 import problemRoutes from './features/problems/routes/problem.routes.js';
+import progressRoutes from './features/progress/routes/progress.routes.js';
+import mentorRoutes from './features/mentor/routes/mentor.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
@@ -20,25 +22,6 @@ const app = express();
 
 // Track Request IDs & logging context
 app.use(requestIdMiddleware);
-
-// Middleware to intercept and store JSON request/response payloads for monitoring
-app.use((req, res, next) => {
-  const path = req.path;
-  if (path === '/api/run' || path === '/api/submit') {
-    const originalJson = res.json;
-    res.json = function (body) {
-      executionLogs.push({
-        timestamp: new Date().toISOString(),
-        requestId: req.id,
-        type: path === '/api/run' ? 'run' : 'submit',
-        request: req.body,
-        response: body,
-      });
-      return originalJson.call(this, body);
-    };
-  }
-  next();
-});
 
 // Middlewares
 if (process.env.NODE_ENV === 'production') {
@@ -67,6 +50,80 @@ app.all('/api/auth/*', (req, res, next) => {
 });
 
 app.use(express.json());
+
+// Comprehensive Request/Response Logging Middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  const requestId = (req as any).id || '';
+  const originalJson = res.json;
+  const originalSend = res.send;
+
+  res.json = function (body) {
+    if (!(res as any)._logged) {
+      (res as any)._logged = true;
+      const duration = Date.now() - start;
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        requestId,
+        method: req.method,
+        url: req.originalUrl,
+        request: req.body,
+        response: body,
+        status: res.statusCode,
+        duration,
+      };
+
+      executionLogs.push(logEntry);
+      if (executionLogs.length > 500) {
+        executionLogs.shift();
+      }
+
+      console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
+      console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
+      console.log(`[HTTP Response Body]:`, JSON.stringify(body, null, 2));
+      console.log('----------------------------------------------------');
+    }
+    return originalJson.call(this, body);
+  };
+
+  res.send = function (body) {
+    if (!(res as any)._logged) {
+      (res as any)._logged = true;
+      const duration = Date.now() - start;
+      let parsedBody = body;
+      if (typeof body === 'string') {
+        try {
+          parsedBody = JSON.parse(body);
+        } catch {}
+      }
+
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        requestId,
+        method: req.method,
+        url: req.originalUrl,
+        request: req.body,
+        response: parsedBody,
+        status: res.statusCode,
+        duration,
+      };
+
+      executionLogs.push(logEntry);
+      if (executionLogs.length > 500) {
+        executionLogs.shift();
+      }
+
+      console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
+      console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
+      console.log(`[HTTP Response Body]:`, JSON.stringify(parsedBody, null, 2));
+      console.log('----------------------------------------------------');
+    }
+    return originalSend.call(this, body);
+  };
+
+  next();
+});
+
 app.use(morgan('dev'));
 
 // Mount custom auth routes
@@ -77,6 +134,12 @@ app.use('/api', submissionRoutes);
 
 // Mount problem & question bank routes
 app.use('/api', problemRoutes);
+
+// Mount user progress routes
+app.use('/api/progress', progressRoutes);
+
+// Mount AI mentor routes
+app.use('/api/mentor', mentorRoutes);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

@@ -107,6 +107,8 @@ model Submission {
   createdAt       DateTime         @default(now())
   userId          String?
   user            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  questionId      String?
+  question        Question?        @relation(fields: [questionId], references: [id], onDelete: SetNull)
 
   @@map("submission")
 }
@@ -129,6 +131,7 @@ model Question {
   updatedAt   DateTime        @updatedAt @map("updated_at")
   topics      QuestionTopic[]
   testCases   TestCase[]
+  submissions Submission[]
 
   @@map("questions")
 }
