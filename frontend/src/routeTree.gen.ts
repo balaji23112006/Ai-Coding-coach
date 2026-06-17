@@ -15,10 +15,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PublicHomeRouteImport } from './routes/_public/home'
 import { Route as AuthenticatedRoadmapRouteImport } from './routes/_authenticated/roadmap'
 import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated/progress'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedPracticeRouteImport } from './routes/_authenticated/practice'
+import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
-import { Route as AuthenticatedPracticeIndexRouteImport } from './routes/_authenticated/practice/index'
-import { Route as AuthenticatedPracticeSlugRouteImport } from './routes/_authenticated/practice/$slug'
+import { Route as AuthenticatedEditorProblemSlugRouteImport } from './routes/_authenticated/editor/$problemSlug'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -48,6 +50,22 @@ const AuthenticatedProgressRoute = AuthenticatedProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPracticeRoute = AuthenticatedPracticeRouteImport.update({
+  id: '/practice',
+  path: '/practice',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedLeaderboardRoute =
+  AuthenticatedLeaderboardRouteImport.update({
+    id: '/leaderboard',
+    path: '/leaderboard',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -58,37 +76,35 @@ const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
   path: '/auth/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedPracticeIndexRoute =
-  AuthenticatedPracticeIndexRouteImport.update({
-    id: '/practice/',
-    path: '/practice/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedPracticeSlugRoute =
-  AuthenticatedPracticeSlugRouteImport.update({
-    id: '/practice/$slug',
-    path: '/practice/$slug',
+const AuthenticatedEditorProblemSlugRoute =
+  AuthenticatedEditorProblemSlugRouteImport.update({
+    id: '/editor/$problemSlug',
+    path: '/editor/$problemSlug',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/practice': typeof AuthenticatedPracticeRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/home': typeof PublicHomeRoute
-  '/practice/$slug': typeof AuthenticatedPracticeSlugRoute
-  '/practice/': typeof AuthenticatedPracticeIndexRoute
+  '/editor/$problemSlug': typeof AuthenticatedEditorProblemSlugRoute
   '/auth/login/': typeof AuthLoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/practice': typeof AuthenticatedPracticeRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/roadmap': typeof AuthenticatedRoadmapRoute
   '/home': typeof PublicHomeRoute
-  '/practice/$slug': typeof AuthenticatedPracticeSlugRoute
-  '/practice': typeof AuthenticatedPracticeIndexRoute
+  '/editor/$problemSlug': typeof AuthenticatedEditorProblemSlugRoute
   '/auth/login': typeof AuthLoginIndexRoute
 }
 export interface FileRoutesById {
@@ -97,11 +113,13 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/_authenticated/practice': typeof AuthenticatedPracticeRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/progress': typeof AuthenticatedProgressRoute
   '/_authenticated/roadmap': typeof AuthenticatedRoadmapRoute
   '/_public/home': typeof PublicHomeRoute
-  '/_authenticated/practice/$slug': typeof AuthenticatedPracticeSlugRoute
-  '/_authenticated/practice/': typeof AuthenticatedPracticeIndexRoute
+  '/_authenticated/editor/$problemSlug': typeof AuthenticatedEditorProblemSlugRoute
   '/auth/login/': typeof AuthLoginIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,21 +127,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/leaderboard'
+    | '/practice'
+    | '/profile'
     | '/progress'
     | '/roadmap'
     | '/home'
-    | '/practice/$slug'
-    | '/practice/'
+    | '/editor/$problemSlug'
     | '/auth/login/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/leaderboard'
+    | '/practice'
+    | '/profile'
     | '/progress'
     | '/roadmap'
     | '/home'
-    | '/practice/$slug'
-    | '/practice'
+    | '/editor/$problemSlug'
     | '/auth/login'
   id:
     | '__root__'
@@ -131,11 +153,13 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_public'
     | '/_authenticated/dashboard'
+    | '/_authenticated/leaderboard'
+    | '/_authenticated/practice'
+    | '/_authenticated/profile'
     | '/_authenticated/progress'
     | '/_authenticated/roadmap'
     | '/_public/home'
-    | '/_authenticated/practice/$slug'
-    | '/_authenticated/practice/'
+    | '/_authenticated/editor/$problemSlug'
     | '/auth/login/'
   fileRoutesById: FileRoutesById
 }
@@ -190,6 +214,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProgressRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/practice': {
+      id: '/_authenticated/practice'
+      path: '/practice'
+      fullPath: '/practice'
+      preLoaderRoute: typeof AuthenticatedPracticeRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/leaderboard': {
+      id: '/_authenticated/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -204,18 +249,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/practice/': {
-      id: '/_authenticated/practice/'
-      path: '/practice'
-      fullPath: '/practice/'
-      preLoaderRoute: typeof AuthenticatedPracticeIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/practice/$slug': {
-      id: '/_authenticated/practice/$slug'
-      path: '/practice/$slug'
-      fullPath: '/practice/$slug'
-      preLoaderRoute: typeof AuthenticatedPracticeSlugRouteImport
+    '/_authenticated/editor/$problemSlug': {
+      id: '/_authenticated/editor/$problemSlug'
+      path: '/editor/$problemSlug'
+      fullPath: '/editor/$problemSlug'
+      preLoaderRoute: typeof AuthenticatedEditorProblemSlugRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
@@ -223,18 +261,22 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
+  AuthenticatedPracticeRoute: typeof AuthenticatedPracticeRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
   AuthenticatedRoadmapRoute: typeof AuthenticatedRoadmapRoute
-  AuthenticatedPracticeSlugRoute: typeof AuthenticatedPracticeSlugRoute
-  AuthenticatedPracticeIndexRoute: typeof AuthenticatedPracticeIndexRoute
+  AuthenticatedEditorProblemSlugRoute: typeof AuthenticatedEditorProblemSlugRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
+  AuthenticatedPracticeRoute: AuthenticatedPracticeRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedProgressRoute: AuthenticatedProgressRoute,
   AuthenticatedRoadmapRoute: AuthenticatedRoadmapRoute,
-  AuthenticatedPracticeSlugRoute: AuthenticatedPracticeSlugRoute,
-  AuthenticatedPracticeIndexRoute: AuthenticatedPracticeIndexRoute,
+  AuthenticatedEditorProblemSlugRoute: AuthenticatedEditorProblemSlugRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

@@ -153,6 +153,44 @@ export class AuthController {
       username: req.user.username,
       fullName: req.user.name,
       email: req.user.email,
+      bio: (req.user as any).bio || '',
+      role: (req.user as any).role || '',
+      language: (req.user as any).language || '',
+      createdAt: (req.user as any).createdAt || new Date().toISOString(),
     });
+  }
+
+  async updateProfile(req: Request, res: Response) {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized: Session missing' });
+    }
+
+    try {
+      const { fullName, bio, role, language } = req.body;
+
+      const updated = await authService.updateUser(req.user.id, {
+        fullName,
+        bio,
+        role,
+        language,
+      });
+
+      return res.status(200).json({
+        message: 'Profile updated successfully',
+        user: {
+          id: updated.id,
+          username: updated.username,
+          fullName: updated.fullName,
+          email: updated.email,
+          bio: updated.bio,
+          role: updated.role,
+          language: updated.language,
+          createdAt: updated.createdAt,
+        },
+      });
+    } catch (error) {
+      console.error('[Auth Controller] Update profile error:', error);
+      return res.status(500).json({ error: 'Internal server error updating profile' });
+    }
   }
 }

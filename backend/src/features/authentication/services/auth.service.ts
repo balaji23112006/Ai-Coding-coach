@@ -24,4 +24,11 @@ export class AuthService {
     }
     return user.email;
   }
+
+  async updateUser(userId: string, data: { fullName?: string; bio?: string; role?: string; language?: string }) {
+    return prisma.user.update({
+      where: { id: userId },
+      data,
+    });
+  }
 }

@@ -42,7 +42,8 @@ app.all('/api/auth/*', (req, res, next) => {
     path === '/api/auth/login' ||
     path === '/api/auth/logout' ||
     path === '/api/auth/session' ||
-    path === '/api/auth/me'
+    path === '/api/auth/me' ||
+    path === '/api/auth/profile'
   ) {
     return next();
   }

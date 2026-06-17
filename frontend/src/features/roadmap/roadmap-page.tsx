@@ -1,4 +1,4 @@
-import { useState, useRef, Suspense, useMemo } from 'react'
+import { useState, useEffect, useRef, Suspense, useMemo } from 'react'
 import { Link } from '@tanstack/react-router'
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -7,20 +7,13 @@ import * as THREE from 'three'
 import {
   Bot,
   CheckCircle2,
-  LayoutDashboard,
-  ListChecks,
   Lock,
-  Map as MapIcon,
-  Moon,
   PlayCircle,
-  Sun,
-  Target,
-  Trophy,
-  User,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { TopNavigation } from '@/components/common/top-navigation'
 
 // --- Extended Data with Stats (All Zeroed) ---
 export type NodeStatus = 'completed' | 'current' | 'locked'
@@ -64,14 +57,6 @@ const skillMastery = [
   { name: 'Graphs', progress: 0 },
   { name: 'Mixed Topics', progress: 0 },
   { name: 'Dynamic Programming', progress: 0 },
-]
-
-const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, active: false, to: '/dashboard' as const },
-  { label: 'Practice', icon: ListChecks, active: false },
-  { label: 'Roadmap', icon: MapIcon, active: true, to: '/roadmap' as const },
-  { label: 'Progress', icon: Target, active: false, to: '/progress' as const },
-  { label: 'Leaderboard', icon: Trophy, active: false },
 ]
 
 const codeSymbols = ['{ }', '</>', '0101', '=>', '[]', '()', '&&', '||', '!=', '++', 'return', 'const']
@@ -153,8 +138,31 @@ function CodingRoadmap3D({ isDark }: { isDark: boolean }) {
 export function RoadmapPage() {
   const [isDark, setIsDark] = useState(true)
   const [expandedNode, setExpandedNode] = useState<string | null>(null)
+  const [data, setData] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
   
+  useEffect(() => {
+    let active = true
+    fetch('/api/progress/roadmap')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch roadmap data')
+        return res.json()
+      })
+      .then(json => {
+        if (active && json.success) {
+          setData(json)
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching roadmap:', err)
+      })
+      .finally(() => {
+        if (active) setIsLoading(false)
+      })
+    return () => { active = false }
+  }, [])
+
   // Scroll Progress for the curved path
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -171,6 +179,38 @@ export function RoadmapPage() {
     ? 'rounded-2xl border border-white/[0.06] bg-[#120d20]/80 backdrop-blur-xl shadow-xl' 
     : 'rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-xl shadow-xl'
 
+  const nodes = data?.roadmapNodes || roadmapNodes
+  const mastery = data?.skillMastery || skillMastery
+  const overallCompletion = data?.stats?.overallCompletion ?? 0
+  const completedTopicsCount = data?.stats?.completedTopicsCount ?? 0
+  const totalProblemsSolved = data?.stats?.totalProblemsSolved ?? 0
+
+  // Calculate current stage title dynamically
+  const currentStageNode = nodes.find((n: any) => n.status === 'current')
+  const currentStageTitle = currentStageNode ? currentStageNode.title : 'All Mastered!'
+
+  // Dynamic AI coach advice
+  const coachAdviceTitle = overallCompletion === 0 
+    ? 'Start with the Basics.' 
+    : overallCompletion < 50 
+      ? 'Making steady progress!' 
+      : 'Tackling advanced topics!'
+  
+  const coachAdviceText = overallCompletion === 0
+    ? 'You are at the beginning of your journey. Solve foundational problems to start building your mastery score.'
+    : `You have completed ${completedTopicsCount} topics. Keep practicing to build confidence and unlock remaining modules.`
+
+  if (isLoading) {
+    return (
+      <div className={cn("min-h-screen flex items-center justify-center font-sans antialiased", themeClass)}>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-full border-4 border-violet-500 border-t-transparent animate-spin" />
+          <p className="text-sm font-bold tracking-wider text-violet-400">LOADING DYNAMIC ROADMAP...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={cn("min-h-screen overflow-x-hidden font-sans antialiased transition-all duration-500", themeClass)} ref={containerRef}>
       
@@ -185,55 +225,7 @@ export function RoadmapPage() {
       </div>
 
       {/* Top Navigation */}
-      <header className={cn("fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-all duration-500", isDark ? "border-white/[0.04] bg-[#09090b]/80" : "border-violet-600 bg-violet-400 shadow-md")}>
-        <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link className="flex items-center gap-3" to="/dashboard">
-            <span className={cn("flex h-8 w-8 items-center justify-center rounded-lg shadow-sm transition-transform hover:scale-105", isDark ? "bg-violet-600 text-white" : "bg-black text-white")}>
-              <MapIcon className="h-4 w-4" />
-            </span>
-            {/* Dark mode: White text. Light mode: Black text */}
-            <span className={cn("text-lg font-bold tracking-tight", isDark ? "text-white" : "text-black")}>Skill Lens</span>
-          </Link>
-          
-          <nav className={cn("hidden items-center gap-1 rounded-full p-1 xl:flex shadow-sm border transition-colors", isDark ? "bg-white/[0.02] border-white/[0.05]" : "bg-black/5 border-black/10")}>
-            {navItems.map((item) => {
-              const className = cn(
-                  'flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300',
-                  item.active
-                    ? isDark ? 'bg-white/[0.08] text-white' : 'bg-black/15 text-black shadow-sm'
-                    : isDark 
-                      ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]' 
-                      : 'text-black/70 hover:text-black hover:bg-black/5'
-                )
-              const content = (
-                <>
-                  <item.icon className="h-3.5 w-3.5" />
-                  {item.label}
-                </>
-              )
-
-              return item.to ? (
-                <Link className={className} key={item.label} to={item.to}>
-                  {content}
-                </Link>
-              ) : (
-                <button className={className} key={item.label} type="button">
-                  {content}
-                </button>
-              )
-            })}
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <button onClick={() => setIsDark(!isDark)} className={cn("p-2 rounded-full transition-colors", isDark ? "text-slate-400 hover:text-white hover:bg-white/10" : "text-black hover:bg-black/10")}>
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-            <button className={cn("flex items-center justify-center h-8 w-8 rounded-full transition", isDark ? "bg-violet-600 text-white" : "bg-black text-white")}>
-              <User className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <TopNavigation isDark={isDark} setIsDark={setIsDark} activeTab="roadmap" />
 
       {/* Main Content */}
       <main className="relative z-10 mx-auto max-w-[1400px] px-4 pt-36 pb-32 sm:px-6 lg:px-8">
@@ -245,7 +237,6 @@ export function RoadmapPage() {
           transition={{ duration: 1.5, ease: "easeOut" }}
           className="mb-16 text-center"
         >
-          {/* UPDATED: YOUR ROADMAP (Capitalized) */}
           <h1 className={cn("text-5xl md:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b", isDark ? "from-white via-slate-200 to-violet-400" : "from-slate-900 via-slate-700 to-violet-600")}>
             YOUR ROADMAP
           </h1>
@@ -284,7 +275,7 @@ export function RoadmapPage() {
             </div>
 
             <div className="space-y-28 relative z-10">
-              {roadmapNodes.map((node) => {
+              {nodes.map((node: any) => {
                 const isLeft = node.position === 'left'
                 const isLocked = node.status === 'locked'
                 const isCurrent = node.status === 'current'
@@ -293,7 +284,6 @@ export function RoadmapPage() {
                 return (
                   <motion.div 
                     key={node.id}
-                    // UPDATED SCROLL ANIMATION: once: false ensures it fades in and out scrolling up AND down
                     initial={{ opacity: 0, y: 60, scale: 0.95 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: false, amount: 0.3, margin: "0px 0px -100px 0px" }}
@@ -306,7 +296,7 @@ export function RoadmapPage() {
                       className={cn(
                         "w-full p-6 transition-all duration-500 cursor-pointer relative group",
                         panelClass,
-                        "hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(139,92,246,0.2)]", // Always hoverable
+                        "hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(139,92,246,0.2)]",
                         isLocked && !isExpanded ? "opacity-80" : "opacity-100", 
                         isCurrent && (isDark ? "ring-2 ring-violet-500 shadow-[0_0_20px_rgba(139,92,246,0.3)] bg-violet-500/10" : "ring-2 ring-violet-500 shadow-xl bg-violet-50"),
                         isExpanded && "ring-2 ring-cyan-400 z-20"
@@ -361,9 +351,11 @@ export function RoadmapPage() {
                                   <p className={cn("text-lg font-black", isDark ? "text-white" : "text-slate-900")}>{node.stats.timeSpent}</p>
                                 </div>
                               </div>
-                              <Button className="w-full mt-6 bg-violet-600 hover:bg-violet-500 text-white font-bold">
-                                {isLocked ? "View Prerequisites" : isCurrent ? "Continue Practice" : "Review Problems"}
-                              </Button>
+                              <Link to="/practice" className="w-full mt-6 block">
+                                <Button className="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold">
+                                  {isLocked ? "View Prerequisites" : isCurrent ? "Continue Practice" : "Review Problems"}
+                                </Button>
+                              </Link>
                             </div>
                           </motion.div>
                         )}
@@ -372,7 +364,7 @@ export function RoadmapPage() {
 
                     {/* The Center Node Dot */}
                     <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center w-8 h-8 rounded-full border-4 z-20 transition-transform hover:scale-125 cursor-pointer"
-                         style={{ backgroundColor: isDark ? '#0d081e' : '#f8fafc', borderColor: isDark ? '#0d081e' : '#f8fafc' }}>
+                         style={{ backgroundColor: isDark ? '#0d081e' : '#f8fafc', borderColor: isDark ? '#0d081e' : '#f8fafc' } as React.CSSProperties}>
                       <div className={cn(
                         "w-full h-full rounded-full transition-colors duration-500",
                         isLocked ? (isDark ? "bg-slate-700" : "bg-slate-300") : "bg-violet-500 shadow-[0_0_15px_rgba(139,92,246,1)]"
@@ -402,21 +394,21 @@ export function RoadmapPage() {
             >
               <h2 className={cn("text-xs font-black uppercase tracking-widest mb-6", isDark ? "text-slate-400" : "text-slate-500")}>Progress Overview</h2>
               <div className="flex items-baseline gap-2 mb-6">
-                <span className={cn("text-6xl font-black", isDark ? "text-white" : "text-slate-900")}>0%</span>
+                <span className={cn("text-6xl font-black", isDark ? "text-white" : "text-slate-900")}>{overallCompletion}%</span>
                 <span className={cn("text-sm font-bold uppercase", isDark ? "text-slate-500" : "text-slate-500")}>Overall</span>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
                   <span className={isDark ? "text-slate-400 font-medium" : "text-slate-600 font-medium"}>Topics Completed</span>
-                  <span className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>0 / {roadmapNodes.length}</span>
+                  <span className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>{completedTopicsCount} / {nodes.length}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className={isDark ? "text-slate-400 font-medium" : "text-slate-600 font-medium"}>Problems Solved</span>
-                  <span className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>0</span>
+                  <span className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>{totalProblemsSolved}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className={isDark ? "text-slate-400 font-medium" : "text-slate-600 font-medium"}>Current Stage</span>
-                  <span className="font-bold text-violet-500">Programming Basics</span>
+                  <span className="font-bold text-violet-500">{currentStageTitle}</span>
                 </div>
               </div>
             </motion.div>
@@ -441,13 +433,15 @@ export function RoadmapPage() {
                 </div>
                 <h2 className={cn("text-xs font-black uppercase tracking-widest", isDark ? "text-cyan-400" : "text-blue-700")}>AI Coach Advice</h2>
               </div>
-              <p className={cn("text-xl font-bold mb-3", isDark ? "text-white" : "text-slate-900")}>Start with the Basics.</p>
+              <p className={cn("text-xl font-bold mb-3", isDark ? "text-white" : "text-slate-900")}>{coachAdviceTitle}</p>
               <p className={cn("text-sm font-medium leading-relaxed mb-6", isDark ? "text-slate-400" : "text-slate-600")}>
-                You are at the beginning of your journey. Solve foundational problems to start building your mastery score.
+                {coachAdviceText}
               </p>
-              <Button className="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black tracking-wide">
-                View Recommended Problems
-              </Button>
+              <Link to="/practice" className="w-full block">
+                <Button className="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black tracking-wide">
+                  View Recommended Problems
+                </Button>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -465,7 +459,7 @@ export function RoadmapPage() {
             >
               <h2 className={cn("text-xs font-black uppercase tracking-widest mb-6", isDark ? "text-slate-400" : "text-slate-500")}>Skill Mastery</h2>
               <div className="space-y-5">
-                {skillMastery.map((skill) => (
+                {mastery.map((skill: any) => (
                   <div key={skill.name}>
                     <div className="flex justify-between text-xs font-bold mb-2">
                       <span className={isDark ? "text-slate-200" : "text-slate-800"}>{skill.name}</span>
@@ -474,8 +468,7 @@ export function RoadmapPage() {
                     <div className={cn("h-2 w-full rounded-full overflow-hidden", isDark ? "bg-white/10" : "bg-slate-200")}>
                       <motion.div 
                         initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.progress}%` }}
-                        viewport={{ once: true }}
+                        animate={{ width: `${skill.progress}%` }}
                         transition={{ duration: 1, ease: "easeOut" }}
                         className="h-full bg-gradient-to-r from-violet-500 to-cyan-400 rounded-full" 
                       />

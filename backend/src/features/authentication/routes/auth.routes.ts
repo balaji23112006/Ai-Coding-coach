@@ -11,5 +11,6 @@ router.post('/login', controller.login.bind(controller));
 router.post('/logout', controller.logout.bind(controller));
 router.get('/session', controller.session.bind(controller));
 router.get('/me', authMiddleware, controller.me.bind(controller));
+router.put('/profile', authMiddleware, controller.updateProfile.bind(controller));
 
 export default router;

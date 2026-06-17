@@ -1,5 +1,5 @@
-import { createFileRoute, Outlet, useRouterState, useNavigate } from '@tanstack/react-router'
-import { AnimatePresence, motion } from 'framer-motion'
+import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
+import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { useAuth } from '@/features/authentication'
 
@@ -10,15 +10,12 @@ export const Route = createFileRoute('/_authenticated')({
 function AuthenticatedLayout() {
   const { isAuthenticated, isLoading } = useAuth()
   const navigate = useNavigate()
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  })
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       void navigate({
         to: '/auth/login',
-        search: { redirect: window.location.href },
+        search: { redirect: window.location.href } as Record<string, string>,
       })
     }
   }, [isLoading, isAuthenticated, navigate])
@@ -34,7 +31,7 @@ function AuthenticatedLayout() {
         <motion.p
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="mt-6 text-sm font-bold uppercase tracking-widest text-violet-400"
+          className="mt-6 text-sm font-bold uppercase tracking-widest text-violet-400 animate-pulse"
         >
           Securing Environment...
         </motion.p>
@@ -47,18 +44,13 @@ function AuthenticatedLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
-          initial={{ opacity: 0, y: 14, filter: 'blur(4px)' }}
-          key={pathname}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <Outlet />
-        </motion.div>
-      </AnimatePresence>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070510] text-slate-100">
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.24),_transparent_46%),radial-gradient(ellipse_at_bottom_right,_rgba(6,182,212,0.12),_transparent_42%),linear-gradient(180deg,#0d081e_0%,#070510_100%)]" />
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] [background-size:44px_44px]" />
+      <div className="relative z-10 min-h-screen">
+        <Outlet />
+      </div>
     </div>
   )
 }
+

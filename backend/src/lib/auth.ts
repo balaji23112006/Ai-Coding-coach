@@ -16,6 +16,18 @@ export const auth = betterAuth({
         type: 'string',
         required: true,
       },
+      bio: {
+        type: 'string',
+        required: false,
+      },
+      role: {
+        type: 'string',
+        required: false,
+      },
+      language: {
+        type: 'string',
+        required: false,
+      },
     },
   },
   emailAndPassword: {

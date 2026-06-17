@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --font-sans: "Geist Variable", sans-serif;
+    --font-sans: 'Geist Variable', sans-serif;
     --font-heading: var(--font-sans);
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -40,7 +40,7 @@
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --sidebar-ring: oklch(0.708 0 0)
   }
   .dark {
     --background: oklch(0.145 0 0);
@@ -73,17 +73,21 @@
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --sidebar-ring: oklch(0.556 0 0)
   }
   * {
     @apply border-border;
     outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
   }
-
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#070510] text-foreground;
   }
   html {
     @apply font-sans;
+    background: #070510;
+  }
+  #root {
+    min-height: 100vh;
+    background: #070510;
   }
 }

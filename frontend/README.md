@@ -1,46 +1,5 @@
 # 🎯 AI Coding Practice Coach - Frontend
 
-## Project Overview
-
-AI Coding Practice Coach is an intelligent coding  platform that combines problem-solving, real-time code execution, AI-powered mentoring, and personalized learning recommendations. The platform helps users improve their programming skills through guided practice, automated evaluation, and targeted feedback tailored to their learning progress.
-
-## Target Users
-
-- Students preparing for coding interviews.
-- Developers improving problem-solving skills.
-- Competitive programming beginners.
-- University students learning Data Structures and Algorithms.
-
-## Core Features
-
-### Feature 1: Coding Question Repository
-Users can solve curated coding problems categorized by topic, difficulty, and learning objectives.
-
-### Feature 2: Integrated Code Editor & Execution Engine
-Users can write, execute, and validate solutions against predefined test cases directly within the platform.
-
-### Feature 3: AI-Powered Mentoring & Hint Generation
-The Mentor Agent provides contextual hints, explanations, and learning guidance based on evaluation results, attempt history, and learner profile without revealing complete solutions.
-
-### Feature 4: Personalized Learning & Recommendations
-The Profile & Skill Agent tracks learner progress, identifies strengths and weaknesses, and recommends targeted practice questions.
-
-### Feature 5: Solution Evaluation & Interview Readiness
-The Evaluation Agent analyzes correctness, complexity, code quality, and edge-case handling, then generates interview-style follow-up questions to strengthen understanding.
-
-## AI Agents
-
-### Mentor Agent
-Provides contextual hints and explanations without revealing complete solutions.
-
-### Evaluation Agent
-Analyzes correctness, complexity, code quality, and edge-case handling.
-
-### Profile & Skill Agent
-Tracks learner progress and identifies knowledge gaps.
-
-### Recommendation Agent
-Suggests personalized practice problems based on performance trends.
 
 ---
 
@@ -76,6 +35,15 @@ Suggests personalized practice problems based on performance trends.
 
 * Recharts — Business dashboards and analytics
 * Apache ECharts — Advanced visualizations
+
+### 3D & Motion
+
+* Three.js — 3D scene primitives, meshes, materials, and animation math
+* React Three Fiber — React renderer for Three.js scenes inside feature pages
+* Drei — Helper components such as `Float`, `Sphere`, `Text`, and `Stars`
+* Framer Motion — Smooth page transitions, reveal animations, and interactive UI motion
+
+The app uses Three.js-powered animated backgrounds across the main authenticated pages, including Dashboard, Practice, Roadmap, Progress, Leaderboard, and Profile Analysis. These scenes render through `<Canvas>` from React Three Fiber and use `useFrame` for continuous animation, mouse-parallax movement, rotating wireframes, floating code symbols, stars, and trophy/analytics themed visual effects.
 
 ### Code Quality
 
