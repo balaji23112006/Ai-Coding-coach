@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from '@tanstack/react-router';
-import { ArrowLeft, BrainCircuit } from 'lucide-react';
+import { ArrowLeft, BrainCircuit, GripHorizontal, GripVertical } from 'lucide-react';
 
 import { ActionButtons } from '../components/action-buttons';
 import { CodeEditor } from '../components/code-editor';
@@ -122,6 +122,12 @@ export function EditorPage() {
 
 function EditorWorkspace({ problem }: { problem: Problem }) {
   const navigate = useNavigate();
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const centerRef = useRef<HTMLDivElement>(null);
+  const [leftWidth, setLeftWidth] = useState(() => Number(window.sessionStorage.getItem('skill-lens:editor:left-width')) || 38);
+  const [bottomHeight, setBottomHeight] = useState(() => Number(window.sessionStorage.getItem('skill-lens:editor:bottom-height')) || 260);
+  const [leftCollapsed, setLeftCollapsed] = useState(false);
+  const [bottomCollapsed, setBottomCollapsed] = useState(false);
 
   const {
     selectedLanguage,
@@ -177,6 +183,74 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     mentor.requestHint(getMentorTrigger());
   };
 
+  useEffect(() => {
+    window.sessionStorage.setItem('skill-lens:editor:left-width', String(leftWidth));
+  }, [leftWidth]);
+
+  useEffect(() => {
+    window.sessionStorage.setItem('skill-lens:editor:bottom-height', String(bottomHeight));
+  }, [bottomHeight]);
+
+  useEffect(() => {
+    if (submitResult?.status !== 'Accepted') return;
+
+    const key = 'skill-lens:practice:solved-problems';
+    let solvedIds: string[] = [];
+    try {
+      solvedIds = JSON.parse(window.localStorage.getItem(key) || '[]') as string[];
+    } catch {
+      solvedIds = [];
+    }
+
+    const next = solvedIds.includes(problem.id) ? solvedIds : [...solvedIds, problem.id];
+    window.localStorage.setItem(key, JSON.stringify(next));
+    window.dispatchEvent(new CustomEvent('skill-lens:practice-progress-updated', {
+      detail: { problemId: problem.id, solvedQuestionIds: next },
+    }));
+    window.dispatchEvent(new CustomEvent('skill-lens:dashboard-refresh-requested', {
+      detail: { problemId: problem.id },
+    }));
+    window.dispatchEvent(new CustomEvent('skill-lens:leaderboard-refresh-requested', {
+      detail: { problemId: problem.id },
+    }));
+  }, [problem.id, submitResult?.id, submitResult?.status]);
+
+  const startHorizontalResize = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const bounds = workspaceRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+
+    const move = (moveEvent: MouseEvent) => {
+      const next = ((moveEvent.clientX - bounds.left) / bounds.width) * 100;
+      setLeftCollapsed(false);
+      setLeftWidth(Math.min(58, Math.max(26, next)));
+    };
+    const stop = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', stop);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', stop);
+  };
+
+  const startVerticalResize = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const bounds = centerRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+
+    const move = (moveEvent: MouseEvent) => {
+      const next = bounds.bottom - moveEvent.clientY;
+      setBottomCollapsed(false);
+      setBottomHeight(Math.min(430, Math.max(180, next)));
+    };
+    const stop = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', stop);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', stop);
+  };
+
   return (
     <main className="flex h-screen flex-col overflow-hidden bg-[#070a13] text-white antialiased">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(148,163,184,0.06),_transparent_40%),radial-gradient(circle_at_70%_70%,_rgba(147,197,253,0.06),_transparent_40%)]" />
@@ -226,21 +300,36 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
         </div>
       </header>
 
-      <div className="relative z-10 flex min-h-0 flex-1 gap-2 overflow-hidden p-2">
+      <div ref={workspaceRef} className="relative z-10 flex min-h-0 flex-1 overflow-hidden p-2">
         {/* Left Panel — Problem Description */}
-        <div className="flex h-full w-full flex-col overflow-hidden rounded-2xl md:w-[38%]">
-          <LeftPanel
-            problem={problem}
-            submissionHistory={submissionHistory}
-            latestSubmission={submitResult}
-            stats={stats}
-            loadSubmittedCode={handleCodeChange}
-          />
+        <div
+          className="flex h-full flex-col overflow-hidden rounded-l-2xl transition-[width] duration-150"
+          style={{ width: leftCollapsed ? 0 : `${leftWidth}%` }}
+        >
+          {!leftCollapsed && (
+            <LeftPanel
+              problem={problem}
+              submissionHistory={submissionHistory}
+              latestSubmission={submitResult}
+              stats={stats}
+              loadSubmittedCode={handleCodeChange}
+            />
+          )}
         </div>
+
+        <button
+          onMouseDown={startHorizontalResize}
+          onClick={() => setLeftCollapsed(prev => !prev)}
+          title="Drag to resize problem panel. Click to collapse or expand."
+          className="mx-1 flex w-2 cursor-col-resize items-center justify-center rounded bg-slate-900/80 text-slate-600 transition hover:bg-slate-800 hover:text-amber-400"
+        >
+          <GripVertical className="h-4 w-4" />
+        </button>
 
         {/* Center — Code Editor + Console */}
         <div
-          className={`flex flex-col gap-2 overflow-hidden md:h-full transition-all duration-300 ${
+          ref={centerRef}
+          className={`flex min-w-0 flex-col overflow-hidden md:h-full transition-all duration-300 ${
             mentor.isOpen ? 'w-full md:w-[37%]' : 'w-full md:w-[62%]'
           }`}
         >
@@ -254,29 +343,52 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
             </div>
           </div>
 
-          <div className="flex h-[260px] shrink-0 flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/20 backdrop-blur-xl">
+          <button
+            onMouseDown={startVerticalResize}
+            onClick={() => setBottomCollapsed(prev => !prev)}
+            title="Drag to resize terminal. Click to collapse or expand."
+            className="my-1 flex h-2 cursor-row-resize items-center justify-center rounded bg-slate-900/80 text-slate-600 transition hover:bg-slate-800 hover:text-amber-400"
+          >
+            <GripHorizontal className="h-4 w-4" />
+          </button>
+
+          <div
+            className="flex shrink-0 flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-950/20 backdrop-blur-xl transition-[height] duration-150"
+            style={{ height: bottomCollapsed ? 42 : bottomHeight }}
+          >
             <div className="flex-1 overflow-hidden">
-              <OutputConsole
-                activeTab={activeConsoleTab}
-                setActiveTab={setActiveConsoleTab}
-                runResult={runResult}
-                submitResult={submitResult}
+              {bottomCollapsed ? (
+                <div className="flex h-full items-center justify-between px-4 text-xs text-slate-500">
+                  <span>Terminal collapsed</span>
+                  <button onClick={() => setBottomCollapsed(false)} className="text-amber-400 hover:text-amber-300">
+                    Expand
+                  </button>
+                </div>
+              ) : (
+                <OutputConsole
+                  activeTab={activeConsoleTab}
+                  setActiveTab={setActiveConsoleTab}
+                  runResult={runResult}
+                  submitResult={submitResult}
+                  isRunning={isRunning}
+                  isSubmitting={isSubmitting}
+                  examples={problem.examples}
+                  problem={problem}
+                  submissionHistory={submissionHistory}
+                />
+              )}
+            </div>
+            {!bottomCollapsed && (
+              <ActionButtons
                 isRunning={isRunning}
                 isSubmitting={isSubmitting}
-                examples={problem.examples}
-                problem={problem}
-                submissionHistory={submissionHistory}
+                onRun={runCode}
+                onSubmit={submitCode}
+                onReset={resetCode}
+                isCoachOpen={mentor.isOpen}
+                onToggleCoach={mentor.toggleOpen}
               />
-            </div>
-            <ActionButtons
-              isRunning={isRunning}
-              isSubmitting={isSubmitting}
-              onRun={runCode}
-              onSubmit={submitCode}
-              onReset={resetCode}
-              isCoachOpen={mentor.isOpen}
-              onToggleCoach={mentor.toggleOpen}
-            />
+            )}
           </div>
         </div>
 

@@ -13,6 +13,7 @@
 import Groq from 'groq-sdk';
 import dotenv from 'dotenv';
 import { logger } from '../../shared/utils/logger.js';
+import { traceLLMCall } from '../../observability/langfuse.js';
 
 dotenv.config();
 
@@ -47,17 +48,48 @@ export async function groqChat(params: {
   const model = 'llama-3.3-70b-versatile';
   logger.info(`[Groq] Calling ${model} (temp=${params.temperature ?? 0.3})`);
 
-  const response = await groq.chat.completions.create({
+  return traceLLMCall<string>({
+    traceName: 'mentor-agent.groq',
+    generationName: 'groq-chat-completion',
+    provider: 'groq',
     model,
-    messages: [
-      { role: 'system', content: params.systemPrompt },
-      { role: 'user', content: params.userMessage },
-    ],
-    temperature: params.temperature ?? 0.3,
-    max_tokens: params.maxTokens ?? 400,
-  });
+    input: {
+      systemPrompt: params.systemPrompt,
+      userMessage: params.userMessage,
+    },
+    modelParameters: {
+      temperature: params.temperature ?? 0.3,
+      maxTokens: params.maxTokens ?? 400,
+    },
+    call: async () => {
+      const response = await groq.chat.completions.create({
+        model,
+        messages: [
+          { role: 'system', content: params.systemPrompt },
+          { role: 'user', content: params.userMessage },
+        ],
+        temperature: params.temperature ?? 0.3,
+        max_tokens: params.maxTokens ?? 400,
+      });
 
-  const text = response.choices[0]?.message?.content || '';
-  logger.info(`[Groq] Response received (${text.length} chars)`);
-  return text;
+      const text = response.choices[0]?.message?.content || '';
+      logger.info(`[Groq] Response received (${text.length} chars)`);
+
+      return {
+        output: text,
+        raw: {
+          id: response.id,
+          created: response.created,
+          usage: response.usage,
+        },
+        usage: response.usage
+          ? {
+              input: response.usage.prompt_tokens,
+              output: response.usage.completion_tokens,
+              total: response.usage.total_tokens,
+            }
+          : undefined,
+      };
+    },
+  });
 }

@@ -14,6 +14,7 @@ import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
 
 import { executionLogs } from './shared/utils/executionLogger.js';
+import { traceApiResponse } from './observability/langfuse.js';
 
 // Perform startup check for Docker availability
 checkDockerAvailability();
@@ -58,6 +59,13 @@ app.use((req, res, next) => {
   const requestId = (req as any).id || '';
   const originalJson = res.json;
   const originalSend = res.send;
+  const shouldTraceApiResponse = () => {
+    return (
+      req.originalUrl.startsWith('/api/mentor') ||
+      req.originalUrl === '/api/run' ||
+      req.originalUrl === '/api/submit'
+    );
+  };
 
   res.json = function (body) {
     if (!(res as any)._logged) {
@@ -83,6 +91,22 @@ app.use((req, res, next) => {
       console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
       console.log(`[HTTP Response Body]:`, JSON.stringify(body, null, 2));
       console.log('----------------------------------------------------');
+
+      if (shouldTraceApiResponse()) {
+        void traceApiResponse({
+          name: `api-response ${req.method} ${req.originalUrl}`,
+          input: req.body,
+          output: body,
+          statusCode: res.statusCode,
+          durationMs: duration,
+          userId: (req as any).user?.id,
+          metadata: {
+            method: req.method,
+            url: req.originalUrl,
+            requestId,
+          },
+        });
+      }
     }
     return originalJson.call(this, body);
   };
@@ -118,6 +142,22 @@ app.use((req, res, next) => {
       console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
       console.log(`[HTTP Response Body]:`, JSON.stringify(parsedBody, null, 2));
       console.log('----------------------------------------------------');
+
+      if (shouldTraceApiResponse()) {
+        void traceApiResponse({
+          name: `api-response ${req.method} ${req.originalUrl}`,
+          input: req.body,
+          output: parsedBody,
+          statusCode: res.statusCode,
+          durationMs: duration,
+          userId: (req as any).user?.id,
+          metadata: {
+            method: req.method,
+            url: req.originalUrl,
+            requestId,
+          },
+        });
+      }
     }
     return originalSend.call(this, body);
   };

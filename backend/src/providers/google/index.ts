@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
+import { traceLLMCall } from '../../observability/langfuse.js';
 
 dotenv.config();
 
@@ -45,37 +46,66 @@ export async function geminiChat(params: {
     // Use REST API directly with Bearer token (for AQ. / ya29. OAuth tokens)
     for (const modelName of MODEL_CANDIDATES) {
       try {
-        const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
+        return await traceLLMCall<string>({
+          traceName: 'mentor-agent.gemini',
+          generationName: 'gemini-generate-content',
+          provider: 'gemini',
+          model: modelName,
+          input: {
+            systemPrompt: params.systemPrompt,
+            userMessage: params.userMessage,
           },
-          body: JSON.stringify({
-            system_instruction: { parts: [{ text: params.systemPrompt }] },
-            contents: [{ role: 'user', parts: [{ text: params.userMessage }] }],
-            generationConfig: {
-              temperature: params.temperature ?? 0.3,
-              maxOutputTokens: params.maxTokens ?? 400,
-            },
-          }),
+          modelParameters: {
+            temperature: params.temperature ?? 0.3,
+            maxOutputTokens: params.maxTokens ?? 400,
+          },
+          call: async () => {
+            const url = `https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent`;
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+              },
+              body: JSON.stringify({
+                system_instruction: { parts: [{ text: params.systemPrompt }] },
+                contents: [{ role: 'user', parts: [{ text: params.userMessage }] }],
+                generationConfig: {
+                  temperature: params.temperature ?? 0.3,
+                  maxOutputTokens: params.maxTokens ?? 400,
+                },
+              }),
+            });
+
+            if (response.status === 404) throw new Error('MODEL_NOT_FOUND');
+
+            if (!response.ok) {
+              const errText = await response.text();
+              if (errText.includes('not found') || errText.includes('PERMISSION_DENIED')) {
+                throw new Error('MODEL_NOT_FOUND');
+              }
+              throw new Error(`Gemini API ${response.status}: ${errText}`);
+            }
+
+            const data = await response.json() as any;
+            return {
+              output: data?.candidates?.[0]?.content?.parts?.[0]?.text || '',
+              raw: {
+                usageMetadata: data?.usageMetadata,
+                finishReason: data?.candidates?.[0]?.finishReason,
+              },
+              usage: data?.usageMetadata
+                ? {
+                    input: data.usageMetadata.promptTokenCount,
+                    output: data.usageMetadata.candidatesTokenCount,
+                    total: data.usageMetadata.totalTokenCount,
+                  }
+                : undefined,
+            };
+          },
         });
-
-        if (response.status === 404) continue; // Try next model
-
-        if (!response.ok) {
-          const errText = await response.text();
-          // Check if it's a model-not-found error
-          if (errText.includes('not found') || errText.includes('PERMISSION_DENIED')) {
-            continue;
-          }
-          throw new Error(`Gemini API ${response.status}: ${errText}`);
-        }
-
-        const data = await response.json() as any;
-        return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
       } catch (e: any) {
+        if (e?.message === 'MODEL_NOT_FOUND') continue;
         if (isNotFoundError(e)) continue;
         throw e;
       }
@@ -86,17 +116,47 @@ export async function geminiChat(params: {
   // Standard SDK path for AIza... API keys
   for (const modelName of MODEL_CANDIDATES) {
     try {
-      const model = genAI.getGenerativeModel({
+      return await traceLLMCall<string>({
+        traceName: 'mentor-agent.gemini',
+        generationName: 'gemini-generate-content',
+        provider: 'gemini',
         model: modelName,
-        generationConfig: {
+        input: {
+          systemPrompt: params.systemPrompt,
+          userMessage: params.userMessage,
+        },
+        modelParameters: {
           temperature: params.temperature ?? 0.3,
           maxOutputTokens: params.maxTokens ?? 400,
         },
-        systemInstruction: params.systemPrompt,
-      });
+        call: async () => {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            generationConfig: {
+              temperature: params.temperature ?? 0.3,
+              maxOutputTokens: params.maxTokens ?? 400,
+            },
+            systemInstruction: params.systemPrompt,
+          });
 
-      const result = await model.generateContent(params.userMessage);
-      return result.response.text();
+          const result = await model.generateContent(params.userMessage);
+          const response = result.response as any;
+          return {
+            output: result.response.text(),
+            raw: {
+              usageMetadata: response?.usageMetadata,
+              finishReason: response?.candidates?.[0]?.finishReason,
+            },
+            usage: response?.usageMetadata
+              ? {
+                  input: response.usageMetadata.promptTokenCount,
+                  output: response.usageMetadata.candidatesTokenCount,
+                  total: response.usageMetadata.totalTokenCount,
+                }
+              : undefined,
+          };
+        },
+      });
     } catch (e: any) {
       if (isNotFoundError(e)) continue;
       throw e;

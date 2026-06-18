@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import { executionLogs } from './shared/utils/executionLogger.js';
+import { flushLangfuse } from './observability/langfuse.js';
 
 dotenv.config();
 
@@ -25,10 +26,10 @@ server.on('error', (err: any) => {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('[Server] SIGTERM received, shutting down...');
-  server.close(() => {
+  void flushLangfuse().finally(() => server.close(() => {
     console.log('[Server] Closed main server');
     process.exit(0);
-  });
+  }));
 });
 
 // Spin up a logs server on a separate port for viewing request/response payloads in JSON format

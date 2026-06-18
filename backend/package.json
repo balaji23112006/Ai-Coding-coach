@@ -17,6 +17,7 @@
     "@google/generative-ai": "^0.24.1",
     "@langchain/core": "^0.2.0",
     "@langchain/langgraph": "^0.2.0",
+    "@langfuse/tracing": "^5.4.1",
     "@prisma/client": "^5.14.0",
     "better-auth": "^1.0.0",
     "cors": "^2.8.5",

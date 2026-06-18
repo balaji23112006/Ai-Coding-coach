@@ -7,6 +7,7 @@
 
 import dotenv from 'dotenv';
 import { logger } from '../../shared/utils/logger.js';
+import { traceLLMCall } from '../../observability/langfuse.js';
 
 dotenv.config();
 
@@ -42,31 +43,62 @@ export async function openaiChat(params: {
 
   logger.info(`[OpenAI] Calling ${model} (temp=${params.temperature ?? 0.3})`);
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
+  return traceLLMCall<string>({
+    traceName: 'mentor-agent.openai',
+    generationName: 'openai-chat-completion',
+    provider: 'openai',
+    model,
+    input: {
+      systemPrompt: params.systemPrompt,
+      userMessage: params.userMessage,
     },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: 'system', content: params.systemPrompt },
-        { role: 'user', content: params.userMessage },
-      ],
+    modelParameters: {
       temperature: params.temperature ?? 0.3,
-      max_tokens: params.maxTokens ?? 400,
-    }),
+      maxTokens: params.maxTokens ?? 400,
+    },
+    call: async () => {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: params.systemPrompt },
+            { role: 'user', content: params.userMessage },
+          ],
+          temperature: params.temperature ?? 0.3,
+          max_tokens: params.maxTokens ?? 400,
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`OpenAI API ${response.status}: ${errText}`);
+      }
+
+      const data = (await response.json()) as any;
+      const text: string = data?.choices?.[0]?.message?.content || '';
+
+      logger.info(`[OpenAI] Response received (${text.length} chars)`);
+
+      return {
+        output: text,
+        raw: {
+          id: data?.id,
+          created: data?.created,
+          usage: data?.usage,
+        },
+        usage: data?.usage
+          ? {
+              input: data.usage.prompt_tokens,
+              output: data.usage.completion_tokens,
+              total: data.usage.total_tokens,
+            }
+          : undefined,
+      };
+    },
   });
-
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`OpenAI API ${response.status}: ${errText}`);
-  }
-
-  const data = (await response.json()) as any;
-  const text: string = data?.choices?.[0]?.message?.content || '';
-
-  logger.info(`[OpenAI] Response received (${text.length} chars)`);
-  return text;
 }
