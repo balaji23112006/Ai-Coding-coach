@@ -6,7 +6,7 @@
 
 export type ErrorCategory = 'syntax' | 'logic' | 'timeout' | 'request';
 
-export type HintLevel = 1 | 2 | 3 | 4;
+export type HintLevel = 1 | 2 | 3 | 4 | 5;
 
 export interface HintRecord {
   id: string;

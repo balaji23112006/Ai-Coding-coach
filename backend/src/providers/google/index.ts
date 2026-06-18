@@ -41,6 +41,8 @@ export async function geminiChat(params: {
   userMessage: string;
   temperature?: number;
   maxTokens?: number;
+  userId?: string;
+  sessionId?: string;
 }): Promise<string> {
   if (isOAuthToken) {
     // Use REST API directly with Bearer token (for AQ. / ya29. OAuth tokens)

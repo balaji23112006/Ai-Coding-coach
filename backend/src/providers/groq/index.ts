@@ -40,6 +40,8 @@ export async function groqChat(params: {
   userMessage: string;
   temperature?: number;
   maxTokens?: number;
+  userId?: string;
+  sessionId?: string;
 }): Promise<string> {
   if (!isGroqConfigured()) {
     throw new Error('GROQ_API_KEY is not configured (must start with gsk_)');
@@ -53,6 +55,8 @@ export async function groqChat(params: {
     generationName: 'groq-chat-completion',
     provider: 'groq',
     model,
+    userId: params.userId,
+    sessionId: params.sessionId,
     input: {
       systemPrompt: params.systemPrompt,
       userMessage: params.userMessage,

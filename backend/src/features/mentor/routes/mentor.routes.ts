@@ -3,6 +3,9 @@ import { groq } from '../../../providers/groq/index.js';
 import { openaiChat, isOpenAIConfigured } from '../../../providers/openai/index.js';
 import { runMentorAgent } from '../../../ai/mentor-agent/index.js';
 import { logger } from '../../../shared/utils/logger.js';
+import { authMiddleware } from '../../../middlewares/auth.middleware.js';
+import { auth } from '../../../lib/auth.js';
+import { fromNodeHeaders } from 'better-auth/node';
 
 const router = Router();
 
@@ -32,8 +35,22 @@ const router = Router();
  *   { mentorFeedback: string, hintMetadata: { category, level, targetedConcept } }
  */
 router.post('/hint', async (req, res, next) => {
+  // Optional auth middleware extraction inline
   try {
-    const result = await runMentorAgent(req.body);
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    }).catch(() => null);
+    if (session) {
+      (req as any).user = session.user;
+    }
+  } catch {}
+
+  try {
+    const userId = (req as any).user?.id;
+    const result = await runMentorAgent({
+      ...req.body,
+      userId: req.body.userId || userId,
+    });
     return res.status(200).json(result);
   } catch (err) {
     logger.error('[MentorRoutes] /hint failed:', err);

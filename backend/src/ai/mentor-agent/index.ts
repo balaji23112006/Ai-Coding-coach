@@ -129,7 +129,14 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     userMessage += `Student: ${buildTriggerMessage(request)}`;
   }
 
-  const llmParams = { systemPrompt, userMessage, temperature: 0.3, maxTokens: 350 };
+  const llmParams = {
+    systemPrompt,
+    userMessage,
+    temperature: 0.3,
+    maxTokens: 350,
+    userId,
+    sessionId: questionId,
+  };
 
   // ── 1. Groq (FREE – primary) ───────────────────────────────────────────────
   if (!mentorFeedback && isGroqConfigured()) {

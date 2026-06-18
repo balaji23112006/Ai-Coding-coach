@@ -34,6 +34,8 @@ export async function openaiChat(params: {
   userMessage: string;
   temperature?: number;
   maxTokens?: number;
+  userId?: string;
+  sessionId?: string;
 }): Promise<string> {
   if (!isOpenAIConfigured()) {
     throw new Error('OPENAI_API_KEY is not configured');
@@ -48,6 +50,8 @@ export async function openaiChat(params: {
     generationName: 'openai-chat-completion',
     provider: 'openai',
     model,
+    userId: params.userId,
+    sessionId: params.sessionId,
     input: {
       systemPrompt: params.systemPrompt,
       userMessage: params.userMessage,

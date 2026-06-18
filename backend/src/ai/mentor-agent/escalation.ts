@@ -25,9 +25,9 @@ export function determineHintLevel(hintHistory: HintRecord[]): HintLevel {
 
   if (count === 0) return 1;
   if (count === 1) return 2;
-  if (count >= 2) return 3;
-
-  return 1;
+  if (count === 2) return 3;
+  if (count === 3) return 4;
+  return 5;
 }
 
 /**
@@ -54,19 +54,28 @@ Example style: "Look closely at line X where you compare arr[i] with arr[i+1]. D
 
     case 3:
       return `
-HINT LEVEL 3 – PSEUDOCODE / DRY RUN:
+HINT LEVEL 3 – ALGORITHMIC DIRECTION:
+- Explain the algorithmic direction or step-by-step logic required.
+- Do NOT write pseudocode or code syntax.
+- Focus on the logic transition or state change.
+- End with a question.
+Example style: "We want to check if a complement exists. If we store elements in a set as we iterate, we can check for the complement of the current element in O(1) time. How would you structure this check inside your loop?"`;
+
+    case 4:
+      return `
+HINT LEVEL 4 – PSEUDOCODE:
 - You may provide high-level pseudocode or a step-by-step dry run example.
 - Show the APPROACH, not the actual code syntax.
 - Do NOT write a working code solution.
 - Use comments or English-like pseudocode only.
 Example style: "Try thinking through it like this:\n  for each element:\n    check if complement exists in seen set\n  This avoids the nested loop. Can you implement this idea?"`;
 
-    case 4:
+    case 5:
       return `
-HINT LEVEL 4 – GUARDRAIL ACTIVE:
-- You have already given multiple hints.
-- Be encouraging but firm: do NOT provide the complete solution.
-- Redirect the student to review their approach from the first hint.`;
+HINT LEVEL 5 – COMMON MISTAKES AND EDGE CASES:
+- Highlight typical pitfalls (e.g. integer overflows, empty inputs, single element lists, floating-point precision, off-by-one errors) relative to this topic.
+- Help the student identify if their current code is missing an edge case.
+- Do NOT write a working code solution.`;
 
     default:
       return '';

@@ -139,18 +139,72 @@ const testCases = [
     expected: ${tc.expectedOutput}
   }`).join(',\n  ')}
 ];
+
+function isNumeric(val) {
+  return typeof val === 'number' && !isNaN(val);
+}
+
+function approxEqual(a, b, tolerance = 1e-6) {
+  if (isNumeric(a) && isNumeric(b)) {
+    return Math.abs(a - b) <= tolerance;
+  }
+  return false;
+}
+
+function normalizeVal(val) {
+  if (typeof val === 'string') {
+    return val.replace(/\\r\\n/g, '\\n').trim().replace(/[ \\t]+/g, ' ');
+  }
+  if (Array.isArray(val)) {
+    return val.map(normalizeVal);
+  }
+  if (val && typeof val === 'object') {
+    const res = {};
+    for (const k of Object.keys(val)) {
+      res[k] = normalizeVal(val[k]);
+    }
+    return res;
+  }
+  return val;
+}
+
+function compareOutputs(actual, expected) {
+  if (isNumeric(actual) && isNumeric(expected)) {
+    return approxEqual(actual, expected);
+  }
+  const normActual = normalizeVal(actual);
+  const normExpected = normalizeVal(expected);
+  
+  if (isNumeric(normActual) && isNumeric(normExpected)) {
+    return approxEqual(Number(normActual), Number(normExpected));
+  }
+
+  // Recursive deep comparison with tolerance
+  const isObjA = normActual && typeof normActual === 'object';
+  const isObjB = normExpected && typeof normExpected === 'object';
+  if (isObjA && isObjB) {
+    const keysA = Object.keys(normActual);
+    const keysB = Object.keys(normExpected);
+    if (keysA.length !== keysB.length) return false;
+    for (const key of keysA) {
+      if (!compareOutputs(normActual[key], normExpected[key])) return false;
+    }
+    return true;
+  }
+  
+  return JSON.stringify(normActual) === JSON.stringify(normExpected);
+}
+
 let passed = 0;
 let details = [];
 for (let i = 0; i < testCases.length; i++) {
   const tc = testCases[i];
   try {
     const result = ${functionName}(...tc.input);
-    const resultJson = JSON.stringify(result);
-    const expectedJson = JSON.stringify(tc.expected);
-    if (resultJson === expectedJson) {
+    if (compareOutputs(result, tc.expected)) {
       passed++;
     } else {
-      details.push(\`Test case \${i} failed. Expected \${expectedJson}, got \${resultJson}\`);
+      details.push(\`Test case \${i} failed. Expected \${JSON.stringify(tc.expected)}, got \${JSON.stringify(result)}\`);
     }
   } catch (e) {
     details.push(\`Test case \${i} threw error: \${e.message}\`);
@@ -179,17 +233,62 @@ test_cases = [
     "expected": ${tc.expectedOutput}
   }`).join(',\n  ')}
 ]
+
+def is_numeric(val):
+    return isinstance(val, (int, float))
+
+def approx_equal(a, b, tolerance=1e-6):
+    if is_numeric(a) and is_numeric(b):
+        return abs(a - b) <= tolerance
+    return False
+
+def normalize_val(val):
+    if isinstance(val, str):
+        return " ".join(val.replace("\\r\\n", "\\n").strip().split())
+    if isinstance(val, list):
+        return [normalize_val(x) for x in val]
+    if isinstance(val, dict):
+        return {k: normalize_val(v) for k, v in val.items()}
+    return val
+
+def compare_outputs(actual, expected):
+    if is_numeric(actual) and is_numeric(expected):
+        return approx_equal(actual, expected)
+    norm_actual = normalize_val(actual)
+    norm_expected = normalize_val(expected)
+    
+    try:
+        if isinstance(norm_actual, str) and isinstance(norm_expected, str):
+            return approx_equal(float(norm_actual), float(norm_expected))
+    except ValueError:
+        pass
+
+    if isinstance(norm_actual, list) and isinstance(norm_expected, list):
+        if len(norm_actual) != len(norm_expected):
+            return False
+        return all(compare_outputs(a, b) for a, b in zip(norm_actual, norm_expected))
+
+    if isinstance(norm_actual, dict) and isinstance(norm_expected, dict):
+        if len(norm_actual) != len(norm_expected):
+            return False
+        for k in norm_actual:
+            if k not in norm_expected:
+                return False
+            if not compare_outputs(norm_actual[k], norm_expected[k]):
+                return False
+        return True
+
+    return json.dumps(norm_actual, sort_keys=True) == json.dumps(norm_expected, sort_keys=True)
+
 passed = 0
 details = []
 for i, tc in enumerate(test_cases):
     try:
         result = ${functionName}(*tc["input"])
-        result_json = json.dumps(result, separators=(',', ':'))
-        expected_json = json.dumps(tc["expected"], separators=(',', ':'))
-        if result_json == expected_json:
+        if compare_outputs(result, tc["expected"]):
             passed += 1
         else:
-            details.append(f"Test case {i} failed. Expected {expected_json}, got {result_json}")
+            details.append(f"Test case {i} failed. Expected {json.dumps(tc['expected'])}, got {json.dumps(result)}")
     except Exception as e:
         details.append(f"Test case {i} threw error: {str(e)}")
 
