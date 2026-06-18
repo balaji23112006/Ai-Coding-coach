@@ -117,6 +117,25 @@ export function useCodeEditor(
       const result = await submissionService.submitCode(problemId, selectedLanguage, currentCode);
       setSubmitResult(result);
       setSubmissionHistory(prev => [result, ...prev]);
+
+      // Map submission result → ExecutionResult so OutputConsole can display it
+      const executionResult: ExecutionResult = {
+        status:
+          result.status === 'Accepted'
+            ? 'Success'
+            : result.status === 'Compile Error'
+              ? 'Compile Error'
+              : result.status === 'Runtime Error'
+                ? 'Runtime Error'
+                : 'Wrong Answer',
+        stderr: result.stderr,
+        stdout: result.stdout,
+        runtime: result.runtime,
+        memory: result.memory,
+        passedCount: result.passedCount,
+        totalCount: result.totalCount,
+      };
+      setRunResult(executionResult);
     } catch (err) {
       const errResult: Submission = {
         id: crypto.randomUUID(),
@@ -129,6 +148,12 @@ export function useCodeEditor(
       };
       setSubmitResult(errResult);
       setSubmissionHistory(prev => [errResult, ...prev]);
+      setRunResult({
+        status: 'Runtime Error',
+        stderr: errResult.stderr,
+        runtime: 0,
+        memory: 0,
+      });
     } finally {
       setIsSubmitting(false);
     }

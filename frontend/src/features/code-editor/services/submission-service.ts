@@ -38,12 +38,16 @@ const draftStorageKey = (problemId: string, language: SupportedLanguage) => {
   return `skill-lens:code-editor:draft:${problemId}:${language}`;
 };
 
-function mapBackendStatusToRunResult(status: string): 'Success' | 'Compile Error' | 'Runtime Error' | 'Wrong Answer' {
+function mapBackendStatusToRunResult(
+  status: string,
+): 'Success' | 'Compile Error' | 'Runtime Error' | 'Wrong Answer' | 'Time Limit Exceeded' {
   switch (status) {
     case 'ACCEPTED':
       return 'Success';
     case 'FAILED':
       return 'Wrong Answer';
+    case 'TIMEOUT':
+      return 'Time Limit Exceeded';
     case 'COMPILATION_ERROR':
       return 'Compile Error';
     case 'RUNTIME_ERROR':
@@ -68,13 +72,22 @@ function mapBackendStatusToFrontend(status: string): 'Accepted' | 'Wrong Answer'
   }
 }
 
+function parseTestCounts(stdout: string): Pick<Submission, 'passedCount' | 'totalCount'> {
+  const passedMatch = stdout.match(/PASSED:\s*(\d+)/);
+  const totalMatch = stdout.match(/TOTAL:\s*(\d+)/);
+
+  return {
+    passedCount: passedMatch ? parseInt(passedMatch[1], 10) : undefined,
+    totalCount: totalMatch ? parseInt(totalMatch[1], 10) : undefined,
+  };
+}
+
 export const submissionService = {
   runCode: async (
     problemId: string,
     language: SupportedLanguage,
     code: string,
   ): Promise<ExecutionResult> => {
-    void problemId;
     const res = await fetch('/api/run', {
       method: 'POST',
       headers: {
@@ -83,6 +96,7 @@ export const submissionService = {
       body: JSON.stringify({
         language,
         sourceCode: code,
+        questionId: problemId,
       }),
     });
     if (!res.ok) {
@@ -90,12 +104,14 @@ export const submissionService = {
       throw new Error(errText || 'Failed to run code');
     }
     const data = await res.json();
+    const stdout: string = data.stdout || '';
     return {
       status: mapBackendStatusToRunResult(data.status),
-      stdout: data.stdout || '',
+      stdout,
       stderr: data.stderr || '',
       runtime: data.executionTime || 0,
       memory: data.memoryUsed ? Math.round(data.memoryUsed / 1024 / 1024) : 0,
+      ...parseTestCounts(stdout),
     };
   },
 
@@ -120,6 +136,8 @@ export const submissionService = {
       throw new Error(errText || 'Failed to submit code');
     }
     const data = await res.json();
+    const stdout: string = data.stdout || '';
+
     return {
       id: data.submissionId,
       problemId,
@@ -127,13 +145,43 @@ export const submissionService = {
       code,
       status: mapBackendStatusToFrontend(data.status),
       submittedAt: new Date().toISOString(),
+      stdout,
       runtime: data.executionTime || 0,
       memory: data.memoryUsed ? Math.round(data.memoryUsed / 1024 / 1024) : 0,
+      ...parseTestCounts(stdout),
+      stderr: data.stderr || undefined,
     };
   },
 
   getSubmissions: async (problemId?: string): Promise<SubmissionHistoryResponse> => {
-    void problemId;
+    if (problemId) {
+      try {
+        const res = await fetch(`/api/submissions/${problemId}`);
+        if (res.ok) {
+          const data = await res.json();
+          return {
+            submissions: (data.submissions || []).map((submission: any) => ({
+              id: submission.id,
+              problemId: submission.questionId || problemId,
+              language: String(submission.language || 'javascript').toLowerCase(),
+              code: submission.sourceCode || '',
+              status: mapBackendStatusToFrontend(submission.status),
+              submittedAt: submission.createdAt || new Date().toISOString(),
+              stdout: submission.stdout || '',
+              stderr: submission.stderr || undefined,
+              runtime: submission.executionTime || 0,
+              memory: submission.memoryUsed ? Math.round(submission.memoryUsed / 1024 / 1024) : 0,
+              ...parseTestCounts(submission.stdout || ''),
+            })),
+            userStats: data.userStats,
+            globalStats: data.globalStats,
+          };
+        }
+      } catch {
+        // Fall through to the fast empty state when the backend endpoint is unavailable.
+      }
+    }
+
     return {
       submissions: [],
       userStats: {

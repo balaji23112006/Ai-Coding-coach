@@ -10,45 +10,131 @@ import { NotFoundError } from '../../../shared/errors/custom.errors.js';
 import { prisma } from '../../../database/prisma.js';
 import { logger } from '../../../shared/utils/logger.js';
 
+type QuestionWithTestCases = {
+  id: string;
+  testCases: Array<{
+    input: string;
+    expectedOutput: string;
+    isHidden: boolean;
+  }>;
+};
+
+type TestExecution = {
+  result: CodeExecutionResult;
+  question: QuestionWithTestCases | null;
+  hasTestCases: boolean;
+};
+
 export class SubmissionService {
   async runCode(input: RunCodeInput): Promise<CodeExecutionResult> {
-    return codeExecutionService.execute({
-      language: input.language,
-      sourceCode: input.sourceCode,
-    });
+    const execution = await this.executeWithQuestionTests(input, false);
+    return execution.result;
   }
 
   async submitCode(input: SubmitCodeInput) {
-    let finalCode = input.sourceCode;
-    let hasTestCases = false;
-    let questionObj: any = null;
+    const execution = await this.executeWithQuestionTests(input, true);
+    const { result, question, hasTestCases } = execution;
 
-    if (input.questionId) {
-      questionObj = await prisma.question.findUnique({
-        where: { id: input.questionId },
-        include: { testCases: true },
+    const createData: any = {
+      language: mapStringToLanguage(input.language),
+      status: result.status,
+      sourceCode: input.sourceCode,
+      stdout: result.stdout,
+      stderr: result.stderr,
+      executionTime: result.executionTime,
+      memoryUsed: result.memoryUsed,
+      outputTruncated: result.outputTruncated,
+    };
+
+    if (input.userId) {
+      const userExists = await prisma.user.findUnique({
+        where: { id: input.userId },
       });
-      if (questionObj && questionObj.testCases.length > 0) {
-        hasTestCases = true;
+      if (userExists) {
+        createData.user = { connect: { id: input.userId } };
+      } else {
+        logger.warn(
+          `UserId "${input.userId}" not found in database. Storing submission anonymously.`,
+        );
       }
     }
 
-    if (hasTestCases && questionObj) {
-      let functionName = '';
-      if (input.language === 'javascript') {
-        const match = input.sourceCode.match(/function\s+([a-zA-Z0-9_]+)\s*\(/);
-        if (match) functionName = match[1];
-      } else if (input.language === 'python') {
-        const match = input.sourceCode.match(/def\s+([a-zA-Z0-9_]+)\s*\(/);
-        if (match) functionName = match[1];
-      }
+    if (input.questionId && question) {
+      createData.question = { connect: { id: input.questionId } };
+    }
 
-      if (functionName) {
-        if (input.language === 'javascript') {
-          const jsDriver = `
+    if (input.questionId && !question) {
+      logger.warn(`QuestionId "${input.questionId}" not found. Saving submission without question relation.`);
+    }
+
+    const submission = await submissionRepository.create(createData);
+
+    return {
+      submissionId: submission.id,
+      status: submission.status,
+      executionTime: submission.executionTime,
+      memoryUsed: submission.memoryUsed,
+      stdout: submission.stdout,
+      stderr: submission.stderr,
+      hasTestCases,
+    };
+  }
+
+  private async executeWithQuestionTests(
+    input: Pick<SubmitCodeInput, 'language' | 'sourceCode' | 'questionId'>,
+    includeHiddenTests: boolean,
+  ): Promise<TestExecution> {
+    const question = await this.findQuestionWithTests(input.questionId);
+    const testCases = question?.testCases.filter(tc => includeHiddenTests || !tc.isHidden) ?? [];
+    const hasTestCases = testCases.length > 0;
+    const finalCode = hasTestCases
+      ? this.buildCodeWithTestDriver(input.language, input.sourceCode, testCases)
+      : input.sourceCode;
+
+    const result = await codeExecutionService.execute({
+      language: input.language,
+      sourceCode: finalCode,
+    });
+
+    if (hasTestCases && result.status === 'ACCEPTED' && !result.stdout.includes('ALL_TESTS_PASSED')) {
+      result.status = 'FAILED';
+      result.success = false;
+    }
+
+    return { result, question, hasTestCases };
+  }
+
+  private async findQuestionWithTests(questionId?: string | null): Promise<QuestionWithTestCases | null> {
+    if (!questionId) return null;
+
+    return prisma.question.findUnique({
+      where: { id: questionId },
+      select: {
+        id: true,
+        testCases: {
+          select: {
+            input: true,
+            expectedOutput: true,
+            isHidden: true,
+          },
+        },
+      },
+    });
+  }
+
+  private buildCodeWithTestDriver(
+    language: string,
+    sourceCode: string,
+    testCases: QuestionWithTestCases['testCases'],
+  ): string {
+    const functionName = this.extractFunctionName(language, sourceCode);
+    if (!functionName) return sourceCode;
+
+    if (language === 'javascript' || language === 'typescript') {
+      const jsDriver = `
 // --- TEST RUNNER DRIVER ---
 const testCases = [
-  ${questionObj.testCases.map((tc: any) => `{
+  ${testCases.map(tc => `{
     input: [${tc.input}],
     expected: ${tc.expectedOutput}
   }`).join(',\n  ')}
@@ -79,14 +165,16 @@ if (passed === testCases.length) {
   details.forEach(d => console.log(d));
 }
 `;
-          finalCode = input.sourceCode + '\n' + jsDriver;
-        } else if (input.language === 'python') {
-          const pyDriver = `
+      return sourceCode + '\n' + jsDriver;
+    }
+
+    if (language === 'python') {
+      const pyDriver = `
 # --- TEST RUNNER DRIVER ---
 import json
 
 test_cases = [
-  ${questionObj.testCases.map((tc: any) => `{
+  ${testCases.map(tc => `{
     "input": [${tc.input}],
     "expected": ${tc.expectedOutput}
   }`).join(',\n  ')}
@@ -114,59 +202,20 @@ else:
     for d in details:
         print(d)
 `;
-          finalCode = input.sourceCode + '\n' + pyDriver;
-        }
-      }
+      return sourceCode + '\n' + pyDriver;
     }
 
-    const result = await codeExecutionService.execute({
-      language: input.language,
-      sourceCode: finalCode,
-    });
+    return sourceCode;
+  }
 
-    let submissionStatus = result.status;
-    if (hasTestCases && submissionStatus === 'ACCEPTED') {
-      if (!result.stdout || !result.stdout.includes('ALL_TESTS_PASSED')) {
-        submissionStatus = 'FAILED';
-      }
+  private extractFunctionName(language: string, sourceCode: string): string {
+    if (language === 'javascript' || language === 'typescript') {
+      return sourceCode.match(/function\s+([a-zA-Z0-9_]+)\s*\(/)?.[1] ?? '';
     }
-
-    const createData: any = {
-      language: mapStringToLanguage(input.language),
-      status: submissionStatus,
-      sourceCode: input.sourceCode, // save original clean user code
-      stdout: result.stdout,
-      stderr: result.stderr,
-      executionTime: result.executionTime,
-      memoryUsed: result.memoryUsed,
-      outputTruncated: result.outputTruncated,
-    };
-
-    if (input.userId) {
-      const userExists = await prisma.user.findUnique({
-        where: { id: input.userId },
-      });
-      if (userExists) {
-        createData.user = { connect: { id: input.userId } };
-      } else {
-        logger.warn(
-          `UserId "${input.userId}" not found in database. Storing submission anonymously.`,
-        );
-      }
+    if (language === 'python') {
+      return sourceCode.match(/def\s+([a-zA-Z0-9_]+)\s*\(/)?.[1] ?? '';
     }
-
-    if (input.questionId && questionObj) {
-      createData.question = { connect: { id: input.questionId } };
-    }
-
-    const submission = await submissionRepository.create(createData);
-
-    return {
-      submissionId: submission.id,
-      status: submission.status,
-      executionTime: submission.executionTime,
-      memoryUsed: submission.memoryUsed,
-    };
+    return '';
   }
 
   async getSubmission(id: string): Promise<Submission> {
@@ -175,6 +224,62 @@ else:
       throw new NotFoundError(`Submission with ID ${id} not found`);
     }
     return submission;
+  }
+
+  async getSubmissionHistory(questionId: string, userId?: string) {
+    const submissions = await prisma.submission.findMany({
+      where: {
+        questionId,
+        ...(userId && { userId }),
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+
+    const userSubmissions = userId
+      ? submissions.filter(s => s.userId === userId)
+      : [];
+    const allSubmissions = await prisma.submission.findMany({
+      where: { questionId },
+    });
+
+    const acceptedCount = userSubmissions.filter(s => s.status === 'ACCEPTED').length;
+    const totalAttempts = userSubmissions.length;
+    const avgRuntime = userSubmissions.length > 0
+      ? Math.round(userSubmissions.reduce((sum, s) => sum + s.executionTime, 0) / userSubmissions.length)
+      : null;
+    const bestRuntime = userSubmissions.length > 0
+      ? Math.min(...userSubmissions.map(s => s.executionTime))
+      : null;
+    const avgMemory = userSubmissions.length > 0
+      ? Math.round(userSubmissions.reduce((sum, s) => sum + s.memoryUsed, 0) / userSubmissions.length)
+      : null;
+    const bestMemory = userSubmissions.length > 0
+      ? Math.min(...userSubmissions.map(s => s.memoryUsed))
+      : null;
+
+    const allAccepted = allSubmissions.filter(s => s.status === 'ACCEPTED').length;
+    const acceptanceRate = allSubmissions.length > 0
+      ? Math.round((allAccepted / allSubmissions.length) * 100)
+      : 0;
+
+    return {
+      submissions: submissions.slice(0, 10),
+      userStats: {
+        attempts: totalAttempts,
+        acceptedCount,
+        bestRuntime,
+        avgRuntime,
+        bestMemory,
+        avgMemory,
+        lowestMemory: bestMemory,
+      },
+      globalStats: {
+        totalCount: allSubmissions.length,
+        acceptedCount: allAccepted,
+        acceptanceRate,
+      },
+    };
   }
 }
 

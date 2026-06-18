@@ -6,8 +6,10 @@ import { ActionButtons } from '../components/action-buttons';
 import { CodeEditor } from '../components/code-editor';
 import { LanguageSelector } from '../components/language-selector';
 import { LeftPanel } from '../components/left-panel';
+import { MentorPanel } from '../components/mentor-panel';
 import { OutputConsole } from '../components/output-console';
 import { useCodeEditor } from '../hooks/use-code-editor';
+import { useMentor } from '../hooks/use-mentor';
 import type { Problem } from '../types/editor-types';
 
 function mapBackendToEditorProblem(q: any): Problem {
@@ -139,6 +141,42 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     setActiveConsoleTab,
   } = useCodeEditor(problem.id, problem.templates);
 
+  const mentor = useMentor({
+    problemId: problem.id,
+    problemTitle: problem.title,
+    currentCode,
+    language: selectedLanguage,
+    executionResult: runResult,
+  });
+
+  // Auto-prompt mentor when submission fails or has errors
+  useEffect(() => {
+    if (!runResult || isRunning || isSubmitting) return;
+
+    const isFailure =
+      runResult.status === 'Runtime Error' ||
+      runResult.status === 'Compile Error' ||
+      runResult.status === 'Wrong Answer';
+
+    if (isFailure && !mentor.isLoading) {
+      // Show a subtle prompt without auto-opening
+      // User can click "Ask Mentor" if they want guidance
+    }
+  }, [runResult, isRunning, isSubmitting, mentor.isLoading]);
+
+  // Map runResult status to mentor trigger event
+  const getMentorTrigger = (): Parameters<typeof mentor.requestHint>[0] => {
+    if (!runResult) return 'hint_request';
+    if (runResult.status === 'Compile Error') return 'compile_error';
+    if (runResult.status === 'Runtime Error') return 'runtime_error';
+    if (runResult.status === 'Wrong Answer') return 'test_fail';
+    return 'hint_request';
+  };
+
+  const handleRequestHint = () => {
+    mentor.requestHint(getMentorTrigger());
+  };
+
   return (
     <main className="flex h-screen flex-col overflow-hidden bg-[#070a13] text-white antialiased">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(148,163,184,0.06),_transparent_40%),radial-gradient(circle_at_70%_70%,_rgba(147,197,253,0.06),_transparent_40%)]" />
@@ -161,13 +199,35 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
           </div>
         </div>
 
-        <LanguageSelector
-          selectedLanguage={selectedLanguage}
-          onLanguageChange={handleLanguageChange}
-        />
+        <div className="flex items-center gap-3">
+          {/* Mentor Toggle Button */}
+          <button
+            id="mentor-toggle-btn"
+            onClick={mentor.toggleOpen}
+            className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition ${
+              mentor.isOpen
+                ? 'border-amber-500/50 bg-amber-500/15 text-amber-400'
+                : 'border-slate-800 bg-slate-900/20 text-slate-400 hover:border-amber-500/30 hover:text-amber-400'
+            }`}
+          >
+            <BrainCircuit className="h-3 w-3" />
+            <span>Mentor AI</span>
+            {mentor.messages.length > 0 && (
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-[8px] font-black text-slate-950">
+                {mentor.messages.filter(m => m.role === 'mentor').length}
+              </span>
+            )}
+          </button>
+
+          <LanguageSelector
+            selectedLanguage={selectedLanguage}
+            onLanguageChange={handleLanguageChange}
+          />
+        </div>
       </header>
 
       <div className="relative z-10 flex min-h-0 flex-1 gap-2 overflow-hidden p-2">
+        {/* Left Panel — Problem Description */}
         <div className="flex h-full w-full flex-col overflow-hidden rounded-2xl md:w-[38%]">
           <LeftPanel
             problem={problem}
@@ -178,7 +238,12 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
           />
         </div>
 
-        <div className="flex w-full flex-col gap-2 overflow-hidden md:h-full md:w-[62%]">
+        {/* Center — Code Editor + Console */}
+        <div
+          className={`flex flex-col gap-2 overflow-hidden md:h-full transition-all duration-300 ${
+            mentor.isOpen ? 'w-full md:w-[37%]' : 'w-full md:w-[62%]'
+          }`}
+        >
           <div className="relative min-h-0 flex-1">
             <div className="absolute inset-0">
               <CodeEditor
@@ -195,8 +260,12 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                 activeTab={activeConsoleTab}
                 setActiveTab={setActiveConsoleTab}
                 runResult={runResult}
+                submitResult={submitResult}
                 isRunning={isRunning}
+                isSubmitting={isSubmitting}
                 examples={problem.examples}
+                problem={problem}
+                submissionHistory={submissionHistory}
               />
             </div>
             <ActionButtons
@@ -205,9 +274,25 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               onRun={runCode}
               onSubmit={submitCode}
               onReset={resetCode}
+              isCoachOpen={mentor.isOpen}
+              onToggleCoach={mentor.toggleOpen}
             />
           </div>
         </div>
+
+        {/* Right — Mentor Panel (slide in) */}
+        {mentor.isOpen && (
+          <div className="hidden h-full w-full overflow-hidden md:block md:w-[25%] animate-in slide-in-from-right-4 duration-200">
+            <MentorPanel
+              messages={mentor.messages}
+              isLoading={mentor.isLoading}
+              isOpen={mentor.isOpen}
+              onClose={mentor.toggleOpen}
+              onRequestHint={handleRequestHint}
+              onSendMessage={mentor.sendMessage}
+            />
+          </div>
+        )}
       </div>
     </main>
   );

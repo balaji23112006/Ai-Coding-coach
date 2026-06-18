@@ -1,6 +1,5 @@
-import { Play, Send, RotateCcw } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
+import { Play, Send, RotateCcw, BrainCircuit } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 interface ActionButtonsProps {
   isRunning: boolean;
@@ -18,23 +17,43 @@ export function ActionButtons({
   onRun,
   onSubmit,
   onReset,
+  isCoachOpen,
+  onToggleCoach,
 }: ActionButtonsProps) {
   const isPending = isRunning || isSubmitting;
 
   return (
     <div className="flex items-center justify-between border-t border-slate-800/40 bg-slate-950/20 px-4 py-3">
-      {/* Reset */}
-      <Button
-        onClick={onReset}
-        disabled={isPending}
-        className="h-8 rounded-md bg-transparent px-3 text-xs text-slate-400 shadow-none hover:bg-slate-800/30 hover:text-slate-100"
-        title="Reset editor code to template"
-      >
-        <RotateCcw className="h-3.5 w-3.5" />
-        <span className="hidden sm:inline">Reset</span>
-      </Button>
+      {/* Left: Reset + Mentor toggle */}
+      <div className="flex items-center gap-2">
+        <Button
+          onClick={onReset}
+          disabled={isPending}
+          className="h-8 rounded-md bg-transparent px-3 text-xs text-slate-400 shadow-none hover:bg-slate-800/30 hover:text-slate-100"
+          title="Reset editor code to template"
+        >
+          <RotateCcw className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Reset</span>
+        </Button>
 
-      {/* Run + Submit */}
+        {onToggleCoach && (
+          <Button
+            onClick={onToggleCoach}
+            disabled={isPending}
+            title="Toggle Mentor AI panel"
+            className={`h-8 rounded-md px-3 text-xs shadow-none transition ${
+              isCoachOpen
+                ? 'border border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/15'
+                : 'bg-transparent text-slate-400 hover:bg-slate-800/30 hover:text-amber-400'
+            }`}
+          >
+            <BrainCircuit className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Ask Mentor</span>
+          </Button>
+        )}
+      </div>
+
+      {/* Right: Run + Submit */}
       <div className="flex items-center gap-3">
         <Button
           onClick={onRun}

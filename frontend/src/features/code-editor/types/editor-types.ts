@@ -47,6 +47,7 @@ export interface Submission {
   code: string;
   status: 'Accepted' | 'Wrong Answer' | 'Time Limit Exceeded' | 'Runtime Error' | 'Pending' | 'Compile Error';
   submittedAt: string;
+  stdout?: string;
   runtime?: number;
   memory?: number;
   passedCount?: number;
@@ -59,7 +60,7 @@ export type SubmissionStatus = Submission['status'];
 export type SubmissionResult = Submission;
 
 export interface ExecutionResult {
-  status: 'Success' | 'Compile Error' | 'Runtime Error' | 'Wrong Answer';
+  status: 'Success' | 'Compile Error' | 'Runtime Error' | 'Wrong Answer' | 'Time Limit Exceeded';
   stdout?: string;
   stderr?: string;
   runtime?: number;

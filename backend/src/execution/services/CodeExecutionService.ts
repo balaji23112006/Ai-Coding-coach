@@ -1,6 +1,9 @@
 import { SubmissionStatus } from '@prisma/client';
 import { JavascriptRunner } from '../runners/javascript/JavascriptRunner.js';
 import { PythonRunner } from '../runners/python/PythonRunner.js';
+import { TypescriptRunner } from '../runners/typescript/TypescriptRunner.js';
+import { JavaRunner } from '../runners/java/JavaRunner.js';
+import { CppRunner } from '../runners/cpp/CppRunner.js';
 import { CodeExecutionPayload, CodeExecutionResult } from '../types/execution.types.js';
 import { BadRequestError } from '../../shared/errors/custom.errors.js';
 import { logger } from '../../shared/utils/logger.js';
@@ -8,6 +11,9 @@ import { logger } from '../../shared/utils/logger.js';
 export class CodeExecutionService {
   private jsRunner = new JavascriptRunner();
   private pyRunner = new PythonRunner();
+  private tsRunner = new TypescriptRunner();
+  private javaRunner = new JavaRunner();
+  private cppRunner = new CppRunner();
 
   async execute(payload: CodeExecutionPayload): Promise<CodeExecutionResult> {
     const { language, sourceCode } = payload;
@@ -20,6 +26,12 @@ export class CodeExecutionService {
       runner = this.jsRunner;
     } else if (language === 'python') {
       runner = this.pyRunner;
+    } else if (language === 'typescript') {
+      runner = this.tsRunner;
+    } else if (language === 'java') {
+      runner = this.javaRunner;
+    } else if (language === 'cpp') {
+      runner = this.cppRunner;
     } else {
       throw new BadRequestError(`Language runner not supported: ${language}`);
     }
