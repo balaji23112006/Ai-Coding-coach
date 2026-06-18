@@ -27,7 +27,7 @@ export function useCodeEditor(
   const [submitResult, setSubmitResult] = useState<Submission | null>(null);
   const [submissionHistory, setSubmissionHistory] = useState<Submission[]>([]);
   const [stats, setStats] = useState<SubmissionStats | null>(null);
-  const [activeConsoleTab, setActiveConsoleTab] = useState<'testcase' | 'result'>('testcase');
+  const [activeConsoleTab, setActiveConsoleTab] = useState<'testcase' | 'result' | 'submissions'>('testcase');
 
   useEffect(() => {
     let active = true;
@@ -117,8 +117,10 @@ export function useCodeEditor(
       const result = await submissionService.submitCode(problemId, selectedLanguage, currentCode);
       setSubmitResult(result);
       setSubmissionHistory(prev => [result, ...prev]);
+      // Switch to submissions tab after judging so user sees history
+      setActiveConsoleTab('submissions');
 
-      // Map submission result → ExecutionResult so OutputConsole can display it
+      // Also mirror into runResult shape for ResultsPanel compatibility
       const executionResult: ExecutionResult = {
         status:
           result.status === 'Accepted'

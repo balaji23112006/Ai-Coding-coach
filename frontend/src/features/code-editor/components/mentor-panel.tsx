@@ -21,11 +21,12 @@ const CATEGORY_CONFIG = {
 const LEVEL_LABELS: Record<number, string> = {
   1: 'Concept',
   2: 'Clue',
-  3: 'Pseudocode',
-  4: 'Max',
+  3: 'Direction',
+  4: 'Pseudocode',
+  5: 'Edge Cases',
 };
 
-function HintBadge({ category, level }: { category: keyof typeof CATEGORY_CONFIG; level: 1 | 2 | 3 | 4 }) {
+function HintBadge({ category, level }: { category: keyof typeof CATEGORY_CONFIG; level: 1 | 2 | 3 | 4 | 5 }) {
   const config = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.request;
   const Icon = config.icon;
   return (

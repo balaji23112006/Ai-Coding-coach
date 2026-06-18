@@ -312,6 +312,18 @@ export function ResultsPanel({
               ) : (
                 <div className="flex h-32 items-center justify-center text-xs text-slate-500">Submit more attempts to see a trend</div>
               )}
+              {/* Memory Trend */}
+              {chartHistory.length > 1 && (
+                <ChartContainer config={chartConfig} className="h-32 aspect-auto">
+                  <LineChart data={chartHistory}>
+                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                    <XAxis dataKey="name" tickLine={false} axisLine={false} />
+                    <YAxis tickLine={false} axisLine={false} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Line type="monotone" dataKey="memory" stroke="var(--color-memory)" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ChartContainer>
+              )}
             </div>
           </section>
         )}

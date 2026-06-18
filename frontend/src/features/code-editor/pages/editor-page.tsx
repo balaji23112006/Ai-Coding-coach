@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from '@tanstack/react-router';
-import { ArrowLeft, BrainCircuit, GripHorizontal, GripVertical } from 'lucide-react';
+import { ArrowLeft, BrainCircuit, GripHorizontal, GripVertical, Send, Trophy } from 'lucide-react';
 
 import { ActionButtons } from '../components/action-buttons';
 import { CodeEditor } from '../components/code-editor';
@@ -128,6 +128,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const [bottomHeight, setBottomHeight] = useState(() => Number(window.sessionStorage.getItem('skill-lens:editor:bottom-height')) || 260);
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const {
     selectedLanguage,
@@ -164,11 +165,21 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
       runResult.status === 'Compile Error' ||
       runResult.status === 'Wrong Answer';
 
-    if (isFailure && !mentor.isLoading) {
-      // Show a subtle prompt without auto-opening
-      // User can click "Ask Mentor" if they want guidance
+    if (isFailure && !mentor.isLoading && !mentor.isOpen) {
+      // Auto-open mentor with a slight delay so UI settles first
+      const t = setTimeout(() => mentor.toggleOpen(), 1200);
+      return () => clearTimeout(t);
     }
-  }, [runResult, isRunning, isSubmitting, mentor.isLoading]);
+  }, [runResult, isRunning, isSubmitting, mentor.isLoading, mentor.isOpen, mentor.toggleOpen]);
+
+  // Celebration on Accepted
+  useEffect(() => {
+    if (submitResult?.status === 'Accepted') {
+      setShowCelebration(true);
+      const t = setTimeout(() => setShowCelebration(false), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [submitResult?.id, submitResult?.status]);
 
   // Map runResult status to mentor trigger event
   const getMentorTrigger = (): Parameters<typeof mentor.requestHint>[0] => {
@@ -255,6 +266,30 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     <main className="flex h-screen flex-col overflow-hidden bg-[#070a13] text-white antialiased">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(148,163,184,0.06),_transparent_40%),radial-gradient(circle_at_70%_70%,_rgba(147,197,253,0.06),_transparent_40%)]" />
 
+      {/* Celebration overlay */}
+      {showCelebration && (
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
+          <div className="animate-in zoom-in-50 fade-in duration-500 flex flex-col items-center gap-4 rounded-3xl border border-emerald-500/30 bg-slate-950/90 px-12 py-8 shadow-2xl shadow-emerald-900/40 backdrop-blur-xl">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-900/50">
+              <Trophy className="h-8 w-8 text-white" />
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-black tracking-tight text-emerald-400">Accepted! 🎉</p>
+              <p className="mt-1 text-sm text-slate-400">All test cases passed. Outstanding work!</p>
+            </div>
+            <div className="flex gap-2">
+              {[...Array(5)].map((_, i) => (
+                <span
+                  key={i}
+                  className="h-2 w-2 animate-bounce rounded-full bg-emerald-400"
+                  style={{ animationDelay: `${i * 120}ms` }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="relative z-30 flex h-9 shrink-0 items-center justify-between border-b border-slate-800/80 bg-slate-950/20 px-4 backdrop-blur-xl">
         <div className="flex items-center gap-6">
           <button
@@ -274,6 +309,26 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Submission Counter */}
+          {submissionHistory.length > 0 && (
+            <div className="flex items-center gap-1.5 rounded-lg border border-slate-700/60 bg-slate-900/40 px-2.5 py-1">
+              <Send className="h-3 w-3 text-slate-500" />
+              <span className="font-mono text-[10px] font-bold text-slate-400">
+                {submissionHistory.length}
+              </span>
+              <span className="font-mono text-[9px] text-slate-600">
+                {submissionHistory.length === 1 ? 'attempt' : 'attempts'}
+              </span>
+            </div>
+          )}
+
+          {/* Accepted badge */}
+          {submitResult?.status === 'Accepted' && (
+            <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1 animate-pulse">
+              <Trophy className="h-3 w-3 text-emerald-400" />
+              <span className="font-mono text-[10px] font-bold text-emerald-400">Accepted</span>
+            </div>
+          )}
           {/* Mentor Toggle Button */}
           <button
             id="mentor-toggle-btn"
