@@ -138,7 +138,6 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     runResult,
     submitResult,
     submissionHistory,
-    stats,
     activeConsoleTab,
     handleLanguageChange,
     handleCodeChange,
@@ -366,7 +365,6 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               problem={problem}
               submissionHistory={submissionHistory}
               latestSubmission={submitResult}
-              stats={stats}
               loadSubmittedCode={handleCodeChange}
             />
           )}

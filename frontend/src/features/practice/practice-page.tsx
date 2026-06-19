@@ -13,6 +13,7 @@ import {
   Filter,
   Search,
   Zap,
+  Trophy,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -133,6 +134,18 @@ export function PracticePage() {
     return () => clearTimeout(handler)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm])
+
+  // Listen to practice progress updates from code submissions
+  useEffect(() => {
+    const handleRefresh = () => {
+      void loadQuestions()
+    }
+    window.addEventListener('skill-lens:practice-progress-updated', handleRefresh)
+    return () => {
+      window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [difficulty, topic, perPage, currentPage, searchTerm])
 
   const handleActionClick = async (question: Question) => {
     if (question.status === 'Not Attempted') {
@@ -329,8 +342,15 @@ export function PracticePage() {
                           <td className="px-6 py-4 font-medium opacity-50">{absoluteIndex}</td>
                           <td className="px-6 py-4">
                             <div className="flex flex-col">
-                              <span className={cn("font-bold transition-colors cursor-pointer", isDark ? "text-white group-hover:text-violet-400" : "text-slate-900 group-hover:text-violet-600")}>
+                              <span className={cn("font-bold transition-colors cursor-pointer flex items-center gap-1.5", 
+                                q.status === 'Solved'
+                                  ? (isDark ? "text-emerald-400 group-hover:text-emerald-300" : "text-emerald-600 group-hover:text-emerald-500")
+                                  : (isDark ? "text-white group-hover:text-violet-400" : "text-slate-900 group-hover:text-violet-600")
+                              )}>
                                 {q.title}
+                                {q.status === 'Solved' && (
+                                  <Trophy className="h-3.5 w-3.5 text-amber-400 shrink-0" />
+                                )}
                               </span>
                               <span className="text-[10px] mt-1 flex gap-2 font-medium opacity-60">
                                 {q.topics.slice(0, 2).map(t => (
@@ -349,8 +369,15 @@ export function PracticePage() {
                             {q.acceptanceRate}%
                           </td>
                           <td className="px-6 py-4">
-                            <span className={cn("px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border", getStatusColor(q.status))}>
-                              {q.status}
+                            <span className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border", getStatusColor(q.status))}>
+                              {q.status === 'Solved' ? (
+                                <>
+                                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                  Solved
+                                </>
+                              ) : (
+                                'Solve'
+                              )}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-right">

@@ -1,30 +1,25 @@
-import { CheckCircle2, Clock, HardDrive, X, History } from 'lucide-react';
-import type { ExecutionResult, Submission, Problem } from '../types/editor-types';
-import { ResultsPanel } from './results-panel';
+import { CheckCircle2 } from 'lucide-react';
+import type { ExecutionResult, Problem, Submission } from '../types/editor-types';
 
 interface OutputConsoleProps {
-  activeTab?: 'testcase' | 'result';
-  setActiveTab?: (tab: 'testcase' | 'result') => void;
+  activeTab?: 'testcase' | 'result' | 'submissions';
+  setActiveTab?: (tab: 'testcase' | 'result' | 'submissions') => void;
   runResult: ExecutionResult | null;
-  submitResult?: Submission | null;
   isRunning: boolean;
   isSubmitting?: boolean;
   examples?: Problem['examples'];
+  submitResult?: Submission | null;
+  submissionHistory?: Submission[];
   problem?: Problem;
 }
 
 export function OutputConsole({
   runResult,
-  submitResult,
-  isRunning,
-  isSubmitting = false,
   activeTab = 'testcase',
   setActiveTab,
   examples = [],
-  problem,
 }: OutputConsoleProps) {
   const result = runResult;
-  const isLoading = isRunning || isSubmitting;
 
   const tabs: { id: 'testcase' | 'result'; label: string; badge?: number }[] = [
     { id: 'testcase', label: 'Test Cases' },

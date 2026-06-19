@@ -144,23 +144,38 @@ export function RoadmapPage() {
   
   useEffect(() => {
     let active = true
-    fetch('/api/progress/roadmap')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch roadmap data')
-        return res.json()
-      })
-      .then(json => {
-        if (active && json.success) {
-          setData(json)
-        }
-      })
-      .catch(err => {
-        console.error('Error fetching roadmap:', err)
-      })
-      .finally(() => {
-        if (active) setIsLoading(false)
-      })
-    return () => { active = false }
+
+    const loadData = () => {
+      fetch('/api/progress/roadmap')
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch roadmap data')
+          return res.json()
+        })
+        .then(json => {
+          if (active && json.success) {
+            setData(json)
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching roadmap:', err)
+        })
+        .finally(() => {
+          if (active) setIsLoading(false)
+        })
+    }
+
+    loadData()
+
+    const handleRefresh = () => {
+      loadData()
+    }
+
+    window.addEventListener('skill-lens:practice-progress-updated', handleRefresh)
+
+    return () => {
+      active = false
+      window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh)
+    }
   }, [])
 
   // Scroll Progress for the curved path
