@@ -9,6 +9,10 @@ import {
 import { NotFoundError } from '../../../shared/errors/custom.errors.js';
 import { prisma } from '../../../database/prisma.js';
 import { logger } from '../../../shared/utils/logger.js';
+import { profileGraph } from '../../../ai/profile-agent/profileGraph.js';
+import { agentLogger } from '../../../ai/profile-agent/services/AgentLogger.js';
+import { profileSummaryService } from '../../../ai/profile-agent/services/ProfileSummaryService.js';
+import { langfuse } from '../../../providers/langfuse/index.js';
 
 export class SubmissionService {
   async runCode(input: RunCodeInput): Promise<CodeExecutionResult> {
@@ -131,6 +135,44 @@ else:
       }
     }
 
+    // Parse structured test results from stdout
+    let passedCount = 0;
+    let totalCount = 0;
+    const failedCases: Array<{
+      index: number;
+      message: string;
+      input?: string;
+      expectedOutput?: string;
+      actualOutput?: string;
+    }> = [];
+
+    if (hasTestCases && result.stdout) {
+      const passedMatch = result.stdout.match(/PASSED:\s*(\d+)/);
+      const totalMatch = result.stdout.match(/TOTAL:\s*(\d+)/);
+      if (passedMatch) passedCount = parseInt(passedMatch[1], 10);
+      if (totalMatch) totalCount = parseInt(totalMatch[1], 10);
+
+      // Extract individual failure messages
+      const failureLines = result.stdout.split('\n').filter(
+        (line: string) => line.startsWith('Test case ') && (line.includes('failed') || line.includes('threw error'))
+      );
+      for (const line of failureLines) {
+        const idxMatch = line.match(/Test case (\d+)/);
+        const index = idxMatch ? parseInt(idxMatch[1], 10) : -1;
+        const tc = index >= 0 && questionObj ? questionObj.testCases[index] : null;
+        const gotMatch = line.match(/got (.*)$/);
+        const actualOutput = gotMatch ? gotMatch[1] : '';
+
+        failedCases.push({
+          index,
+          message: line,
+          input: tc ? tc.input : '',
+          expectedOutput: tc ? tc.expectedOutput : '',
+          actualOutput: actualOutput,
+        });
+      }
+    }
+
     const createData: any = {
       language: mapStringToLanguage(input.language),
       status: submissionStatus,
@@ -161,11 +203,64 @@ else:
 
     const submission = await submissionRepository.create(createData);
 
+    if (input.userId) {
+      const userId = input.userId;
+      const traceId = `trace-submission-${userId}-${Date.now()}`;
+      agentLogger.startRun(userId, 'submission', traceId);
+      agentLogger.logRequest(traceId, { userId, submissionId: submission.id });
+      
+      // Run the profile agent assessment graph in the background
+      profileGraph.invoke({ userId, traceId })
+        .then(async (finalState) => {
+          let summary = '';
+          let trendExplanation = '';
+          if (finalState.profileStatus !== 'BOOTSTRAP') {
+            try {
+              summary = await profileSummaryService.generateProfileSummary({
+                level: finalState.level,
+                mastery: finalState.mastery,
+                strongAreas: finalState.strongAreas,
+                weakAreas: finalState.weakAreas,
+                traceId,
+              });
+              trendExplanation = await profileSummaryService.generateTrendExplanation({
+                trends: finalState.trends,
+                recentActivityCount: finalState.recentActivity.length,
+                traceId,
+              });
+            } catch (err) {
+              console.error('[Submission Service] Error generating AI summary content during background run:', err);
+            }
+          }
+          agentLogger.logResponse(traceId, {
+            success: true,
+            userId: finalState.userId,
+            level: finalState.level,
+            easySolved: finalState.easySolved,
+            mediumSolved: finalState.mediumSolved,
+            hardSolved: finalState.hardSolved,
+            solvedCount: finalState.solvedCount,
+          });
+          await agentLogger.finalizeRun(traceId, 'completed');
+          await langfuse.flushAsync();
+        })
+        .catch(async (error) => {
+          console.error('[Submission Service] Background profile assessment error:', error);
+          await agentLogger.finalizeRun(traceId, 'failed', error.message || String(error));
+          await langfuse.flushAsync();
+        });
+    }
+
     return {
       submissionId: submission.id,
       status: submission.status,
       executionTime: submission.executionTime,
       memoryUsed: submission.memoryUsed,
+      stdout: submission.stdout,
+      stderr: submission.stderr,
+      passedCount,
+      totalCount,
+      failedCases,
     };
   }
 

@@ -129,6 +129,18 @@ export const submissionService = {
       submittedAt: new Date().toISOString(),
       runtime: data.executionTime || 0,
       memory: data.memoryUsed ? Math.round(data.memoryUsed / 1024 / 1024) : 0,
+      stdout: data.stdout || '',
+      stderr: data.stderr || '',
+      passedCount: data.passedCount || 0,
+      totalCount: data.totalCount || 0,
+      failedCases: data.failedCases ? data.failedCases.map((fc: any) => ({
+        testCaseId: String(fc.index),
+        input: fc.input || '',
+        expectedOutput: fc.expectedOutput || '',
+        actualOutput: fc.actualOutput || '',
+        status: 'Failed',
+        errorMessage: fc.message,
+      })) : [],
     };
   },
 

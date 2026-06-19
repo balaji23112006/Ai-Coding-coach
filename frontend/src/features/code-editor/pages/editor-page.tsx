@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from '@tanstack/react-router';
-import { ArrowLeft, BrainCircuit } from 'lucide-react';
+import { ArrowLeft, BrainCircuit, AlertTriangle, Loader2 } from 'lucide-react';
 
 import { ActionButtons } from '../components/action-buttons';
 import { CodeEditor } from '../components/code-editor';
@@ -9,6 +9,10 @@ import { LeftPanel } from '../components/left-panel';
 import { OutputConsole } from '../components/output-console';
 import { useCodeEditor } from '../hooks/use-code-editor';
 import type { Problem } from '../types/editor-types';
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 function mapBackendToEditorProblem(q: any): Problem {
   const sampleCases = (q.test_cases || [])
@@ -89,8 +93,15 @@ export function EditorPage() {
   if (loading) {
     return (
       <main className="flex h-screen items-center justify-center bg-[#070a13] text-white">
-        <div className="text-center">
-          <p className="text-sm font-semibold text-slate-200">Loading workspace...</p>
+        <div className="relative z-10 flex flex-col items-center gap-4">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-cyan-400/20 blur-md animate-pulse" />
+            <Loader2 className="h-10 w-10 animate-spin text-cyan-400 relative" />
+          </div>
+          <div className="text-center space-y-1.5 animate-pulse">
+            <h3 className="text-sm font-bold tracking-wider uppercase text-slate-300">Initializing Workspace</h3>
+            <p className="text-[11px] text-slate-500">Preparing compiler and problem templates...</p>
+          </div>
         </div>
       </main>
     );
@@ -98,19 +109,32 @@ export function EditorPage() {
 
   if (error || !problem) {
     return (
-      <main className="flex h-screen items-center justify-center bg-[#070a13] text-white">
-        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-8 text-center shadow-2xl">
-          <p className="text-sm font-semibold text-slate-200">{error || 'Problem not found.'}</p>
-          <p className="mt-2 text-xs text-slate-500">
-            The selected practice problem could not be loaded.
-          </p>
-          <Link
-            to="/practice"
-            className="mt-5 inline-flex rounded-lg bg-violet-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-violet-500"
-          >
-            Back to Practice
-          </Link>
-        </div>
+      <main className="flex h-screen items-center justify-center bg-[#070a13] text-white p-4">
+        <Card className="max-w-md w-full border-slate-800 bg-slate-950/60 backdrop-blur-xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-rose-500" />
+          <CardHeader className="text-center pt-8">
+            <div className="mx-auto h-12 w-12 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20 mb-3 animate-pulse">
+              <AlertTriangle className="h-6 w-6 text-rose-400" />
+            </div>
+            <CardTitle className="text-sm font-bold text-slate-200 uppercase tracking-wide">
+              Failed to load workspace
+            </CardTitle>
+            <CardDescription className="text-slate-500 text-xs mt-1.5">
+              {error || 'The requested problem could not be found or fetched.'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pb-8">
+            <Button
+              asChild
+              className="bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white text-xs font-bold px-5 py-2.5 h-auto rounded-lg transition-all"
+            >
+              <Link to="/practice">
+                <ArrowLeft className="h-3.5 w-3.5 mr-2" />
+                Back to Practice
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       </main>
     );
   }
@@ -139,19 +163,53 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     setActiveConsoleTab,
   } = useCodeEditor(problem.id, problem.templates);
 
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+Enter or Cmd+Enter to run code
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        if (!isRunning && !isSubmitting) {
+          void runCode();
+        }
+      }
+      // Ctrl+Shift+Enter or Cmd+Shift+Enter to submit code
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'Enter') {
+        e.preventDefault();
+        if (!isRunning && !isSubmitting) {
+          void submitCode();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isRunning, isSubmitting, runCode, submitCode]);
+
   return (
     <main className="flex h-screen flex-col overflow-hidden bg-[#070a13] text-white antialiased">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(148,163,184,0.06),_transparent_40%),radial-gradient(circle_at_70%_70%,_rgba(147,197,253,0.06),_transparent_40%)]" />
 
       <header className="relative z-30 flex h-9 shrink-0 items-center justify-between border-b border-slate-800/80 bg-slate-950/20 px-4 backdrop-blur-xl">
         <div className="flex items-center gap-6">
-          <button
-            onClick={() => navigate({ to: '/practice' })}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:border-slate-700 hover:text-white"
-          >
-            <ArrowLeft className="h-3 w-3" />
-            <span>Practice List</span>
-          </button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => navigate({ to: '/practice' })}
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:border-slate-700 hover:text-white transition-all duration-250"
+                >
+                  <ArrowLeft className="h-3 w-3" />
+                  <span>Practice List</span>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-slate-950 border-slate-800 text-[10px] text-slate-400">
+                Back to Practice Selection
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           <div className="flex items-center gap-2">
             <BrainCircuit className="h-3.5 w-3.5 text-amber-400" />

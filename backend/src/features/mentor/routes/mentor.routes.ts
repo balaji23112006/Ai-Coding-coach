@@ -1,9 +1,35 @@
 import { Router } from 'express';
 import { groq } from '../../../providers/groq/index.js';
+import { langfuse } from '../../../providers/langfuse/index.js';
+import { auth } from '../../../lib/auth.js';
+import { fromNodeHeaders } from 'better-auth/node';
 
 const router = Router();
 
 router.post('/chat', async (req, res, next) => {
+  let userId = req.body.userId;
+  if (!userId) {
+    try {
+      const session = await auth.api.getSession({
+        headers: fromNodeHeaders(req.headers),
+      });
+      if (session?.user) {
+        userId = session.user.id;
+      }
+    } catch (e) {
+      console.error('[AI Mentor Router] Failed to resolve user session:', e);
+    }
+  }
+
+  const traceId = `trace-chat-${userId || 'anon'}-${Date.now()}`;
+  const trace = langfuse.trace({
+    id: traceId,
+    name: 'mentor-chat',
+    userId: userId || 'anonymous',
+  });
+
+  let generation: any = null;
+
   try {
     const { messages, questionTitle, questionDescription, userCode, errorOutput } = req.body;
 
@@ -30,6 +56,13 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
       }))
     ];
 
+    generation = trace.generation({
+      name: 'mentor-chat-generation',
+      model: 'llama-3.3-70b-versatile',
+      input: formattedMessages,
+      startTime: new Date(),
+    });
+
     const response = await groq.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages: formattedMessages as any,
@@ -39,9 +72,31 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
 
     const reply = response.choices[0]?.message?.content || "I'm having trouble thinking of a hint right now. Try reviewing your approach!";
     
+    if (generation) {
+      generation.end({
+        output: reply,
+        endTime: new Date(),
+        usage: {
+          promptTokens: response.usage?.prompt_tokens || 0,
+          completionTokens: response.usage?.completion_tokens || 0,
+          totalTokens: response.usage?.total_tokens || 0,
+        },
+      });
+    }
+
+    await langfuse.flushAsync();
     res.json({ reply });
-  } catch (err) {
+  } catch (err: any) {
     console.error('[AI Mentor Router] Error:', err);
+    if (generation) {
+      generation.end({
+        output: err instanceof Error ? err.message : String(err),
+        endTime: new Date(),
+        level: 'ERROR',
+        statusMessage: err instanceof Error ? err.message : String(err),
+      });
+    }
+    await langfuse.flushAsync();
     res.json({ 
       reply: "I couldn't reach the AI server, but here is a tip: make sure you verify edge cases (like empty inputs or single elements) and dry run your loops on paper!" 
     });
@@ -49,3 +104,4 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
 });
 
 export default router;
+

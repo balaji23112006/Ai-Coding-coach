@@ -21,6 +21,11 @@ import {
   Terminal,
   Trophy,
   User,
+  Brain,
+  TrendingUp,
+  Target,
+  RefreshCw,
+  AlertCircle,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -34,6 +39,9 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { useProfileAgent } from '@/hooks/useProfileAgent'
 import { badges, languages, roles } from './data/profile-data'
 import type { PreferencesState, ThemePreference } from './types'
 
@@ -169,9 +177,65 @@ function CustomToggle({ label, description, enabled, onToggle }: CustomTogglePro
   )
 }
 
+function renderStructuredFeedback(text: string) {
+  if (!text) return null;
+  
+  // Split by bullet point characters (•, * or newline-dashes)
+  const points = text
+    .split(/(?:[•\n\r*]|\s-\s)+/)
+    .map(p => p.trim())
+    .filter(p => p.length > 2);
+
+  if (points.length <= 1) {
+    // Single paragraph: split by sentence
+    const sentences = text
+      .split(/(?<=[.!?])\s+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 5);
+    
+    return (
+      <ul className="space-y-2.5">
+        {sentences.map((sentence, idx) => (
+          <li key={idx} className="flex items-start gap-2 text-slate-300 text-xs leading-relaxed font-semibold">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+            <span>{sentence}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <ul className="space-y-3">
+      {points.map((point, idx) => {
+        const colonIndex = point.indexOf(':');
+        if (colonIndex > 0 && colonIndex < 35) {
+          const header = point.substring(0, colonIndex);
+          const body = point.substring(colonIndex + 1).trim();
+          return (
+            <li key={idx} className="flex items-start gap-2.5 text-slate-300 text-xs leading-relaxed font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+              <div>
+                <strong className="text-violet-400 uppercase tracking-wider text-[9px] block mb-0.5 font-bold">{header}</strong>
+                <span>{body}</span>
+              </div>
+            </li>
+          );
+        }
+        return (
+          <li key={idx} className="flex items-start gap-2.5 text-slate-300 text-xs leading-relaxed font-semibold">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400 mt-1.5 shrink-0" />
+            <span>{point}</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 // --- Main Page Component ---
 export function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai-profile'>('profile')
   const [showSignOut, setShowSignOut] = useState(false)
 
   const [systemIsDark, setSystemIsDark] = useState(() =>
@@ -180,6 +244,16 @@ export function ProfilePage() {
 
   const { logout, user, checkSession } = useAuth()
   const navigateTo = useNavigate()
+
+  const {
+    profile,
+    aiSummary,
+    trendExplanation,
+    isLoading: agentIsLoading,
+    isRefreshing: agentIsRefreshing,
+    error: agentError,
+    refresh: refreshAgent,
+  } = useProfileAgent()
 
   const [userData, setUserData] = useState({
     name: 'User',
@@ -340,6 +414,12 @@ export function ProfilePage() {
             Account
           </button>
           <button 
+            onClick={() => setActiveTab('ai-profile')}
+            className={cn("px-4 py-2.5 text-sm font-bold border-b-2 transition-colors", activeTab === 'ai-profile' ? "border-violet-500 text-white" : "border-transparent text-slate-500 hover:text-slate-300")}
+          >
+            AI Skill Profile
+          </button>
+          <button 
             onClick={() => setActiveTab('preferences')}
             className={cn("px-4 py-2.5 text-sm font-bold border-b-2 transition-colors", activeTab === 'preferences' ? "border-violet-500 text-white" : "border-transparent text-slate-500 hover:text-slate-300")}
           >
@@ -455,6 +535,235 @@ export function ProfilePage() {
                     )}
                   </div>
                 </motion.section>
+              </>
+            ) : activeTab === 'ai-profile' ? (
+              <>
+                {/* Overview Card */}
+                <motion.div variants={itemVariants}>
+                  <Card className="rounded-2xl border border-white/[0.06] bg-[#121214]/60 backdrop-blur-xl shadow-xl text-white">
+                    <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.04]">
+                      <div>
+                        <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
+                          <Brain className="w-5 h-5 text-violet-400" /> AI Skill Assessment Overview
+                        </CardTitle>
+                        <CardDescription className="text-slate-400 text-xs mt-1">
+                          Calculated status and details concluded autonomously by the Profile Agent.
+                        </CardDescription>
+                      </div>
+                      <button
+                        onClick={() => void refreshAgent()}
+                        disabled={agentIsRefreshing}
+                        className="flex items-center gap-2 px-4 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold rounded-xl transition-colors shadow-lg shadow-violet-500/20 disabled:opacity-50"
+                      >
+                        <RefreshCw className={cn("w-3.5 h-3.5", agentIsRefreshing && "animate-spin")} />
+                        {agentIsRefreshing ? 'Refreshing...' : 'Refresh AI Assessment'}
+                      </button>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-6">
+                      
+                      {agentError && (
+                        <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center gap-2.5 text-xs font-semibold">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
+                          <p>{agentError}</p>
+                        </div>
+                      )}
+
+                      {/* Top Metrics Row */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        {/* Experience Level */}
+                        <div className="rounded-xl border border-white/[0.04] bg-[#09090b]/50 p-4 flex flex-col justify-between min-h-[90px]">
+                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Assessed Skill Level</p>
+                          <div className="mt-2">
+                            <Badge className={cn(
+                              "text-xs font-bold py-1 px-2.5 rounded-lg border",
+                              profile?.experienceLevel === 'Advanced' && "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                              profile?.experienceLevel === 'Intermediate' && "bg-violet-500/10 text-violet-400 border-violet-500/20",
+                              (profile?.experienceLevel === 'Beginner' || !profile?.experienceLevel) && "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                            )}>
+                              {profile?.experienceLevel || 'Beginner'}
+                            </Badge>
+                          </div>
+                        </div>
+
+                        {/* Overall Solved */}
+                        <div className="rounded-xl border border-white/[0.04] bg-[#09090b]/50 p-4 flex flex-col justify-between min-h-[90px]">
+                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Problems Solved</p>
+                          <p className="text-2xl font-black text-white mt-1">
+                            {profile?.solvedCount || 0}
+                          </p>
+                          <p className="text-[10px] font-semibold text-slate-400 mt-1 flex gap-2 font-mono">
+                            <span className="text-emerald-400">E:{profile?.easySolved || 0}</span>
+                            <span className="text-amber-400">M:{profile?.mediumSolved || 0}</span>
+                            <span className="text-rose-400">H:{profile?.hardSolved || 0}</span>
+                          </p>
+                        </div>
+
+                        {/* Recommended Focus */}
+                        <div className="rounded-xl border border-white/[0.04] bg-[#09090b]/50 p-4 flex flex-col justify-between min-h-[90px]">
+                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Recommended Focus</p>
+                          <p className="text-sm font-black text-white mt-2 truncate" title={profile?.recommendedFocus || 'Arrays & Hashing'}>
+                            {profile?.recommendedFocus || 'Arrays & Hashing'}
+                          </p>
+                        </div>
+
+                        {/* Suggested Difficulty */}
+                        <div className="rounded-xl border border-white/[0.04] bg-[#09090b]/50 p-4 flex flex-col justify-between min-h-[90px]">
+                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Target Difficulty</p>
+                          <div className="mt-2">
+                            <Badge className={cn(
+                              "text-xs font-bold py-1 px-2.5 rounded-lg border",
+                              profile?.recommendedDifficulty === 'Hard' && "bg-rose-500/10 text-rose-400 border-rose-500/20",
+                              profile?.recommendedDifficulty === 'Medium' && "bg-amber-500/10 text-amber-400 border-amber-500/20",
+                              (profile?.recommendedDifficulty === 'Easy' || !profile?.recommendedDifficulty) && "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                            )}>
+                              {profile?.recommendedDifficulty || 'Easy'}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* AI Insights & Narrative */}
+                <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* AI Profile Summary */}
+                  <Card className="rounded-2xl border border-white/[0.06] bg-[#121214]/60 backdrop-blur-xl shadow-xl text-white">
+                    <CardHeader>
+                      <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <Brain className="w-4 h-4 text-violet-400" /> AI Profile Feedback
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 pt-0">
+                      {aiSummary ? (
+                        <div className="space-y-4">
+                          {renderStructuredFeedback(aiSummary)}
+                          {((profile?.strongAreas && profile.strongAreas.length > 0) || (profile?.weakAreas && profile.weakAreas.length > 0)) && (
+                            <div className="pt-4 border-t border-white/[0.04] space-y-3">
+                              {profile.strongAreas && profile.strongAreas.length > 0 && (
+                                <div className="space-y-1.5">
+                                  <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-400/80">Identified Strengths</span>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {profile.strongAreas.map((area, idx) => (
+                                      <Badge key={idx} className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px] py-0.5 px-2 rounded-md font-bold">
+                                        {area}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {profile.weakAreas && profile.weakAreas.length > 0 && (
+                                <div className="space-y-1.5">
+                                  <span className="text-[9px] font-bold uppercase tracking-wider text-rose-400/80">Growth Focus Areas</span>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {profile.weakAreas.map((area, idx) => (
+                                      <Badge key={idx} className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-[10px] py-0.5 px-2 rounded-md font-bold font-mono">
+                                        {area}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ) : agentIsLoading || agentIsRefreshing ? (
+                        <span className="text-slate-500 text-xs font-semibold">Generating AI profile analysis...</span>
+                      ) : (
+                        <span className="text-slate-500 text-xs font-semibold">Submit coding tasks or run refresh to compute feedback summary narrative.</span>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* AI Recent Trend Explanation */}
+                  <Card className="rounded-2xl border border-white/[0.06] bg-[#121214]/60 backdrop-blur-xl shadow-xl text-white">
+                    <CardHeader>
+                      <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-violet-400" /> Learning Momentum Trends
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 pt-0">
+                      {trendExplanation ? (
+                        <div className="space-y-4">
+                          {renderStructuredFeedback(trendExplanation)}
+                          {((profile?.trends && profile.trends.length > 0) || profile?.confidence !== undefined) && (
+                            <div className="pt-4 border-t border-white/[0.04] space-y-3">
+                              {profile.trends && profile.trends.length > 0 && (
+                                <div className="space-y-1.5">
+                                  <span className="text-[9px] font-bold uppercase tracking-wider text-cyan-400/80">Active Learning Patterns</span>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {profile.trends.map((trend, idx) => (
+                                      <Badge key={idx} className="bg-cyan-500/10 text-cyan-400 border-cyan-500/20 text-[10px] py-0.5 px-2 rounded-md font-bold">
+                                        {trend}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {profile.confidence !== undefined && (
+                                <div className="space-y-1.5">
+                                  <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                                    <span>Assessment Confidence</span>
+                                    <span>{Math.round(profile.confidence * 100)}%</span>
+                                  </div>
+                                  <div className="w-full bg-[#09090b]/60 rounded-full h-1 border border-white/5 overflow-hidden">
+                                    <div
+                                      className="bg-gradient-to-r from-violet-600 to-cyan-400 h-full rounded-full transition-all duration-500"
+                                      style={{ width: `${profile.confidence * 100}%` }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ) : agentIsLoading || agentIsRefreshing ? (
+                        <span className="text-slate-500 text-xs font-semibold">Generating momentum trend details...</span>
+                      ) : (
+                        <span className="text-slate-500 text-xs font-semibold">Insufficient recent activity streams. Complete coding exercises to log trends.</span>
+                      )}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+
+                {/* Detailed Topic Mastery Breakdown */}
+                <motion.div variants={itemVariants}>
+                  <Card className="rounded-2xl border border-white/[0.06] bg-[#121214]/60 backdrop-blur-xl shadow-xl text-white">
+                    <CardHeader>
+                      <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+                        <Target className="w-5 h-5 text-violet-400" /> Topic Mastery Breakdown
+                      </CardTitle>
+                      <CardDescription className="text-slate-400 text-xs">
+                        Calculated domain competence percentages assessed by the agent.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-5">
+                      {!profile?.skills || Object.keys(profile.skills).length === 0 ? (
+                        <div className="rounded-xl border border-dashed border-white/10 bg-[#09090b]/30 p-8 text-center text-slate-400 text-sm font-bold">
+                          No mastery scores detected yet. Resolve problems to compile topic evaluations!
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {Object.entries(profile.skills).map(([topic, score]) => (
+                            <div key={topic} className="space-y-1.5">
+                              <div className="flex justify-between items-center text-xs">
+                                <span className="font-bold text-slate-200">{topic}</span>
+                                <span className="font-bold font-mono text-violet-400">{score}%</span>
+                              </div>
+                              <div className="w-full bg-[#09090b]/60 rounded-full h-2 border border-white/5 overflow-hidden">
+                                <div
+                                  className="bg-gradient-to-r from-violet-600 to-cyan-500 h-full rounded-full transition-all duration-500"
+                                  style={{ width: `${score}%` }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </>
             ) : (
               <>

@@ -53,10 +53,18 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
   return (
     <div className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-slate-800/80 bg-[#1e1e1e]">
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-slate-800/80 bg-slate-900/10 px-4">
-        <div className="flex h-9 items-center gap-2 border-r border-slate-800/40 bg-slate-950/20 px-3 text-xs font-semibold text-slate-300">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-          <span>source_file.{FILE_EXTENSIONS[language]}</span>
+        <div className="flex items-center gap-4">
+          <div className="flex h-9 items-center gap-2 border-r border-slate-800/40 bg-slate-950/20 px-3 text-xs font-semibold text-slate-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+            <span>source_file.{FILE_EXTENSIONS[language]}</span>
+          </div>
+          
+          <div className="hidden lg:flex items-center gap-1.5 text-[9px] font-bold text-amber-400 uppercase tracking-wider bg-amber-500/5 px-2 py-0.5 rounded border border-amber-500/15">
+            <span className="h-1 w-1 bg-amber-400 rounded-full animate-ping" />
+            <span>Note: Write the whole program template, not just the function body!</span>
+          </div>
         </div>
+        
         <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500">
           {language}
         </div>

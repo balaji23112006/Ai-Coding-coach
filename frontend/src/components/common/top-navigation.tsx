@@ -13,6 +13,7 @@ import {
   Code2,
   Target,
   Trophy,
+  Terminal,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -191,6 +192,14 @@ export function TopNavigation({ isDark, setIsDark, activeTab }: TopNavigationPro
                     to="/profile"
                   >
                     <User className="h-3.5 w-3.5 text-violet-500" /> Account
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium cursor-pointer"
+                    to="/agent-logs"
+                  >
+                    <Terminal className="h-3.5 w-3.5 text-violet-500" /> Agent Logs
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className={isDark ? 'bg-white/[0.04]' : 'bg-slate-100'} />

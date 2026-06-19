@@ -9,6 +9,7 @@ import submissionRoutes from './features/submissions/routes/submission.routes.js
 import problemRoutes from './features/problems/routes/problem.routes.js';
 import progressRoutes from './features/progress/routes/progress.routes.js';
 import mentorRoutes from './features/mentor/routes/mentor.routes.js';
+import profileRoutes from './features/profiles/routes/profile.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
@@ -80,9 +81,11 @@ app.use((req, res, next) => {
       }
 
       console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
-      console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
-      console.log(`[HTTP Response Body]:`, JSON.stringify(body, null, 2));
-      console.log('----------------------------------------------------');
+      if (process.env.VERBOSE_LOGGING === 'true') {
+        console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
+        console.log(`[HTTP Response Body]:`, JSON.stringify(body, null, 2));
+        console.log('----------------------------------------------------');
+      }
     }
     return originalJson.call(this, body);
   };
@@ -115,9 +118,11 @@ app.use((req, res, next) => {
       }
 
       console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
-      console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
-      console.log(`[HTTP Response Body]:`, JSON.stringify(parsedBody, null, 2));
-      console.log('----------------------------------------------------');
+      if (process.env.VERBOSE_LOGGING === 'true') {
+        console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
+        console.log(`[HTTP Response Body]:`, JSON.stringify(parsedBody, null, 2));
+        console.log('----------------------------------------------------');
+      }
     }
     return originalSend.call(this, body);
   };
@@ -141,6 +146,9 @@ app.use('/api/progress', progressRoutes);
 
 // Mount AI mentor routes
 app.use('/api/mentor', mentorRoutes);
+
+// Mount AI profile & assessment routes
+app.use('/api/ai/profile', profileRoutes);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

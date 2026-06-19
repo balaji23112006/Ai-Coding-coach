@@ -117,6 +117,18 @@ export function useCodeEditor(
       const result = await submissionService.submitCode(problemId, selectedLanguage, currentCode);
       setSubmitResult(result);
       setSubmissionHistory(prev => [result, ...prev]);
+      setRunResult({
+        status: result.status === 'Accepted' ? 'Success' :
+                result.status === 'Compile Error' ? 'Compile Error' :
+                result.status === 'Runtime Error' ? 'Runtime Error' : 'Wrong Answer',
+        stdout: result.stdout,
+        stderr: result.stderr,
+        runtime: result.runtime,
+        memory: result.memory,
+        passedCount: result.passedCount,
+        totalCount: result.totalCount,
+        failedCases: result.failedCases,
+      });
     } catch (err) {
       const errResult: Submission = {
         id: crypto.randomUUID(),
@@ -129,6 +141,12 @@ export function useCodeEditor(
       };
       setSubmitResult(errResult);
       setSubmissionHistory(prev => [errResult, ...prev]);
+      setRunResult({
+        status: 'Runtime Error',
+        stderr: err instanceof Error ? err.message : 'An unknown error occurred.',
+        runtime: 0,
+        memory: 0,
+      });
     } finally {
       setIsSubmitting(false);
     }

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 import { KeyRound, Mail, User, ArrowRight, Sparkles, Bot, AlertCircle } from 'lucide-react'
+import { useAuth } from '@/features/authentication'
 
 interface LoginSearch {
   redirect?: string
@@ -20,6 +21,7 @@ type AuthMode = 'login' | 'signup'
 function LoginPage() {
   const navigate = useNavigate()
   const search = useSearch({ from: '/auth/login/' })
+  const { checkSession } = useAuth()
 
   const [mode, setMode] = useState<AuthMode>('login')
   const [email, setEmail] = useState('')
@@ -54,6 +56,9 @@ function LoginPage() {
           throw new Error(data.error || 'Invalid username or password')
         }
 
+        // Synchronize auth session state before navigating
+        await checkSession()
+
         // Successfully logged in
         if (search.redirect) {
           window.location.href = search.redirect
@@ -77,8 +82,9 @@ function LoginPage() {
           throw new Error(data.error || 'Failed to sign up')
         }
 
-        // Success, switch to login and fill details or auto-login
-        // BetterAuth signup auto logs in the user, so let's navigate directly
+        // BetterAuth signup auto logs in the user, so synchronize session and navigate
+        await checkSession()
+
         if (search.redirect) {
           window.location.href = search.redirect
         } else {

@@ -11,7 +11,6 @@ import {
   Bot,
   CheckCircle2,
   Flame,
-  Lightbulb,
   Target,
   Trophy,
 } from 'lucide-react'
@@ -42,6 +41,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import type { ChartConfig } from '@/components/ui/chart'
+import { useProfileAgent } from '@/hooks/useProfileAgent'
 
 const activityChartConfig: ChartConfig = {
   solved: {
@@ -176,6 +176,7 @@ function CodingEnvironment3D({ isDark }: { isDark: boolean }) {
 export function DashboardPage() {
   const [isDark, setIsDark] = useState(true)
   const [dashboardData, setDashboardData] = useState<any>(null)
+  const { profile, aiSummary, trendExplanation } = useProfileAgent()
 
   useEffect(() => {
     let active = true
@@ -217,10 +218,15 @@ export function DashboardPage() {
     { difficulty: 'Hard', solved: dashboardData?.stats?.hard ?? 0 },
   ]
 
-  const masteryData = dashboardData?.skills?.map((s: any) => ({
-    topic: s.topic,
-    mastery: s.score
-  })) || zeroMasteryData
+  const masteryData = (profile?.skills && Object.keys(profile.skills).length > 0)
+    ? Object.entries(profile.skills).map(([topic, score]) => ({
+        topic,
+        mastery: score,
+      }))
+    : (dashboardData?.skills?.map((s: any) => ({
+        topic: s.topic,
+        mastery: s.score
+      })) || zeroMasteryData)
 
   const successRate = dashboardData?.stats?.successRate ?? 0
 
@@ -248,7 +254,7 @@ export function DashboardPage() {
         <Hero />
 
         <main className="relative mx-auto w-full max-w-[1600px] space-y-6 px-4 pb-12 sm:px-6 lg:px-8 z-10 -mt-16">
-          <StatsGrid panelClass={panelClass} isDark={isDark} data={dashboardData} />
+          <StatsGrid panelClass={panelClass} isDark={isDark} data={dashboardData} profile={profile} />
 
           <motion.div variants={rowVariants} className="grid gap-6 xl:grid-cols-[1.35fr_0.85fr]">
             <ChartPanel title="Coding Activity" description="Problems solved across the last 30 days" badge="Last 30 days" panelClass={panelClass} isDark={isDark}>
@@ -314,8 +320,8 @@ export function DashboardPage() {
           <ConsistencyHeatmap panelClass={panelClass} isDark={isDark} data={dashboardData?.heatmapData} />
 
           <motion.div variants={rowVariants} className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-            <AiInsights panelClass={panelClass} isDark={isDark} data={dashboardData} />
-            <WeakAreas panelClass={panelClass} isDark={isDark} data={dashboardData} />
+            <AiInsights panelClass={panelClass} isDark={isDark} data={dashboardData} aiSummary={aiSummary} trendExplanation={trendExplanation} />
+            <WeakAreas panelClass={panelClass} isDark={isDark} data={dashboardData} profile={profile} />
           </motion.div>
         </main>
       </motion.div>
@@ -381,18 +387,19 @@ function Hero() {
 
 import { AnimatedCounter } from '@/components/ui/animated-counter'
 
-function StatsGrid({ panelClass, isDark, data }: { panelClass: string; isDark: boolean; data: any }) {
+function StatsGrid({ panelClass, isDark, data, profile }: { panelClass: string; isDark: boolean; data: any; profile: any }) {
   const solved = data?.stats?.solved ?? 0
   const currentStreak = data?.stats?.currentStreak ?? 0
   const longestStreak = data?.stats?.longestStreak ?? 0
   const successRate = data?.stats?.successRate ?? 0
+  const skillLevel = profile?.experienceLevel || 'Beginner'
 
   const stats = [
     { label: 'PROBLEMS SOLVED', value: solved, suffix: '', detail: `Total solved problems`, icon: CheckCircle2 },
     { label: 'CURRENT STREAK', value: currentStreak, suffix: ' Days', detail: currentStreak > 0 ? 'Keep it up!' : 'Start your streak today', icon: Flame },
     { label: 'LONGEST STREAK', value: longestStreak, suffix: ' Days', detail: `Your personal best`, icon: Trophy },
+    { label: 'SKILL LEVEL', value: skillLevel, suffix: '', detail: 'AI Assessed Level', icon: Bot },
     { label: 'MASTERY SCORE', value: successRate, suffix: '%', detail: `Submissions acceptance rate`, icon: Target },
-    { label: 'HINT CREDITS', value: 5, suffix: ' / 5', detail: 'Fully charged', icon: Lightbulb },
   ]
 
   return (
@@ -419,7 +426,11 @@ function StatsGrid({ panelClass, isDark, data }: { panelClass: string; isDark: b
             <p className={cn("text-xs font-bold uppercase tracking-wider", isDark ? "text-slate-300" : "text-slate-600")}>{stat.label}</p>
           </div>
           <p className={cn("text-4xl font-bold tracking-tight mb-2", isDark ? "text-white" : "text-slate-900")}>
-            <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+            {typeof stat.value === 'number' ? (
+              <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+            ) : (
+              stat.value
+            )}
           </p>
           <p className={cn("text-sm font-medium", isDark ? "text-slate-500" : "text-slate-500")}>{stat.detail}</p>
         </motion.article>
@@ -537,15 +548,39 @@ function ConsistencyHeatmap({ panelClass, isDark, data }: { panelClass: string; 
   )
 }
 
-function AiInsights({ panelClass, isDark, data }: { panelClass: string; isDark: boolean; data: any }) {
+function AiInsights({
+  panelClass,
+  isDark,
+  data,
+  aiSummary,
+  trendExplanation,
+}: {
+  panelClass: string
+  isDark: boolean
+  data: any
+  aiSummary: string
+  trendExplanation: string
+}) {
   const solvedCount = data?.stats?.solved ?? 0
-  const insights = solvedCount > 0 
-    ? [
-        { text: `Great job! You have solved ${solvedCount} problems so far. Keep pushing to master more topics!`, badge: 'Progressing' },
-      ]
-    : [
-        { text: 'You have not completed any problems yet. Start practicing!', badge: 'New Learner' },
-      ]
+  const insights: Array<{ text: string; badge: string }> = []
+
+  if (aiSummary) {
+    insights.push({ text: aiSummary, badge: 'Profile Summary' })
+  }
+  if (trendExplanation) {
+    insights.push({ text: trendExplanation, badge: 'Activity Trend' })
+  }
+
+  if (insights.length === 0) {
+    insights.push(
+      solvedCount > 0
+        ? {
+            text: `Great job! You have solved ${solvedCount} problems so far. Keep pushing to master more topics!`,
+            badge: 'Progressing',
+          }
+        : { text: 'You have not completed any problems yet. Start practicing!', badge: 'New Learner' }
+    )
+  }
 
   return (
     <motion.section 
@@ -564,7 +599,7 @@ function AiInsights({ panelClass, isDark, data }: { panelClass: string; isDark: 
       <div className="mt-6 space-y-3">
         {insights.map((insight) => (
           <div className={cn("flex flex-col gap-3 rounded-xl border p-4 sm:flex-row sm:items-center sm:justify-between", isDark ? "border-white/[0.04] bg-[#161618]" : "border-slate-100 bg-slate-50")} key={insight.text}>
-            <p className={cn("text-sm font-medium", isDark ? "text-slate-300" : "text-slate-700")}>{insight.text}</p>
+            <p className={cn("text-sm font-medium leading-relaxed", isDark ? "text-slate-300" : "text-slate-700")}>{insight.text}</p>
             <span className={cn("w-fit shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider", isDark ? "bg-white/[0.04] text-slate-300" : "bg-slate-200 text-slate-700")}>
               {insight.badge}
             </span>
@@ -585,9 +620,16 @@ function AiInsights({ panelClass, isDark, data }: { panelClass: string; isDark: 
   )
 }
 
-function WeakAreas({ panelClass, isDark, data }: { panelClass: string; isDark: boolean; data: any }) {
+function WeakAreas({ panelClass, isDark, data, profile }: { panelClass: string; isDark: boolean; data: any; profile: any }) {
   const solvedCount = data?.stats?.solved ?? 0
-  const activeSkills = data?.skills?.filter((s: any) => s.score > 0) || []
+  const skillsMap = profile?.skills || {}
+  const skillsArray = Object.entries(skillsMap).map(([topic, score]) => ({
+    topic,
+    score: score as number,
+  }))
+
+  const strongAreas = skillsArray.filter((s) => s.score >= 70).sort((a, b) => b.score - a.score)
+  const weakAreas = skillsArray.filter((s) => s.score < 70 && s.score > 0).sort((a, b) => a.score - b.score)
 
   return (
     <motion.section 
@@ -599,30 +641,42 @@ function WeakAreas({ panelClass, isDark, data }: { panelClass: string; isDark: b
           <AlertTriangle className="h-4 w-4" />
         </span>
         <div>
-          <h2 className={cn("text-base font-semibold", isDark ? "text-white" : "text-slate-900")}>Areas to Improve</h2>
+          <h2 className={cn("text-base font-semibold", isDark ? "text-white" : "text-slate-900")}>AI Skill Analysis</h2>
         </div>
       </div>
 
-      {solvedCount > 0 && activeSkills.length > 0 ? (
+      {solvedCount > 0 && skillsArray.length > 0 ? (
         <div className="mt-6 space-y-4">
-          <p className={cn("text-xs font-semibold", isDark ? "text-slate-400" : "text-slate-600")}>
-            Your current coverage of key topic areas:
-          </p>
-          <div className="flex flex-col gap-2">
-            {activeSkills.map((s: any) => (
-              <div key={s.topic} className="flex justify-between items-center text-xs">
-                <span className="font-bold">{s.topic}</span>
-                <span className={cn("px-2 py-0.5 rounded", isDark ? "bg-violet-500/10 text-violet-400" : "bg-violet-100 text-violet-700")}>
-                  {s.score}% Mastered
-                </span>
+          {strongAreas.length > 0 && (
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-green-500 mb-2">Strong Areas</h3>
+              <div className="flex flex-wrap gap-2">
+                {strongAreas.map((s) => (
+                  <span key={s.topic} className={cn("px-2.5 py-1 rounded-full text-xs font-semibold", isDark ? "bg-green-500/10 text-green-400" : "bg-green-100 text-green-700")}>
+                    {s.topic} ({s.score}%)
+                  </span>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {weakAreas.length > 0 && (
+            <div className="pt-2">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-amber-500 mb-2">Areas to Improve</h3>
+              <div className="flex flex-wrap gap-2">
+                {weakAreas.map((s) => (
+                  <span key={s.topic} className={cn("px-2.5 py-1 rounded-full text-xs font-semibold", isDark ? "bg-amber-500/10 text-amber-400" : "bg-amber-100 text-amber-700")}>
+                    {s.topic} ({s.score}%)
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className={cn("mt-6 flex h-32 items-center justify-center rounded-xl border border-dashed", isDark ? "border-white/[0.05] bg-[#161618]" : "border-slate-300 bg-slate-50")}>
           <p className={cn("text-sm font-medium text-center px-4", isDark ? "text-slate-500" : "text-slate-500")}>
-            Solve more problems to generate your weak area analysis.
+            Solve more problems to generate your AI skill analysis.
           </p>
         </div>
       )}
