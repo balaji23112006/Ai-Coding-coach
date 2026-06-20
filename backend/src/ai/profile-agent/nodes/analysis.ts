@@ -250,31 +250,34 @@ export async function classifyLevelNode(
   const hardSolvedSet = new Set<string>();
   const allSolvedSet = new Set<string>();
 
-  for (const sub of state.submissions) {
+  const targetSubmissions = state.history?.submissions || state.submissions || [];
+
+  for (const sub of targetSubmissions) {
     if (!sub.question) continue;
     const diff = sub.question.difficulty;
     const isAccepted = sub.status === 'ACCEPTED';
+    const qId = sub.question.id || (sub as any).questionId || '';
 
     if (diff === 'Easy') {
       easyAttempts++;
       if (isAccepted) {
         easyAccepted++;
-        easySolvedSet.add(sub.questionId || '');
-        allSolvedSet.add(sub.questionId || '');
+        easySolvedSet.add(qId);
+        allSolvedSet.add(qId);
       }
     } else if (diff === 'Medium') {
       mediumAttempts++;
       if (isAccepted) {
         mediumAccepted++;
-        mediumSolvedSet.add(sub.questionId || '');
-        allSolvedSet.add(sub.questionId || '');
+        mediumSolvedSet.add(qId);
+        allSolvedSet.add(qId);
       }
     } else if (diff === 'Hard') {
       hardAttempts++;
       if (isAccepted) {
         hardAccepted++;
-        hardSolvedSet.add(sub.questionId || '');
-        allSolvedSet.add(sub.questionId || '');
+        hardSolvedSet.add(qId);
+        allSolvedSet.add(qId);
       }
     }
   }
@@ -303,7 +306,7 @@ export async function classifyLevelNode(
   }
 
   // Confidence calculation: scales with data volume up to 20 submissions
-  const confidence = Math.min(1.0, Math.max(0.1, state.submissions.length / 20));
+  const confidence = Math.min(1.0, Math.max(0.1, targetSubmissions.length / 20));
 
   return {
     level,

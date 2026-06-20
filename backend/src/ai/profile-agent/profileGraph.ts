@@ -259,6 +259,15 @@ const resolveHistoryCheck = (state: typeof ProfileAgentState.State) => {
     }
     return 'getUserHistoryNode';
   }
+  if (alt === 'checkTopicStats') {
+    if (traceId) {
+      agentLogger.logDecision(
+        traceId,
+        `D1 (History sufficiency check): Insufficient history but tool already tried. Proceeding to Topic Stats check.`
+      );
+    }
+    return 'getTopicStatsNode';
+  }
   if (traceId) {
     agentLogger.logDecision(
       traceId,
@@ -289,6 +298,15 @@ const resolveTopicStatsCheck = (state: typeof ProfileAgentState.State) => {
       );
     }
     return 'getTopicStatsNode';
+  }
+  if (alt === 'checkSubmissions') {
+    if (traceId) {
+      agentLogger.logDecision(
+        traceId,
+        `D2 (Topic stats check): Topic stats missing but tool already tried. Proceeding to Submissions check.`
+      );
+    }
+    return 'getSubmissionsNode';
   }
   if (traceId) {
     agentLogger.logDecision(
@@ -321,6 +339,15 @@ const resolveSubmissionsCheck = (state: typeof ProfileAgentState.State) => {
     }
     return 'getSubmissionsNode';
   }
+  if (alt === 'checkRecentActivity') {
+    if (traceId) {
+      agentLogger.logDecision(
+        traceId,
+        `D3 (Submissions check): Submissions missing/insufficient but tool already tried. Proceeding to Recent Activity check.`
+      );
+    }
+    return 'getRecentActivityNode';
+  }
   if (traceId) {
     agentLogger.logDecision(
       traceId,
@@ -351,6 +378,15 @@ const resolveRecentActivityCheck = (state: typeof ProfileAgentState.State) => {
       );
     }
     return 'getRecentActivityNode';
+  }
+  if (alt === 'checkProfileChange') {
+    if (traceId) {
+      agentLogger.logDecision(
+        traceId,
+        `D4 (Recent activity check): Recent activity missing/insufficient but tool already tried. Proceeding to analyzeMasteryNode.`
+      );
+    }
+    return 'analyzeMasteryNode';
   }
   if (traceId) {
     agentLogger.logDecision(

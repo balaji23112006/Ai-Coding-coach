@@ -1,6 +1,11 @@
 import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
-import { useState } from 'react'
-import { KeyRound, Mail, User, ArrowRight, Sparkles, Bot, AlertCircle } from 'lucide-react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { Code2, LockKeyhole, Mail, User, Sparkles } from 'lucide-react'
+import type { FormEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import InputField from '@/components/ui/input-field'
+import AuthLayout from '@/layouts/auth-layout'
 import { useAuth } from '@/features/authentication'
 
 interface LoginSearch {
@@ -18,233 +23,568 @@ export const Route = createFileRoute('/auth/login/')({
 
 type AuthMode = 'login' | 'signup'
 
+type LoginForm = {
+  identifier: string
+  password: string
+}
+
+type SignupForm = {
+  confirmPassword: string
+  email: string
+  fullName: string
+  password: string
+  username: string
+}
+
+type LoginErrors = Partial<Record<keyof LoginForm | 'server', string>>
+type SignupErrors = Partial<Record<keyof SignupForm | 'server', string>>
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function validateLoginForm(form: LoginForm) {
+  const errors: LoginErrors = {}
+
+  if (!form.identifier.trim()) {
+    errors.identifier = 'Email or username is required.'
+  } else if (form.identifier.includes('@') && !emailPattern.test(form.identifier.trim())) {
+    errors.identifier = 'Enter a valid email address.'
+  }
+
+  if (!form.password) {
+    errors.password = 'Password is required.'
+  }
+
+  return errors
+}
+
+function validateSignupForm(form: SignupForm) {
+  const errors: SignupErrors = {}
+
+  if (!form.email.trim()) {
+    errors.email = 'Email is required.'
+  } else if (!emailPattern.test(form.email.trim())) {
+    errors.email = 'Enter a valid email address.'
+  }
+
+  if (!form.fullName.trim()) {
+    errors.fullName = 'Full name is required.'
+  }
+
+  if (!form.username.trim()) {
+    errors.username = 'Username is required.'
+  } else if (!/^[a-zA-Z0-9_]+$/.test(form.username.trim())) {
+    errors.username = 'Only letters, numbers, and underscores.'
+  }
+
+  if (!form.password) {
+    errors.password = 'Password is required.'
+  } else if (form.password.length < 6) {
+    errors.password = 'Use at least 6 characters.'
+  }
+
+  if (!form.confirmPassword) {
+    errors.confirmPassword = 'Confirm your password.'
+  } else if (form.confirmPassword !== form.password) {
+    errors.confirmPassword = 'Passwords do not match.'
+  }
+
+  return errors
+}
+
 function LoginPage() {
   const navigate = useNavigate()
   const search = useSearch({ from: '/auth/login/' })
   const { checkSession } = useAuth()
 
+  const cardRef = useRef<HTMLDivElement>(null)
+  const isSubmitting = useRef(false)
+
   const [mode, setMode] = useState<AuthMode>('login')
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [fullName, setFullName] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [loginForm, setLoginForm] = useState<LoginForm>({ identifier: '', password: '' })
+  const [signupForm, setSignupForm] = useState<SignupForm>({
+    confirmPassword: '',
+    email: '',
+    fullName: '',
+    password: '',
+    username: '',
+  })
+  const [loginErrors, setLoginErrors] = useState<LoginErrors>({})
+  const [signupErrors, setSignupErrors] = useState<SignupErrors>({})
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
 
+  const springX = useSpring(mouseX, { damping: 40, stiffness: 120 })
+  const springY = useSpring(mouseY, { damping: 40, stiffness: 120 })
+  const springRotateX = useSpring(rotateX, { damping: 30, stiffness: 100 })
+  const springRotateY = useSpring(rotateY, { damping: 30, stiffness: 100 })
+
+  const bgX = useTransform(springX, (value) => `${value * 0.15}px`)
+  const bgY = useTransform(springY, (value) => `${value * 0.15}px`)
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (event: MouseEvent) => {
+      mouseX.set((event.clientX / window.innerWidth - 0.5) * 35)
+      mouseY.set((event.clientY / window.innerHeight - 0.5) * 35)
+    }
+
+    window.addEventListener('mousemove', handleGlobalMouseMove)
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove)
+  }, [mouseX, mouseY])
+
+  const handleCardMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) {
+      return
+    }
+
+    const rect = cardRef.current.getBoundingClientRect()
+    const x = event.clientX - rect.left - rect.width / 2
+    const y = event.clientY - rect.top - rect.height / 2
+
+    rotateX.set(-(y / (rect.height / 2)) * 6)
+    rotateY.set((x / (rect.width / 2)) * 6)
+  }
+
+  const handleCardMouseLeave = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+  }
+
+  const switchMode = (nextMode: AuthMode) => {
+    setMode(nextMode)
+    setLoginErrors({})
+    setSignupErrors({})
+  }
+
+  const handleLoginSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (isSubmitting.current) return
+
+    const nextErrors = validateLoginForm(loginForm)
+    setLoginErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) {
+      return
+    }
+
+    isSubmitting.current = true
+    setIsLoading(true)
     try {
-      if (mode === 'login') {
-        const payload: Record<string, string> = { password }
-        if (email.includes('@')) {
-          payload.email = email
-        } else {
-          payload.username = email
-        }
-
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        })
-
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}))
-          throw new Error(data.error || 'Invalid username or password')
-        }
-
-        // Synchronize auth session state before navigating
-        await checkSession()
-
-        // Successfully logged in
-        if (search.redirect) {
-          window.location.href = search.redirect
-        } else {
-          void navigate({ to: '/dashboard' })
-        }
+      const payload: Record<string, string> = { password: loginForm.password }
+      if (loginForm.identifier.includes('@')) {
+        payload.email = loginForm.identifier
       } else {
-        // Sign up
-        if (!email || !username || !fullName || !password) {
-          throw new Error('All fields are required for sign up')
-        }
+        payload.username = loginForm.identifier
+      }
 
-        const res = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, username, fullName, password }),
-        })
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}))
-          throw new Error(data.error || 'Failed to sign up')
-        }
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Invalid username or password')
+      }
 
-        // BetterAuth signup auto logs in the user, so synchronize session and navigate
-        await checkSession()
+      await checkSession()
 
-        if (search.redirect) {
-          window.location.href = search.redirect
-        } else {
-          void navigate({ to: '/dashboard' })
-        }
+      if (search.redirect) {
+        window.location.href = search.redirect
+      } else {
+        void navigate({ to: '/dashboard' })
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+      setLoginErrors({ server: err instanceof Error ? err.message : 'An unexpected error occurred' })
     } finally {
-      setLoading(false)
+      setIsLoading(false)
+      isSubmitting.current = false
+    }
+  }
+
+  const handleSignupSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (isSubmitting.current) return
+
+    const nextErrors = validateSignupForm(signupForm)
+    setSignupErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) {
+      return
+    }
+
+    isSubmitting.current = true
+    setIsLoading(true)
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: signupForm.email,
+          username: signupForm.username,
+          fullName: signupForm.fullName,
+          password: signupForm.password,
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to sign up')
+      }
+
+      await checkSession()
+
+      if (search.redirect) {
+        window.location.href = search.redirect
+      } else {
+        void navigate({ to: '/dashboard' })
+      }
+    } catch (err) {
+      setSignupErrors({ server: err instanceof Error ? err.message : 'An unexpected error occurred' })
+    } finally {
+      setIsLoading(false)
+      isSubmitting.current = false
     }
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[#070510] text-slate-100 overflow-hidden font-sans">
-      {/* Decorative background blobs */}
-      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.18),_transparent_50%),radial-gradient(ellipse_at_bottom_right,_rgba(6,182,212,0.1),_transparent_50%),linear-gradient(180deg,#0d081e_0%,#070510_100%)]" />
-      <div className="pointer-events-none absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-violet-600/10 blur-[120px] animate-pulse" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full bg-cyan-600/10 blur-[120px] animate-pulse" />
+    <AuthLayout>
+      <motion.div
+        className="relative flex w-full flex-col items-center justify-center"
+        style={{
+          x: bgX,
+          y: bgY,
+        }}
+      >
+        <motion.div
+          ref={cardRef}
+          onMouseMove={handleCardMouseMove}
+          onMouseLeave={handleCardMouseLeave}
+          style={{
+            transformStyle: 'preserve-3d',
+            rotateX: springRotateX,
+            rotateY: springRotateY,
+          }}
+          className="bg-slate-950/42 hover:border-cyan-300/24 relative z-10 w-full max-w-md animate-[fadeIn_0.55s_ease-out] rounded-3xl border border-white/[0.08] p-6 shadow-2xl shadow-black/35 backdrop-blur-3xl transition duration-300 hover:bg-slate-950/50 sm:p-8"
+        >
+          {/* Dynamic responsive backdrop glow */}
+          <div className="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-r from-violet-500/15 via-blue-500/10 to-cyan-400/15 opacity-60 blur-xl transition-opacity duration-300" />
 
-      <div className="relative z-10 w-full max-w-md p-4">
-        {/* Logo/Brand Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-[0_0_20px_rgba(139,92,246,0.3)] mb-4">
-            <Bot className="h-6 w-6 text-white" />
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-violet-400">
-            SKILL LENS
-          </h1>
-          <p className="text-xs text-slate-400 mt-2 font-medium">
-            AI-Powered Coding Practice Arena
-          </p>
-        </div>
-
-        {/* Card Body */}
-        <div className="rounded-2xl border border-violet-500/20 bg-[#120d20]/80 p-8 backdrop-blur-xl shadow-2xl shadow-violet-950/20">
-          <div className="flex border-b border-violet-500/10 pb-5 mb-6">
-            <button
-              onClick={() => { setMode('login'); setError(null); }}
-              className={`flex-1 text-center pb-2 text-sm font-semibold transition-all border-b-2 ${
-                mode === 'login'
-                  ? 'border-violet-500 text-white shadow-[0_2px_10px_rgba(139,92,246,0.15)]'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Sign In
-            </button>
-            <button
-              onClick={() => { setMode('signup'); setError(null); }}
-              className={`flex-1 text-center pb-2 text-sm font-semibold transition-all border-b-2 ${
-                mode === 'signup'
-                  ? 'border-violet-500 text-white shadow-[0_2px_10px_rgba(139,92,246,0.15)]'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Register
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="flex items-start gap-2 rounded-lg bg-rose-500/10 border border-rose-500/20 p-3 text-xs text-rose-400">
-                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
-
-            {mode === 'signup' && (
-              <>
-                <div className="space-y-1">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Full Name</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                    <input
-                      type="text"
-                      placeholder="e.g. John Doe"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-[#080512]/60 border border-violet-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition-colors"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Username</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                    <input
-                      type="text"
-                      placeholder="e.g. johndoe12"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      className="w-full bg-[#080512]/60 border border-violet-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition-colors"
-                      required
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
-            <div className="space-y-1">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                {mode === 'login' ? 'Email or Username' : 'Email Address'}
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <input
-                  type={mode === 'login' ? 'text' : 'email'}
-                  placeholder={mode === 'login' ? 'e.g. aniket@example.com' : 'e.g. john@example.com'}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-[#080512]/60 border border-violet-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition-colors"
-                  required
-                />
-              </div>
+          <div className="relative" style={{ transform: 'translateZ(30px)' }}>
+            <div className="mb-8 space-y-3">
+              <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
+                {mode === 'login' ? 'Welcome back' : 'Create your account'}
+              </h2>
+              <p className="text-sm leading-6 text-slate-400">
+                {mode === 'login'
+                  ? 'Sign in to continue your coding practice.'
+                  : 'Start learning with AI-guided coding feedback.'}
+              </p>
             </div>
 
-            <div className="space-y-1">
-              <div className="flex justify-between items-center">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Password</label>
-              </div>
-              <div className="relative">
-                <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#080512]/60 border border-violet-500/20 rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition-colors"
-                  required
-                />
-              </div>
+            <div className="mb-7 grid grid-cols-2 rounded-xl border border-white/10 bg-white/[0.04] p-1">
+              <button
+                className={`rounded-md px-4 py-2.5 text-sm font-semibold transition ${
+                  mode === 'login'
+                    ? 'bg-cyan-300/15 text-cyan-100 shadow-sm shadow-cyan-950/30'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                onClick={() => switchMode('login')}
+                type="button"
+              >
+                Login
+              </button>
+              <button
+                className={`rounded-md px-4 py-2.5 text-sm font-semibold transition ${
+                  mode === 'signup'
+                    ? 'bg-cyan-300/15 text-cyan-100 shadow-sm shadow-cyan-950/30'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                onClick={() => switchMode('signup')}
+                type="button"
+              >
+                Sign Up
+              </button>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 mt-6 py-2.5 rounded-xl bg-violet-600 text-white hover:bg-violet-500 transition disabled:opacity-50 font-bold text-sm shadow-[0_0_15px_rgba(124,58,237,0.3)] hover:shadow-[0_0_20px_rgba(124,58,237,0.5)]"
-            >
-              {loading ? (
-                <div className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-              ) : (
-                <>
-                  <span>{mode === 'login' ? 'Access Arena' : 'Create Account'}</span>
-                  <ArrowRight className="h-4 w-4" />
-                </>
-              )}
-            </button>
-          </form>
-        </div>
+            {mode === 'login' ? (
+              <form className="space-y-5" noValidate onSubmit={handleLoginSubmit}>
+                {loginErrors.server && (
+                  <div className="rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-300">
+                    {loginErrors.server}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-3" style={{ transform: 'translateZ(20px)' }}>
+                  <button
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 text-sm font-medium text-slate-200 transition hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/[0.06]"
+                    type="button"
+                  >
+                    <Code2 className="h-4 w-4" />
+                    GitHub
+                  </button>
+                  <button
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 text-sm font-medium text-slate-200 transition hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/[0.06]"
+                    type="button"
+                  >
+                    <span className="text-base font-semibold">G</span>
+                    Google
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-slate-500">
+                  <span className="h-px flex-1 bg-white/[0.08]" />
+                  or continue with email
+                  <span className="h-px flex-1 bg-white/[0.08]" />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="username"
+                    error={loginErrors.identifier}
+                    icon={<Mail className="h-4 w-4" />}
+                    label="Email / Username"
+                    name="identifier"
+                    onChange={(event) => {
+                      setLoginForm((current) => ({ ...current, identifier: event.target.value }))
+                      setLoginErrors((current) => ({
+                        ...current,
+                        identifier: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="you@example.com"
+                    type="text"
+                    value={loginForm.identifier}
+                  />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="current-password"
+                    error={loginErrors.password}
+                    icon={<LockKeyhole className="h-4 w-4" />}
+                    label="Password"
+                    labelAction={
+                      <a
+                        className="text-xs font-medium text-slate-400 transition hover:text-cyan-200"
+                        href="#forgot"
+                      >
+                        Forgot Password?
+                      </a>
+                    }
+                    name="password"
+                    onChange={(event) => {
+                      setLoginForm((current) => ({ ...current, password: event.target.value }))
+                      setLoginErrors((current) => ({
+                        ...current,
+                        password: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="Enter your password"
+                    type="password"
+                    value={loginForm.password}
+                  />
+                </div>
+
+                <Button
+                  className="min-h-12 w-full"
+                  disabled={isLoading}
+                  type="submit"
+                  style={{ transform: 'translateZ(10px)' }}
+                >
+                  {isLoading ? 'Signing in...' : 'Login'}
+                </Button>
+
+                <p className="text-center text-sm text-slate-400">
+                  New to SKILL LENS?{' '}
+                  <button
+                    className="font-semibold text-cyan-200 transition hover:text-white"
+                    onClick={() => switchMode('signup')}
+                    type="button"
+                  >
+                    Create account
+                  </button>
+                </p>
+              </form>
+            ) : (
+              <form className="space-y-5" noValidate onSubmit={handleSignupSubmit}>
+                {signupErrors.server && (
+                  <div className="rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-300">
+                    {signupErrors.server}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-3" style={{ transform: 'translateZ(20px)' }}>
+                  <button
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 text-sm font-medium text-slate-200 transition hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/[0.06]"
+                    type="button"
+                  >
+                    <Code2 className="h-4 w-4" />
+                    GitHub
+                  </button>
+                  <button
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 text-sm font-medium text-slate-200 transition hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/[0.06]"
+                    type="button"
+                  >
+                    <span className="text-base font-semibold">G</span>
+                    Google
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-slate-500">
+                  <span className="h-px flex-1 bg-white/[0.08]" />
+                  or use email
+                  <span className="h-px flex-1 bg-white/[0.08]" />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="name"
+                    error={signupErrors.fullName}
+                    icon={<User className="h-4 w-4" />}
+                    label="Full Name"
+                    name="fullName"
+                    onChange={(event) => {
+                      setSignupForm((current) => ({ ...current, fullName: event.target.value }))
+                      setSignupErrors((current) => ({
+                        ...current,
+                        fullName: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="Jane Smith"
+                    type="text"
+                    value={signupForm.fullName}
+                  />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="email"
+                    error={signupErrors.email}
+                    icon={<Mail className="h-4 w-4" />}
+                    label="Email"
+                    name="email"
+                    onChange={(event) => {
+                      setSignupForm((current) => ({ ...current, email: event.target.value }))
+                      setSignupErrors((current) => ({
+                        ...current,
+                        email: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="you@example.com"
+                    type="email"
+                    value={signupForm.email}
+                  />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="username"
+                    error={signupErrors.username}
+                    icon={<User className="h-4 w-4" />}
+                    label="Username"
+                    name="username"
+                    onChange={(event) => {
+                      setSignupForm((current) => ({ ...current, username: event.target.value }))
+                      setSignupErrors((current) => ({
+                        ...current,
+                        username: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="skillmaster"
+                    type="text"
+                    value={signupForm.username}
+                  />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="new-password"
+                    error={signupErrors.password}
+                    icon={<LockKeyhole className="h-4 w-4" />}
+                    label="Password"
+                    name="password"
+                    onChange={(event) => {
+                      setSignupForm((current) => ({ ...current, password: event.target.value }))
+                      setSignupErrors((current) => ({
+                        ...current,
+                        password: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="Min 8 chars, uppercase, lowercase, number"
+                    type="password"
+                    value={signupForm.password}
+                  />
+                </div>
+
+                <div style={{ transform: 'translateZ(15px)' }}>
+                  <InputField
+                    autoComplete="new-password"
+                    error={signupErrors.confirmPassword}
+                    icon={<LockKeyhole className="h-4 w-4" />}
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    onChange={(event) => {
+                      setSignupForm((current) => ({
+                        ...current,
+                        confirmPassword: event.target.value,
+                      }))
+                      setSignupErrors((current) => ({
+                        ...current,
+                        confirmPassword: undefined,
+                        server: undefined,
+                      }))
+                    }}
+                    placeholder="Confirm your password"
+                    type="password"
+                    value={signupForm.confirmPassword}
+                  />
+                </div>
+
+                <Button
+                  className="min-h-12 w-full"
+                  disabled={isLoading}
+                  type="submit"
+                  style={{ transform: 'translateZ(10px)' }}
+                >
+                  {isLoading ? 'Creating account...' : 'Sign Up'}
+                </Button>
+
+                <p className="text-center text-sm text-slate-400">
+                  Already have an account?{' '}
+                  <button
+                    className="font-semibold text-cyan-200 transition hover:text-white"
+                    onClick={() => switchMode('login')}
+                    type="button"
+                  >
+                    Login
+                  </button>
+                </p>
+              </form>
+            )}
+          </div>
+        </motion.div>
 
         {/* Demo Helper box */}
-        <div className="mt-6 p-4 rounded-xl border border-dashed border-violet-500/20 bg-violet-500/5 text-center">
+        <div className="mt-6 w-full max-w-md p-4 rounded-xl border border-dashed border-violet-500/20 bg-violet-500/5 text-center relative z-10">
           <p className="text-[11px] text-slate-400">
             <Sparkles className="h-3 w-3 inline text-amber-400 mr-1 pb-0.5" />
             Quick Dev Login: use <strong className="text-violet-300">testuser@example.com</strong> / <strong className="text-violet-300">Password123!</strong>
           </p>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AuthLayout>
   )
 }
+
+

@@ -30,7 +30,12 @@ export class SubmissionService {
     if (input.questionId) {
       questionObj = await prisma.question.findUnique({
         where: { id: input.questionId },
-        include: { testCases: true },
+        include: {
+          testCases: true,
+          topics: {
+            include: { topic: true }
+          }
+        },
       });
       if (questionObj && questionObj.testCases.length > 0) {
         hasTestCases = true;
@@ -47,10 +52,61 @@ export class SubmissionService {
         if (match) functionName = match[1];
       }
 
+      const isTreeQuestion = questionObj.topics?.some((t: any) => t.topic.name === 'Trees') || false;
+
       if (functionName) {
         if (input.language === 'javascript') {
           const jsDriver = `
 // --- TEST RUNNER DRIVER ---
+${isTreeQuestion ? `
+class TreeNode {
+  constructor(val, left, right) {
+    this.val = (val===undefined ? 0 : val);
+    this.left = (left===undefined ? null : left);
+    this.right = (right===undefined ? null : right);
+  }
+}
+
+function deserializeTree(arr) {
+  if (!arr || arr.length === 0) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (queue.length > 0 && i < arr.length) {
+    const curr = queue.shift();
+    if (curr) {
+      if (arr[i] !== null && arr[i] !== undefined) {
+        curr.left = new TreeNode(arr[i]);
+        queue.push(curr.left);
+      }
+      i++;
+      if (i < arr.length && arr[i] !== null && arr[i] !== undefined) {
+        curr.right = new TreeNode(arr[i]);
+        queue.push(curr.right);
+      }
+      i++;
+    }
+  }
+  return root;
+}
+
+function findNodesByVal(root, val, results = []) {
+  if (!root) return results;
+  if (root.val === val) results.push(root);
+  findNodesByVal(root.left, val, results);
+  findNodesByVal(root.right, val, results);
+  return results;
+}
+
+function getLCA(root, p, q) {
+  if (!root || root === p || root === q) return root;
+  const left = getLCA(root.left, p, q);
+  const right = getLCA(root.right, p, q);
+  if (left && right) return root;
+  return left ? left : right;
+}
+` : ''}
+
 const testCases = [
   ${questionObj.testCases.map((tc: any) => `{
     input: [${tc.input}],
@@ -62,8 +118,34 @@ let details = [];
 for (let i = 0; i < testCases.length; i++) {
   const tc = testCases[i];
   try {
-    const result = ${functionName}(...tc.input);
-    const resultJson = JSON.stringify(result);
+    let args = ${isTreeQuestion ? 'tc.input.map(arg => Array.isArray(arg) ? deserializeTree(arg) : arg)' : 'tc.input'};
+    if (${questionObj.slug === 'lowest-common-ancestor-of-a-binary-tree'}) {
+      const tree = args[0];
+      const pCandidates = findNodesByVal(tree, tc.input[1]);
+      const qCandidates = findNodesByVal(tree, tc.input[2]);
+      let pNode = pCandidates[0] || null;
+      let qNode = qCandidates[0] || null;
+      let found = false;
+      for (let pCand of pCandidates) {
+        for (let qCand of qCandidates) {
+          const lca = getLCA(tree, pCand, qCand);
+          if (lca && lca.val === Number(tc.expected)) {
+            pNode = pCand;
+            qNode = qCand;
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+      args = [tree, pNode, qNode];
+    }
+    const result = ${functionName}(...args);
+    let finalResult = result;
+    if (result && typeof result === 'object' && 'val' in result) {
+      finalResult = result.val;
+    }
+    const resultJson = JSON.stringify(finalResult);
     const expectedJson = JSON.stringify(tc.expected);
     if (resultJson === expectedJson) {
       passed++;
@@ -88,6 +170,55 @@ if (passed === testCases.length) {
           const pyDriver = `
 # --- TEST RUNNER DRIVER ---
 import json
+null = None
+false = False
+true = True
+
+${isTreeQuestion ? `
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def deserializeTree(arr):
+    if not arr or len(arr) == 0:
+        return None
+    root = TreeNode(arr[0])
+    queue = [root]
+    i = 1
+    while queue and i < len(arr):
+        curr = queue.pop(0)
+        if curr:
+            if i < len(arr) and arr[i] is not None:
+                curr.left = TreeNode(arr[i])
+                queue.append(curr.left)
+            i += 1
+            if i < len(arr) and arr[i] is not None:
+                curr.right = TreeNode(arr[i])
+                queue.append(curr.right)
+            i += 1
+    return root
+
+def findNodesByVal(root, val):
+    if not root:
+        return []
+    res = []
+    if root.val == val:
+        res.append(root)
+    res.extend(findNodesByVal(root.left, val))
+    res.extend(findNodesByVal(root.right, val))
+    return res
+
+def getLCA(root, p, q):
+    if not root or root == p or root == q:
+        return root
+    left = getLCA(root.left, p, q)
+    right = getLCA(root.right, p, q)
+    if left and right:
+        return root
+    return left if left else right
+` : ''}
 
 test_cases = [
   ${questionObj.testCases.map((tc: any) => `{
@@ -99,8 +230,36 @@ passed = 0
 details = []
 for i, tc in enumerate(test_cases):
     try:
-        result = ${functionName}(*tc["input"])
-        result_json = json.dumps(result, separators=(',', ':'))
+        args = ${isTreeQuestion ? '[deserializeTree(arg) if isinstance(arg, list) else arg for arg in tc["input"]]' : 'tc["input"]'}
+        if ${questionObj.slug === 'lowest-common-ancestor-of-a-binary-tree' ? 'True' : 'False'}:
+            tree = args[0]
+            p_val = tc["input"][1]
+            q_val = tc["input"][2]
+            expected_val = int(tc["expected"])
+            
+            p_candidates = findNodesByVal(tree, p_val)
+            q_candidates = findNodesByVal(tree, q_val)
+            
+            p_node = p_candidates[0] if p_candidates else None
+            q_node = q_candidates[0] if q_candidates else None
+            
+            found = False
+            for p_cand in p_candidates:
+                for q_cand in q_candidates:
+                    lca_node = getLCA(tree, p_cand, q_cand)
+                    if lca_node and lca_node.val == expected_val:
+                        p_node = p_cand
+                        q_node = q_cand
+                        found = True
+                        break
+                if found:
+                    break
+            args = [tree, p_node, q_node]
+        result = ${functionName}(*args)
+        final_result = result
+        if result and hasattr(result, 'val'):
+            final_result = result.val
+        result_json = json.dumps(final_result, separators=(',', ':'))
         expected_json = json.dumps(tc["expected"], separators=(',', ':'))
         if result_json == expected_json:
             passed += 1
