@@ -3,25 +3,25 @@ import { prisma } from '../../../database/prisma.js';
 
 // Configuration parameters for deterministic calculations (configurable thresholds)
 export const ANALYSIS_CONFIG = {
-  MIN_SUBMISSIONS: 5,        // MIN_SUBMISSIONS for D1 and D3
-  MIN_TOPICS: 3,             // MIN_TOPICS for D2
-  MIN_RECENT_ACTIVITY: 3,     // MIN_RECENT_ACTIVITY for D4
+  MIN_SUBMISSIONS: 5, // MIN_SUBMISSIONS for D1 and D3
+  MIN_TOPICS: 3, // MIN_TOPICS for D2
+  MIN_RECENT_ACTIVITY: 3, // MIN_RECENT_ACTIVITY for D4
   strengthMasteryThreshold: 80, // D5 Mastery > 80%
   strengthAttemptsThreshold: 5, // D5 Attempts >= THR
   weaknessMasteryThreshold: 60, // D6 Mastery < 60%
-  weaknessStruggleAttempts: 3,  // D6 repeated failures (e.g. 3 consecutive wrong attempts)
+  weaknessStruggleAttempts: 3, // D6 repeated failures (e.g. 3 consecutive wrong attempts)
   masteryWeights: {
     successRateWeight: 0.4, // Weight given to the raw success rate of attempts (0.0 to 1.0)
     difficultyWeight: 0.6, // Weight given to the depth/difficulty of solved questions (0.0 to 1.0)
   },
   difficultyPoints: {
-    easy: 10,   // Points awarded for an Easy solved problem
-    medium: 35,  // Points awarded for a Medium solved problem
-    hard: 80,   // Points awarded for a Hard solved problem
+    easy: 10, // Points awarded for an Easy solved problem
+    medium: 35, // Points awarded for a Medium solved problem
+    hard: 80, // Points awarded for a Hard solved problem
   },
   maxExpectedPointsPerTopic: 150, // Points required in a single topic to achieve 100% difficulty weight
-  difficultyHighSuccess: 75,     // Success rate >= 75% indicates comfort with a difficulty level
-  difficultyLowSuccess: 40,      // Success rate <= 40% indicates struggle with a difficulty level
+  difficultyHighSuccess: 75, // Success rate >= 75% indicates comfort with a difficulty level
+  difficultyLowSuccess: 40, // Success rate <= 40% indicates struggle with a difficulty level
   levelThresholds: {
     advancedHardSuccessRate: 60,
     advancedHardSolvedCount: 5,
@@ -29,8 +29,8 @@ export const ANALYSIS_CONFIG = {
     intermediateMediumSuccessRate: 70,
     intermediateSolvedCount: 8,
   },
-  consecutiveStreakLimit: 3,     // Minimum consecutive correct solutions to trigger a streak trend
-  consecutiveStruggleLimit: 3,   // Minimum consecutive wrong submissions to trigger a struggle trend
+  consecutiveStreakLimit: 3, // Minimum consecutive correct solutions to trigger a streak trend
+  consecutiveStruggleLimit: 3, // Minimum consecutive wrong submissions to trigger a struggle trend
 };
 
 /**
@@ -39,7 +39,7 @@ export const ANALYSIS_CONFIG = {
  * and weighted difficulty points from unique solved questions.
  */
 export async function analyzeMasteryNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   const mastery: Record<string, number> = {};
 
@@ -53,7 +53,10 @@ export async function analyzeMasteryNode(
       stats.mediumSolved * ANALYSIS_CONFIG.difficultyPoints.medium +
       stats.hardSolved * ANALYSIS_CONFIG.difficultyPoints.hard;
 
-    const difficultyScore = Math.min(100, (points / ANALYSIS_CONFIG.maxExpectedPointsPerTopic) * 100);
+    const difficultyScore = Math.min(
+      100,
+      (points / ANALYSIS_CONFIG.maxExpectedPointsPerTopic) * 100,
+    );
 
     // 3. Combined weighted mastery score
     const score =
@@ -71,7 +74,7 @@ export async function analyzeMasteryNode(
  * Analyzes chronological submissions to identify patterns (e.g. streaks, struggles, learning velocity).
  */
 export async function detectTrendsNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   const trends: string[] = [];
 
@@ -96,20 +99,27 @@ export async function detectTrendsNode(
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
   const recentSubs = allSubmissions.filter((s) => s.createdAt >= sevenDaysAgo);
-  const previousSubs = allSubmissions.filter((s) => s.createdAt >= thirtyDaysAgo && s.createdAt < sevenDaysAgo);
+  const previousSubs = allSubmissions.filter(
+    (s) => s.createdAt >= thirtyDaysAgo && s.createdAt < sevenDaysAgo,
+  );
 
   const topicTrendsMap: Record<
     string,
     { recentAttempts: number; recentAccepted: number; prevAttempts: number; prevAccepted: number }
   > = {};
 
-  const processSub = (sub: typeof allSubmissions[0], isRecent: boolean) => {
+  const processSub = (sub: (typeof allSubmissions)[0], isRecent: boolean) => {
     if (!sub.question) return;
     const isAccepted = sub.status === 'ACCEPTED';
     for (const qt of sub.question.topics) {
       const topicName = qt.topic.name;
       if (!topicTrendsMap[topicName]) {
-        topicTrendsMap[topicName] = { recentAttempts: 0, recentAccepted: 0, prevAttempts: 0, prevAccepted: 0 };
+        topicTrendsMap[topicName] = {
+          recentAttempts: 0,
+          recentAccepted: 0,
+          prevAttempts: 0,
+          prevAccepted: 0,
+        };
       }
       const data = topicTrendsMap[topicName];
       if (isRecent) {
@@ -146,7 +156,7 @@ export async function detectTrendsNode(
 
   // 1. Consecutive correct/incorrect analysis (Streak vs Struggle)
   const sortedSubs = [...state.submissions].sort(
-    (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
   ); // Newest first
 
   if (sortedSubs.length > 0) {
@@ -169,7 +179,9 @@ export async function detectTrendsNode(
         countedStreak = true;
       }
       if (consecutiveIncorrect >= ANALYSIS_CONFIG.consecutiveStruggleLimit && !countedStruggle) {
-        trends.push(`Struggling recently with ${consecutiveIncorrect} consecutive incorrect submissions.`);
+        trends.push(
+          `Struggling recently with ${consecutiveIncorrect} consecutive incorrect submissions.`,
+        );
         countedStruggle = true;
       }
     }
@@ -178,13 +190,17 @@ export async function detectTrendsNode(
   // 2. Learning Velocity (attempts in last 48 hours)
   const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
   const recentAttemptsCount = state.submissions.filter(
-    (sub) => sub.createdAt >= fortyEightHoursAgo
+    (sub) => sub.createdAt >= fortyEightHoursAgo,
   ).length;
 
   if (recentAttemptsCount >= 5) {
-    trends.push(`High recent learning velocity: ${recentAttemptsCount} submission attempts in the last 48 hours.`);
+    trends.push(
+      `High recent learning velocity: ${recentAttemptsCount} submission attempts in the last 48 hours.`,
+    );
   } else if (recentAttemptsCount > 0) {
-    trends.push(`Moderate activity: ${recentAttemptsCount} submission attempts in the last 48 hours.`);
+    trends.push(
+      `Moderate activity: ${recentAttemptsCount} submission attempts in the last 48 hours.`,
+    );
   }
 
   return { trends: Array.from(new Set(trends)) };
@@ -195,7 +211,7 @@ export async function detectTrendsNode(
  * Assesses comfort levels across Easy, Medium, and Hard categories.
  */
 export async function assessDifficultyNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   const trends: string[] = [...state.trends];
 
@@ -221,9 +237,13 @@ export async function assessDifficultyNode(
     if (stats.total >= 3) {
       const rate = (stats.accepted / stats.total) * 100;
       if (rate >= ANALYSIS_CONFIG.difficultyHighSuccess) {
-        trends.push(`Demonstrates strong comfort with ${diffLevel} difficulty problems (success rate: ${Math.round(rate)}%).`);
+        trends.push(
+          `Demonstrates strong comfort with ${diffLevel} difficulty problems (success rate: ${Math.round(rate)}%).`,
+        );
       } else if (rate <= ANALYSIS_CONFIG.difficultyLowSuccess) {
-        trends.push(`Struggling with ${diffLevel} difficulty problems (success rate: ${Math.round(rate)}%).`);
+        trends.push(
+          `Struggling with ${diffLevel} difficulty problems (success rate: ${Math.round(rate)}%).`,
+        );
       }
     }
   }
@@ -236,7 +256,7 @@ export async function assessDifficultyNode(
  * Classifies overall user proficiency level and calculates confidence score based on data density.
  */
 export async function classifyLevelNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   let easyAttempts = 0;
   let easyAccepted = 0;
@@ -323,13 +343,16 @@ export async function classifyLevelNode(
  * Filters mastery scores to find topics where performance excels.
  */
 export async function identifyStrengthsNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   const strongAreas = Object.entries(state.mastery)
     .filter(([topic, score]) => {
       const stats = state.topicStats[topic];
       const attempts = stats ? stats.totalAttempts : 0;
-      return score >= ANALYSIS_CONFIG.strengthMasteryThreshold && attempts >= ANALYSIS_CONFIG.strengthAttemptsThreshold;
+      return (
+        score >= ANALYSIS_CONFIG.strengthMasteryThreshold &&
+        attempts >= ANALYSIS_CONFIG.strengthAttemptsThreshold
+      );
     })
     .sort((a, b) => b[1] - a[1]) // highest first
     .map(([topic]) => topic);
@@ -342,7 +365,7 @@ export async function identifyStrengthsNode(
  * Filters mastery scores to find topics with low scores and at least one attempt.
  */
 export async function identifyWeaknessesNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   const weakAreas: string[] = [];
 
@@ -393,7 +416,7 @@ export async function identifyWeaknessesNode(
  * Determines next focus area and recommended difficulty range.
  */
 export async function generateRecommendationsNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   // 1. Suggested Difficulty Range
   let recommendedDifficulty = 'Easy';

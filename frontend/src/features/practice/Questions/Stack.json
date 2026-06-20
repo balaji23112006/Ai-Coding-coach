@@ -8,9 +8,7 @@
       "1 <= s.length <= 100000",
       "s consists only of '(', ')', '{', '}', '[' and ']'"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -119,13 +117,8 @@
     "title": "Remove Adjacent Duplicates",
     "difficulty": "Easy",
     "description": "Given a string s consisting of lowercase English letters, repeatedly remove adjacent duplicate characters until no such duplicates remain. Return the final string after all possible removals have been performed.",
-    "constraints": [
-      "1 <= s.length <= 100000",
-      "s consists of lowercase English letters"
-    ],
-    "topics": [
-      "Stack"
-    ],
+    "constraints": ["1 <= s.length <= 100000", "s consists of lowercase English letters"],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -239,9 +232,7 @@
       "-100000 <= nums1[i], nums2[i] <= 100000",
       "All elements in nums1 and nums2 are unique"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -356,9 +347,7 @@
       "The expression is always valid",
       "No division by zero will occur"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -467,13 +456,8 @@
     "title": "Daily Temperatures",
     "difficulty": "Medium",
     "description": "Given an array of integers temperatures representing the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the i-th day to get a warmer temperature. If there is no future day with a warmer temperature, answer[i] should be 0.",
-    "constraints": [
-      "1 <= temperatures.length <= 100000",
-      "-100 <= temperatures[i] <= 150"
-    ],
-    "topics": [
-      "Stack"
-    ],
+    "constraints": ["1 <= temperatures.length <= 100000", "-100 <= temperatures[i] <= 150"],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -588,9 +572,7 @@
       "1 <= k <= 1000",
       "The input is always valid"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -704,9 +686,7 @@
       "At most 100000 operations will be performed",
       "pop(), top(), and getMin() will only be called on non-empty stacks"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -820,9 +800,7 @@
       "-1000 <= asteroids[i] <= 1000",
       "asteroids[i] != 0"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -941,13 +919,8 @@
     "title": "Largest Rectangle in Histogram",
     "difficulty": "Hard",
     "description": "Given an array of integers heights representing the heights of histogram bars where the width of each bar is 1, return the area of the largest rectangle that can be formed within the histogram.",
-    "constraints": [
-      "1 <= heights.length <= 100000",
-      "0 <= heights[i] <= 100000"
-    ],
-    "topics": [
-      "Stack"
-    ],
+    "constraints": ["1 <= heights.length <= 100000", "0 <= heights[i] <= 100000"],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1072,9 +1045,7 @@
       "The expression is valid",
       "Intermediate and final results fit within a 32-bit signed integer"
     ],
-    "topics": [
-      "Stack"
-    ],
+    "topics": ["Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

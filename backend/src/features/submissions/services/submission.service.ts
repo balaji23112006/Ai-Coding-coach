@@ -33,8 +33,8 @@ export class SubmissionService {
         include: {
           testCases: true,
           topics: {
-            include: { topic: true }
-          }
+            include: { topic: true },
+          },
         },
       });
       if (questionObj && questionObj.testCases.length > 0) {
@@ -52,13 +52,16 @@ export class SubmissionService {
         if (match) functionName = match[1];
       }
 
-      const isTreeQuestion = questionObj.topics?.some((t: any) => t.topic.name === 'Trees') || false;
+      const isTreeQuestion =
+        questionObj.topics?.some((t: any) => t.topic.name === 'Trees') || false;
 
       if (functionName) {
         if (input.language === 'javascript') {
           const jsDriver = `
 // --- TEST RUNNER DRIVER ---
-${isTreeQuestion ? `
+${
+  isTreeQuestion
+    ? `
 class TreeNode {
   constructor(val, left, right) {
     this.val = (val===undefined ? 0 : val);
@@ -105,13 +108,19 @@ function getLCA(root, p, q) {
   if (left && right) return root;
   return left ? left : right;
 }
-` : ''}
+`
+    : ''
+}
 
 const testCases = [
-  ${questionObj.testCases.map((tc: any) => `{
+  ${questionObj.testCases
+    .map(
+      (tc: any) => `{
     input: [${tc.input}],
     expected: ${tc.expectedOutput}
-  }`).join(',\n  ')}
+  }`,
+    )
+    .join(',\n  ')}
 ];
 let passed = 0;
 let details = [];
@@ -174,7 +183,9 @@ null = None
 false = False
 true = True
 
-${isTreeQuestion ? `
+${
+  isTreeQuestion
+    ? `
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -218,13 +229,19 @@ def getLCA(root, p, q):
     if left and right:
         return root
     return left if left else right
-` : ''}
+`
+    : ''
+}
 
 test_cases = [
-  ${questionObj.testCases.map((tc: any) => `{
+  ${questionObj.testCases
+    .map(
+      (tc: any) => `{
     "input": [${tc.input}],
     "expected": ${tc.expectedOutput}
-  }`).join(',\n  ')}
+  }`,
+    )
+    .join(',\n  ')}
 ]
 passed = 0
 details = []
@@ -312,9 +329,13 @@ else:
       if (totalMatch) totalCount = parseInt(totalMatch[1], 10);
 
       // Extract individual failure messages
-      const failureLines = result.stdout.split('\n').filter(
-        (line: string) => line.startsWith('Test case ') && (line.includes('failed') || line.includes('threw error'))
-      );
+      const failureLines = result.stdout
+        .split('\n')
+        .filter(
+          (line: string) =>
+            line.startsWith('Test case ') &&
+            (line.includes('failed') || line.includes('threw error')),
+        );
       for (const line of failureLines) {
         const idxMatch = line.match(/Test case (\d+)/);
         const index = idxMatch ? parseInt(idxMatch[1], 10) : -1;
@@ -367,9 +388,10 @@ else:
       const traceId = `trace-submission-${userId}-${Date.now()}`;
       agentLogger.startRun(userId, 'submission', traceId);
       agentLogger.logRequest(traceId, { userId, submissionId: submission.id });
-      
+
       // Run the profile agent assessment graph in the background
-      profileGraph.invoke({ userId, traceId })
+      profileGraph
+        .invoke({ userId, traceId })
         .then(async (finalState) => {
           let summary = '';
           let trendExplanation = '';
@@ -388,7 +410,10 @@ else:
                 traceId,
               });
             } catch (err) {
-              console.error('[Submission Service] Error generating AI summary content during background run:', err);
+              console.error(
+                '[Submission Service] Error generating AI summary content during background run:',
+                err,
+              );
             }
           }
           agentLogger.logResponse(traceId, {
@@ -433,4 +458,3 @@ else:
 }
 
 export const submissionService = new SubmissionService();
-

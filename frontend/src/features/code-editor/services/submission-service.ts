@@ -38,7 +38,9 @@ const draftStorageKey = (problemId: string, language: SupportedLanguage) => {
   return `skill-lens:code-editor:draft:${problemId}:${language}`;
 };
 
-function mapBackendStatusToRunResult(status: string): 'Success' | 'Compile Error' | 'Runtime Error' | 'Wrong Answer' {
+function mapBackendStatusToRunResult(
+  status: string,
+): 'Success' | 'Compile Error' | 'Runtime Error' | 'Wrong Answer' {
   switch (status) {
     case 'ACCEPTED':
       return 'Success';
@@ -52,7 +54,15 @@ function mapBackendStatusToRunResult(status: string): 'Success' | 'Compile Error
   }
 }
 
-function mapBackendStatusToFrontend(status: string): 'Accepted' | 'Wrong Answer' | 'Time Limit Exceeded' | 'Runtime Error' | 'Compile Error' | 'Pending' {
+function mapBackendStatusToFrontend(
+  status: string,
+):
+  | 'Accepted'
+  | 'Wrong Answer'
+  | 'Time Limit Exceeded'
+  | 'Runtime Error'
+  | 'Compile Error'
+  | 'Pending' {
   switch (status) {
     case 'ACCEPTED':
       return 'Accepted';
@@ -133,14 +143,16 @@ export const submissionService = {
       stderr: data.stderr || '',
       passedCount: data.passedCount || 0,
       totalCount: data.totalCount || 0,
-      failedCases: data.failedCases ? data.failedCases.map((fc: any) => ({
-        testCaseId: String(fc.index),
-        input: fc.input || '',
-        expectedOutput: fc.expectedOutput || '',
-        actualOutput: fc.actualOutput || '',
-        status: 'Failed',
-        errorMessage: fc.message,
-      })) : [],
+      failedCases: data.failedCases
+        ? data.failedCases.map((fc: any) => ({
+            testCaseId: String(fc.index),
+            input: fc.input || '',
+            expectedOutput: fc.expectedOutput || '',
+            actualOutput: fc.actualOutput || '',
+            status: 'Failed',
+            errorMessage: fc.message,
+          }))
+        : [],
     };
   },
 
@@ -165,10 +177,7 @@ export const submissionService = {
     };
   },
 
-  getDraft: async (
-    problemId: string,
-    language: SupportedLanguage,
-  ): Promise<string | null> => {
+  getDraft: async (problemId: string, language: SupportedLanguage): Promise<string | null> => {
     return window.localStorage.getItem(draftStorageKey(problemId, language));
   },
 

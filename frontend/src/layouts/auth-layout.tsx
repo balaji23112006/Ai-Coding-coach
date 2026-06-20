@@ -1,66 +1,66 @@
-import type { Variants } from 'framer-motion'
-import { AnimatePresence, motion } from 'framer-motion'
-import type { ReactNode } from 'react'
-import { useEffect, useRef, useState } from 'react'
-import backgroundPhoto from '../assets/premium_photo-1661877737564-3dfd7282efcb.avif'
+import type { Variants } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import type { ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import backgroundPhoto from '../assets/premium_photo-1661877737564-3dfd7282efcb.avif';
 
 type AuthLayoutProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 type FAQItem = {
-  question: string
-  answer: string
-}
+  question: string;
+  answer: string;
+};
 
 function AuthLayout({ children }: AuthLayoutProps) {
-  const [isFaqOpen, setIsFaqOpen] = useState(false)
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isFaqOpen, setIsFaqOpen] = useState(false);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [displayText, setDisplayText] = useState('')
-  const fullText = 'SKILL LENS'
+  const [displayText, setDisplayText] = useState('');
+  const fullText = 'SKILL LENS';
 
   useEffect(() => {
-    let isMounted = true
-    let timeoutId: ReturnType<typeof setTimeout>
-    let currentText = ''
-    let isDeleting = false
+    let isMounted = true;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let currentText = '';
+    let isDeleting = false;
 
     function tick() {
-      if (!isMounted) return
+      if (!isMounted) return;
 
-      const speed = isDeleting ? 60 : 120
+      const speed = isDeleting ? 60 : 120;
 
       if (!isDeleting && currentText === fullText) {
         timeoutId = setTimeout(() => {
           if (isMounted) {
-            isDeleting = true
-            tick()
+            isDeleting = true;
+            tick();
           }
-        }, 2500)
+        }, 2500);
       } else if (isDeleting && currentText === '') {
-        isDeleting = false
+        isDeleting = false;
         timeoutId = setTimeout(() => {
-          if (isMounted) tick()
-        }, 1000)
+          if (isMounted) tick();
+        }, 1000);
       } else {
         currentText = isDeleting
           ? fullText.substring(0, currentText.length - 1)
-          : fullText.substring(0, currentText.length + 1)
+          : fullText.substring(0, currentText.length + 1);
 
-        setDisplayText(currentText)
-        timeoutId = setTimeout(tick, speed)
+        setDisplayText(currentText);
+        timeoutId = setTimeout(tick, speed);
       }
     }
 
-    timeoutId = setTimeout(tick, 800)
+    timeoutId = setTimeout(tick, 800);
 
     return () => {
-      isMounted = false
-      clearTimeout(timeoutId)
-    }
-  }, [])
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const faqData: FAQItem[] = [
     {
@@ -88,18 +88,18 @@ function AuthLayout({ children }: AuthLayoutProps) {
       answer:
         'Our custom static-analysis models evaluate your space/time complexity metrics ($O(n)$ footprint) alongside state transitions to compute an overall structural clarity score.',
     },
-  ]
+  ];
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsFaqOpen(false)
-        setExpandedIndex(null)
+        setIsFaqOpen(false);
+        setExpandedIndex(null);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -110,7 +110,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
         delayChildren: 0.4,
       },
     },
-  }
+  };
 
   const premiumFadeInItem: Variants = {
     hidden: { opacity: 0, y: 25 },
@@ -122,7 +122,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
         ease: [0.215, 0.61, 0.355, 1.0],
       },
     },
-  }
+  };
 
   const dropdownVariants: Variants = {
     hidden: { opacity: 0, y: 10, scale: 0.95 },
@@ -138,7 +138,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
       scale: 0.95,
       transition: { duration: 0.2, ease: 'easeInOut' },
     },
-  }
+  };
 
   return (
     // FIXED: Changed `md:h-screen md:overflow-hidden` to `relative min-h-screen bg-[#050508] text-white antialiased`
@@ -369,7 +369,7 @@ function AuthLayout({ children }: AuthLayoutProps) {
         </footer>
       </motion.section>
     </main>
-  )
+  );
 }
 
-export default AuthLayout
+export default AuthLayout;

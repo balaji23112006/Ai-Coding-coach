@@ -87,9 +87,10 @@ export async function getTopicStats(userId: string): Promise<Record<string, Topi
         topic: topicName,
         totalAttempts: data.totalAttempts,
         solvedCount: data.solvedQuestions.size,
-        successRate: data.totalAttempts > 0
-          ? Math.round((data.acceptedAttempts / data.totalAttempts) * 100)
-          : 0,
+        successRate:
+          data.totalAttempts > 0
+            ? Math.round((data.acceptedAttempts / data.totalAttempts) * 100)
+            : 0,
         easySolved: data.easySolved.size,
         mediumSolved: data.mediumSolved.size,
         hardSolved: data.hardSolved.size,
@@ -99,13 +100,16 @@ export async function getTopicStats(userId: string): Promise<Record<string, Topi
     return result;
   } catch (error) {
     console.error(`[Tool: getTopicStats] Error fetching topic stats for user ${userId}:`, error);
-    throw new Error(`Failed to retrieve topic stats: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to retrieve topic stats: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
 export const getTopicStatsTool = {
   name: 'getTopicStats',
-  description: "Calculates the user's solved counts, success rates, and difficulty breakdowns grouped by topic.",
+  description:
+    "Calculates the user's solved counts, success rates, and difficulty breakdowns grouped by topic.",
   execute: async (userId: string): Promise<Record<string, TopicStat>> => {
     return await getTopicStats(userId);
   },

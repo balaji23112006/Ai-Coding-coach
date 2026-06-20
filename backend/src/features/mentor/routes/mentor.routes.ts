@@ -52,8 +52,8 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
       { role: 'system', content: systemPrompt },
       ...messages.map((m: any) => ({
         role: m.role === 'bot' ? 'assistant' : 'user',
-        content: m.text
-      }))
+        content: m.text,
+      })),
     ];
 
     generation = trace.generation({
@@ -70,8 +70,10 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
       max_tokens: 500,
     });
 
-    const reply = response.choices[0]?.message?.content || "I'm having trouble thinking of a hint right now. Try reviewing your approach!";
-    
+    const reply =
+      response.choices[0]?.message?.content ||
+      "I'm having trouble thinking of a hint right now. Try reviewing your approach!";
+
     if (generation) {
       generation.end({
         output: reply,
@@ -97,11 +99,11 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
       });
     }
     await langfuse.flushAsync();
-    res.json({ 
-      reply: "I couldn't reach the AI server, but here is a tip: make sure you verify edge cases (like empty inputs or single elements) and dry run your loops on paper!" 
+    res.json({
+      reply:
+        "I couldn't reach the AI server, but here is a tip: make sure you verify edge cases (like empty inputs or single elements) and dry run your loops on paper!",
     });
   }
 });
 
 export default router;
-

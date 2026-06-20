@@ -4,14 +4,8 @@
     "title": "Binary Tree Zigzag Level Order Traversal",
     "difficulty": "Medium",
     "description": "Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. The first level should be traversed from left to right, the second level from right to left, the third level from left to right, and so on.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-1000 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Trees",
-      "Stack"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -120,14 +114,8 @@
     "title": "Binary Tree Vertical Order Traversal",
     "difficulty": "Hard",
     "description": "Given the root of a binary tree, return its vertical order traversal. For each column, list the node values from top to bottom. If two nodes are in the same row and column, they should appear from left to right based on their position in the tree.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-1000 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Trees",
-      "HashMap"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -236,14 +224,8 @@
     "title": "Palindrome Linked List",
     "difficulty": "Medium",
     "description": "Given the head of a singly linked list, return true if the sequence of node values forms a palindrome. Otherwise, return false.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-100000 <= Node.val <= 100000"
-    ],
-    "topics": [
-      "Linked List",
-      "Stack"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -352,14 +334,8 @@
     "title": "Linked List Cycle Detection",
     "difficulty": "Medium",
     "description": "Given the head of a singly linked list, determine whether the linked list contains a cycle. A cycle exists if a node can be reached again by continuously following the next pointers. Return true if a cycle exists; otherwise, return false.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-100000 <= Node.val <= 100000"
-    ],
-    "topics": [
-      "Linked List",
-      "HashMap"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-100000 <= Node.val <= 100000"],
+    "topics": ["Linked List", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -475,10 +451,7 @@
       "nums is sorted and rotated",
       "-10000 <= target <= 10000"
     ],
-    "topics": [
-      "Arrays",
-      "Binary Search"
-    ],
+    "topics": ["Arrays", "Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -592,10 +565,7 @@
       "0 <= strs[i].length <= 100",
       "strs[i] consists of lowercase English letters"
     ],
-    "topics": [
-      "Strings",
-      "HashMap"
-    ],
+    "topics": ["Strings", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -709,10 +679,7 @@
       "1 <= word.length <= 300",
       "board and word consist of English letters"
     ],
-    "topics": [
-      "Strings",
-      "Graphs"
-    ],
+    "topics": ["Strings", "Graphs"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -826,10 +793,7 @@
       "-10000 <= Node.val <= 10000",
       "random is either null or points to a valid node in the list"
     ],
-    "topics": [
-      "Linked List",
-      "HashMap"
-    ],
+    "topics": ["Linked List", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -938,14 +902,8 @@
     "title": "Binary Tree Paths",
     "difficulty": "Medium",
     "description": "Given the root of a binary tree, return all root-to-leaf paths as strings. A leaf is a node with no children. Each path should be represented in the format \"node1->node2->node3\".",
-    "constraints": [
-      "0 <= number of nodes <= 10000",
-      "-1000 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Trees",
-      "Strings"
-    ],
+    "constraints": ["0 <= number of nodes <= 10000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1062,10 +1020,7 @@
       "0 <= ui, vi < n",
       "The prerequisite graph is a Directed Acyclic Graph (DAG)"
     ],
-    "topics": [
-      "Graphs",
-      "HashMap"
-    ],
+    "topics": ["Graphs", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1174,14 +1129,8 @@
     "title": "Largest Connected Region",
     "difficulty": "Medium",
     "description": "Given an m x n binary matrix grid, return the size of the largest connected region of 1s. Two cells belong to the same region if they are connected horizontally or vertically. If the grid contains no 1s, return 0.",
-    "constraints": [
-      "1 <= m, n <= 300",
-      "grid[i][j] is either 0 or 1"
-    ],
-    "topics": [
-      "Arrays",
-      "Graphs"
-    ],
+    "constraints": ["1 <= m, n <= 300", "grid[i][j] is either 0 or 1"],
+    "topics": ["Arrays", "Graphs"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1290,14 +1239,8 @@
     "title": "Next Greater Element II",
     "difficulty": "Medium",
     "description": "Given a circular integer array nums, return an array answer where answer[i] is the first greater element to the right of nums[i]. Since the array is circular, you may continue searching from the beginning after reaching the end. If no greater element exists, answer[i] should be -1.",
-    "constraints": [
-      "1 <= nums.length <= 100000",
-      "-1000000000 <= nums[i] <= 1000000000"
-    ],
-    "topics": [
-      "Arrays",
-      "Stack"
-    ],
+    "constraints": ["1 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["Arrays", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1412,10 +1355,7 @@
       "-100000 <= Node.val <= 100000",
       "The tree is a valid Binary Search Tree"
     ],
-    "topics": [
-      "Trees",
-      "Stack"
-    ],
+    "topics": ["Trees", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1524,14 +1464,8 @@
     "title": "Reorder List",
     "difficulty": "Medium",
     "description": "You are given the head of a singly linked list. Reorder the list in-place to follow the pattern: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → ... Continue alternating nodes from the beginning and end until all nodes are used.",
-    "constraints": [
-      "1 <= number of nodes <= 50000",
-      "1 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Linked List",
-      "Stack"
-    ],
+    "constraints": ["1 <= number of nodes <= 50000", "1 <= Node.val <= 1000"],
+    "topics": ["Linked List", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1647,10 +1581,7 @@
       "All words consist of lowercase English letters",
       "All words in wordList are unique"
     ],
-    "topics": [
-      "Strings",
-      "Graphs"
-    ],
+    "topics": ["Strings", "Graphs"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1764,10 +1695,7 @@
       "0 <= Node.val <= 1000000",
       "At most 100000 calls will be made to next() and hasNext()"
     ],
-    "topics": [
-      "Trees",
-      "Stack"
-    ],
+    "topics": ["Trees", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1892,14 +1820,8 @@
     "title": "Shortest Path in Binary Matrix",
     "difficulty": "Medium",
     "description": "Given an n x n binary matrix grid, return the length of the shortest clear path from the top-left cell (0,0) to the bottom-right cell (n-1,n-1). A clear path consists only of cells containing 0. You may move in any of the 8 directions: up, down, left, right, and the 4 diagonals. If no such path exists, return -1.",
-    "constraints": [
-      "1 <= n <= 100",
-      "grid[i][j] is either 0 or 1"
-    ],
-    "topics": [
-      "Arrays",
-      "Graphs"
-    ],
+    "constraints": ["1 <= n <= 100", "grid[i][j] is either 0 or 1"],
+    "topics": ["Arrays", "Graphs"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -2008,14 +1930,8 @@
     "title": "Longest Consecutive Sequence",
     "difficulty": "Medium",
     "description": "Given an unsorted integer array nums, return the length of the longest sequence of consecutive integers. The sequence elements do not need to appear consecutively in the array. You must design an algorithm that runs in O(n) time.",
-    "constraints": [
-      "0 <= nums.length <= 100000",
-      "-1000000000 <= nums[i] <= 1000000000"
-    ],
-    "topics": [
-      "Arrays",
-      "HashMap"
-    ],
+    "constraints": ["0 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["Arrays", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -2130,10 +2046,7 @@
       "The input is always a valid RPN expression",
       "There will not be any division by zero"
     ],
-    "topics": [
-      "Strings",
-      "Stack"
-    ],
+    "topics": ["Strings", "Stack"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -2242,15 +2155,8 @@
     "title": "Find Duplicate Subtrees",
     "difficulty": "Hard",
     "description": "Given the root of a binary tree, return all duplicate subtrees. For each kind of duplicate subtree, return the root node of any one of them. Two subtrees are considered duplicate if they have the same structure and node values.",
-    "constraints": [
-      "1 <= number of nodes <= 10000",
-      "-200 <= Node.val <= 200"
-    ],
-    "topics": [
-      "Trees",
-      "HashMap",
-      "Strings"
-    ],
+    "constraints": ["1 <= number of nodes <= 10000", "-200 <= Node.val <= 200"],
+    "topics": ["Trees", "HashMap", "Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

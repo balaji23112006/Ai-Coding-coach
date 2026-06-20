@@ -12,11 +12,7 @@
       "ui != vi",
       "0 <= source, destination < n"
     ],
-    "topics": [
-      "Graphs",
-      "DFS",
-      "BFS"
-    ],
+    "topics": ["Graphs", "DFS", "BFS"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -132,11 +128,7 @@
       "ui != vi",
       "No duplicate edges"
     ],
-    "topics": [
-      "Graphs",
-      "DFS",
-      "BFS"
-    ],
+    "topics": ["Graphs", "DFS", "BFS"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -245,16 +237,8 @@
     "title": "Number of Islands",
     "difficulty": "Medium",
     "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
-    "constraints": [
-      "1 <= m, n <= 300",
-      "grid[i][j] is either '0' or '1'"
-    ],
-    "topics": [
-      "Graphs",
-      "DFS",
-      "BFS",
-      "Grid"
-    ],
+    "constraints": ["1 <= m, n <= 300", "grid[i][j] is either '0' or '1'"],
+    "topics": ["Graphs", "DFS", "BFS", "Grid"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -369,11 +353,7 @@
       "Node.val is unique for each node",
       "The graph is connected"
     ],
-    "topics": [
-      "Graphs",
-      "DFS",
-      "HashMap"
-    ],
+    "topics": ["Graphs", "DFS", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -489,11 +469,7 @@
       "0 <= ai, bi < numCourses",
       "ai != bi"
     ],
-    "topics": [
-      "Graphs",
-      "Directed Graph",
-      "Cycle Detection"
-    ],
+    "topics": ["Graphs", "Directed Graph", "Cycle Detection"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -609,11 +585,7 @@
       "0 <= ai, bi < numCourses",
       "ai != bi"
     ],
-    "topics": [
-      "Graphs",
-      "Topological Sort",
-      "BFS"
-    ],
+    "topics": ["Graphs", "Topological Sort", "BFS"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -731,11 +703,7 @@
       "0 <= wi <= 100",
       "1 <= k <= n"
     ],
-    "topics": [
-      "Graphs",
-      "Dijkstra",
-      "Shortest Path"
-    ],
+    "topics": ["Graphs", "Dijkstra", "Shortest Path"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -844,16 +812,8 @@
     "title": "Rotting Oranges",
     "difficulty": "Medium",
     "description": "You are given an m x n grid where each cell can have one of three values: 0 representing an empty cell, 1 representing a fresh orange, and 2 representing a rotten orange. Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes required until no fresh orange remains. If this is impossible, return -1.",
-    "constraints": [
-      "1 <= m, n <= 100",
-      "grid[i][j] is 0, 1, or 2"
-    ],
-    "topics": [
-      "Graphs",
-      "BFS",
-      "Multi-Source BFS",
-      "Grid"
-    ],
+    "constraints": ["1 <= m, n <= 100", "grid[i][j] is 0, 1, or 2"],
+    "topics": ["Graphs", "BFS", "Multi-Source BFS", "Grid"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -969,11 +929,7 @@
       "All words consist of lowercase English letters",
       "All words in wordList are unique"
     ],
-    "topics": [
-      "Graphs",
-      "BFS",
-      "Shortest Path"
-    ],
+    "topics": ["Graphs", "BFS", "Shortest Path"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1087,11 +1043,7 @@
       "-1000000 <= xi, yi <= 1000000",
       "All points are unique"
     ],
-    "topics": [
-      "Graphs",
-      "Minimum Spanning Tree",
-      "Prim's Algorithm"
-    ],
+    "topics": ["Graphs", "Minimum Spanning Tree", "Prim's Algorithm"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

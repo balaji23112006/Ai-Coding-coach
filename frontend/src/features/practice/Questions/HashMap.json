@@ -10,9 +10,7 @@
       "-1000000000 <= target <= 1000000000",
       "Exactly one valid answer exists"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -116,13 +114,8 @@
     "title": "First Unique Character in a String",
     "difficulty": "Easy",
     "description": "Given a string s, return the index of the first non-repeating character. If every character appears more than once, return -1.",
-    "constraints": [
-      "1 <= s.length <= 100000",
-      "s consists of lowercase English letters"
-    ],
-    "topics": [
-      "HashMap"
-    ],
+    "constraints": ["1 <= s.length <= 100000", "s consists of lowercase English letters"],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -237,9 +230,7 @@
       "pattern consists of lowercase English letters",
       "s consists of lowercase English letters and spaces"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -353,9 +344,7 @@
       "1 <= t.length <= 100000",
       "s and t consist of lowercase English letters"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -469,9 +458,7 @@
       "-100000 <= nums[i] <= 100000",
       "1 <= k <= number of unique elements in nums"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -580,13 +567,8 @@
     "title": "Longest Consecutive Sequence",
     "difficulty": "Medium",
     "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. Your algorithm must run in O(n) time.",
-    "constraints": [
-      "0 <= nums.length <= 100000",
-      "-1000000000 <= nums[i] <= 1000000000"
-    ],
-    "topics": [
-      "HashMap"
-    ],
+    "constraints": ["0 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -700,9 +682,7 @@
       "-1000 <= nums[i] <= 1000",
       "-10000000 <= k <= 10000000"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -811,13 +791,8 @@
     "title": "Find All Duplicate Elements",
     "difficulty": "Medium",
     "description": "Given an integer array nums, return all elements that appear more than once in the array. Return the duplicates in ascending order. If no duplicates exist, return an empty array.",
-    "constraints": [
-      "1 <= nums.length <= 100000",
-      "-100000 <= nums[i] <= 100000"
-    ],
-    "topics": [
-      "HashMap"
-    ],
+    "constraints": ["1 <= nums.length <= 100000", "-100000 <= nums[i] <= 100000"],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -931,9 +906,7 @@
       "1 <= strings[i].length <= 100",
       "strings[i] consists of lowercase English letters"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1047,9 +1020,7 @@
       "At most 200000 calls will be made",
       "getRandom will only be called when the set is non-empty"
     ],
-    "topics": [
-      "HashMap"
-    ],
+    "topics": ["HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

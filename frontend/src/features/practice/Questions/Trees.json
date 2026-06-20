@@ -4,13 +4,8 @@
     "title": "Maximum Depth of Binary Tree",
     "difficulty": "Easy",
     "description": "Given the root of a binary tree, return its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-1000 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Trees"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -119,13 +114,8 @@
     "title": "Same Tree",
     "difficulty": "Easy",
     "description": "Given the roots of two binary trees p and q, return true if they are structurally identical and the nodes have the same values. Otherwise, return false.",
-    "constraints": [
-      "0 <= number of nodes in each tree <= 100000",
-      "-10000 <= Node.val <= 10000"
-    ],
-    "topics": [
-      "Trees"
-    ],
+    "constraints": ["0 <= number of nodes in each tree <= 100000", "-10000 <= Node.val <= 10000"],
+    "topics": ["Trees"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -234,13 +224,8 @@
     "title": "Binary Tree Level Order Traversal",
     "difficulty": "Medium",
     "description": "Given the root of a binary tree, return the level order traversal of its nodes' values. Nodes at the same depth should be grouped together from left to right.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-1000 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Trees"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -349,13 +334,8 @@
     "title": "Validate Binary Search Tree",
     "difficulty": "Medium",
     "description": "Given the root of a binary tree, determine whether it is a valid Binary Search Tree (BST). A BST is valid if for every node: all values in its left subtree are strictly less than the node's value, and all values in its right subtree are strictly greater than the node's value. Both left and right subtrees must also be valid BSTs.",
-    "constraints": [
-      "1 <= number of nodes <= 100000",
-      "-2147483648 <= Node.val <= 2147483647"
-    ],
-    "topics": [
-      "Trees"
-    ],
+    "constraints": ["1 <= number of nodes <= 100000", "-2147483648 <= Node.val <= 2147483647"],
+    "topics": ["Trees"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -471,9 +451,7 @@
       "p and q exist in the tree",
       "p != q"
     ],
-    "topics": [
-      "Trees"
-    ],
+    "topics": ["Trees"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -587,10 +565,7 @@
       "-1000 <= Node.val <= 1000",
       "-100000 <= targetSum <= 100000"
     ],
-    "topics": [
-      "Trees",
-      "Backtracking"
-    ],
+    "topics": ["Trees", "Backtracking"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -706,10 +681,7 @@
       "-100000 <= Node.val <= 100000",
       "The tree is a valid Binary Search Tree"
     ],
-    "topics": [
-      "Trees",
-      "Binary Search Tree"
-    ],
+    "topics": ["Trees", "Binary Search Tree"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -820,13 +792,8 @@
     "title": "Binary Tree Right Side View",
     "difficulty": "Medium",
     "description": "Given the root of a binary tree, imagine standing on the right side of it. Return the values of the nodes you can see ordered from top to bottom.",
-    "constraints": [
-      "0 <= number of nodes <= 100000",
-      "-100 <= Node.val <= 100"
-    ],
-    "topics": [
-      "Trees"
-    ],
+    "constraints": ["0 <= number of nodes <= 100000", "-100 <= Node.val <= 100"],
+    "topics": ["Trees"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -944,11 +911,7 @@
       "preorder is guaranteed to be the preorder traversal of the tree",
       "inorder is guaranteed to be the inorder traversal of the tree"
     ],
-    "topics": [
-      "Trees",
-      "Recursion",
-      "HashMap"
-    ],
+    "topics": ["Trees", "Recursion", "HashMap"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1057,14 +1020,8 @@
     "title": "Binary Tree Maximum Path Sum",
     "difficulty": "Hard",
     "description": "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes is connected by an edge. A path may start and end at any node in the tree and must contain at least one node. Given the root of a binary tree, return the maximum path sum of any path.",
-    "constraints": [
-      "1 <= number of nodes <= 30000",
-      "-1000 <= Node.val <= 1000"
-    ],
-    "topics": [
-      "Trees",
-      "Dynamic Programming"
-    ],
+    "constraints": ["1 <= number of nodes <= 30000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "Dynamic Programming"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

@@ -31,7 +31,9 @@ async function main() {
   });
 
   if (questions.length === 0) {
-    console.error('[Seed Rich User] No questions found in the database. Please run npm run seed first.');
+    console.error(
+      '[Seed Rich User] No questions found in the database. Please run npm run seed first.',
+    );
     process.exit(1);
   }
 
@@ -248,8 +250,12 @@ async function main() {
     });
   }
 
-  console.log(`[Seed Rich User] Successfully seeded ${submissionsToSeed.length} submissions for ${userId}.`);
-  console.log('[Seed Rich User] Seeding completed. You can now run the Profile Agent using this user ID: rich_test_user');
+  console.log(
+    `[Seed Rich User] Successfully seeded ${submissionsToSeed.length} submissions for ${userId}.`,
+  );
+  console.log(
+    '[Seed Rich User] Seeding completed. You can now run the Profile Agent using this user ID: rich_test_user',
+  );
 }
 
 main()

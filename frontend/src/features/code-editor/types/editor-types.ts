@@ -45,7 +45,13 @@ export interface Submission {
   problemId: string;
   language: SupportedLanguage;
   code: string;
-  status: 'Accepted' | 'Wrong Answer' | 'Time Limit Exceeded' | 'Runtime Error' | 'Pending' | 'Compile Error';
+  status:
+    | 'Accepted'
+    | 'Wrong Answer'
+    | 'Time Limit Exceeded'
+    | 'Runtime Error'
+    | 'Pending'
+    | 'Compile Error';
   submittedAt: string;
   runtime?: number;
   memory?: number;

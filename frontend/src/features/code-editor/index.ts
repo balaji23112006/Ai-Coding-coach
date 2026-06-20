@@ -1,4 +1,4 @@
-export { EditorPage } from './pages/editor-page'
+export { EditorPage } from './pages/editor-page';
 export type {
   CodeExecutionRequest,
   EditorDifficulty,
@@ -7,4 +7,4 @@ export type {
   ExecutionResult,
   SubmissionResult,
   SubmissionStatus,
-} from './types/editor-types'
+} from './types/editor-types';

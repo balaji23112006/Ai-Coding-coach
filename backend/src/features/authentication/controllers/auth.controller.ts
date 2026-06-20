@@ -31,6 +31,9 @@ export class AuthController {
         return res.status(400).json({ error: 'Username is already taken' });
       }
 
+      const clientHeaders = { ...req.headers };
+      delete clientHeaders.cookie;
+
       const authResponse = await auth.api.signUpEmail({
         body: {
           email,
@@ -38,13 +41,17 @@ export class AuthController {
           name: fullName,
           username,
         },
-        headers: fromNodeHeaders(req.headers),
+        headers: fromNodeHeaders(clientHeaders),
         asResponse: true,
       });
 
-      // Forward headers (e.g. Set-Cookie)
+      // Forward headers (e.g. Set-Cookie) using append for multi-value set-cookie
       authResponse.headers.forEach((value: string, key: string) => {
-        res.setHeader(key, value);
+        if (key.toLowerCase() === 'set-cookie') {
+          res.append(key, value);
+        } else {
+          res.setHeader(key, value);
+        }
       });
 
       if (!authResponse.ok) {
@@ -83,18 +90,25 @@ export class AuthController {
         return res.status(401).json({ error: 'Invalid credentials' });
       }
 
+      const clientHeaders = { ...req.headers };
+      delete clientHeaders.cookie;
+
       const authResponse = await auth.api.signInEmail({
         body: {
           email: resolvedEmail,
           password,
         },
-        headers: fromNodeHeaders(req.headers),
+        headers: fromNodeHeaders(clientHeaders),
         asResponse: true,
       });
 
-      // Forward headers
+      // Forward headers (e.g. Set-Cookie) using append for multi-value set-cookie
       authResponse.headers.forEach((value: string, key: string) => {
-        res.setHeader(key, value);
+        if (key.toLowerCase() === 'set-cookie') {
+          res.append(key, value);
+        } else {
+          res.setHeader(key, value);
+        }
       });
 
       if (!authResponse.ok) {
@@ -119,9 +133,17 @@ export class AuthController {
         asResponse: true,
       });
 
+      // Forward headers (e.g. Set-Cookie) using append for multi-value set-cookie
       authResponse.headers.forEach((value: string, key: string) => {
-        res.setHeader(key, value);
+        if (key.toLowerCase() === 'set-cookie') {
+          res.append(key, value);
+        } else {
+          res.setHeader(key, value);
+        }
       });
+
+      // Explicitly clear session cookie
+      res.clearCookie('better-auth.session_token', { path: '/' });
 
       return res.status(200).json({ message: 'Successfully logged out' });
     } catch (error) {

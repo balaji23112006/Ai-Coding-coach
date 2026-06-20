@@ -97,7 +97,9 @@ class AgentLogger {
       if (!run.nodes.includes(nodeName)) {
         run.nodes.push(nodeName);
       }
-      run.decisions.push(`[${new Date().toISOString()}] Executed Node: ${nodeName}${details ? ` with data: ${JSON.stringify(details)}` : ''}`);
+      run.decisions.push(
+        `[${new Date().toISOString()}] Executed Node: ${nodeName}${details ? ` with data: ${JSON.stringify(details)}` : ''}`,
+      );
     }
   }
 
@@ -120,7 +122,11 @@ class AgentLogger {
     }
   }
 
-  public async finalizeRun(id: string, status: 'completed' | 'failed' = 'completed', errorMsg?: string) {
+  public async finalizeRun(
+    id: string,
+    status: 'completed' | 'failed' = 'completed',
+    errorMsg?: string,
+  ) {
     const run = this.currentRuns.get(id);
     if (!run) return;
 

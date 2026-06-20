@@ -26,18 +26,18 @@ const MONACO_LANGUAGE_MAP: Record<SupportedLanguage, string> = {
 
 export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
   // Load user editor preferences with safe fallbacks
-  const fontSize = parseInt(localStorage.getItem('editor-fontSize') || '14')
-  const tabSize = parseInt(localStorage.getItem('editor-tabSize') || '2')
-  const wordWrap = localStorage.getItem('skill-lens-wordWrap') !== 'false' ? 'on' : 'off'
-  const minimapEnabled = localStorage.getItem('skill-lens-minimap') === 'true'
-  const editorThemePreference = localStorage.getItem('editor-theme') || 'VS Code Dark'
-  
+  const fontSize = parseInt(localStorage.getItem('editor-fontSize') || '14');
+  const tabSize = parseInt(localStorage.getItem('editor-tabSize') || '2');
+  const wordWrap = localStorage.getItem('skill-lens-wordWrap') !== 'false' ? 'on' : 'off';
+  const minimapEnabled = localStorage.getItem('skill-lens-minimap') === 'true';
+  const editorThemePreference = localStorage.getItem('editor-theme') || 'VS Code Dark';
+
   // Map customized editor themes to Monaco's standard built-in themes
-  const monacoTheme = ['dracula', 'monokai', 'vs code dark', 'github dark'].some(
-    (t) => editorThemePreference.toLowerCase().includes(t)
+  const monacoTheme = ['dracula', 'monokai', 'vs code dark', 'github dark'].some((t) =>
+    editorThemePreference.toLowerCase().includes(t),
   )
     ? 'vs-dark'
-    : 'vs'
+    : 'vs';
 
   console.log('CodeEditor loaded options:', {
     fontSize,
@@ -48,7 +48,7 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
     monacoTheme,
     rawFontSize: localStorage.getItem('editor-fontSize'),
     rawMinimap: localStorage.getItem('skill-lens-minimap'),
-  })
+  });
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-slate-800/80 bg-[#1e1e1e]">
@@ -58,19 +58,19 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
             <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
             <span>source_file.{FILE_EXTENSIONS[language]}</span>
           </div>
-          
-          <div className="hidden lg:flex items-center gap-1.5 text-[9px] font-bold text-amber-400 uppercase tracking-wider bg-amber-500/5 px-2 py-0.5 rounded border border-amber-500/15">
-            <span className="h-1 w-1 bg-amber-400 rounded-full animate-ping" />
+
+          <div className="hidden items-center gap-1.5 rounded border border-amber-500/15 bg-amber-500/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400 lg:flex">
+            <span className="h-1 w-1 animate-ping rounded-full bg-amber-400" />
             <span>Note: Write the whole program template, not just the function body!</span>
           </div>
         </div>
-        
+
         <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500">
           {language}
         </div>
       </div>
 
-      <div className="flex-1 min-h-0">
+      <div className="min-h-0 flex-1">
         <Editor
           height="100%"
           language={MONACO_LANGUAGE_MAP[language]}
@@ -78,13 +78,14 @@ export function CodeEditor({ language, value, onChange }: CodeEditorProps) {
           onChange={(val) => onChange(val ?? '')}
           theme={monacoTheme}
           loading={
-            <div className="flex h-full items-center justify-center bg-[#1e1e1e] text-slate-500 text-sm">
+            <div className="flex h-full items-center justify-center bg-[#1e1e1e] text-sm text-slate-500">
               Loading editor...
             </div>
           }
           options={{
             fontSize: fontSize,
-            fontFamily: "'Geist Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco, 'Courier New', monospace",
+            fontFamily:
+              "'Geist Mono', 'Fira Code', 'Cascadia Code', Menlo, Monaco, 'Courier New', monospace",
             fontLigatures: true,
             lineNumbers: 'on',
             minimap: { enabled: minimapEnabled },

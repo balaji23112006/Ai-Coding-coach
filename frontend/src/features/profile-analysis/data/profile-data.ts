@@ -1,4 +1,4 @@
-import type { AchievementBadge, UserProfile } from '../types'
+import type { AchievementBadge, UserProfile } from '../types';
 
 export const initialUserData: UserProfile = {
   name: 'User',
@@ -8,7 +8,7 @@ export const initialUserData: UserProfile = {
   joinDate: 'dd-mm-yyyy',
   role: '0',
   language: '0',
-}
+};
 
 export const roles = [
   'Student',
@@ -17,8 +17,8 @@ export const roles = [
   'Backend Developer',
   'Full-Stack Developer',
   'Data Scientist',
-]
+];
 
-export const languages = ['TypeScript', 'Python', 'Java', 'C++', 'Go', 'Rust']
+export const languages = ['TypeScript', 'Python', 'Java', 'C++', 'Go', 'Rust'];
 
-export const badges: AchievementBadge[] = []
+export const badges: AchievementBadge[] = [];

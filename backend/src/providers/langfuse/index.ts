@@ -11,9 +11,12 @@ export function getLangfuse(): Langfuse {
   if (!_langfuse) {
     const publicKey = process.env.LANGFUSE_PUBLIC_KEY || 'mock_public_key';
     const secretKey = process.env.LANGFUSE_SECRET_KEY || 'mock_secret_key';
-    const baseUrl = process.env.LANGFUSE_HOST || process.env.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com';
+    const baseUrl =
+      process.env.LANGFUSE_HOST || process.env.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com';
 
-    console.log(`[Langfuse] Initializing client → host=${baseUrl}, publicKey=${publicKey.slice(0, 20)}...`);
+    console.log(
+      `[Langfuse] Initializing client → host=${baseUrl}, publicKey=${publicKey.slice(0, 20)}...`,
+    );
 
     _langfuse = new Langfuse({ publicKey, secretKey, baseUrl });
   }

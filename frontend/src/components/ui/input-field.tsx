@@ -1,11 +1,11 @@
-import type { InputHTMLAttributes, ReactNode } from 'react'
+import type { InputHTMLAttributes, ReactNode } from 'react';
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  error?: string
-  icon?: ReactNode
-  label: string
-  labelAction?: ReactNode
-}
+  error?: string;
+  icon?: ReactNode;
+  label: string;
+  labelAction?: ReactNode;
+};
 
 function InputField({
   error,
@@ -16,7 +16,7 @@ function InputField({
   className = '',
   ...props
 }: InputFieldProps) {
-  const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-')
+  const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
 
   return (
     <div className="space-y-2">
@@ -52,7 +52,7 @@ function InputField({
         </p>
       ) : null}
     </div>
-  )
+  );
 }
 
-export default InputField
+export default InputField;

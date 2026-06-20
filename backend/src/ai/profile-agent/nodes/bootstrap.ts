@@ -6,7 +6,7 @@ import { ProfileAgentState } from '../state.js';
  * while still accurately reflecting any solved problem counts.
  */
 export async function bootstrapNode(
-  state: typeof ProfileAgentState.State
+  state: typeof ProfileAgentState.State,
 ): Promise<Partial<typeof ProfileAgentState.State>> {
   const easySolvedSet = new Set<string>();
   const mediumSolvedSet = new Set<string>();
@@ -14,10 +14,14 @@ export async function bootstrapNode(
   const allSolvedSet = new Set<string>();
 
   const submissions = state.history?.submissions || [];
-  console.log(`[bootstrapNode] Initializing bootstrap. Number of submissions: ${submissions.length}`);
-  
+  console.log(
+    `[bootstrapNode] Initializing bootstrap. Number of submissions: ${submissions.length}`,
+  );
+
   for (const sub of submissions) {
-    console.log(`[bootstrapNode] Submission ID: ${sub.id}, Status: ${sub.status}, Question ID: ${sub.question?.id}, Question Difficulty: ${sub.question?.difficulty}`);
+    console.log(
+      `[bootstrapNode] Submission ID: ${sub.id}, Status: ${sub.status}, Question ID: ${sub.question?.id}, Question Difficulty: ${sub.question?.difficulty}`,
+    );
     if (sub.status === 'ACCEPTED' && sub.question) {
       const diff = sub.question.difficulty;
       const qId = sub.question.id;
@@ -32,7 +36,9 @@ export async function bootstrapNode(
     }
   }
 
-  console.log(`[bootstrapNode] Solved count summary - Easy: ${easySolvedSet.size}, Medium: ${mediumSolvedSet.size}, Hard: ${hardSolvedSet.size}, Total: ${allSolvedSet.size}`);
+  console.log(
+    `[bootstrapNode] Solved count summary - Easy: ${easySolvedSet.size}, Medium: ${mediumSolvedSet.size}, Hard: ${hardSolvedSet.size}, Total: ${allSolvedSet.size}`,
+  );
 
   return {
     level: 'Unclassified',
@@ -50,4 +56,3 @@ export async function bootstrapNode(
     recommendedDifficulty: 'Easy',
   };
 }
-

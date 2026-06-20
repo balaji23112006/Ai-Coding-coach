@@ -85,13 +85,16 @@ export async function getUserHistory(userId: string): Promise<UserHistoryResult>
     };
   } catch (error) {
     console.error(`[Tool: getUserHistory] Error fetching history for user ${userId}:`, error);
-    throw new Error(`Failed to retrieve user history: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to retrieve user history: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
 export const getUserHistoryTool = {
   name: 'getUserHistory',
-  description: "Retrieves the user's skill profile statistics and comprehensive coding submission history.",
+  description:
+    "Retrieves the user's skill profile statistics and comprehensive coding submission history.",
   execute: async (userId: string): Promise<UserHistoryResult> => {
     return await getUserHistory(userId);
   },

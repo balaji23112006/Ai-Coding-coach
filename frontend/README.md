@@ -1,53 +1,52 @@
 # 🎯 AI Coding Practice Coach - Frontend
 
-
 ---
 
 ## ⚛️ Tech Stack
 
 ### Core
 
-* React.js — Frontend library
-* TypeScript — Type-safe application development
-* Vite — Fast development and optimized production builds
+- React.js — Frontend library
+- TypeScript — Type-safe application development
+- Vite — Fast development and optimized production builds
 
 ### Routing
 
-* TanStack Router — Type-safe client-side routing
+- TanStack Router — Type-safe client-side routing
 
 ### State Management
 
-* Zustand — Client-side state management
-* TanStack Query — Server-state management, caching, and synchronization
+- Zustand — Client-side state management
+- TanStack Query — Server-state management, caching, and synchronization
 
 ### UI & Styling
 
-* Tailwind CSS — Utility-first styling
-* Shadcn UI — Reusable component system
-* Radix UI — Accessible UI primitives
+- Tailwind CSS — Utility-first styling
+- Shadcn UI — Reusable component system
+- Radix UI — Accessible UI primitives
 
 ### Forms & Validation
 
-* React Hook Form — Form state management
-* Zod — Schema validation and type inference
+- React Hook Form — Form state management
+- Zod — Schema validation and type inference
 
 ### Data Visualization
 
-* Recharts — Business dashboards and analytics
-* Apache ECharts — Advanced visualizations
+- Recharts — Business dashboards and analytics
+- Apache ECharts — Advanced visualizations
 
 ### 3D & Motion
 
-* Three.js — 3D scene primitives, meshes, materials, and animation math
-* React Three Fiber — React renderer for Three.js scenes inside feature pages
-* Drei — Helper components such as `Float`, `Sphere`, `Text`, and `Stars`
-* Framer Motion — Smooth page transitions, reveal animations, and interactive UI motion
+- Three.js — 3D scene primitives, meshes, materials, and animation math
+- React Three Fiber — React renderer for Three.js scenes inside feature pages
+- Drei — Helper components such as `Float`, `Sphere`, `Text`, and `Stars`
+- Framer Motion — Smooth page transitions, reveal animations, and interactive UI motion
 
 The app uses Three.js-powered animated backgrounds across the main authenticated pages, including Dashboard, Practice, Roadmap, Progress, Leaderboard, and Profile Analysis. These scenes render through `<Canvas>` from React Three Fiber and use `useFrame` for continuous animation, mouse-parallax movement, rotating wireframes, floating code symbols, stars, and trophy/analytics themed visual effects.
 
 ### Code Quality
 
-* Biome — Formatting, linting, and static analysis
+- Biome — Formatting, linting, and static analysis
 
 ---
 
@@ -55,8 +54,8 @@ The app uses Three.js-powered animated backgrounds across the main authenticated
 
 ### Prerequisites
 
-* Node.js v20+
-* pnpm
+- Node.js v20+
+- pnpm
 
 ### Setup
 
@@ -113,14 +112,14 @@ The application follows a **Feature-Based Architecture**.
 
 Each feature owns its:
 
-* Components
-* Hooks
-* Services
-* Store
-* Schemas
-* Types
-* Utilities
-* Static Data
+- Components
+- Hooks
+- Services
+- Store
+- Schemas
+- Types
+- Utilities
+- Static Data
 
 This keeps business logic close to the feature it belongs to and prevents the codebase from becoming difficult to maintain as it grows.
 
@@ -206,22 +205,22 @@ src
 
 Use for:
 
-* Authentication state
-* Theme state
-* UI state
-* Local application state
+- Authentication state
+- Theme state
+- UI state
+- Local application state
 
 ### TanStack Query
 
 Use for:
 
-* API requests
-* User data
-* Skill analysis results
-* Learning recommendations
-* Assessment results
-* Query caching
-* Mutations
+- API requests
+- User data
+- Skill analysis results
+- Learning recommendations
+- Assessment results
+- Query caching
+- Mutations
 
 ### Important Rule
 
@@ -235,8 +234,8 @@ Use for:
 
 All forms should use:
 
-* React Hook Form
-* Zod
+- React Hook Form
+- Zod
 
 Example structure:
 
@@ -343,8 +342,7 @@ All API requests must live inside service files.
 ✅ Good
 
 ```ts
-export const getProfile = () =>
-  api.get("/profile");
+export const getProfile = () => api.get('/profile');
 ```
 
 ❌ Avoid API calls directly inside components.
@@ -355,43 +353,43 @@ export const getProfile = () =>
 
 ```ts
 // React
-import { useState } from "react";
+import { useState } from 'react';
 
 // Third-party libraries
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
 // Internal imports
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 // Relative imports
-import "./styles.css";
+import './styles.css';
 ```
 
 ---
 
 ### TypeScript Rules
 
-* Avoid `any`
-* Prefer `unknown` when needed
-* Use interfaces and types appropriately
-* Keep types close to their feature unless shared
+- Avoid `any`
+- Prefer `unknown` when needed
+- Use interfaces and types appropriately
+- Keep types close to their feature unless shared
 
 ---
 
 ### Styling Rules
 
-* Use Tailwind CSS first
-* Reuse Shadcn UI components
-* Avoid inline styles
-* Avoid custom CSS unless necessary
+- Use Tailwind CSS first
+- Reuse Shadcn UI components
+- Avoid inline styles
+- Avoid custom CSS unless necessary
 
 ---
 
 ### Component Rules
 
-* Keep components focused and reusable
-* Prefer composition over prop drilling
-* Keep business logic outside presentation components
+- Keep components focused and reusable
+- Prefer composition over prop drilling
+- Keep business logic outside presentation components
 
 ---
 
@@ -412,15 +410,15 @@ chore: update dependencies
 
 ## 🎯 Development Principles
 
-* Type Safety First
-* Feature-Based Architecture
-* Reusable Components
-* Accessibility by Default
-* Clean Code Practices
-* Consistent User Experience
-* Performance-Oriented Development
-* Maintainability Over Cleverness
-* Scalability Over Short-Term Convenience
+- Type Safety First
+- Feature-Based Architecture
+- Reusable Components
+- Accessibility by Default
+- Clean Code Practices
+- Consistent User Experience
+- Performance-Oriented Development
+- Maintainability Over Cleverness
+- Scalability Over Short-Term Convenience
 
 ---
 
@@ -435,11 +433,11 @@ pnpm build
 
 Ensure:
 
-* No TypeScript errors
-* No linting issues
-* Production build succeeds
-* New code follows project conventions
-* Feature-specific code remains inside its feature directory
+- No TypeScript errors
+- No linting issues
+- Production build succeeds
+- New code follows project conventions
+- Feature-specific code remains inside its feature directory
 
 ---
 

@@ -39,7 +39,7 @@ import { bootstrapNode } from './nodes/bootstrap.js';
 async function traceNode<T>(
   nodeName: string,
   state: { userId: string; traceId?: string },
-  fn: () => Promise<T>
+  fn: () => Promise<T>,
 ): Promise<T> {
   const traceId = state.traceId;
   if (traceId) {
@@ -64,6 +64,7 @@ async function traceNode<T>(
     span.end({
       output: result,
     });
+    await langfuse.flushAsync();
     return result;
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
@@ -77,6 +78,7 @@ async function traceNode<T>(
     trace.update({
       output: { error: err.message },
     });
+    await langfuse.flushAsync();
     throw error;
   }
 }
@@ -87,7 +89,7 @@ async function traceNode<T>(
 async function traceTool<T>(
   toolName: string,
   state: { userId: string; traceId?: string },
-  fn: () => Promise<T>
+  fn: () => Promise<T>,
 ): Promise<T> {
   const traceId = state.traceId;
   if (traceId) {
@@ -112,6 +114,7 @@ async function traceTool<T>(
     span.end({
       output: result,
     });
+    await langfuse.flushAsync();
     return result;
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
@@ -122,6 +125,7 @@ async function traceTool<T>(
     span.end({
       output: { error: err.message },
     });
+    await langfuse.flushAsync();
     throw error;
   }
 }
@@ -144,7 +148,9 @@ const getUserHistoryNodeFn = async (state: typeof ProfileAgentState.State) => {
   const stateWithTrace = { ...state, traceId };
 
   return await traceNode('getUserHistoryNode', stateWithTrace, async () => {
-    const result = await traceTool('getUserHistory', stateWithTrace, () => getUserHistory(state.userId));
+    const result = await traceTool('getUserHistory', stateWithTrace, () =>
+      getUserHistory(state.userId),
+    );
     return {
       history: result,
       toolsTried: ['getUserHistory'],
@@ -165,7 +171,9 @@ const getTopicStatsNodeFn = async (state: typeof ProfileAgentState.State) => {
 
 const getSubmissionsNodeFn = async (state: typeof ProfileAgentState.State) => {
   return await traceNode('getSubmissionsNode', state, async () => {
-    const result = await traceTool('getSubmissions', state, () => getSubmissions({ userId: state.userId }));
+    const result = await traceTool('getSubmissions', state, () =>
+      getSubmissions({ userId: state.userId }),
+    );
     return {
       submissions: result,
       toolsTried: ['getSubmissions'],
@@ -175,7 +183,9 @@ const getSubmissionsNodeFn = async (state: typeof ProfileAgentState.State) => {
 
 const getRecentActivityNodeFn = async (state: typeof ProfileAgentState.State) => {
   return await traceNode('getRecentActivityNode', state, async () => {
-    const result = await traceTool('getRecentActivity', state, () => getRecentActivity(state.userId));
+    const result = await traceTool('getRecentActivity', state, () =>
+      getRecentActivity(state.userId),
+    );
     return {
       recentActivity: result,
       toolsTried: ['getRecentActivity'],
@@ -232,7 +242,9 @@ const identifyWeaknessesNodeWrapped = async (state: typeof ProfileAgentState.Sta
 };
 
 const generateRecommendationsNodeWrapped = async (state: typeof ProfileAgentState.State) => {
-  return await traceNode('generateRecommendationsNode', state, () => generateRecommendationsNode(state));
+  return await traceNode('generateRecommendationsNode', state, () =>
+    generateRecommendationsNode(state),
+  );
 };
 
 // --- Resolver Helpers for Conditional Routing ---
@@ -244,7 +256,7 @@ const resolveHistoryCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.`
+        `D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.`,
       );
     }
     return 'getTopicStatsNode';
@@ -254,7 +266,7 @@ const resolveHistoryCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D1 (History sufficiency check): Insufficient history. getUserHistory tool not tried yet. Routing to getUserHistoryNode.`
+        `D1 (History sufficiency check): Insufficient history. getUserHistory tool not tried yet. Routing to getUserHistoryNode.`,
       );
     }
     return 'getUserHistoryNode';
@@ -263,7 +275,7 @@ const resolveHistoryCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D1 (History sufficiency check): Insufficient history but tool already tried. Proceeding to Topic Stats check.`
+        `D1 (History sufficiency check): Insufficient history but tool already tried. Proceeding to Topic Stats check.`,
       );
     }
     return 'getTopicStatsNode';
@@ -271,7 +283,7 @@ const resolveHistoryCheck = (state: typeof ProfileAgentState.State) => {
   if (traceId) {
     agentLogger.logDecision(
       traceId,
-      `D1 (History sufficiency check): Insufficient history and getUserHistory tool already tried. Routing to bootstrap.`
+      `D1 (History sufficiency check): Insufficient history and getUserHistory tool already tried. Routing to bootstrap.`,
     );
   }
   return 'bootstrap';
@@ -284,7 +296,7 @@ const resolveTopicStatsCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.`
+        `D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.`,
       );
     }
     return 'getSubmissionsNode';
@@ -294,7 +306,7 @@ const resolveTopicStatsCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D2 (Topic stats check): Topic stats missing. getTopicStats tool not tried yet. Routing to getTopicStatsNode.`
+        `D2 (Topic stats check): Topic stats missing. getTopicStats tool not tried yet. Routing to getTopicStatsNode.`,
       );
     }
     return 'getTopicStatsNode';
@@ -303,7 +315,7 @@ const resolveTopicStatsCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D2 (Topic stats check): Topic stats missing but tool already tried. Proceeding to Submissions check.`
+        `D2 (Topic stats check): Topic stats missing but tool already tried. Proceeding to Submissions check.`,
       );
     }
     return 'getSubmissionsNode';
@@ -311,7 +323,7 @@ const resolveTopicStatsCheck = (state: typeof ProfileAgentState.State) => {
   if (traceId) {
     agentLogger.logDecision(
       traceId,
-      `D2 (Topic stats check): Topic stats missing and tool already tried. Routing to bootstrap.`
+      `D2 (Topic stats check): Topic stats missing and tool already tried. Routing to bootstrap.`,
     );
   }
   return 'bootstrap';
@@ -324,7 +336,7 @@ const resolveSubmissionsCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.`
+        `D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.`,
       );
     }
     return 'getRecentActivityNode';
@@ -334,7 +346,7 @@ const resolveSubmissionsCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D3 (Submissions check): Submissions missing. getSubmissions tool not tried yet. Routing to getSubmissionsNode.`
+        `D3 (Submissions check): Submissions missing. getSubmissions tool not tried yet. Routing to getSubmissionsNode.`,
       );
     }
     return 'getSubmissionsNode';
@@ -343,7 +355,7 @@ const resolveSubmissionsCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D3 (Submissions check): Submissions missing/insufficient but tool already tried. Proceeding to Recent Activity check.`
+        `D3 (Submissions check): Submissions missing/insufficient but tool already tried. Proceeding to Recent Activity check.`,
       );
     }
     return 'getRecentActivityNode';
@@ -351,7 +363,7 @@ const resolveSubmissionsCheck = (state: typeof ProfileAgentState.State) => {
   if (traceId) {
     agentLogger.logDecision(
       traceId,
-      `D3 (Submissions check): Submissions missing and tool already tried. Routing to bootstrap.`
+      `D3 (Submissions check): Submissions missing and tool already tried. Routing to bootstrap.`,
     );
   }
   return 'bootstrap';
@@ -364,7 +376,7 @@ const resolveRecentActivityCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.`
+        `D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.`,
       );
     }
     return 'analyzeMasteryNode';
@@ -374,7 +386,7 @@ const resolveRecentActivityCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D4 (Recent activity check): Recent activity missing. getRecentActivity tool not tried yet. Routing to getRecentActivityNode.`
+        `D4 (Recent activity check): Recent activity missing. getRecentActivity tool not tried yet. Routing to getRecentActivityNode.`,
       );
     }
     return 'getRecentActivityNode';
@@ -383,7 +395,7 @@ const resolveRecentActivityCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D4 (Recent activity check): Recent activity missing/insufficient but tool already tried. Proceeding to analyzeMasteryNode.`
+        `D4 (Recent activity check): Recent activity missing/insufficient but tool already tried. Proceeding to analyzeMasteryNode.`,
       );
     }
     return 'analyzeMasteryNode';
@@ -391,7 +403,7 @@ const resolveRecentActivityCheck = (state: typeof ProfileAgentState.State) => {
   if (traceId) {
     agentLogger.logDecision(
       traceId,
-      `D4 (Recent activity check): Recent activity missing and tool already tried. Routing to bootstrap.`
+      `D4 (Recent activity check): Recent activity missing and tool already tried. Routing to bootstrap.`,
     );
   }
   return 'bootstrap';
@@ -404,7 +416,7 @@ const resolveProfileChangeCheck = (state: typeof ProfileAgentState.State) => {
     if (traceId) {
       agentLogger.logDecision(
         traceId,
-        `D7 (Significance check): Calculated profile metrics differ significantly from baseline. Routing to saveProfileNode.`
+        `D7 (Significance check): Calculated profile metrics differ significantly from baseline. Routing to saveProfileNode.`,
       );
     }
     return 'saveProfileNode';
@@ -412,7 +424,7 @@ const resolveProfileChangeCheck = (state: typeof ProfileAgentState.State) => {
   if (traceId) {
     agentLogger.logDecision(
       traceId,
-      `D7 (Significance check): No significant change in profile metrics. Routing to END.`
+      `D7 (Significance check): No significant change in profile metrics. Routing to END.`,
     );
   }
   return END;

@@ -116,11 +116,16 @@ export function useCodeEditor(
     try {
       const result = await submissionService.submitCode(problemId, selectedLanguage, currentCode);
       setSubmitResult(result);
-      setSubmissionHistory(prev => [result, ...prev]);
+      setSubmissionHistory((prev) => [result, ...prev]);
       setRunResult({
-        status: result.status === 'Accepted' ? 'Success' :
-                result.status === 'Compile Error' ? 'Compile Error' :
-                result.status === 'Runtime Error' ? 'Runtime Error' : 'Wrong Answer',
+        status:
+          result.status === 'Accepted'
+            ? 'Success'
+            : result.status === 'Compile Error'
+              ? 'Compile Error'
+              : result.status === 'Runtime Error'
+                ? 'Runtime Error'
+                : 'Wrong Answer',
         stdout: result.stdout,
         stderr: result.stderr,
         runtime: result.runtime,
@@ -140,7 +145,7 @@ export function useCodeEditor(
         stderr: err instanceof Error ? err.message : 'An unknown error occurred.',
       };
       setSubmitResult(errResult);
-      setSubmissionHistory(prev => [errResult, ...prev]);
+      setSubmissionHistory((prev) => [errResult, ...prev]);
       setRunResult({
         status: 'Runtime Error',
         stderr: err instanceof Error ? err.message : 'An unknown error occurred.',

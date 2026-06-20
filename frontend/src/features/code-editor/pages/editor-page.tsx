@@ -95,12 +95,16 @@ export function EditorPage() {
       <main className="flex h-screen items-center justify-center bg-[#070a13] text-white">
         <div className="relative z-10 flex flex-col items-center gap-4">
           <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-cyan-400/20 blur-md animate-pulse" />
-            <Loader2 className="h-10 w-10 animate-spin text-cyan-400 relative" />
+            <div className="absolute inset-0 animate-pulse rounded-full bg-cyan-400/20 blur-md" />
+            <Loader2 className="relative h-10 w-10 animate-spin text-cyan-400" />
           </div>
-          <div className="text-center space-y-1.5 animate-pulse">
-            <h3 className="text-sm font-bold tracking-wider uppercase text-slate-300">Initializing Workspace</h3>
-            <p className="text-[11px] text-slate-500">Preparing compiler and problem templates...</p>
+          <div className="animate-pulse space-y-1.5 text-center">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300">
+              Initializing Workspace
+            </h3>
+            <p className="text-[11px] text-slate-500">
+              Preparing compiler and problem templates...
+            </p>
           </div>
         </div>
       </main>
@@ -109,27 +113,27 @@ export function EditorPage() {
 
   if (error || !problem) {
     return (
-      <main className="flex h-screen items-center justify-center bg-[#070a13] text-white p-4">
-        <Card className="max-w-md w-full border-slate-800 bg-slate-950/60 backdrop-blur-xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-rose-500" />
-          <CardHeader className="text-center pt-8">
-            <div className="mx-auto h-12 w-12 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20 mb-3 animate-pulse">
+      <main className="flex h-screen items-center justify-center bg-[#070a13] p-4 text-white">
+        <Card className="relative w-full max-w-md overflow-hidden border-slate-800 bg-slate-950/60 backdrop-blur-xl">
+          <div className="absolute left-0 top-0 h-[2px] w-full bg-rose-500" />
+          <CardHeader className="pt-8 text-center">
+            <div className="mx-auto mb-3 flex h-12 w-12 animate-pulse items-center justify-center rounded-full border border-rose-500/20 bg-rose-500/10">
               <AlertTriangle className="h-6 w-6 text-rose-400" />
             </div>
-            <CardTitle className="text-sm font-bold text-slate-200 uppercase tracking-wide">
+            <CardTitle className="text-sm font-bold uppercase tracking-wide text-slate-200">
               Failed to load workspace
             </CardTitle>
-            <CardDescription className="text-slate-500 text-xs mt-1.5">
+            <CardDescription className="mt-1.5 text-xs text-slate-500">
               {error || 'The requested problem could not be found or fetched.'}
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center pb-8">
             <Button
               asChild
-              className="bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white text-xs font-bold px-5 py-2.5 h-auto rounded-lg transition-all"
+              className="h-auto rounded-lg border border-slate-800 bg-slate-900 px-5 py-2.5 text-xs font-bold text-slate-300 transition-all hover:bg-slate-800 hover:text-white"
             >
               <Link to="/practice">
-                <ArrowLeft className="h-3.5 w-3.5 mr-2" />
+                <ArrowLeft className="mr-2 h-3.5 w-3.5" />
                 Back to Practice
               </Link>
             </Button>
@@ -199,13 +203,13 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               <TooltipTrigger asChild>
                 <button
                   onClick={() => navigate({ to: '/practice' })}
-                  className="inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:border-slate-700 hover:text-white transition-all duration-250"
+                  className="duration-250 inline-flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-all hover:border-slate-700 hover:text-white"
                 >
                   <ArrowLeft className="h-3 w-3" />
                   <span>Practice List</span>
                 </button>
               </TooltipTrigger>
-              <TooltipContent className="bg-slate-950 border-slate-800 text-[10px] text-slate-400">
+              <TooltipContent className="border-slate-800 bg-slate-950 text-[10px] text-slate-400">
                 Back to Practice Selection
               </TooltipContent>
             </Tooltip>

@@ -17,13 +17,22 @@ export function ProblemPanel({ problem }: ProblemPanelProps) {
           <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-500">
             Problem
           </span>
-          <StatusBadge tone={problem.difficulty === 'Easy' ? 'success' : problem.difficulty === 'Medium' ? 'warning' : 'danger'}>
+          <StatusBadge
+            tone={
+              problem.difficulty === 'Easy'
+                ? 'success'
+                : problem.difficulty === 'Medium'
+                  ? 'warning'
+                  : 'danger'
+            }
+          >
             {problem.difficulty}
           </StatusBadge>
         </div>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-100">{problem.title}</h1>
         <p className="mt-2 text-xs text-slate-500">
-          Acceptance {problem.acceptance.toFixed(1)}% | {problem.timeLimitMs || 0} ms | {problem.memoryLimitMb || 0} MB
+          Acceptance {problem.acceptance.toFixed(1)}% | {problem.timeLimitMs || 0} ms |{' '}
+          {problem.memoryLimitMb || 0} MB
         </p>
       </div>
 
@@ -34,13 +43,20 @@ export function ProblemPanel({ problem }: ProblemPanelProps) {
       <SectionCard title="Examples">
         <div className="space-y-3">
           {problem.examples.map((example) => (
-            <div key={example.id} className="rounded-lg border border-white/[0.04] bg-slate-900/30 p-3">
+            <div
+              key={example.id}
+              className="rounded-lg border border-white/[0.04] bg-slate-900/30 p-3"
+            >
               <p className="font-mono text-[10px] font-bold uppercase text-slate-500">
                 Example {example.id}
               </p>
               <div className="mt-2 space-y-1 font-mono text-xs text-slate-300">
-                <p><span className="text-blue-300">Input:</span> {example.input}</p>
-                <p><span className="text-emerald-300">Output:</span> {example.output}</p>
+                <p>
+                  <span className="text-blue-300">Input:</span> {example.input}
+                </p>
+                <p>
+                  <span className="text-emerald-300">Output:</span> {example.output}
+                </p>
               </div>
               {example.explanation && (
                 <p className="mt-2 border-t border-white/[0.04] pt-2 text-xs text-slate-400">

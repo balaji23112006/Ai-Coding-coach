@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
-import { useAuth } from '../features/authentication/hooks/use-auth'
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../features/authentication/hooks/use-auth';
+import { toast } from './use-toast';
 
 export interface ProfileData {
   userId: string;
@@ -21,67 +22,134 @@ export interface ProfileData {
 }
 
 export function useProfileAgent() {
-  const { user } = useAuth()
-  const [profile, setProfile] = useState<ProfileData | null>(null)
-  const [aiSummary, setAiSummary] = useState<string>('')
-  const [trendExplanation, setTrendExplanation] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const { user } = useAuth();
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [aiSummary, setAiSummary] = useState<string>('');
+  const [trendExplanation, setTrendExplanation] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const runAgent = useCallback(async () => {
-    if (!user?.id) return
-    setIsLoading(true)
-    setError(null)
-    try {
-      const res = await fetch('/api/ai/profile/run', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: user.id }),
-      })
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}))
-        throw new Error(errData.error || 'Failed to run profile assessment')
+  const runAgent = useCallback(
+    async (isManual = false) => {
+      if (!user?.id) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('/api/ai/profile/run', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user.id }),
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(
+            errData.error?.message || errData.error || 'Failed to run profile assessment',
+          );
+        }
+        const data = await res.json();
+        if (data.success) {
+          setProfile({
+            userId: data.userId,
+            skills: data.mastery || {},
+            solvedCount: data.solvedCount || 0,
+            easySolved: data.easySolved || 0,
+            mediumSolved: data.mediumSolved || 0,
+            hardSolved: data.hardSolved || 0,
+            learningTrack: null,
+            experienceLevel: data.level,
+            recommendedFocus: data.recommendedFocus,
+            recommendedDifficulty: data.recommendedDifficulty,
+            trends: data.trends || [],
+            strongAreas: data.strongAreas || [],
+            weakAreas: data.weakAreas || [],
+            confidence: data.confidence,
+          });
+          setAiSummary(data.summary || '');
+          setTrendExplanation(data.trendExplanation || '');
+        }
+      } catch (err: unknown) {
+        const errMsg = err instanceof Error ? err.message : String(err);
+        console.error('[useProfileAgent] Error running agent:', err);
+        setError(errMsg);
+        if (isManual) {
+          toast({
+            title: 'Assessment Failed',
+            description: 'Fetching failed. Please try again later.',
+            className:
+              'bg-slate-900/80 backdrop-blur-md text-slate-100 border-slate-800/50 shadow-2xl',
+          });
+        }
+      } finally {
+        setIsLoading(false);
       }
-      const data = await res.json()
-      if (data.success) {
-        setProfile({
-          userId: data.userId,
-          skills: data.mastery || {},
-          solvedCount: data.solvedCount || 0,
-          easySolved: data.easySolved || 0,
-          mediumSolved: data.mediumSolved || 0,
-          hardSolved: data.hardSolved || 0,
-          learningTrack: null,
-          experienceLevel: data.level,
-          recommendedFocus: data.recommendedFocus,
-          recommendedDifficulty: data.recommendedDifficulty,
-          trends: data.trends || [],
-          strongAreas: data.strongAreas || [],
-          weakAreas: data.weakAreas || [],
-          confidence: data.confidence,
-        })
-        setAiSummary(data.summary || '')
-        setTrendExplanation(data.trendExplanation || '')
+    },
+    [user],
+  );
+
+  const refreshProfile = useCallback(
+    async (isManual = true) => {
+      if (!user?.id) return;
+      setIsRefreshing(true);
+      setError(null);
+      try {
+        const res = await fetch(`/api/ai/profile/refresh/${user.id}`, {
+          method: 'POST',
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error?.message || errData.error || 'Failed to refresh profile');
+        }
+        const data = await res.json();
+        if (data.success) {
+          setProfile({
+            userId: data.userId,
+            skills: data.mastery || {},
+            solvedCount: data.solvedCount || 0,
+            easySolved: data.easySolved || 0,
+            mediumSolved: data.mediumSolved || 0,
+            hardSolved: data.hardSolved || 0,
+            learningTrack: null,
+            experienceLevel: data.level,
+            recommendedFocus: data.recommendedFocus,
+            recommendedDifficulty: data.recommendedDifficulty,
+            trends: data.trends || [],
+            strongAreas: data.strongAreas || [],
+            weakAreas: data.weakAreas || [],
+            confidence: data.confidence,
+          });
+          setAiSummary(data.summary || '');
+          setTrendExplanation(data.trendExplanation || '');
+        }
+      } catch (err: unknown) {
+        const errMsg = err instanceof Error ? err.message : String(err);
+        console.error('[useProfileAgent] Error refreshing profile:', err);
+        setError(errMsg);
+        if (isManual) {
+          toast({
+            title: 'Assessment Failed',
+            description: 'Fetching failed. Please try again later.',
+            className:
+              'bg-slate-900/80 backdrop-blur-md text-slate-100 border-slate-800/50 shadow-2xl',
+          });
+        }
+      } finally {
+        setIsRefreshing(false);
       }
-    } catch (err: any) {
-      console.error('[useProfileAgent] Error running agent:', err)
-      setError(err.message || 'Error running assessment agent')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [user?.id])
+    },
+    [user],
+  );
 
   const fetchProfile = useCallback(async () => {
-    if (!user?.id) return
-    setIsLoading(true)
-    setError(null)
+    if (!user?.id) return;
+    setIsLoading(true);
+    setError(null);
     try {
-      const res = await fetch(`/api/ai/profile/${user.id}`)
+      const res = await fetch(`/api/ai/profile/${user.id}`);
       if (res.ok) {
-        const data = await res.json()
+        const data = await res.json();
         if (data.success && data.profile) {
           setProfile({
             userId: data.profile.userId,
@@ -96,78 +164,34 @@ export function useProfileAgent() {
             recommendedDifficulty: data.profile.recommendedDifficulty,
             createdAt: data.profile.createdAt,
             updatedAt: data.profile.updatedAt,
-            trends: data.profile.skills ? [] : [], // fallback
+            trends: data.profile.skills ? [] : [],
             strongAreas: [],
             weakAreas: [],
-          })
-          
-          // Trigger a baseline LLM summary calculation when loading the dashboard
-          // this makes sure summaries exist even if they weren't stored in user profile
-          if (data.profile.skills && Object.keys(data.profile.skills).length > 0) {
-            void refreshProfile();
-          }
+          });
         }
       } else if (res.status === 404) {
-        // If not found, trigger runAgent to initialize!
-        await runAgent()
+        console.log(
+          '[useProfileAgent] Profile not found (404), automatic graph execution is disabled.',
+        );
       } else {
-        const errData = await res.json().catch(() => ({}))
-        throw new Error(errData.error || 'Failed to fetch user profile')
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error?.message || errData.error || 'Failed to fetch user profile');
       }
-    } catch (err: any) {
-      console.error('[useProfileAgent] Error fetching profile:', err)
-      setError(err.message || 'Error loading profile')
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      console.error('[useProfileAgent] Error fetching profile:', err);
+      setError(errMsg);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [user?.id, runAgent])
-
-  const refreshProfile = useCallback(async () => {
-    if (!user?.id) return
-    setIsRefreshing(true)
-    setError(null)
-    try {
-      const res = await fetch(`/api/ai/profile/refresh/${user.id}`, {
-        method: 'POST',
-      })
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}))
-        throw new Error(errData.error || 'Failed to refresh profile')
-      }
-      const data = await res.json()
-      if (data.success) {
-        setProfile({
-          userId: data.userId,
-          skills: data.mastery || {},
-          solvedCount: data.solvedCount || 0,
-          easySolved: data.easySolved || 0,
-          mediumSolved: data.mediumSolved || 0,
-          hardSolved: data.hardSolved || 0,
-          learningTrack: null,
-          experienceLevel: data.level,
-          recommendedFocus: data.recommendedFocus,
-          recommendedDifficulty: data.recommendedDifficulty,
-          trends: data.trends || [],
-          strongAreas: data.strongAreas || [],
-          weakAreas: data.weakAreas || [],
-          confidence: data.confidence,
-        })
-        setAiSummary(data.summary || '')
-        setTrendExplanation(data.trendExplanation || '')
-      }
-    } catch (err: any) {
-      console.error('[useProfileAgent] Error refreshing profile:', err)
-      setError(err.message || 'Error refreshing profile')
-    } finally {
-      setIsRefreshing(false)
-    }
-  }, [user?.id])
+  }, [user]);
 
   useEffect(() => {
     if (user?.id) {
-      void fetchProfile()
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      void fetchProfile();
     }
-  }, [user?.id, fetchProfile])
+  }, [user, fetchProfile]);
 
   return {
     profile,
@@ -178,5 +202,6 @@ export function useProfileAgent() {
     error,
     refetch: fetchProfile,
     refresh: refreshProfile,
-  }
+    runAgent,
+  };
 }

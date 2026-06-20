@@ -80,7 +80,9 @@ app.use((req, res, next) => {
         executionLogs.shift();
       }
 
-      console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
+      console.log(
+        `[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`,
+      );
       if (process.env.VERBOSE_LOGGING === 'true') {
         console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
         console.log(`[HTTP Response Body]:`, JSON.stringify(body, null, 2));
@@ -117,7 +119,9 @@ app.use((req, res, next) => {
         executionLogs.shift();
       }
 
-      console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
+      console.log(
+        `[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`,
+      );
       if (process.env.VERBOSE_LOGGING === 'true') {
         console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
         console.log(`[HTTP Response Body]:`, JSON.stringify(parsedBody, null, 2));

@@ -83,13 +83,16 @@ export async function getRecentActivity(userId: string, limit = 10): Promise<Rec
     return activities.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).slice(0, limit);
   } catch (error) {
     console.error(`[Tool: getRecentActivity] Error fetching activity for user ${userId}:`, error);
-    throw new Error(`Failed to retrieve recent activity: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to retrieve recent activity: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
 export const getRecentActivityTool = {
   name: 'getRecentActivity',
-  description: "Retrieves a chronological stream of the user's recent coding attempts and skill profile updates.",
+  description:
+    "Retrieves a chronological stream of the user's recent coding attempts and skill profile updates.",
   execute: async (params: { userId: string; limit?: number }): Promise<RecentActivityItem[]> => {
     return await getRecentActivity(params.userId, params.limit);
   },
