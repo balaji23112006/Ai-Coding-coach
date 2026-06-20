@@ -10,6 +10,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "tsx src/database/seed.ts",
+    "seed": "tsx src/database/seed.ts",
     "lint": "eslint src --ext ts"
   },
   "dependencies": {

@@ -1,31 +1,30 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
   id              String       @id @default(cuid())
   fullName        String
   username        String       @unique
-  displayUsername String?
   email           String       @unique
-  emailVerified   Boolean      @default(false)
-  image           String?
   password        String?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
-  
-  profile         Profile?
-  submissions     Submission[]
-  sessions        Session[]
+  emailVerified   Boolean      @default(false)
+  image           String?
+  displayUsername String?
+  bio             String?
+  role            String?
+  language        String?
+  profile         UserProfile?
   accounts        Account[]
+  sessions        Session[]
+  submissions     Submission[]
 
   @@map("user")
 }
@@ -49,7 +48,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -59,6 +57,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -75,10 +74,88 @@ model Verification {
   @@map("verification")
 }
 
-model Profile {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+model UserProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills                Json     @default("{}")
+  solvedCount           Int      @default(0)
+  easySolved            Int      @default(0)
+  mediumSolved          Int      @default(0)
+  hardSolved            Int      @default(0)
+  learningTrack         String?
+  experienceLevel       String?
+  recommendedFocus      String?
+  recommendedDifficulty String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("user_profile")
+}
+
+model Submission {
+  id              String           @id @default(cuid())
+  language        Language
+  status          SubmissionStatus
+  sourceCode      String
+  stdout          String?
+  stderr          String?
+  executionTime   Int
+  memoryUsed      Int
+  outputTruncated Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  userId          String?
+  questionId      String?
+  question        Question?        @relation(fields: [questionId], references: [id])
+  user            User?            @relation(fields: [userId], references: [id])
+
+  @@map("submission")
+}
+
+model Question {
+  id          String          @id @default(uuid())
+  slug        String          @unique
+  title       String
+  difficulty  Difficulty
+  description String
+  constraints String
+  starterCode Json            @map("starter_code")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  topics      QuestionTopic[]
+  submissions Submission[]
+  testCases   TestCase[]
+
+  @@map("questions")
+}
+
+model Topic {
+  id        String          @id @default(uuid())
+  name      String          @unique
+  questions QuestionTopic[]
+
+  @@map("topics")
+}
+
+model QuestionTopic {
+  questionId String   @map("question_id")
+  topicId    String   @map("topic_id")
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  topic      Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, topicId])
+  @@map("question_topics")
+}
+
+model TestCase {
+  id             String   @id @default(uuid())
+  questionId     String   @map("question_id")
+  input          String
+  expectedOutput String   @map("expected_output")
+  isHidden       Boolean  @map("is_hidden")
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("test_cases")
 }
 
 enum Language {
@@ -94,20 +171,8 @@ enum SubmissionStatus {
   FAILED
 }
 
-model Submission {
-  id              String           @id @default(cuid())
-  language        Language
-  status          SubmissionStatus
-  sourceCode      String
-  stdout          String?
-  stderr          String?
-  executionTime   Int
-  memoryUsed      Int
-  outputTruncated Boolean          @default(false)
-  createdAt       DateTime         @default(now())
-  userId          String?
-  user            User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  @@map("submission")
+enum Difficulty {
+  Easy
+  Medium
+  Hard
 }
-

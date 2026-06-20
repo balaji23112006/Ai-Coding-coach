@@ -1,10 +1,10 @@
-import app from './app.js';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import app from './app.js';
 import express from 'express';
 import cors from 'cors';
 import { executionLogs } from './shared/utils/executionLogger.js';
-
-dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 

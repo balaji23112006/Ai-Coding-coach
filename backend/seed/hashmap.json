@@ -1,0 +1,1102 @@
+[
+  {
+    "slug": "two-sum",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target. You may assume that each input has exactly one solution, and you may not use the same element twice. Return the indices in ascending order.",
+    "constraints": [
+      "2 <= nums.length <= 100000",
+      "-1000000000 <= nums[i] <= 1000000000",
+      "-1000000000 <= target <= 1000000000",
+      "Exactly one valid answer exists"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function twoSum(nums, target) {\n\n}",
+      "typescript": "function twoSum(nums: number[], target: number): number[] {\n\n}",
+      "python": "def twoSum(nums, target):\n    pass",
+      "java": "public class Solution {\n    public static int[] twoSum(int[] nums, int target) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};",
+      "go": "func twoSum(nums []int, target int) []int {\n\n}",
+      "rust": "fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[2,7,11,15],9",
+        "output": "[0,1]",
+        "explanation": "nums[0] + nums[1] = 2 + 7 = 9."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[2,7,11,15],9",
+        "expected_output": "[0,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,2,4],6",
+        "expected_output": "[1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,3],6",
+        "expected_output": "[0,1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,5,8,10],15",
+        "expected_output": "[1,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5],-8",
+        "expected_output": "[2,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,4,3,0],0",
+        "expected_output": "[0,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000000000,-1000000000,5,10],0",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,20,30,40],10",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6],11",
+        "expected_output": "[4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-100,50,25,75],-25",
+        "expected_output": "[0,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,1,8,2],10",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[500000000,500000000],1000000000",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,11,15,2],9",
+        "expected_output": "[0,3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-7,14,-3,10],7",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A brute-force O(n²) solution checks every pair.",
+      "Can you determine the required complement for each number?",
+      "Store previously seen values for fast lookup.",
+      "A HashMap can reduce the time complexity to O(n)."
+    ],
+    "explanation": "Traverse the array once. For each number, compute its complement as target - currentNumber. Check whether the complement has already been seen using a HashMap. If it exists, return the stored index and the current index. Otherwise, store the current number and its index in the HashMap and continue."
+  },
+  {
+    "slug": "first-unique-character-in-a-string",
+    "title": "First Unique Character in a String",
+    "difficulty": "Easy",
+    "description": "Given a string s, return the index of the first non-repeating character. If every character appears more than once, return -1.",
+    "constraints": ["1 <= s.length <= 100000", "s consists of lowercase English letters"],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function firstUniqChar(s) {\n\n}",
+      "typescript": "function firstUniqChar(s: string): number {\n\n}",
+      "python": "def firstUniqChar(s):\n    pass",
+      "java": "public class Solution {\n    public static int firstUniqChar(String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int firstUniqChar(string s) {\n        \n    }\n};",
+      "go": "func firstUniqChar(s string) int {\n\n}",
+      "rust": "fn first_uniq_char(s: String) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"leetcode\"",
+        "output": "0",
+        "explanation": "The character 'l' appears only once and is the first non-repeating character."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"leetcode\"",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "\"loveleetcode\"",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aabb\"",
+        "expected_output": "-1",
+        "is_hidden": false
+      },
+      {
+        "input": "\"z\"",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abcabcde\"",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aabbccddeeffg\"",
+        "expected_output": "12",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aabbccddeeff\"",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdef\"",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abacabad\"",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "\"xxyyzzw\"",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaab\"",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "\"bbaaccddeeffgghhiijjkkllm\"",
+        "expected_output": "24",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefghijklmnopqrstuvwxyz\"",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcabcabcabcx\"",
+        "expected_output": "12",
+        "is_hidden": true
+      },
+      {
+        "input": "\"tttttttttttttttttttt\"",
+        "expected_output": "-1",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Count how many times each character appears.",
+      "A HashMap can efficiently store character frequencies.",
+      "After counting, scan the string again from left to right.",
+      "Return the first index whose frequency is exactly 1."
+    ],
+    "explanation": "Use a HashMap to count the frequency of each character in the string. Then traverse the string from left to right and return the index of the first character whose frequency is exactly one. If no such character exists, return -1."
+  },
+  {
+    "slug": "word-pattern",
+    "title": "Word Pattern",
+    "difficulty": "Medium",
+    "description": "Given a pattern string and a space-separated string s, determine if s follows the same pattern. Each character in the pattern must map to exactly one word, and no two characters may map to the same word.",
+    "constraints": [
+      "1 <= pattern.length <= 10000",
+      "1 <= s.length <= 100000",
+      "pattern consists of lowercase English letters",
+      "s consists of lowercase English letters and spaces"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function wordPattern(pattern, s) {\n\n}",
+      "typescript": "function wordPattern(pattern: string, s: string): boolean {\n\n}",
+      "python": "def wordPattern(pattern, s):\n    pass",
+      "java": "public class Solution {\n    public static boolean wordPattern(String pattern, String s) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool wordPattern(string pattern, string s) {\n        \n    }\n};",
+      "go": "func wordPattern(pattern string, s string) bool {\n\n}",
+      "rust": "fn word_pattern(pattern: String, s: String) -> bool {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"abba\",\"dog cat cat dog\"",
+        "output": "true",
+        "explanation": "Character 'a' maps to 'dog' and character 'b' maps to 'cat'. The mapping is consistent throughout the string."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"abba\",\"dog cat cat dog\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abba\",\"dog cat cat fish\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aaaa\",\"dog dog dog dog\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abba\",\"dog dog dog dog\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"abc\",\"one two three\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"ab\",\"dog dog\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aa\",\"dog cat\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abc\",\"dog cat dog\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abba\",\"red blue blue red\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcd\",\"one two three four\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcd\",\"one two three one\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"xyzx\",\"apple banana orange apple\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"xyzx\",\"apple banana orange grape\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"a\",\"word\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abba\",\"dog cat cat\"",
+        "expected_output": "false",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Each pattern character should map to exactly one word.",
+      "Each word should map back to exactly one pattern character.",
+      "Use two HashMaps to enforce a one-to-one relationship.",
+      "Check both mappings at every position."
+    ],
+    "explanation": "Split the input string into words. If the number of words does not match the pattern length, return false. Maintain two HashMaps: one mapping pattern characters to words and another mapping words to pattern characters. While traversing, ensure both mappings remain consistent. If a conflict occurs, return false; otherwise, return true after processing all positions."
+  },
+  {
+    "slug": "valid-anagram",
+    "title": "Valid Anagram",
+    "difficulty": "Medium",
+    "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. Two strings are anagrams if they contain exactly the same characters with the same frequencies.",
+    "constraints": [
+      "1 <= s.length <= 100000",
+      "1 <= t.length <= 100000",
+      "s and t consist of lowercase English letters"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isAnagram(s, t) {\n\n}",
+      "typescript": "function isAnagram(s: string, t: string): boolean {\n\n}",
+      "python": "def isAnagram(s, t):\n    pass",
+      "java": "public class Solution {\n    public static boolean isAnagram(String s, String t) {\n        \n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        \n    }\n};",
+      "go": "func isAnagram(s string, t string) bool {\n\n}",
+      "rust": "fn is_anagram(s: String, t: String) -> bool {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "\"anagram\",\"nagaram\"",
+        "output": "true",
+        "explanation": "Both strings contain the same characters with identical frequencies."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "\"anagram\",\"nagaram\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"rat\",\"car\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"listen\",\"silent\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"hello\",\"world\"",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "\"aabbcc\",\"ccbbaa\"",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "\"a\",\"a\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"a\",\"b\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcd\",\"abcde\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aaaaab\",\"baaaaa\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"programming\",\"gramproinmg\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"programming\",\"gramproinmm\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"zzzzzzzzzz\",\"zzzzzzzzzz\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"abcdefghijk\",\"kjihgfedcba\"",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "\"aabbccddee\",\"aabbccddff\"",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "\"mississippi\",\"ississippim\"",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Anagrams contain the same characters with the same frequencies.",
+      "If the lengths differ, the strings cannot be anagrams.",
+      "Use a HashMap to count character occurrences.",
+      "Compare the frequency counts of both strings."
+    ],
+    "explanation": "First check whether the lengths of the two strings are equal. If not, return false immediately. Use a HashMap to count the frequency of each character in one string and compare it against the frequencies in the other string. If every character has the same frequency in both strings, they are anagrams; otherwise, they are not."
+  },
+  {
+    "slug": "top-k-frequent-elements",
+    "title": "Top K Frequent Elements",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums and an integer k, return the k most frequent elements. The answer may be returned in any order.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-100000 <= nums[i] <= 100000",
+      "1 <= k <= number of unique elements in nums"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function topKFrequent(nums, k) {\n\n}",
+      "typescript": "function topKFrequent(nums: number[], k: number): number[] {\n\n}",
+      "python": "def topKFrequent(nums, k):\n    pass",
+      "java": "public class Solution {\n    public static int[] topKFrequent(int[] nums, int k) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> topKFrequent(vector<int>& nums, int k) {\n        \n    }\n};",
+      "go": "func topKFrequent(nums []int, k int) []int {\n\n}",
+      "rust": "fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,1,1,2,2,3],2",
+        "output": "[1,2]",
+        "explanation": "Element 1 appears 3 times and element 2 appears 2 times, making them the two most frequent elements."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,1,1,2,2,3],2",
+        "expected_output": "[1,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,4,4,6,6,7],2",
+        "expected_output": "[4,6]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,5,5,5,2,2,3,3,3],2",
+        "expected_output": "[5,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,10,30,20,10],1",
+        "expected_output": "[10]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5],5",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-1,-1,-2,-2,-3],2",
+        "expected_output": "[-1,-2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,100000,-100000,-100000,-100000],1",
+        "expected_output": "[-100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,8,8,9],2",
+        "expected_output": "[7,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,2,2,3,3,4,4,4],1",
+        "expected_output": "[4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,9,8,8,8,7,7,7,7],2",
+        "expected_output": "[7,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,1,1,2,2,2],2",
+        "expected_output": "[0,2]",
+        "is_hidden": true
+      },
+      {
+        "input": "[11,12,13,11,12,11,14,15],2",
+        "expected_output": "[11,12]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,50,40,40,40,30,30,30,30],2",
+        "expected_output": "[30,40]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,2,2,3,3,3,3],3",
+        "expected_output": "[3,1,2]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "First determine how many times each number appears.",
+      "A HashMap is useful for frequency counting.",
+      "After computing frequencies, identify the k largest counts.",
+      "Consider using bucket sort or a priority queue for efficiency."
+    ],
+    "explanation": "Use a HashMap to count the frequency of each element. Once the frequencies are known, select the k elements with the highest frequencies. This can be done using bucket sort, a priority queue, or sorting the frequency entries. Return the k most frequent elements in any order."
+  },
+  {
+    "slug": "longest-consecutive-sequence",
+    "title": "Longest Consecutive Sequence",
+    "difficulty": "Medium",
+    "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. Your algorithm must run in O(n) time.",
+    "constraints": ["0 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function longestConsecutive(nums) {\n\n}",
+      "typescript": "function longestConsecutive(nums: number[]): number {\n\n}",
+      "python": "def longestConsecutive(nums):\n    pass",
+      "java": "public class Solution {\n    public static int longestConsecutive(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int longestConsecutive(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func longestConsecutive(nums []int) int {\n\n}",
+      "rust": "fn longest_consecutive(nums: Vec<i32>) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[100,4,200,1,3,2]",
+        "output": "4",
+        "explanation": "The longest consecutive sequence is [1,2,3,4], which has length 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[100,4,200,1,3,2]",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,3,7,2,5,8,4,6,0,1]",
+        "expected_output": "9",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,0,1]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[9,1,4,7,3,-1,0,5,8,-1,6]",
+        "expected_output": "7",
+        "is_hidden": false
+      },
+      {
+        "input": "[10]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,5,7,9]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-3,-2,-1,0,1,2,3]",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000,999,998,997,996]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,10,11,12,13]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000000000,-999999999,-999999998]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,5,5,5,5]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[20,21,22,50,51,52,53,54]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,100,101,102,103,104,105]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[-2,-1,0,1,2,50,60]",
+        "expected_output": "5",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Sorting solves the problem but does not meet the O(n) requirement.",
+      "Fast existence lookup is the key.",
+      "Only start counting a sequence when the previous number is not present.",
+      "Use a HashSet to check whether numbers exist in constant time."
+    ],
+    "explanation": "Store all numbers in a HashSet for O(1) lookups. For each number, check whether it is the start of a sequence by verifying that the previous number does not exist in the set. If it is a starting point, continue extending the sequence while consecutive numbers exist. Track the maximum sequence length found during the process and return it."
+  },
+  {
+    "slug": "subarray-sum-equals-k",
+    "title": "Subarray Sum Equals K",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums and an integer k, return the total number of continuous subarrays whose sum equals k.",
+    "constraints": [
+      "1 <= nums.length <= 100000",
+      "-1000 <= nums[i] <= 1000",
+      "-10000000 <= k <= 10000000"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function subarraySum(nums, k) {\n\n}",
+      "typescript": "function subarraySum(nums: number[], k: number): number {\n\n}",
+      "python": "def subarraySum(nums, k):\n    pass",
+      "java": "public class Solution {\n    public static int subarraySum(int[] nums, int k) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int subarraySum(vector<int>& nums, int k) {\n        \n    }\n};",
+      "go": "func subarraySum(nums []int, k int) int {\n\n}",
+      "rust": "fn subarray_sum(nums: Vec<i32>, k: i32) -> i32 {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,1,1],2",
+        "output": "2",
+        "explanation": "The subarrays [1,1] at indices (0,1) and (1,2) both have sum 2."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,1,1],2",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3],3",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,4,7,2,-3,1,4,2],7",
+        "expected_output": "4",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,-1,0],0",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[5],5",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[0,0,0,0],0",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,1,2,1],3",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-1,1],0",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,-10,10,-10,10],10",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,1],5",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,1,1,1,1],10",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[-2,-1,2,1],1",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000,-1000,1000,-1000],0",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,2,2],4",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,-1,1,-1,1,-1],0",
+        "expected_output": "9",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A brute-force solution checking every subarray takes O(n²).",
+      "Think about prefix sums.",
+      "If prefixSum[j] - prefixSum[i] = k, then the subarray between them sums to k.",
+      "Use a HashMap to store frequencies of previously seen prefix sums."
+    ],
+    "explanation": "Maintain a running prefix sum while traversing the array. For each position, check whether (currentPrefixSum - k) has appeared before. If it has, then each occurrence represents a valid subarray ending at the current index with sum k. Store the frequency of every prefix sum in a HashMap and accumulate the count of valid subarrays throughout the traversal. This achieves O(n) time complexity."
+  },
+  {
+    "slug": "find-all-duplicate-elements",
+    "title": "Find All Duplicate Elements",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, return all elements that appear more than once in the array. Return the duplicates in ascending order. If no duplicates exist, return an empty array.",
+    "constraints": ["1 <= nums.length <= 100000", "-100000 <= nums[i] <= 100000"],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function findDuplicates(nums) {\n\n}",
+      "typescript": "function findDuplicates(nums: number[]): number[] {\n\n}",
+      "python": "def findDuplicates(nums):\n    pass",
+      "java": "import java.util.*;\n\npublic class Solution {\n    public static int[] findDuplicates(int[] nums) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> findDuplicates(vector<int>& nums) {\n        \n    }\n};",
+      "go": "func findDuplicates(nums []int) []int {\n\n}",
+      "rust": "fn find_duplicates(nums: Vec<i32>) -> Vec<i32> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[4,3,2,7,8,2,3,1]",
+        "output": "[2,3]",
+        "explanation": "Elements 2 and 3 appear more than once."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[4,3,2,7,8,2,3,1]",
+        "expected_output": "[2,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,1,2]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,5,5,5]",
+        "expected_output": "[5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,20,30,10,20,40]",
+        "expected_output": "[10,20]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-1,-3,-2]",
+        "expected_output": "[-2,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,1,1,2]",
+        "expected_output": "[0,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100000,-100000,100000]",
+        "expected_output": "[100000]",
+        "is_hidden": true
+      },
+      {
+        "input": "[9,8,7,6,5,4,3,2,1,9]",
+        "expected_output": "[9]",
+        "is_hidden": true
+      },
+      {
+        "input": "[2,2,3,3,4,4,5,5]",
+        "expected_output": "[2,3,4,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-5,-5,-5,-5,-5]",
+        "expected_output": "[-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10]",
+        "expected_output": "[]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,40,30,20,10,50,40,30]",
+        "expected_output": "[30,40,50]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,8,8,9,9,10,10,11]",
+        "expected_output": "[7,8,9,10]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Count how many times each number appears.",
+      "A HashMap can store frequencies efficiently.",
+      "Any element with frequency greater than 1 is a duplicate.",
+      "Remember to return the duplicates in ascending order."
+    ],
+    "explanation": "Use a HashMap to count the frequency of each number. After processing the array, collect all numbers whose frequency is greater than one. Sort these duplicate numbers in ascending order and return them."
+  },
+  {
+    "slug": "group-shifted-strings",
+    "title": "Group Shifted Strings",
+    "difficulty": "Hard",
+    "description": "Given an array of lowercase strings, group all shifted strings together. A string can be shifted to another string by shifting every character forward by the same number of positions in the alphabet. Characters wrap around from 'z' to 'a'. Return the groups in any order.",
+    "constraints": [
+      "1 <= strings.length <= 10000",
+      "1 <= strings[i].length <= 100",
+      "strings[i] consists of lowercase English letters"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function groupShiftedStrings(strings) {\n\n}",
+      "typescript": "function groupShiftedStrings(strings: string[]): string[][] {\n\n}",
+      "python": "def groupShiftedStrings(strings):\n    pass",
+      "java": "import java.util.*;\n\npublic class Solution {\n    public static List<List<String>> groupShiftedStrings(String[] strings) {\n        \n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupShiftedStrings(vector<string>& strings) {\n        \n    }\n};",
+      "go": "func groupShiftedStrings(strings []string) [][]string {\n\n}",
+      "rust": "fn group_shifted_strings(strings: Vec<String>) -> Vec<Vec<String>> {\n\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"abc\",\"bcd\",\"acef\",\"xyz\",\"az\",\"ba\",\"a\",\"z\"]",
+        "output": "[[\"abc\",\"bcd\",\"xyz\"],[\"az\",\"ba\"],[\"acef\"],[\"a\",\"z\"]]",
+        "explanation": "Strings are grouped according to their shifting pattern."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"abc\",\"bcd\",\"acef\",\"xyz\",\"az\",\"ba\",\"a\",\"z\"]",
+        "expected_output": "[[\"abc\",\"bcd\",\"xyz\"],[\"az\",\"ba\"],[\"acef\"],[\"a\",\"z\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"a\",\"b\",\"c\"]",
+        "expected_output": "[[\"a\",\"b\",\"c\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"ab\",\"bc\",\"cd\"]",
+        "expected_output": "[[\"ab\",\"bc\",\"cd\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"az\",\"ba\"]",
+        "expected_output": "[[\"az\",\"ba\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"abc\",\"def\",\"ghi\"]",
+        "expected_output": "[[\"abc\",\"def\",\"ghi\"]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"aa\",\"bb\",\"cc\"]",
+        "expected_output": "[[\"aa\",\"bb\",\"cc\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"xyz\",\"yza\",\"zab\"]",
+        "expected_output": "[[\"xyz\",\"yza\",\"zab\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"ace\",\"bdf\",\"ceg\"]",
+        "expected_output": "[[\"ace\",\"bdf\",\"ceg\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"mnop\",\"nopq\",\"opqr\",\"pqrs\"]",
+        "expected_output": "[[\"mnop\",\"nopq\",\"opqr\",\"pqrs\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abc\",\"abd\",\"abe\"]",
+        "expected_output": "[[\"abc\"],[\"abd\"],[\"abe\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"zzz\",\"aaa\",\"bbb\"]",
+        "expected_output": "[[\"zzz\",\"aaa\",\"bbb\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"lmn\",\"nop\",\"qrs\",\"tuv\"]",
+        "expected_output": "[[\"lmn\",\"nop\",\"qrs\",\"tuv\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"a\"]",
+        "expected_output": "[[\"a\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"abcd\",\"bcde\",\"cdef\",\"wxyz\"]",
+        "expected_output": "[[\"abcd\",\"bcde\",\"cdef\",\"wxyz\"]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"azzz\",\"baaa\"]",
+        "expected_output": "[[\"azzz\",\"baaa\"]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Two strings belong to the same group if their relative character differences are identical.",
+      "Convert each string into a normalized pattern.",
+      "A HashMap can group strings with the same pattern.",
+      "Remember that alphabet shifting wraps around from 'z' to 'a'."
+    ],
+    "explanation": "For each string, create a signature representing the difference between consecutive characters. For example, 'abc' becomes '1,1' and 'bcd' also becomes '1,1'. Strings with the same signature belong to the same shifted group. Use a HashMap where the signature is the key and the value is the list of strings sharing that pattern."
+  },
+  {
+    "slug": "randomized-set",
+    "title": "Randomized Set",
+    "difficulty": "Hard",
+    "description": "Design a data structure that supports insert, remove, and getRandom operations in average O(1) time. Implement the RandomizedSet class with the following methods: insert(val), remove(val), and getRandom(). Return the outputs of all operations except the constructor.",
+    "constraints": [
+      "-1000000000 <= val <= 1000000000",
+      "At most 200000 calls will be made",
+      "getRandom will only be called when the set is non-empty"
+    ],
+    "topics": ["HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "class RandomizedSet {\n    constructor() {\n\n    }\n\n    insert(val) {\n\n    }\n\n    remove(val) {\n\n    }\n\n    getRandom() {\n\n    }\n}",
+      "typescript": "class RandomizedSet {\n    constructor() {\n\n    }\n\n    insert(val: number): boolean {\n\n    }\n\n    remove(val: number): boolean {\n\n    }\n\n    getRandom(): number {\n\n    }\n}",
+      "python": "class RandomizedSet:\n    def __init__(self):\n        pass\n\n    def insert(self, val: int) -> bool:\n        pass\n\n    def remove(self, val: int) -> bool:\n        pass\n\n    def getRandom(self) -> int:\n        pass",
+      "java": "class RandomizedSet {\n    public RandomizedSet() {\n\n    }\n\n    public boolean insert(int val) {\n\n    }\n\n    public boolean remove(int val) {\n\n    }\n\n    public int getRandom() {\n\n    }\n}",
+      "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nclass RandomizedSet {\npublic:\n    RandomizedSet() {\n\n    }\n\n    bool insert(int val) {\n\n    }\n\n    bool remove(int val) {\n\n    }\n\n    int getRandom() {\n\n    }\n};",
+      "go": "type RandomizedSet struct {\n}\n\nfunc Constructor() RandomizedSet {\n\n}\n\nfunc (this *RandomizedSet) Insert(val int) bool {\n\n}\n\nfunc (this *RandomizedSet) Remove(val int) bool {\n\n}\n\nfunc (this *RandomizedSet) GetRandom() int {\n\n}",
+      "rust": "struct RandomizedSet {\n}\n\nimpl RandomizedSet {\n    fn new() -> Self {\n\n    }\n\n    fn insert(&mut self, val: i32) -> bool {\n\n    }\n\n    fn remove(&mut self, val: i32) -> bool {\n\n    }\n\n    fn get_random(&self) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"remove\",\"insert\",\"getRandom\",\"remove\",\"insert\",\"getRandom\"],[[],[1],[2],[2],[],[1],[2],[]]",
+        "output": "[null,true,false,true,2,true,false,2]",
+        "explanation": "Operations are executed in order while maintaining O(1) average complexity."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"remove\",\"insert\",\"getRandom\",\"remove\",\"insert\",\"getRandom\"],[[],[1],[2],[2],[],[1],[2],[]]",
+        "expected_output": "[null,true,false,true,2,true,false,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"insert\",\"getRandom\"],[[],[5],[10],[]]",
+        "expected_output": "[null,true,true,5|10]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"insert\",\"remove\",\"getRandom\"],[[],[1],[2],[1],[]]",
+        "expected_output": "[null,true,true,true,2]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"insert\",\"remove\",\"remove\"],[[],[7],[7],[7],[7]]",
+        "expected_output": "[null,true,false,true,false]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"getRandom\"],[[],[100],[]]",
+        "expected_output": "[null,true,100]",
+        "is_hidden": false
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"insert\",\"insert\",\"remove\",\"getRandom\"],[[],[1],[2],[3],[2],[]]",
+        "expected_output": "[null,true,true,true,true,1|3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"remove\",\"insert\",\"getRandom\"],[[],[-1],[-1],[-1],[]]",
+        "expected_output": "[null,true,true,true,-1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"insert\",\"remove\",\"insert\",\"getRandom\"],[[],[10],[20],[10],[30],[]]",
+        "expected_output": "[null,true,true,true,true,20|30]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"insert\",\"insert\",\"getRandom\"],[[],[1],[2],[3],[]]",
+        "expected_output": "[null,true,true,true,1|2|3]",
+        "is_hidden": true
+      },
+      {
+        "input": "[\"RandomizedSet\",\"insert\",\"remove\",\"insert\",\"remove\"],[[],[999999999],[999999999],[-999999999],[-999999999]]",
+        "expected_output": "[null,true,true,true,true]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A HashMap alone cannot support getRandom efficiently.",
+      "An array allows O(1) random access.",
+      "Store element positions in a HashMap.",
+      "When removing an element, swap it with the last element in the array before deleting."
+    ],
+    "explanation": "Maintain both an array and a HashMap. The array stores all current elements, while the HashMap stores each element's index in the array. For insertion, append to the array and record the index. For deletion, swap the target element with the last element, update indices in the HashMap, and remove the last element. getRandom can then return a random element from the array in O(1) time."
+  }
+]

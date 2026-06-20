@@ -1,0 +1,1138 @@
+[
+  {
+    "slug": "maximum-depth-of-binary-tree",
+    "title": "Maximum Depth of Binary Tree",
+    "difficulty": "Easy",
+    "description": "Given the root of a binary tree, return its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function maxDepth(root) {\n\n}",
+      "typescript": "function maxDepth(root: TreeNode | null): number {\n\n}",
+      "python": "def maxDepth(root):\n    pass",
+      "java": "public class Solution {\n    public int maxDepth(TreeNode root) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int maxDepth(TreeNode* root) {\n        \n    }\n};",
+      "go": "func maxDepth(root *TreeNode) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "output": "3",
+        "explanation": "The longest path from the root to a leaf contains 3 nodes."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,null,2]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "0",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,null,3,null,4,null,5]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,null,null,5,6]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[0]",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50,60,70]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null,5,null,6]",
+        "expected_output": "6",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4,null,5]",
+        "expected_output": "5",
+        "is_hidden": true
+      },
+      {
+        "input": "[1000,-1000,500,null,null,250,750]",
+        "expected_output": "3",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7,8,9,10]",
+        "expected_output": "4",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The depth of an empty tree is 0.",
+      "The depth of a leaf node is 1.",
+      "The depth of a node depends on the depths of its left and right subtrees.",
+      "Use recursion to compute the maximum depth of each subtree."
+    ],
+    "explanation": "For every node, the maximum depth is 1 plus the greater of the depths of its left and right subtrees. If the node is null, its depth is 0. Recursively compute the depth of the left and right children and return 1 + max(leftDepth, rightDepth). This DFS approach visits each node exactly once, resulting in O(n) time complexity and O(h) recursion stack space, where h is the height of the tree."
+  },
+  {
+    "slug": "same-tree",
+    "title": "Same Tree",
+    "difficulty": "Easy",
+    "description": "Given the roots of two binary trees p and q, return true if they are structurally identical and the nodes have the same values. Otherwise, return false.",
+    "constraints": ["0 <= number of nodes in each tree <= 100000", "-10000 <= Node.val <= 10000"],
+    "topics": ["Trees"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isSameTree(p, q) {\n\n}",
+      "typescript": "function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {\n\n}",
+      "python": "def isSameTree(p, q):\n    pass",
+      "java": "public class Solution {\n    public boolean isSameTree(TreeNode p, TreeNode q) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool isSameTree(TreeNode* p, TreeNode* q) {\n        \n    }\n};",
+      "go": "func isSameTree(p *TreeNode, q *TreeNode) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn is_same_tree(\n        p: Option<Rc<RefCell<TreeNode>>>,\n        q: Option<Rc<RefCell<TreeNode>>>\n    ) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3],[1,2,3]",
+        "output": "true",
+        "explanation": "Both trees have the same structure and the same node values."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3],[1,2,3]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],[1,null,2]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,1],[1,1,2]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[],[]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],[]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[],[1]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[5],[5]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],[1,2,3,4,5]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],[1,2,3,4,6]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,null,4],[1,2,3,4,null]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3],[-1,-2,-3]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3],[-1,-3,-2]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50,60,70],[10,20,30,40,50,60,70]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50,60,70],[10,20,30,40,50,60,71]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3],[1,null,2,null,3]",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Two null nodes are considered identical.",
+      "If one node is null and the other is not, the trees are different.",
+      "The current nodes must have the same value.",
+      "Recursively compare both left subtrees and both right subtrees."
+    ],
+    "explanation": "Two binary trees are the same if they have identical structure and corresponding nodes contain the same values. Recursively compare the current nodes. If both nodes are null, return true. If only one is null or their values differ, return false. Otherwise, recursively verify that the left subtrees are the same and the right subtrees are the same. The trees are identical only if all corresponding nodes match."
+  },
+  {
+    "slug": "binary-tree-level-order-traversal",
+    "title": "Binary Tree Level Order Traversal",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, return the level order traversal of its nodes' values. Nodes at the same depth should be grouped together from left to right.",
+    "constraints": ["0 <= number of nodes <= 100000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function levelOrder(root) {\n\n}",
+      "typescript": "function levelOrder(root: TreeNode | null): number[][] {\n\n}",
+      "python": "def levelOrder(root):\n    pass",
+      "java": "public class Solution {\n    public List<List<Integer>> levelOrder(TreeNode root) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> levelOrder(TreeNode* root) {\n        \n    }\n};",
+      "go": "func levelOrder(root *TreeNode) [][]int {\n\n}",
+      "rust": "impl Solution {\n    pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "output": "[[3],[9,20],[15,7]]",
+        "explanation": "Nodes are visited level by level from top to bottom."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "expected_output": "[[3],[9,20],[15,7]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[[1]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3]",
+        "expected_output": "[[1],[2,3]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[[1],[2,3],[4,5,6,7]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,null,3,null,4,null]",
+        "expected_output": "[[1],[2],[3],[4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "expected_output": "[[1],[2],[3],[4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,20,30,40,50,null,60]",
+        "expected_output": "[[10],[20,30],[40,50,60]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5]",
+        "expected_output": "[[-1],[-2,-3],[-4,-5]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0]",
+        "expected_output": "[[0]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1]",
+        "expected_output": "[[5],[4,8],[11,13,4],[7,2,5,1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175]",
+        "expected_output": "[[100],[50,150],[25,75,125,175]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,null,null,5]",
+        "expected_output": "[[1],[2,3],[4,5]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7,7]",
+        "expected_output": "[[7],[7,7],[7,7,7,7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,null,6,7]",
+        "expected_output": "[[1],[2,3],[4,5,6],[7]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Nodes at the same depth belong to the same level.",
+      "Process the tree level by level rather than node by node.",
+      "A queue is useful for Breadth-First Search (BFS).",
+      "Before processing a level, record how many nodes are currently in the queue."
+    ],
+    "explanation": "Use Breadth-First Search (BFS) with a queue. Start by placing the root node in the queue. For each iteration, process all nodes currently in the queue, which represent one level of the tree. Collect their values into a list and add their children to the queue. After processing a level, add the collected values to the result. Continue until the queue becomes empty. This approach visits each node exactly once, resulting in O(n) time complexity."
+  },
+  {
+    "slug": "validate-binary-search-tree",
+    "title": "Validate Binary Search Tree",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, determine whether it is a valid Binary Search Tree (BST). A BST is valid if for every node: all values in its left subtree are strictly less than the node's value, and all values in its right subtree are strictly greater than the node's value. Both left and right subtrees must also be valid BSTs.",
+    "constraints": ["1 <= number of nodes <= 100000", "-2147483648 <= Node.val <= 2147483647"],
+    "topics": ["Trees"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function isValidBST(root) {\n\n}",
+      "typescript": "function isValidBST(root: TreeNode | null): boolean {\n\n}",
+      "python": "def isValidBST(root):\n    pass",
+      "java": "public class Solution {\n    public boolean isValidBST(TreeNode root) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    bool isValidBST(TreeNode* root) {\n        \n    }\n};",
+      "go": "func isValidBST(root *TreeNode) bool {\n\n}",
+      "rust": "impl Solution {\n    pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[2,1,3]",
+        "output": "true",
+        "explanation": "Every node satisfies the Binary Search Tree property."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[2,1,3]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,1,4,null,null,3,6]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,2,2]",
+        "expected_output": "false",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15,null,null,12,20]",
+        "expected_output": "true",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15,null,null,6,20]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,6,null,null,3,7]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,125,75,175]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-20,-5]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-5,-20]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[2147483647]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,-2147483648,2147483647]",
+        "expected_output": "true",
+        "is_hidden": true
+      },
+      {
+        "input": "[32,26,47,19,null,null,56,null,27]",
+        "expected_output": "false",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,4,12,2,6,10,14,1,3,5,7,9,11,13,15]",
+        "expected_output": "true",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Checking only the immediate children is not enough.",
+      "A node must satisfy constraints imposed by all of its ancestors.",
+      "Pass an allowable value range while traversing the tree.",
+      "Every node's value must lie strictly between its lower and upper bounds."
+    ],
+    "explanation": "Use DFS while maintaining a valid range for each node. Initially, the root can take any value. For a node with value x, all nodes in its left subtree must be within (lowerBound, x), and all nodes in its right subtree must be within (x, upperBound). Recursively verify that every node satisfies its allowed range. If any node violates the range, the tree is not a valid BST. This approach correctly handles cases where violations occur deeper in the tree and runs in O(n) time."
+  },
+  {
+    "slug": "lowest-common-ancestor-of-a-binary-tree",
+    "title": "Lowest Common Ancestor of a Binary Tree",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree and two distinct nodes p and q present in the tree, return their Lowest Common Ancestor (LCA). The Lowest Common Ancestor is the lowest node in the tree that has both p and q as descendants (where a node can be a descendant of itself).",
+    "constraints": [
+      "2 <= number of nodes <= 100000",
+      "-100000 <= Node.val <= 100000",
+      "All node values are unique",
+      "p and q exist in the tree",
+      "p != q"
+    ],
+    "topics": ["Trees"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function lowestCommonAncestor(root, p, q) {\n\n}",
+      "typescript": "function lowestCommonAncestor(root: TreeNode | null, p: TreeNode, q: TreeNode): TreeNode | null {\n\n}",
+      "python": "def lowestCommonAncestor(root, p, q):\n    pass",
+      "java": "public class Solution {\n    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {\n        \n    }\n};",
+      "go": "func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn lowest_common_ancestor(\n        root: Option<Rc<RefCell<TreeNode>>>,\n        p: Option<Rc<RefCell<TreeNode>>>,\n        q: Option<Rc<RefCell<TreeNode>>>\n    ) -> Option<Rc<RefCell<TreeNode>>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,5,1,6,2,0,8,null,null,7,4],5,1",
+        "output": "3",
+        "explanation": "The lowest node having both 5 and 1 as descendants is 3."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,5,1,6,2,0,8,null,null,7,4],5,1",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[3,5,1,6,2,0,8,null,null,7,4],5,4",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],1,2",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3],2,3",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15,3,7,12,18],3,7",
+        "expected_output": "5",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,15,3,7,12,18],3,18",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],4,5",
+        "expected_output": "2",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],4,3",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1],7,2",
+        "expected_output": "11",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1],5,1",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175],25,75",
+        "expected_output": "50",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175],25,175",
+        "expected_output": "100",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-20,-5,-30,-15],-30,-15",
+        "expected_output": "-20",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-20,-5,-30,-15],-30,-5",
+        "expected_output": "-10",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null,5],3,5",
+        "expected_output": "3",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Think recursively.",
+      "What should happen if the current node is p or q?",
+      "Search for p and q in both left and right subtrees.",
+      "If one node is found in the left subtree and the other in the right subtree, the current node is the LCA."
+    ],
+    "explanation": "Use a recursive DFS approach. If the current node is null, return null. If the current node matches p or q, return the current node. Recursively search the left and right subtrees. If both recursive calls return non-null values, it means p and q were found in different subtrees, making the current node their Lowest Common Ancestor. If only one side returns a non-null value, propagate that result upward. This algorithm visits each node once, resulting in O(n) time complexity and O(h) recursion stack space, where h is the height of the tree."
+  },
+  {
+    "slug": "path-sum-ii",
+    "title": "Path Sum II",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values along the path equals targetSum. Each path should be returned as a list of node values.",
+    "constraints": [
+      "0 <= number of nodes <= 5000",
+      "-1000 <= Node.val <= 1000",
+      "-100000 <= targetSum <= 100000"
+    ],
+    "topics": ["Trees", "Backtracking"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function pathSum(root, targetSum) {\n\n}",
+      "typescript": "function pathSum(root: TreeNode | null, targetSum: number): number[][] {\n\n}",
+      "python": "def pathSum(root, targetSum):\n    pass",
+      "java": "public class Solution {\n    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {\n        \n    }\n};",
+      "go": "func pathSum(root *TreeNode, targetSum int) [][]int {\n\n}",
+      "rust": "impl Solution {\n    pub fn path_sum(root: Option<Rc<RefCell<TreeNode>>>, target_sum: i32) -> Vec<Vec<i32>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1],22",
+        "output": "[[5,4,11,2],[5,8,4,5]]",
+        "explanation": "Both root-to-leaf paths have a sum of 22."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1],22",
+        "expected_output": "[[5,4,11,2],[5,8,4,5]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3],5",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2],3",
+        "expected_output": "[[1,2]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "[[1]]",
+        "is_hidden": false
+      },
+      {
+        "input": "[],0",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,-2,-3,1,3,-2,null,-1],-1",
+        "expected_output": "[[1,-2,1,-1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,5,12],22",
+        "expected_output": "[[10,5,7],[10,12]]",
+        "is_hidden": true,
+        "note": "Custom tree representation may contain hidden leaf arrangement."
+      },
+      {
+        "input": "[3,9,20,null,null,15,7],38",
+        "expected_output": "[[3,20,15]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7],7",
+        "expected_output": "[[1,2,4]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7],11",
+        "expected_output": "[[1,3,7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,7,7,7,7,7,7],21",
+        "expected_output": "[[7,7,7],[7,7,7],[7,7,7],[7,7,7]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,-50,50,-25,-75,25,75],25",
+        "expected_output": "[[100,-50,-25]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1],26",
+        "expected_output": "[[5,8,13]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1],18",
+        "expected_output": "[[5,8,4,1]]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null,5],15",
+        "expected_output": "[[1,2,3,4,5]]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "A valid path must start at the root and end at a leaf.",
+      "Keep track of the current path while traversing.",
+      "Subtract the current node's value from the remaining target.",
+      "When reaching a leaf node, check if the remaining target equals the leaf value."
+    ],
+    "explanation": "Use Depth-First Search with backtracking. Maintain the current path and the remaining sum needed to reach targetSum. At each node, add the node's value to the current path and decrease the remaining sum. When a leaf node is reached, check whether the remaining sum equals the leaf's value. If it does, add a copy of the current path to the result. After exploring a node's children, remove the node from the current path before returning. This ensures correct path construction while exploring all root-to-leaf paths."
+  },
+  {
+    "slug": "kth-smallest-element-in-a-bst",
+    "title": "Kth Smallest Element in a BST",
+    "difficulty": "Medium",
+    "description": "Given the root of a Binary Search Tree (BST) and an integer k, return the kth smallest value among all the nodes in the BST.",
+    "constraints": [
+      "1 <= number of nodes <= 100000",
+      "1 <= k <= number of nodes",
+      "-100000 <= Node.val <= 100000",
+      "The tree is a valid Binary Search Tree"
+    ],
+    "topics": ["Trees", "Binary Search Tree"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function kthSmallest(root, k) {\n\n}",
+      "typescript": "function kthSmallest(root: TreeNode | null, k: number): number {\n\n}",
+      "python": "def kthSmallest(root, k):\n    pass",
+      "java": "public class Solution {\n    public int kthSmallest(TreeNode root, int k) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int kthSmallest(TreeNode* root, int k) {\n        \n    }\n};",
+      "go": "func kthSmallest(root *TreeNode, k int) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,1,4,null,2],1",
+        "output": "1",
+        "explanation": "The smallest element in the BST is 1."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,1,4,null,2],1",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,3,6,2,4,null,null,1],3",
+        "expected_output": "3",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,1,3],2",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[1],1",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,2,6,1,3,5,7],7",
+        "expected_output": "7",
+        "is_hidden": false
+      },
+      {
+        "input": "[4,2,6,1,3,5,7],1",
+        "expected_output": "1",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,5,15,3,7,12,18],4",
+        "expected_output": "10",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,5,15,3,7,12,18],6",
+        "expected_output": "15",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,50,150,25,75,125,175],5",
+        "expected_output": "100",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,3,10,1,6,null,14,null,null,4,7,13],5",
+        "expected_output": "7",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-20,-5,-30,-15]",
+        "expected_output": "-20",
+        "is_hidden": true,
+        "note": "k = 2"
+      },
+      {
+        "input": "[0,-1,1,-2,null,null,2]",
+        "expected_output": "0",
+        "is_hidden": true,
+        "note": "k = 3"
+      },
+      {
+        "input": "[50,30,70,20,40,60,80],5",
+        "expected_output": "60",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,3,15,null,null,9,20],3",
+        "expected_output": "9",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4,null,5],4",
+        "expected_output": "4",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "What special property does an inorder traversal have in a BST?",
+      "Try traversing the tree in Left → Root → Right order.",
+      "Count how many nodes have been visited.",
+      "The kth visited node during inorder traversal is the answer."
+    ],
+    "explanation": "A Binary Search Tree has the property that an inorder traversal visits nodes in sorted order. Perform an inorder traversal (left subtree, current node, right subtree) while counting visited nodes. When the count reaches k, return the current node's value. Since inorder traversal naturally produces sorted values in a BST, the kth visited node corresponds to the kth smallest element."
+  },
+  {
+    "slug": "binary-tree-right-side-view",
+    "title": "Binary Tree Right Side View",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, imagine standing on the right side of it. Return the values of the nodes you can see ordered from top to bottom.",
+    "constraints": ["0 <= number of nodes <= 100000", "-100 <= Node.val <= 100"],
+    "topics": ["Trees"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function rightSideView(root) {\n\n}",
+      "typescript": "function rightSideView(root: TreeNode | null): number[] {\n\n}",
+      "python": "def rightSideView(root):\n    pass",
+      "java": "public class Solution {\n    public List<Integer> rightSideView(TreeNode root) {\n        \n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> rightSideView(TreeNode* root) {\n        \n    }\n};",
+      "go": "func rightSideView(root *TreeNode) []int {\n\n}",
+      "rust": "impl Solution {\n    pub fn right_side_view(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3,null,5,null,4]",
+        "output": "[1,3,4]",
+        "explanation": "From the right side, the visible nodes are 1, 3, and 4."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3,null,5,null,4]",
+        "expected_output": "[1,3,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,null,3]",
+        "expected_output": "[1,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[]",
+        "expected_output": "[]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "[1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4]",
+        "expected_output": "[1,3,4]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "[1,3,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null]",
+        "expected_output": "[1,2,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,null,2,null,3,null,4]",
+        "expected_output": "[1,2,3,4]",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,5,15,3,7,12,18]",
+        "expected_output": "[10,15,18]",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5]",
+        "expected_output": "[-1,-3,-5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100]",
+        "expected_output": "[100]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,null,1]",
+        "expected_output": "[5,8,4,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,1,2,3,4,5,6,7,8]",
+        "expected_output": "[0,2,6,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80,10]",
+        "expected_output": "[50,70,80,10]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,null,null,4,5,null,null,6]",
+        "expected_output": "[1,3,5,6]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "Nodes are visible level by level.",
+      "At each depth, only one node contributes to the answer.",
+      "A BFS level-order traversal can identify the last node of every level.",
+      "Alternatively, a DFS that visits the right subtree first can record the first node seen at each depth."
+    ],
+    "explanation": "Perform a level-order traversal using a queue. For each level, process all nodes currently in the queue and record the value of the last node processed. That node represents the rightmost visible node at that depth. Continue until all levels have been processed. Alternatively, a DFS that visits the right child before the left child can capture the first node encountered at each depth. Both approaches run in O(n) time."
+  },
+  {
+    "slug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+    "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+    "difficulty": "Hard",
+    "description": "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
+    "constraints": [
+      "1 <= preorder.length <= 3000",
+      "inorder.length == preorder.length",
+      "-3000 <= preorder[i], inorder[i] <= 3000",
+      "preorder and inorder consist of unique values",
+      "Each value of inorder also appears in preorder",
+      "preorder is guaranteed to be the preorder traversal of the tree",
+      "inorder is guaranteed to be the inorder traversal of the tree"
+    ],
+    "topics": ["Trees", "Recursion", "HashMap"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function buildTree(preorder, inorder) {\n\n}",
+      "typescript": "function buildTree(preorder: number[], inorder: number[]): TreeNode | null {\n\n}",
+      "python": "def buildTree(preorder, inorder):\n    pass",
+      "java": "public class Solution {\n    public TreeNode buildTree(int[] preorder, int[] inorder) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {\n        \n    }\n};",
+      "go": "func buildTree(preorder []int, inorder []int) *TreeNode {\n\n}",
+      "rust": "impl Solution {\n    pub fn build_tree(preorder: Vec<i32>, inorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[3,9,20,15,7],[9,3,15,20,7]",
+        "output": "[3,9,20,null,null,15,7]",
+        "explanation": "The traversals uniquely determine the binary tree."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[3,9,20,15,7],[9,3,15,20,7]",
+        "expected_output": "[3,9,20,null,null,15,7]",
+        "is_hidden": false
+      },
+      {
+        "input": "[-1],[-1]",
+        "expected_output": "[-1]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,4,5,3],[4,2,5,1,3]",
+        "expected_output": "[1,2,3,4,5]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3],[3,2,1]",
+        "expected_output": "[1,2,null,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[1,2,3],[1,2,3]",
+        "expected_output": "[1,null,2,null,3]",
+        "is_hidden": false
+      },
+      {
+        "input": "[10,5,3,7,15,12,18],[3,5,7,10,12,15,18]",
+        "expected_output": "[10,5,15,3,7,12,18]",
+        "is_hidden": true
+      },
+      {
+        "input": "[4,2,1,3,6,5,7],[1,2,3,4,5,6,7]",
+        "expected_output": "[4,2,6,1,3,5,7]",
+        "is_hidden": true
+      },
+      {
+        "input": "[5,4,3,2,1],[1,2,3,4,5]",
+        "expected_output": "[5,4,null,3,null,2,null,1]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5],[1,2,3,4,5]",
+        "expected_output": "[1,null,2,null,3,null,4,null,5]",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,4,2,6,12,10,14],[2,4,6,8,10,12,14]",
+        "expected_output": "[8,4,12,2,6,10,14]",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,-3,-4,-2,5,2,8],[-4,-3,-2,0,2,5,8]",
+        "expected_output": "[0,-3,5,-4,-2,2,8]",
+        "is_hidden": true
+      },
+      {
+        "input": "[100],[100]",
+        "expected_output": "[100]",
+        "is_hidden": true
+      },
+      {
+        "input": "[7,3,1,5,11,9,13],[1,3,5,7,9,11,13]",
+        "expected_output": "[7,3,11,1,5,9,13]",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,20,40,70,60,80],[20,30,40,50,60,70,80]",
+        "expected_output": "[50,30,70,20,40,60,80]",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,3,7,15,8,4,9],[15,7,3,8,1,4,9]",
+        "expected_output": "[1,3,4,null,7,null,9,15,8]",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The first element of preorder traversal is always the root.",
+      "Locate the root in the inorder traversal.",
+      "Elements left of the root in inorder belong to the left subtree.",
+      "Use a HashMap to quickly find the root's position in inorder."
+    ],
+    "explanation": "In preorder traversal, the first element is always the root of the current subtree. Find this root in the inorder traversal. All elements to the left of the root in inorder belong to the left subtree, and all elements to the right belong to the right subtree. Recursively construct both subtrees using the corresponding preorder and inorder segments. Using a HashMap to store inorder indices allows locating roots in O(1) time, resulting in an overall O(n) solution."
+  },
+  {
+    "slug": "binary-tree-maximum-path-sum",
+    "title": "Binary Tree Maximum Path Sum",
+    "difficulty": "Hard",
+    "description": "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes is connected by an edge. A path may start and end at any node in the tree and must contain at least one node. Given the root of a binary tree, return the maximum path sum of any path.",
+    "constraints": ["1 <= number of nodes <= 30000", "-1000 <= Node.val <= 1000"],
+    "topics": ["Trees", "Dynamic Programming"],
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "starter_code": {
+      "javascript": "function maxPathSum(root) {\n\n}",
+      "typescript": "function maxPathSum(root: TreeNode | null): number {\n\n}",
+      "python": "def maxPathSum(root):\n    pass",
+      "java": "public class Solution {\n    public int maxPathSum(TreeNode root) {\n        \n    }\n}",
+      "cpp": "class Solution {\npublic:\n    int maxPathSum(TreeNode* root) {\n        \n    }\n};",
+      "go": "func maxPathSum(root *TreeNode) int {\n\n}",
+      "rust": "impl Solution {\n    pub fn max_path_sum(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {\n\n    }\n}"
+    },
+    "sample_test_cases": [
+      {
+        "input": "[1,2,3]",
+        "output": "6",
+        "explanation": "The maximum path is 2 -> 1 -> 3 with sum 6."
+      }
+    ],
+    "test_cases": [
+      {
+        "input": "[1,2,3]",
+        "expected_output": "6",
+        "is_hidden": false
+      },
+      {
+        "input": "[-10,9,20,null,null,15,7]",
+        "expected_output": "42",
+        "is_hidden": false
+      },
+      {
+        "input": "[1]",
+        "expected_output": "1",
+        "is_hidden": false
+      },
+      {
+        "input": "[-3]",
+        "expected_output": "-3",
+        "is_hidden": false
+      },
+      {
+        "input": "[2,-1]",
+        "expected_output": "2",
+        "is_hidden": false
+      },
+      {
+        "input": "[5,4,8,11,null,13,4,7,2,null,null,5,1]",
+        "expected_output": "48",
+        "is_hidden": true
+      },
+      {
+        "input": "[10,2,10,20,1,null,-25,null,null,null,null,3,4]",
+        "expected_output": "42",
+        "is_hidden": true
+      },
+      {
+        "input": "[-10,-20,-30]",
+        "expected_output": "-10",
+        "is_hidden": true
+      },
+      {
+        "input": "[100,-50,200,-25,-75,150,300]",
+        "expected_output": "750",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,-2,3]",
+        "expected_output": "4",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,null,3,null,4,null,5]",
+        "expected_output": "15",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5,-6,-7]",
+        "expected_output": "-1",
+        "is_hidden": true
+      },
+      {
+        "input": "[50,30,70,20,40,60,80]",
+        "expected_output": "270",
+        "is_hidden": true
+      },
+      {
+        "input": "[0,0,0,0,0,0,0]",
+        "expected_output": "0",
+        "is_hidden": true
+      },
+      {
+        "input": "[8,4,12,2,6,10,14]",
+        "expected_output": "44",
+        "is_hidden": true
+      },
+      {
+        "input": "[1,2,3,4,5,6,7]",
+        "expected_output": "18",
+        "is_hidden": true
+      },
+      {
+        "input": "[-1000,1000,1000]",
+        "expected_output": "1000",
+        "is_hidden": true
+      }
+    ],
+    "hints": [
+      "The maximum path does not necessarily pass through the root.",
+      "For each node, consider the best contribution from the left and right subtrees.",
+      "Negative path sums can reduce the answer.",
+      "At every node, update a global maximum using leftGain + nodeValue + rightGain."
+    ],
+    "explanation": "Use a postorder DFS traversal. For each node, calculate the maximum gain that can be contributed to its parent. The gain from a child is either the child's gain or 0 if the gain is negative. At every node, compute a candidate path sum consisting of leftGain + nodeValue + rightGain. This represents a path that passes through the current node and may terminate in both subtrees. Update the global maximum path sum with this value. Return nodeValue + max(leftGain, rightGain) to the parent because a parent can only extend one branch of the path. This approach visits every node once and runs in O(n) time."
+  }
+]
