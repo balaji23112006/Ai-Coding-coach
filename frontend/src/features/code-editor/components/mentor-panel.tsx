@@ -1,5 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
-import { BrainCircuit, Send, Lightbulb, X, Sparkles, AlertCircle, Zap, MessageSquare } from 'lucide-react';
+import {
+  BrainCircuit,
+  Send,
+  Lightbulb,
+  X,
+  Sparkles,
+  Zap,
+  MessageSquare,
+  BookOpen,
+  Compass,
+  AlertTriangle,
+  ShieldAlert,
+  ArrowRight,
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import type { MentorMessage } from '../hooks/use-mentor';
 
 interface MentorPanelProps {
@@ -11,34 +26,156 @@ interface MentorPanelProps {
   onSendMessage: (text: string) => void;
 }
 
-const CATEGORY_CONFIG = {
-  syntax: { label: 'Syntax', color: 'text-amber-400 bg-amber-500/10 border-amber-500/20', icon: AlertCircle },
-  logic: { label: 'Logic', color: 'text-rose-400 bg-rose-500/10 border-rose-500/20', icon: AlertCircle },
-  timeout: { label: 'Efficiency', color: 'text-purple-400 bg-purple-500/10 border-purple-500/20', icon: Zap },
-  request: { label: 'Hint', color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20', icon: Lightbulb },
+interface GuidanceSection {
+  title: string;
+  content: string;
+}
+
+const SECTION_STYLE_MAP: Record<string, { icon: any; iconColor: string; bgGradient: string; border: string }> = {
+  'Problem Understanding': {
+    icon: BookOpen,
+    iconColor: 'text-sky-400',
+    bgGradient: 'from-sky-500/5 to-transparent',
+    border: 'border-sky-500/15',
+  },
+  'Key Insight': {
+    icon: Lightbulb,
+    iconColor: 'text-amber-400',
+    bgGradient: 'from-amber-500/5 to-transparent',
+    border: 'border-amber-500/15',
+  },
+  'Approach': {
+    icon: Compass,
+    iconColor: 'text-teal-400',
+    bgGradient: 'from-teal-500/5 to-transparent',
+    border: 'border-teal-500/15',
+  },
+  'Common Mistakes': {
+    icon: AlertTriangle,
+    iconColor: 'text-rose-400',
+    bgGradient: 'from-rose-500/5 to-transparent',
+    border: 'border-rose-500/15',
+  },
+  'Edge Cases': {
+    icon: ShieldAlert,
+    iconColor: 'text-purple-400',
+    bgGradient: 'from-purple-500/5 to-transparent',
+    border: 'border-purple-500/15',
+  },
+  'Optimization': {
+    icon: Zap,
+    iconColor: 'text-indigo-400',
+    bgGradient: 'from-indigo-500/5 to-transparent',
+    border: 'border-indigo-500/15',
+  },
+  'Next Step': {
+    icon: ArrowRight,
+    iconColor: 'text-emerald-400',
+    bgGradient: 'from-emerald-500/10 to-emerald-500/5',
+    border: 'border-emerald-500/25 shadow-emerald-950/20 shadow-sm',
+  },
+  'Guidance': {
+    icon: BrainCircuit,
+    iconColor: 'text-amber-400',
+    bgGradient: 'from-amber-500/5 to-transparent',
+    border: 'border-slate-800/80',
+  },
+  'Introduction': {
+    icon: Sparkles,
+    iconColor: 'text-violet-400',
+    bgGradient: 'from-violet-500/5 to-transparent',
+    border: 'border-slate-800/40 bg-slate-900/10',
+  },
 };
 
-const LEVEL_LABELS: Record<number, string> = {
-  1: 'Concept',
-  2: 'Clue',
-  3: 'Direction',
-  4: 'Pseudocode',
-  5: 'Edge Cases',
-};
+function parseGuidance(text: string): GuidanceSection[] {
+  const sections: GuidanceSection[] = [];
+  const lines = text.split('\n');
+  let currentTitle = 'Guidance';
+  let currentLines: string[] = [];
 
-function HintBadge({ category, level }: { category: keyof typeof CATEGORY_CONFIG; level: 1 | 2 | 3 | 4 | 5 }) {
-  const config = CATEGORY_CONFIG[category] || CATEGORY_CONFIG.request;
-  const Icon = config.icon;
+  const titlePatterns = [
+    'Problem Understanding',
+    'Key Insight',
+    'Approach',
+    'Common Mistakes',
+    'Edge Cases',
+    'Optimization',
+    'Next Step'
+  ];
+
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    let matchedTitle: string | null = null;
+
+    for (const title of titlePatterns) {
+      const regex = new RegExp(`^(?:#+\\s*|\\*\\*\\s*|\\*\\s*)?(${title})(?:\\s*\\*\\*|\\s*\\*|\\s*:\\s*|\\s*#+)*$`, 'i');
+      if (regex.test(trimmedLine)) {
+        matchedTitle = title;
+        break;
+      }
+    }
+
+    if (matchedTitle) {
+      if (currentLines.length > 0) {
+        sections.push({
+          title: currentTitle,
+          content: currentLines.join('\n').trim()
+        });
+        currentLines = [];
+      }
+      currentTitle = matchedTitle;
+    } else {
+      currentLines.push(line);
+    }
+  }
+
+  if (currentLines.length > 0 || sections.length > 0) {
+    sections.push({
+      title: currentTitle,
+      content: currentLines.join('\n').trim()
+    });
+  }
+
+  const filtered = sections.filter(s => s.content.length > 0);
+  if (filtered.length > 1 && filtered[0].title === 'Guidance') {
+    filtered[0].title = 'Introduction';
+  }
+
+  return filtered;
+}
+
+function GuidanceCard({ section, index }: { section: GuidanceSection; index: number }) {
+  const style = SECTION_STYLE_MAP[section.title] || SECTION_STYLE_MAP['Guidance'];
+  const Icon = style.icon;
+
   return (
-    <div className="mb-2 flex items-center gap-1.5">
-      <span className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider ${config.color}`}>
-        <Icon className="h-2.5 w-2.5" />
-        {config.label}
-      </span>
-      <span className="inline-flex items-center rounded border border-slate-700/50 bg-slate-800/50 px-1.5 py-0.5 font-mono text-[9px] text-slate-400">
-        Level {level} · {LEVEL_LABELS[level]}
-      </span>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.06, ease: 'easeOut' }}
+      className={cn(
+        "group relative overflow-hidden rounded-xl border p-4 bg-slate-900/30 backdrop-blur-md transition-all duration-300 hover:bg-slate-900/50",
+        style.border
+      )}
+    >
+      <div className={cn("absolute inset-0 bg-gradient-to-br opacity-40 transition-opacity duration-300 group-hover:opacity-65 pointer-events-none", style.bgGradient)} />
+      
+      <div className="relative z-10 flex items-center gap-2 mb-2">
+        <div className={cn("flex h-6 w-6 items-center justify-center rounded-lg bg-slate-950/60 border border-white/[0.03] shadow-inner", style.iconColor)}>
+          <Icon className="h-3.5 w-3.5" />
+        </div>
+        <h4 className="text-[10px] font-black uppercase tracking-wider text-slate-200">
+          {section.title}
+        </h4>
+      </div>
+
+      <div className="relative z-10 pl-8">
+        <p className="text-xs leading-relaxed text-slate-300 whitespace-pre-wrap font-sans">
+          {section.content}
+        </p>
+      </div>
+    </motion.div>
   );
 }
 
@@ -48,32 +185,32 @@ function MentorMessageBubble({ msg }: { msg: MentorMessage }) {
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-violet-600/20 border border-violet-500/20 px-3 py-2">
-          <p className="text-sm leading-relaxed text-slate-200">{msg.text}</p>
+        <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-violet-600/20 border border-violet-500/20 px-3.5 py-2">
+          <p className="text-xs leading-relaxed text-slate-200 font-sans">{msg.text}</p>
         </div>
       </div>
     );
   }
+
+  const sections = parseGuidance(msg.text);
 
   return (
     <div className="flex gap-2.5">
       <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg shadow-amber-900/30">
         <BrainCircuit className="h-3 w-3 text-slate-950" />
       </div>
-      <div className="min-w-0 flex-1">
-        {msg.hintMetadata && (
-          <HintBadge
-            category={msg.hintMetadata.category}
-            level={msg.hintMetadata.level}
-          />
+      <div className="min-w-0 flex-1 space-y-2">
+        {msg.hintMetadata?.targetedConcept && (
+          <div className="mb-2 flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-500/10 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-amber-400">
+              Focus: {msg.hintMetadata.targetedConcept}
+            </span>
+          </div>
         )}
-        <div className="rounded-2xl rounded-tl-sm border border-slate-700/40 bg-slate-900/60 px-3 py-2.5">
-          {msg.hintMetadata?.targetedConcept && (
-            <p className="mb-1.5 font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
-              ↳ {msg.hintMetadata.targetedConcept}
-            </p>
-          )}
-          <p className="text-sm leading-relaxed text-slate-200 whitespace-pre-wrap">{msg.text}</p>
+        <div className="flex flex-col gap-2">
+          {sections.map((section, idx) => (
+            <GuidanceCard key={idx} section={section} index={idx} />
+          ))}
         </div>
       </div>
     </div>

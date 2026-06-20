@@ -133,7 +133,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     systemPrompt,
     userMessage,
     temperature: 0.3,
-    maxTokens: 350,
+    maxTokens: 8192,
     userId,
     sessionId: questionId,
   };

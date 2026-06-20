@@ -14,6 +14,8 @@ interface LeftPanelProps {
   loadSubmittedCode?: (code: string) => void;
   onRun?: () => void;
   onReset?: () => void;
+  totalSubmissions?: number;
+  acceptanceRate?: number;
 }
 
 type LeftTab = 'description' | 'hints' | 'submissions';
@@ -84,6 +86,8 @@ export function LeftPanel({
   submissionHistory,
   latestSubmission,
   loadSubmittedCode,
+  totalSubmissions = 0,
+  acceptanceRate,
 }: LeftPanelProps) {
   const [activeTab, setActiveTab] = useState<LeftTab>('description');
   const [unlockedHints, setUnlockedHints] = useState(1);
@@ -96,24 +100,37 @@ export function LeftPanel({
   return (
     <div className="flex h-full flex-col overflow-hidden border border-slate-800 bg-slate-950/20 backdrop-blur-xl">
       <div className="flex h-11 shrink-0 border-b border-slate-800/70 bg-slate-950/40">
-        {(['description', 'hints', 'submissions'] as LeftTab[]).map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={cn(
-              'flex flex-1 items-center justify-center border-b-2 px-2 text-xs font-bold capitalize transition',
-              activeTab === tab
-                ? 'border-amber-500 text-amber-400'
-                : 'border-transparent text-slate-500 hover:text-slate-200',
-            )}
-          >
-            {tab}
-          </button>
-        ))}
+        {(['description', 'hints', 'submissions'] as LeftTab[]).map(tab => {
+          const isSubmissions = tab === 'submissions';
+          return (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={cn(
+                'flex flex-1 items-center justify-center border-b-2 px-2 text-xs font-bold capitalize transition gap-1.5',
+                activeTab === tab
+                  ? 'border-amber-500 text-amber-400'
+                  : 'border-transparent text-slate-500 hover:text-slate-200',
+              )}
+            >
+              <span>{tab}</span>
+              {isSubmissions && totalSubmissions > 0 && (
+                <span className={cn(
+                  "rounded-full px-1.5 py-0.5 text-[9px] font-mono font-bold leading-none transition-colors duration-150",
+                  activeTab === tab
+                    ? "bg-amber-500/20 text-amber-400"
+                    : "bg-slate-800/60 text-slate-500"
+                )}>
+                  {totalSubmissions}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-5">
-        {activeTab === 'description' && <DescriptionTab problem={problem} />}
+        {activeTab === 'description' && <DescriptionTab problem={problem} acceptanceRate={acceptanceRate} />}
         {activeTab === 'hints' && (
           <div className="space-y-3">
             <div className="flex items-center justify-between mb-1">
@@ -196,6 +213,7 @@ export function LeftPanel({
             submissions={submissions}
             loadSubmittedCode={loadSubmittedCode}
             submissionHistory={submissionHistory}
+            totalSubmissions={totalSubmissions}
           />
         )}
       </div>
@@ -203,7 +221,8 @@ export function LeftPanel({
   );
 }
 
-function DescriptionTab({ problem }: { problem: Problem }) {
+function DescriptionTab({ problem, acceptanceRate }: { problem: Problem; acceptanceRate?: number }) {
+  const displayAcceptance = typeof acceptanceRate === 'number' ? acceptanceRate : problem.acceptance;
   return (
     <div className="space-y-5">
       <div>
@@ -218,7 +237,7 @@ function DescriptionTab({ problem }: { problem: Problem }) {
         </div>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-100">{problem.title}</h1>
         <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-400">
-          <span>Acceptance {problem.acceptance.toFixed(1)}%</span>
+          <span>Acceptance {displayAcceptance.toFixed(1)}%</span>
           <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" />{problem.timeLimitMs || 0} ms</span>
           <span className="inline-flex items-center gap-1"><HardDrive className="h-3 w-3" />{problem.memoryLimitMb || 0} MB</span>
         </div>
@@ -287,10 +306,12 @@ function SubmissionsTab({
   submissions,
   loadSubmittedCode,
   submissionHistory,
+  totalSubmissions,
 }: {
   submissions: Submission[];
   loadSubmittedCode?: (code: string) => void;
   submissionHistory: Submission[];
+  totalSubmissions?: number;
 }) {
   if (submissions.length === 0) {
     return (
@@ -301,7 +322,18 @@ function SubmissionsTab({
     );
   }
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      {typeof totalSubmissions === 'number' && totalSubmissions > 0 && (
+        <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-900/10 px-3.5 py-2.5">
+          <div className="flex items-center gap-2">
+            <History className="h-4 w-4 text-slate-500" />
+            <span className="text-xs font-bold text-slate-400">Total Attempts</span>
+          </div>
+          <span className="font-mono text-sm font-black text-slate-200">{totalSubmissions}</span>
+        </div>
+      )}
+      
+      <div className="space-y-3">
       {submissions.map((submission) => {
         const [isExpanded, setIsExpanded] = useState(false);
         const complexity = estimateComplexity(submission.code);
@@ -372,6 +404,7 @@ function SubmissionsTab({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

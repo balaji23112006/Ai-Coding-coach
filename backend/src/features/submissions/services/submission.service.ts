@@ -325,19 +325,37 @@ else:
     return submission;
   }
 
-  async getSubmissionHistory(questionId: string, userId?: string) {
+  async getSubmissionHistory(questionId: string, userId: string) {
+    if (!userId) {
+      return {
+        submissions: [],
+        userStats: {
+          attempts: 0,
+          acceptedCount: 0,
+          bestRuntime: null,
+          avgRuntime: null,
+          bestMemory: null,
+          avgMemory: null,
+          lowestMemory: null,
+        },
+        globalStats: {
+          totalCount: 0,
+          acceptedCount: 0,
+          acceptanceRate: 0,
+        },
+      };
+    }
+
     const submissions = await prisma.submission.findMany({
       where: {
         questionId,
-        ...(userId && { userId }),
+        userId,
       },
       orderBy: { createdAt: 'desc' },
       take: 50,
     });
 
-    const userSubmissions = userId
-      ? submissions.filter(s => s.userId === userId)
-      : [];
+    const userSubmissions = submissions;
     const allSubmissions = await prisma.submission.findMany({
       where: { questionId },
     });
@@ -357,9 +375,22 @@ else:
       ? Math.min(...userSubmissions.map(s => s.memoryUsed))
       : null;
 
-    const allAccepted = allSubmissions.filter(s => s.status === 'ACCEPTED').length;
-    const acceptanceRate = allSubmissions.length > 0
-      ? Math.round((allAccepted / allSubmissions.length) * 100)
+    const uniqueAttemptedUsers = new Set<string>();
+    const uniqueSolvedUsers = new Set<string>();
+
+    allSubmissions.forEach(sub => {
+      const uId = sub.userId || `anon_${sub.id}`;
+      uniqueAttemptedUsers.add(uId);
+      if (sub.status === 'ACCEPTED') {
+        uniqueSolvedUsers.add(uId);
+      }
+    });
+
+    const attemptedCount = uniqueAttemptedUsers.size;
+    const solvedCount = uniqueSolvedUsers.size;
+
+    const acceptanceRate = attemptedCount > 0
+      ? Math.round((solvedCount / attemptedCount) * 100)
       : 0;
 
     return {
@@ -375,7 +406,7 @@ else:
       },
       globalStats: {
         totalCount: allSubmissions.length,
-        acceptedCount: allAccepted,
+        acceptedCount: allSubmissions.filter(s => s.status === 'ACCEPTED').length,
         acceptanceRate,
       },
     };

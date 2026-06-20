@@ -28,7 +28,7 @@ function mapBackendToEditorProblem(q: any): Problem {
     title: q.title || 'Untitled',
     difficulty: q.difficulty || 'Medium',
     topics: q.topics || [],
-    acceptance: 50.0,
+    acceptance: q.acceptance_rate ?? 0.0,
     description: q.description || '',
     constraints: q.constraints || [],
     examples: sampleCases,
@@ -129,8 +129,10 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const lastTriggeredResultRef = useRef<any>(null);
 
   const {
+    isCodeLoading,
     selectedLanguage,
     currentCode,
     isRunning,
@@ -138,6 +140,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     runResult,
     submitResult,
     submissionHistory,
+    stats,
     activeConsoleTab,
     handleLanguageChange,
     handleCodeChange,
@@ -164,10 +167,16 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
       runResult.status === 'Compile Error' ||
       runResult.status === 'Wrong Answer';
 
-    if (isFailure && !mentor.isLoading && !mentor.isOpen) {
-      // Auto-open mentor with a slight delay so UI settles first
-      const t = setTimeout(() => mentor.toggleOpen(), 1200);
-      return () => clearTimeout(t);
+    // Prevent repeated triggering on the same execution result
+    if (runResult === lastTriggeredResultRef.current) return;
+
+    if (isFailure) {
+      lastTriggeredResultRef.current = runResult;
+      if (!mentor.isLoading && !mentor.isOpen) {
+        // Auto-open mentor with a slight delay so UI settles first
+        const t = setTimeout(() => mentor.toggleOpen(), 1200);
+        return () => clearTimeout(t);
+      }
     }
   }, [runResult, isRunning, isSubmitting, mentor.isLoading, mentor.isOpen, mentor.toggleOpen]);
 
@@ -366,6 +375,8 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               submissionHistory={submissionHistory}
               latestSubmission={submitResult}
               loadSubmittedCode={handleCodeChange}
+              totalSubmissions={stats?.userStats?.attempts ?? 0}
+              acceptanceRate={stats?.globalStats?.acceptanceRate}
             />
           )}
         </div>
@@ -392,6 +403,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                 language={selectedLanguage}
                 value={currentCode}
                 onChange={handleCodeChange}
+                isCodeLoading={isCodeLoading}
               />
             </div>
           </div>

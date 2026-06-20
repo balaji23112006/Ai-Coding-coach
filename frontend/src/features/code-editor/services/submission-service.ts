@@ -34,8 +34,8 @@ export interface SubmissionHistoryResponse extends SubmissionStats {
   submissions: Submission[];
 }
 
-const draftStorageKey = (problemId: string, language: SupportedLanguage) => {
-  return `skill-lens:code-editor:draft:${problemId}:${language}`;
+const draftStorageKey = (problemId: string, language: SupportedLanguage, userId?: string) => {
+  return `skill-lens:code-editor:draft:${userId ?? 'anonymous'}:${problemId}:${language}`;
 };
 
 function mapBackendStatusToRunResult(
@@ -204,15 +204,17 @@ export const submissionService = {
   getDraft: async (
     problemId: string,
     language: SupportedLanguage,
+    userId?: string,
   ): Promise<string | null> => {
-    return window.localStorage.getItem(draftStorageKey(problemId, language));
+    return window.localStorage.getItem(draftStorageKey(problemId, language, userId));
   },
 
   saveDraft: async (
     problemId: string,
     language: SupportedLanguage,
     code: string,
+    userId?: string,
   ): Promise<void> => {
-    window.localStorage.setItem(draftStorageKey(problemId, language), code);
+    window.localStorage.setItem(draftStorageKey(problemId, language, userId), code);
   },
 };
