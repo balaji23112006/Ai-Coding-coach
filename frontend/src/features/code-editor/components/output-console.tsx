@@ -37,12 +37,10 @@ export function OutputConsole({
 }: OutputConsoleProps) {
   const passed = runResult?.passedCount ?? 0;
   const total = runResult?.totalCount ?? 0;
-  const allPassed = (runResult?.status === 'Success' || runResult?.status === 'ACCEPTED') && passed === total && total > 0;
+  const allPassed = runResult?.status === 'Success' && passed === total && total > 0;
   const hasError = 
     runResult?.status === 'Compile Error' || 
-    runResult?.status === 'COMPILATION_ERROR' || 
-    runResult?.status === 'Runtime Error' || 
-    runResult?.status === 'RUNTIME_ERROR';
+    runResult?.status === 'Runtime Error';
 
   return (
     <SectionCard
@@ -86,7 +84,7 @@ export function OutputConsole({
               <StatusBadge tone={allPassed ? 'success' : hasError ? 'danger' : 'warning'}>
                 {allPassed
                   ? `${passed}/${total} Passed`
-                  : runResult.status === 'Success' || runResult.status === 'ACCEPTED'
+                  : runResult.status === 'Success'
                     ? `${passed}/${total} Passed`
                     : runResult.status}
               </StatusBadge>
@@ -163,8 +161,7 @@ export function OutputConsole({
                       </div>
                     </div>
                   ) : runResult.status === 'Wrong Answer' ||
-                    (runResult.status === 'Success' && total > 0 && passed < total) ||
-                    (runResult.status === 'ACCEPTED' && total > 0 && passed < total) ? (
+                    (runResult.status === 'Success' && total > 0 && passed < total) ? (
                     <div className="animate-in fade-in slide-in-from-bottom-2 relative overflow-hidden rounded-lg border border-rose-500/20 bg-rose-500/5 p-4 duration-300">
                       <div className="absolute right-0 top-0 -mr-6 -mt-6 h-20 w-20 rounded-full bg-rose-500/10 blur-xl" />
                       <div className="flex items-start gap-3">
@@ -193,7 +190,7 @@ export function OutputConsole({
                         The sandbox encountered an execution error while running your program.
                       </AlertDescription>
                     </Alert>
-                  ) : runResult.status === 'Time Limit Exceeded' || runResult.status === 'TIMEOUT' ? (
+                  ) : runResult.status === 'Time Limit Exceeded' ? (
                     <div className="animate-in fade-in slide-in-from-bottom-2 relative overflow-hidden rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 duration-300">
                       <div className="absolute right-0 top-0 -mr-6 -mt-6 h-20 w-20 rounded-full bg-amber-500/10 blur-xl" />
                       <div className="flex items-start gap-3">
@@ -250,7 +247,7 @@ export function OutputConsole({
                   )}
 
                   {/* Passed Visual Progress Indicators */}
-                  {(runResult.status === 'Success' || runResult.status === 'ACCEPTED' || runResult.status === 'Wrong Answer') &&
+                  {(runResult.status === 'Success' || runResult.status === 'Wrong Answer') &&
                     total > 0 && (
                       <div className="space-y-2">
                         <div className="flex gap-1.5">

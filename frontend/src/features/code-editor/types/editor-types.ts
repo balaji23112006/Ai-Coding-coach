@@ -60,7 +60,6 @@ export interface Submission {
   totalCount?: number;
   failedCases?: FailedTestCase[];
   stderr?: string;
-  stdout?: string;
 }
 
 export type SubmissionStatus = Submission['status'];

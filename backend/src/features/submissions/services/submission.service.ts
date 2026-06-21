@@ -36,7 +36,6 @@ export class SubmissionService {
   }
 
   async submitCode(input: SubmitCodeInput) {
-  async submitCode(input: SubmitCodeInput) {
     let finalCode = input.sourceCode;
     let hasTestCases = false;
     let questionObj: any = null;

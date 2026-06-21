@@ -1,5 +1,5 @@
 import { Play, Send, RotateCcw, BrainCircuit } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ActionButtonsProps {

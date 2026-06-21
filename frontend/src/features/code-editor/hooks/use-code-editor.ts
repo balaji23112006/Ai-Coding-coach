@@ -157,7 +157,7 @@ export function useCodeEditor(
 
       // Update local stats dynamically
       setStats((prev) => {
-        const isAccepted = result.status === 'Accepted' || result.status === 'ACCEPTED';
+        const isAccepted = result.status === 'Accepted';
         if (!prev) {
           return {
             userStats: {
@@ -189,11 +189,11 @@ export function useCodeEditor(
       // Map into runResult shape for ResultsPanel/OutputConsole compatibility
       const executionResult: ExecutionResult = {
         status:
-          result.status === 'Accepted' || result.status === 'ACCEPTED'
+          result.status === 'Accepted'
             ? 'Success'
-            : result.status === 'Compile Error' || result.status === 'COMPILATION_ERROR'
+            : result.status === 'Compile Error'
               ? 'Compile Error'
-              : result.status === 'Runtime Error' || result.status === 'RUNTIME_ERROR'
+              : result.status === 'Runtime Error'
                 ? 'Runtime Error'
                 : 'Wrong Answer',
         stdout: result.stdout,

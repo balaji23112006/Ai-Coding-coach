@@ -6,7 +6,7 @@ import { Float, Sphere, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { Bot, CheckCircle2, Lock, PlayCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { TopNavigation } from '@/components/common/top-navigation';
 
