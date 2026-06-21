@@ -57,3 +57,39 @@ export function getHintCount(userId: string, questionId: string): number {
 export function clearHintHistory(userId: string, questionId: string): void {
   hintHistory.delete(makeKey(userId, questionId));
 }
+
+// In-memory cache for fully compiled Mentor Responses to minimize LLM token consumption
+const hintCache = new Map<string, any>();
+
+function makeCacheKey(
+  userId: string,
+  questionId: string,
+  sourceCode: string,
+  triggerEvent: string,
+): string {
+  // Normalize whitespace of code to prevent minor spacing changes from causing cache misses
+  const normalizedCode = sourceCode.replace(/\s+/g, ' ').trim();
+  return `${userId}:${questionId}:${normalizedCode}:${triggerEvent}`;
+}
+
+export function getCachedHint(
+  userId: string,
+  questionId: string,
+  sourceCode: string,
+  triggerEvent: string,
+): any | null {
+  const key = makeCacheKey(userId, questionId, sourceCode, triggerEvent);
+  return hintCache.get(key) ?? null;
+}
+
+export function cacheHint(
+  userId: string,
+  questionId: string,
+  sourceCode: string,
+  triggerEvent: string,
+  response: any,
+): void {
+  const key = makeCacheKey(userId, questionId, sourceCode, triggerEvent);
+  hintCache.set(key, response);
+}
+

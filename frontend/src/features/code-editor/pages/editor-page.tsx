@@ -225,7 +225,8 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
     if (isFailure) {
       lastTriggeredResultRef.current = runResult;
-      if (!mentor.isLoading && !mentor.isOpen) {
+      const autoOpen = localStorage.getItem('skill-lens-autoOpenMentor') !== 'false';
+      if (autoOpen && !mentor.isLoading && !mentor.isOpen) {
         // Auto-open mentor with a slight delay so UI settles first
         const t = setTimeout(() => mentor.toggleOpen(), 1200);
         return () => clearTimeout(t);

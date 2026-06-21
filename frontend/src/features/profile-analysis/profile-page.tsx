@@ -304,6 +304,7 @@ export function ProfilePage() {
     fontSize: localStorage.getItem('editor-fontSize') ?? '14px',
     tabSize: localStorage.getItem('editor-tabSize') ?? '2 Spaces',
     hintStyle: localStorage.getItem('editor-hintStyle') ?? 'Balanced',
+    autoOpenMentor: localStorage.getItem('skill-lens-autoOpenMentor') !== 'false',
   }));
 
   const isDark = preferences.theme === 'System' ? systemIsDark : preferences.theme === 'Dark';
@@ -1030,6 +1031,12 @@ export function ProfilePage() {
                       description="Suggest problems based on weakness."
                       enabled={preferences.personalizedRecs}
                       onToggle={() => togglePreference('personalizedRecs')}
+                    />
+                    <CustomToggle
+                      label="Auto-Open AI Mentor"
+                      description="Automatically open the Mentor panel when a run or submission fails."
+                      enabled={preferences.autoOpenMentor}
+                      onToggle={() => togglePreference('autoOpenMentor')}
                     />
                   </div>
                 </motion.section>

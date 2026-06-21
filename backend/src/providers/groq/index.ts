@@ -28,7 +28,11 @@ export const groq = new Groq({
  * Returns true when a real Groq API key is configured.
  */
 export function isGroqConfigured(): boolean {
-  return GROQ_API_KEY.startsWith('gsk_');
+  return (
+    GROQ_API_KEY.startsWith('gsk_') &&
+    GROQ_API_KEY !== 'gsk_your_groq_api_key_here' &&
+    GROQ_API_KEY !== 'gsk_your_key_here'
+  );
 }
 
 /**

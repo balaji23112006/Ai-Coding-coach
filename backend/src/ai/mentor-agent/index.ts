@@ -27,7 +27,7 @@ import { prisma }                                      from '../../database/pris
 import { logger }                                      from '../../shared/utils/logger.js';
 
 import { MentorRequest, MentorResponse, HintLevel } from './types.js';
-import { getHintHistory, saveHint }                  from './hint-store.js';
+import { getHintHistory, saveHint, getCachedHint, cacheHint }                  from './hint-store.js';
 import { classifyError, identifyConcept }             from './classifier.js';
 import { determineHintLevel }                         from './escalation.js';
 import { checkGuardrail, getFallbackResponse }        from './guardrail.js';
@@ -67,6 +67,24 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
 
   try {
     logger.info(`[MentorAgent] Processing hint for user=${userId} question=${questionId} trigger=${trigger}`);
+
+    // Check backend cache first
+    const cachedResponse = getCachedHint(userId, questionId, request.sourceCode, trigger);
+    if (cachedResponse) {
+      logger.info(`[MentorAgent] ⚡ Cache hit for user=${userId} question=${questionId}`);
+      agentLogger.logNodeExecution(traceId, 'Cache Check', { hit: true });
+      agentLogger.logDecision(traceId, 'Found matching hint in backend cache. Bypassing LLM calls.');
+      agentLogger.logResponse(traceId, cachedResponse);
+      await agentLogger.finalizeRun(traceId, 'completed');
+
+      trace.update({
+        output: sanitizeForTrace(cachedResponse),
+      });
+      await langfuse.flushAsync();
+
+      return cachedResponse;
+    }
+    agentLogger.logNodeExecution(traceId, 'Cache Check', { hit: false });
 
     // ─── Step 1: Fetch hint history ─────────────────────────────────────────────
     agentLogger.logNodeExecution(traceId, 'Fetch History');
@@ -270,6 +288,9 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     };
 
     logger.info(`[MentorAgent] Done. Level=${level}, Category=${category}, Concept=${targetedConcept}`);
+
+    // Cache the response
+    cacheHint(userId, questionId, request.sourceCode, trigger, response);
 
     // Log final response
     agentLogger.logResponse(traceId, response);

@@ -34,4 +34,5 @@ export interface PreferencesState {
   fontSize: string;
   tabSize: string;
   hintStyle: string;
+  autoOpenMentor: boolean;
 }
