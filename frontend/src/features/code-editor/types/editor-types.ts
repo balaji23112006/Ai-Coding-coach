@@ -53,6 +53,7 @@ export interface Submission {
     | 'Pending'
     | 'Compile Error';
   submittedAt: string;
+  stdout?: string;
   runtime?: number;
   memory?: number;
   passedCount?: number;

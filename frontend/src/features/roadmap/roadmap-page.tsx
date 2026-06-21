@@ -6,7 +6,7 @@ import { Float, Sphere, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { Bot, CheckCircle2, Lock, PlayCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import { TopNavigation } from '@/components/common/top-navigation';
 
@@ -237,24 +237,37 @@ export function RoadmapPage() {
 
   useEffect(() => {
     let active = true;
-    fetch('/api/progress/roadmap')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch roadmap data');
-        return res.json();
-      })
-      .then((json) => {
-        if (active && json.success) {
-          setData(json);
-        }
-      })
-      .catch((err) => {
-        console.error('Error fetching roadmap:', err);
-      })
-      .finally(() => {
-        if (active) setIsLoading(false);
-      });
+
+    const loadData = () => {
+      fetch('/api/progress/roadmap')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch roadmap data');
+          return res.json();
+        })
+        .then((json) => {
+          if (active && json.success) {
+            setData(json);
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching roadmap:', err);
+        })
+        .finally(() => {
+          if (active) setIsLoading(false);
+        });
+    };
+
+    loadData();
+
+    const handleRefresh = () => {
+      loadData();
+    };
+
+    window.addEventListener('skill-lens:practice-progress-updated', handleRefresh);
+
     return () => {
       active = false;
+      window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh);
     };
   }, []);
 

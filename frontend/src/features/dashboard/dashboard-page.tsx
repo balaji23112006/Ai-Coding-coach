@@ -185,21 +185,36 @@ export function DashboardPage() {
 
   useEffect(() => {
     let active = true;
-    fetch('/api/progress/summary')
-      .then((res) => {
-        if (!res.ok) throw new Error('Unauthorized or failed to load');
-        return res.json();
-      })
-      .then((data) => {
-        if (active) {
-          setDashboardData(data);
-        }
-      })
-      .catch((err) => {
-        console.warn('Could not load dashboard stats from backend, using default mock data.', err);
-      });
+
+    const loadData = () => {
+      fetch('/api/progress/summary')
+        .then((res) => {
+          if (!res.ok) throw new Error('Unauthorized or failed to load');
+          return res.json();
+        })
+        .then((data) => {
+          if (active) {
+            setDashboardData(data);
+          }
+        })
+        .catch((err) => {
+          console.warn('Could not load dashboard stats from backend, using default mock data.', err);
+        });
+    };
+
+    loadData();
+
+    const handleRefresh = () => {
+      loadData();
+    };
+
+    window.addEventListener('skill-lens:dashboard-refresh-requested', handleRefresh);
+    window.addEventListener('skill-lens:practice-progress-updated', handleRefresh);
+
     return () => {
       active = false;
+      window.removeEventListener('skill-lens:dashboard-refresh-requested', handleRefresh);
+      window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh);
     };
   }, []);
 

@@ -52,7 +52,7 @@ export const fetchQuestions = async (
       title: q.title || 'Untitled',
       difficulty: q.difficulty || 'Medium',
       topics: q.topics || [],
-      acceptanceRate: 50.0,
+      acceptanceRate: q.acceptance_rate ?? 0.0,
       status,
       description: q.description || '',
       constraints: q.constraints || [],

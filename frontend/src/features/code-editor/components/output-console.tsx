@@ -14,27 +14,35 @@ import { StatusBadge } from '@/components/common/status-badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import type { ExecutionResult, ExampleCase } from '../types/editor-types';
+import type { ExecutionResult, Problem, Submission } from '../types/editor-types';
 
 interface OutputConsoleProps {
-  activeTab: 'testcase' | 'result';
-  setActiveTab: (tab: 'testcase' | 'result') => void;
+  activeTab?: 'testcase' | 'result' | 'submissions';
+  setActiveTab?: (tab: 'testcase' | 'result' | 'submissions') => void;
   runResult: ExecutionResult | null;
   isRunning: boolean;
-  examples: ExampleCase[];
+  isSubmitting?: boolean;
+  examples?: Problem['examples'];
+  submitResult?: Submission | null;
+  submissionHistory?: Submission[];
+  problem?: Problem;
 }
 
 export function OutputConsole({
-  activeTab,
-  setActiveTab,
   runResult,
+  activeTab = 'testcase',
+  setActiveTab,
+  examples = [],
   isRunning,
-  examples,
 }: OutputConsoleProps) {
   const passed = runResult?.passedCount ?? 0;
   const total = runResult?.totalCount ?? 0;
-  const allPassed = runResult?.status === 'Success' && passed === total && total > 0;
-  const hasError = runResult?.status === 'Compile Error' || runResult?.status === 'Runtime Error';
+  const allPassed = (runResult?.status === 'Success' || runResult?.status === 'ACCEPTED') && passed === total && total > 0;
+  const hasError = 
+    runResult?.status === 'Compile Error' || 
+    runResult?.status === 'COMPILATION_ERROR' || 
+    runResult?.status === 'Runtime Error' || 
+    runResult?.status === 'RUNTIME_ERROR';
 
   return (
     <SectionCard
@@ -42,8 +50,8 @@ export function OutputConsole({
       contentClassName="flex min-h-0 flex-1 flex-col p-0"
     >
       <Tabs
-        value={activeTab}
-        onValueChange={(value) => setActiveTab(value as 'testcase' | 'result')}
+        value={activeTab === 'submissions' ? 'result' : activeTab}
+        onValueChange={(value) => setActiveTab?.(value as 'testcase' | 'result')}
         className="flex min-h-0 flex-1 flex-col"
       >
         <div className="flex h-10 items-center justify-between border-b border-white/[0.05] bg-slate-950/40 px-4">
@@ -78,7 +86,7 @@ export function OutputConsole({
               <StatusBadge tone={allPassed ? 'success' : hasError ? 'danger' : 'warning'}>
                 {allPassed
                   ? `${passed}/${total} Passed`
-                  : runResult.status === 'Success'
+                  : runResult.status === 'Success' || runResult.status === 'ACCEPTED'
                     ? `${passed}/${total} Passed`
                     : runResult.status}
               </StatusBadge>
@@ -155,7 +163,8 @@ export function OutputConsole({
                       </div>
                     </div>
                   ) : runResult.status === 'Wrong Answer' ||
-                    (runResult.status === 'Success' && total > 0 && passed < total) ? (
+                    (runResult.status === 'Success' && total > 0 && passed < total) ||
+                    (runResult.status === 'ACCEPTED' && total > 0 && passed < total) ? (
                     <div className="animate-in fade-in slide-in-from-bottom-2 relative overflow-hidden rounded-lg border border-rose-500/20 bg-rose-500/5 p-4 duration-300">
                       <div className="absolute right-0 top-0 -mr-6 -mt-6 h-20 w-20 rounded-full bg-rose-500/10 blur-xl" />
                       <div className="flex items-start gap-3">
@@ -184,7 +193,7 @@ export function OutputConsole({
                         The sandbox encountered an execution error while running your program.
                       </AlertDescription>
                     </Alert>
-                  ) : runResult.status === 'Time Limit Exceeded' ? (
+                  ) : runResult.status === 'Time Limit Exceeded' || runResult.status === 'TIMEOUT' ? (
                     <div className="animate-in fade-in slide-in-from-bottom-2 relative overflow-hidden rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 duration-300">
                       <div className="absolute right-0 top-0 -mr-6 -mt-6 h-20 w-20 rounded-full bg-amber-500/10 blur-xl" />
                       <div className="flex items-start gap-3">
@@ -241,7 +250,7 @@ export function OutputConsole({
                   )}
 
                   {/* Passed Visual Progress Indicators */}
-                  {(runResult.status === 'Success' || runResult.status === 'Wrong Answer') &&
+                  {(runResult.status === 'Success' || runResult.status === 'ACCEPTED' || runResult.status === 'Wrong Answer') &&
                     total > 0 && (
                       <div className="space-y-2">
                         <div className="flex gap-1.5">

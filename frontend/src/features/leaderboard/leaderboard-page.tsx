@@ -310,24 +310,39 @@ export function LeaderboardPage() {
 
   useEffect(() => {
     let active = true;
-    fetch('/api/progress/leaderboard')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch leaderboard data');
-        return res.json();
-      })
-      .then((json) => {
-        if (active && json.success && json.leaderboard) {
-          setLeaderboardData(json.leaderboard);
-        }
-      })
-      .catch((err) => {
-        console.error('Error fetching leaderboard:', err);
-      })
-      .finally(() => {
-        if (active) setIsLoading(false);
-      });
+
+    const loadData = () => {
+      fetch('/api/progress/leaderboard')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch leaderboard data');
+          return res.json();
+        })
+        .then((json) => {
+          if (active && json.success && json.leaderboard) {
+            setLeaderboardData(json.leaderboard);
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching leaderboard:', err);
+        })
+        .finally(() => {
+          if (active) setIsLoading(false);
+        });
+    };
+
+    loadData();
+
+    const handleRefresh = () => {
+      loadData();
+    };
+
+    window.addEventListener('skill-lens:leaderboard-refresh-requested', handleRefresh);
+    window.addEventListener('skill-lens:practice-progress-updated', handleRefresh);
+
     return () => {
       active = false;
+      window.removeEventListener('skill-lens:leaderboard-refresh-requested', handleRefresh);
+      window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh);
     };
   }, []);
 
