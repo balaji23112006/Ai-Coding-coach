@@ -59,13 +59,6 @@ export function CodeEditor({ language, value, onChange, isCodeLoading = false }:
             <span className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${isCodeLoading ? 'bg-blue-400 animate-pulse' : 'bg-amber-400'}`} />
             <span>{isCodeLoading ? 'Syncing latest code...' : `source_file.${FILE_EXTENSIONS[language]}`}</span>
           </div>
-
-          {!isCodeLoading && (
-            <div className="hidden items-center gap-1.5 rounded border border-amber-500/15 bg-amber-500/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-400 lg:flex">
-              <span className="h-1 w-1 animate-ping rounded-full bg-amber-400" />
-              <span>Note: Write the whole program template, not just the function body!</span>
-            </div>
-          )}
         </div>
 
         <div className="font-mono text-[9px] uppercase tracking-widest text-slate-500">
