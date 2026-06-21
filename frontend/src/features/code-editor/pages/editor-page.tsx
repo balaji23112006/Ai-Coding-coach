@@ -456,9 +456,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
         {/* Center — Code Editor + Console */}
         <div
           ref={centerRef}
-          className={`flex min-w-0 flex-col overflow-hidden md:h-full transition-all duration-300 ${
-            mentor.isOpen ? 'w-full md:w-[37%]' : 'w-full md:w-[62%]'
-          }`}
+          className="flex flex-1 min-w-0 flex-col overflow-hidden md:h-full transition-all duration-300"
         >
           <div className="relative min-h-0 flex-1">
             <div className="absolute inset-0">
@@ -522,7 +520,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
         {/* Right — Mentor Panel (slide in) */}
         {mentor.isOpen && (
-          <div className="hidden h-full w-full overflow-hidden md:block md:w-[25%] animate-in slide-in-from-right-4 duration-200">
+          <div className="hidden h-full w-full shrink-0 overflow-hidden md:block md:w-[25%] animate-in slide-in-from-right-4 duration-200">
             <MentorPanel
               messages={mentor.messages}
               isLoading={mentor.isLoading}
