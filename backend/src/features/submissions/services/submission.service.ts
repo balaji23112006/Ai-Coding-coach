@@ -30,9 +30,60 @@ type TestExecution = {
 };
 
 export class SubmissionService {
-  async runCode(input: RunCodeInput): Promise<CodeExecutionResult> {
+  async runCode(input: RunCodeInput) {
     const execution = await this.executeWithQuestionTests(input, false);
-    return execution.result;
+    const { result, question, hasTestCases } = execution;
+
+    let passedCount = 0;
+    let totalCount = 0;
+    const failedCases: Array<{
+      index: number;
+      message: string;
+      input?: string;
+      expectedOutput?: string;
+      actualOutput?: string;
+    }> = [];
+
+    if (hasTestCases && result.stdout) {
+      const passedMatch = result.stdout.match(/PASSED:\s*(\d+)/);
+      const totalMatch = result.stdout.match(/TOTAL:\s*(\d+)/);
+      if (passedMatch) passedCount = parseInt(passedMatch[1], 10);
+      if (totalMatch) totalCount = parseInt(totalMatch[1], 10);
+
+      const failureLines = result.stdout
+        .split('\n')
+        .filter(
+          (line: string) =>
+            line.startsWith('Test case ') &&
+            (line.includes('failed') || line.includes('threw error')),
+        );
+      for (const line of failureLines) {
+        const idxMatch = line.match(/Test case (\d+)/);
+        const index = idxMatch ? parseInt(idxMatch[1], 10) : -1;
+        const tc = index >= 0 && question ? question.testCases[index] : null;
+        const gotMatch = line.match(/got (.*)$/);
+        const actualOutput = gotMatch ? gotMatch[1] : '';
+
+        failedCases.push({
+          index,
+          message: line,
+          input: tc ? tc.input : '',
+          expectedOutput: tc ? tc.expectedOutput : '',
+          actualOutput: actualOutput,
+        });
+      }
+    }
+
+    return {
+      status: result.status,
+      executionTime: result.executionTime,
+      memoryUsed: result.memoryUsed,
+      stdout: result.stdout,
+      stderr: result.stderr,
+      passedCount,
+      totalCount,
+      failedCases,
+    };
   }
 
   async submitCode(input: SubmitCodeInput) {

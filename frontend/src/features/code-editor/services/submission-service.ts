@@ -120,6 +120,16 @@ export const submissionService = {
       runtime: data.executionTime || 0,
       memory: data.memoryUsed ? Math.round(data.memoryUsed / 1024 / 1024) : 0,
       ...parseTestCounts(stdout),
+      failedCases: data.failedCases
+        ? data.failedCases.map((fc: any) => ({
+            testCaseId: String(fc.index),
+            input: fc.input || '',
+            expectedOutput: fc.expectedOutput || '',
+            actualOutput: fc.actualOutput || '',
+            status: 'Failed',
+            errorMessage: fc.message,
+          }))
+        : [],
     };
   },
 
