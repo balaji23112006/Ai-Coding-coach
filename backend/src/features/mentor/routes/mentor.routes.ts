@@ -37,13 +37,17 @@ const router = Router();
 router.post('/hint', async (req, res, next) => {
   // Optional auth middleware extraction inline
   try {
-    const session = await auth.api.getSession({
-      headers: fromNodeHeaders(req.headers),
-    }).catch(() => null);
+    const session = await auth.api
+      .getSession({
+        headers: fromNodeHeaders(req.headers),
+      })
+      .catch(() => null);
     if (session) {
       (req as any).user = session.user;
     }
-  } catch {}
+  } catch {
+    // Ignore session retrieval error
+  }
 
   try {
     const userId = (req as any).user?.id;
@@ -115,7 +119,9 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
     // Try OpenAI first
     if (isOpenAIConfigured()) {
       try {
-        const userMsg = messages.map((m: any) => `${m.role === 'bot' ? 'Mentor' : 'Student'}: ${m.text}`).join('\n');
+        const userMsg = messages
+          .map((m: any) => `${m.role === 'bot' ? 'Mentor' : 'Student'}: ${m.text}`)
+          .join('\n');
         generation = trace.generation({
           name: 'mentor-chat-generation',
           model: 'gpt-4o-mini',
@@ -201,7 +207,8 @@ ${errorOutput ? `- Code Execution Output/Errors:\n\`\`\`\n${errorOutput}\n\`\`\`
     }
     await langfuse.flushAsync();
     res.json({
-      reply: "I couldn't reach the AI server, but here is a tip: make sure you verify edge cases (like empty inputs or single elements) and dry run your loops on paper!",
+      reply:
+        "I couldn't reach the AI server, but here is a tip: make sure you verify edge cases (like empty inputs or single elements) and dry run your loops on paper!",
     });
   }
 });

@@ -198,7 +198,10 @@ export function DashboardPage() {
           }
         })
         .catch((err) => {
-          console.warn('Could not load dashboard stats from backend, using default mock data.', err);
+          console.warn(
+            'Could not load dashboard stats from backend, using default mock data.',
+            err,
+          );
         });
     };
 

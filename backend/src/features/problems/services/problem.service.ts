@@ -19,26 +19,26 @@ export class ProblemService {
   async getQuestions(filters: GetQuestionsQuery) {
     const { items, total } = await problemRepository.findMany(filters);
 
-    const questionIds = items.map(q => q.id);
+    const questionIds = items.map((q) => q.id);
     const submissions = await prisma.submission.findMany({
       where: {
-        questionId: { in: questionIds }
+        questionId: { in: questionIds },
       },
       select: {
         id: true,
         questionId: true,
         userId: true,
-        status: true
-      }
+        status: true,
+      },
     });
 
     const attemptedMap = new Map<string, Set<string>>();
     const solvedMap = new Map<string, Set<string>>();
 
-    submissions.forEach(sub => {
+    submissions.forEach((sub) => {
       if (!sub.questionId) return;
       const uId = sub.userId || `anon_${sub.id}`;
-      
+
       if (!attemptedMap.has(sub.questionId)) {
         attemptedMap.set(sub.questionId, new Set());
       }
@@ -55,9 +55,8 @@ export class ProblemService {
     const formattedItems = items.map((q) => {
       const attemptedUsers = attemptedMap.get(q.id)?.size || 0;
       const solvedUsers = solvedMap.get(q.id)?.size || 0;
-      const acceptanceRate = attemptedUsers > 0
-        ? Math.round((solvedUsers / attemptedUsers) * 100)
-        : 0;
+      const acceptanceRate =
+        attemptedUsers > 0 ? Math.round((solvedUsers / attemptedUsers) * 100) : 0;
 
       return {
         id: q.id,
@@ -91,13 +90,13 @@ export class ProblemService {
 
     const submissions = await prisma.submission.findMany({
       where: { questionId: question.id },
-      select: { id: true, userId: true, status: true }
+      select: { id: true, userId: true, status: true },
     });
 
     const uniqueAttemptedUsers = new Set<string>();
     const uniqueSolvedUsers = new Set<string>();
 
-    submissions.forEach(sub => {
+    submissions.forEach((sub) => {
       const uId = sub.userId || `anon_${sub.id}`;
       uniqueAttemptedUsers.add(uId);
       if (sub.status === 'ACCEPTED') {
@@ -107,9 +106,8 @@ export class ProblemService {
 
     const attemptedCount = uniqueAttemptedUsers.size;
     const solvedCount = uniqueSolvedUsers.size;
-    const acceptanceRate = attemptedCount > 0
-      ? Math.round((solvedCount / attemptedCount) * 100)
-      : 0;
+    const acceptanceRate =
+      attemptedCount > 0 ? Math.round((solvedCount / attemptedCount) * 100) : 0;
 
     return {
       id: question.id,

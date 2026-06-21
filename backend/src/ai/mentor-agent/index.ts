@@ -19,22 +19,22 @@
  * 10. Return structured mentor response
  */
 
-import { groqChat,         isGroqConfigured }         from '../../providers/groq/index.js';
-import { geminiChat }                                  from '../../providers/google/index.js';
-import { huggingFaceChat, isHuggingFaceConfigured }   from '../../providers/huggingface/index.js';
-import { openaiChat,      isOpenAIConfigured }         from '../../providers/openai/index.js';
-import { prisma }                                      from '../../database/prisma.js';
-import { logger }                                      from '../../shared/utils/logger.js';
+import { groqChat, isGroqConfigured } from '../../providers/groq/index.js';
+import { geminiChat } from '../../providers/google/index.js';
+import { huggingFaceChat, isHuggingFaceConfigured } from '../../providers/huggingface/index.js';
+import { openaiChat, isOpenAIConfigured } from '../../providers/openai/index.js';
+import { prisma } from '../../database/prisma.js';
+import { logger } from '../../shared/utils/logger.js';
 
 import { MentorRequest, MentorResponse, HintLevel } from './types.js';
-import { getHintHistory, saveHint, getCachedHint, cacheHint }                  from './hint-store.js';
-import { classifyError, identifyConcept }             from './classifier.js';
-import { determineHintLevel }                         from './escalation.js';
-import { checkGuardrail, getFallbackResponse }        from './guardrail.js';
-import { buildMentorSystemPrompt }                    from './prompts.js';
-import { agentLogger }                                 from '../profile-agent/services/AgentLogger.js';
-import { langfuse }                                    from '../../providers/langfuse/index.js';
-import { sanitizeForTrace }                            from '../../observability/langfuse.js';
+import { getHintHistory, saveHint, getCachedHint, cacheHint } from './hint-store.js';
+import { classifyError, identifyConcept } from './classifier.js';
+import { determineHintLevel } from './escalation.js';
+import { checkGuardrail, getFallbackResponse } from './guardrail.js';
+import { buildMentorSystemPrompt } from './prompts.js';
+import { agentLogger } from '../profile-agent/services/AgentLogger.js';
+import { langfuse } from '../../providers/langfuse/index.js';
+import { sanitizeForTrace } from '../../observability/langfuse.js';
 
 const ANON_USER_ID = 'anonymous';
 
@@ -66,14 +66,19 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
   });
 
   try {
-    logger.info(`[MentorAgent] Processing hint for user=${userId} question=${questionId} trigger=${trigger}`);
+    logger.info(
+      `[MentorAgent] Processing hint for user=${userId} question=${questionId} trigger=${trigger}`,
+    );
 
     // Check backend cache first
     const cachedResponse = getCachedHint(userId, questionId, request.sourceCode, trigger);
     if (cachedResponse) {
       logger.info(`[MentorAgent] ⚡ Cache hit for user=${userId} question=${questionId}`);
       agentLogger.logNodeExecution(traceId, 'Cache Check', { hit: true });
-      agentLogger.logDecision(traceId, 'Found matching hint in backend cache. Bypassing LLM calls.');
+      agentLogger.logDecision(
+        traceId,
+        'Found matching hint in backend cache. Bypassing LLM calls.',
+      );
       agentLogger.logResponse(traceId, cachedResponse);
       await agentLogger.finalizeRun(traceId, 'completed');
 
@@ -132,10 +137,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     agentLogger.logDecision(traceId, `Hint escalation level: ${level}`);
 
     // ─── Step 6: Build Socratic system prompt ────────────────────────────────────
-    const executionOutput = [
-      request.executionResult?.stdout,
-      request.executionResult?.stderr,
-    ]
+    const executionOutput = [request.executionResult?.stdout, request.executionResult?.stderr]
       .filter(Boolean)
       .join('\n')
       .slice(0, 500);
@@ -163,7 +165,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     if (request.messages && request.messages.length > 0) {
       const recentMessages = request.messages.slice(-6);
       userMessage = recentMessages
-        .map(m => `${m.role === 'bot' ? 'Mentor' : 'Student'}: ${m.text}`)
+        .map((m) => `${m.role === 'bot' ? 'Mentor' : 'Student'}: ${m.text}`)
         .join('\n');
       userMessage += '\n';
     }
@@ -215,7 +217,9 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
         logger.info('[MentorAgent] ✅ Response from HuggingFace (free fallback)');
         agentLogger.logDecision(traceId, 'Response received from HuggingFace LLM');
       } catch (e) {
-        logger.warn(`[MentorAgent] HuggingFace failed: ${e instanceof Error ? e.message : String(e)}`);
+        logger.warn(
+          `[MentorAgent] HuggingFace failed: ${e instanceof Error ? e.message : String(e)}`,
+        );
       }
     }
 
@@ -242,7 +246,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       traceId,
       providerUsed,
       `[SYSTEM PROMPT]:\n${systemPrompt}\n\n[USER MESSAGE]:\n${userMessage}`,
-      mentorFeedback || '[Fallback Used]'
+      mentorFeedback || '[Fallback Used]',
     );
 
     // ─── Step 8: Run guardrail check ────────────────────────────────────────────
@@ -251,7 +255,10 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       const guardrailResult = checkGuardrail(mentorFeedback);
       if (!guardrailResult.passed) {
         logger.warn(`[MentorAgent] Guardrail triggered: ${guardrailResult.reason}`);
-        agentLogger.logDecision(traceId, `Guardrail triggered: ${guardrailResult.reason}. Overriding response.`);
+        agentLogger.logDecision(
+          traceId,
+          `Guardrail triggered: ${guardrailResult.reason}. Overriding response.`,
+        );
         mentorFeedback = getFallbackResponse(category, level);
       }
     } else {
@@ -287,7 +294,9 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       },
     };
 
-    logger.info(`[MentorAgent] Done. Level=${level}, Category=${category}, Concept=${targetedConcept}`);
+    logger.info(
+      `[MentorAgent] Done. Level=${level}, Category=${category}, Concept=${targetedConcept}`,
+    );
 
     // Cache the response
     cacheHint(userId, questionId, request.sourceCode, trigger, response);

@@ -56,8 +56,14 @@ export function CodeEditor({ language, value, onChange, isCodeLoading = false }:
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-slate-800/80 bg-slate-900/10 px-4">
         <div className="flex items-center gap-4">
           <div className="flex h-9 items-center gap-2 border-r border-slate-800/40 bg-slate-950/20 px-3 text-xs font-semibold text-slate-300">
-            <span className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${isCodeLoading ? 'bg-blue-400 animate-pulse' : 'bg-amber-400'}`} />
-            <span>{isCodeLoading ? 'Syncing latest code...' : `source_file.${FILE_EXTENSIONS[language]}`}</span>
+            <span
+              className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${isCodeLoading ? 'animate-pulse bg-blue-400' : 'bg-amber-400'}`}
+            />
+            <span>
+              {isCodeLoading
+                ? 'Syncing latest code...'
+                : `source_file.${FILE_EXTENSIONS[language]}`}
+            </span>
           </div>
         </div>
 

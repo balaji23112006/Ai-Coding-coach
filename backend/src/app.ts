@@ -133,7 +133,9 @@ app.use((req, res, next) => {
       if (typeof body === 'string') {
         try {
           parsedBody = JSON.parse(body);
-        } catch {}
+        } catch {
+          // Ignore parsing errors for non-JSON string responses
+        }
       }
 
       const logEntry = {

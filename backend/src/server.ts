@@ -12,7 +12,9 @@ const LOGS_PORT = Number(process.env.LOGS_PORT) || 8001;
 
 // Start main application server with error handling
 const server = app.listen(PORT, () => {
-  console.log(`[Server] Running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
+  console.log(
+    `[Server] Running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`,
+  );
 });
 
 server.on('error', (err: any) => {
@@ -26,10 +28,12 @@ server.on('error', (err: any) => {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('[Server] SIGTERM received, shutting down...');
-  void flushLangfuse().finally(() => server.close(() => {
-    console.log('[Server] Closed main server');
-    process.exit(0);
-  }));
+  void flushLangfuse().finally(() =>
+    server.close(() => {
+      console.log('[Server] Closed main server');
+      process.exit(0);
+    }),
+  );
 });
 
 // Spin up a logs server on a separate port for viewing request/response payloads in JSON format
@@ -56,5 +60,3 @@ process.on('SIGTERM', () => {
     console.log('[Logs] Closed logs server');
   });
 });
-
-

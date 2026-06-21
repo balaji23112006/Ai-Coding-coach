@@ -68,7 +68,7 @@ export async function geminiChat(params: {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
+                Authorization: `Bearer ${apiKey}`,
               },
               body: JSON.stringify({
                 system_instruction: { parts: [{ text: params.systemPrompt }] },
@@ -90,7 +90,7 @@ export async function geminiChat(params: {
               throw new Error(`Gemini API ${response.status}: ${errText}`);
             }
 
-            const data = await response.json() as any;
+            const data = (await response.json()) as any;
             return {
               output: data?.candidates?.[0]?.content?.parts?.[0]?.text || '',
               raw: {

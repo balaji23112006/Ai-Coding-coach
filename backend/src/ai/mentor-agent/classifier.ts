@@ -33,18 +33,12 @@ export function classifyError(request: MentorRequest): ErrorCategory {
     }
 
     // Compile / Syntax errors
-    if (
-      status === 'COMPILATION_ERROR' ||
-      (stderr && isSyntaxError(stderr))
-    ) {
+    if (status === 'COMPILATION_ERROR' || (stderr && isSyntaxError(stderr))) {
       return 'syntax';
     }
 
     // Runtime errors
-    if (
-      status === 'RUNTIME_ERROR' ||
-      (stderr && isRuntimeError(stderr))
-    ) {
+    if (status === 'RUNTIME_ERROR' || (stderr && isRuntimeError(stderr))) {
       return 'logic';
     }
 
@@ -78,7 +72,7 @@ function isSyntaxError(stderr: string): boolean {
     /NameError/i,
     /TypeError.*is not a function/i,
   ];
-  return patterns.some(p => p.test(stderr));
+  return patterns.some((p) => p.test(stderr));
 }
 
 /** Checks if a stderr message indicates a runtime error */
@@ -96,7 +90,7 @@ function isRuntimeError(stderr: string): boolean {
     /null.*undefined/i,
     /Cannot read propert/i,
   ];
-  return patterns.some(p => p.test(stderr));
+  return patterns.some((p) => p.test(stderr));
 }
 
 /** Quick heuristic scan for unmatched brackets / obvious syntax issues */

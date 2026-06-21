@@ -519,7 +519,7 @@ else:
     includeHiddenTests: boolean,
   ): Promise<TestExecution> {
     const question = await this.findQuestionWithTests(input.questionId);
-    const testCases = question?.testCases.filter(tc => includeHiddenTests || !tc.isHidden) ?? [];
+    const testCases = question?.testCases.filter((tc) => includeHiddenTests || !tc.isHidden) ?? [];
     const hasTestCases = testCases.length > 0;
     const finalCode = hasTestCases
       ? this.buildCodeWithTestDriver(input.language, input.sourceCode, testCases)
@@ -530,7 +530,11 @@ else:
       sourceCode: finalCode,
     });
 
-    if (hasTestCases && result.status === 'ACCEPTED' && !result.stdout.includes('ALL_TESTS_PASSED')) {
+    if (
+      hasTestCases &&
+      result.status === 'ACCEPTED' &&
+      !result.stdout.includes('ALL_TESTS_PASSED')
+    ) {
       result.status = 'FAILED';
       result.success = false;
     }
@@ -538,7 +542,9 @@ else:
     return { result, question, hasTestCases };
   }
 
-  private async findQuestionWithTests(questionId?: string | null): Promise<QuestionWithTestCases | null> {
+  private async findQuestionWithTests(
+    questionId?: string | null,
+  ): Promise<QuestionWithTestCases | null> {
     if (!questionId) return null;
 
     return prisma.question.findUnique({
@@ -568,10 +574,14 @@ else:
       const jsDriver = `
 // --- TEST RUNNER DRIVER ---
 const testCases = [
-  ${testCases.map(tc => `{
+  ${testCases
+    .map(
+      (tc) => `{
     input: [${tc.input}],
     expected: ${tc.expectedOutput}
-  }`).join(',\n  ')}
+  }`,
+    )
+    .join(',\n  ')}
 ];
 
 function isNumeric(val) {
@@ -662,10 +672,14 @@ if (passed === testCases.length) {
 import json
 
 test_cases = [
-  ${testCases.map(tc => `{
+  ${testCases
+    .map(
+      (tc) => `{
     "input": [${tc.input}],
     "expected": ${tc.expectedOutput}
-  }`).join(',\n  ')}
+  }`,
+    )
+    .join(',\n  ')}
 ]
 
 def is_numeric(val):
@@ -794,25 +808,29 @@ else:
       where: { questionId },
     });
 
-    const acceptedCount = userSubmissions.filter(s => s.status === 'ACCEPTED').length;
+    const acceptedCount = userSubmissions.filter((s) => s.status === 'ACCEPTED').length;
     const totalAttempts = userSubmissions.length;
-    const avgRuntime = userSubmissions.length > 0
-      ? Math.round(userSubmissions.reduce((sum, s) => sum + s.executionTime, 0) / userSubmissions.length)
-      : null;
-    const bestRuntime = userSubmissions.length > 0
-      ? Math.min(...userSubmissions.map(s => s.executionTime))
-      : null;
-    const avgMemory = userSubmissions.length > 0
-      ? Math.round(userSubmissions.reduce((sum, s) => sum + s.memoryUsed, 0) / userSubmissions.length)
-      : null;
-    const bestMemory = userSubmissions.length > 0
-      ? Math.min(...userSubmissions.map(s => s.memoryUsed))
-      : null;
+    const avgRuntime =
+      userSubmissions.length > 0
+        ? Math.round(
+            userSubmissions.reduce((sum, s) => sum + s.executionTime, 0) / userSubmissions.length,
+          )
+        : null;
+    const bestRuntime =
+      userSubmissions.length > 0 ? Math.min(...userSubmissions.map((s) => s.executionTime)) : null;
+    const avgMemory =
+      userSubmissions.length > 0
+        ? Math.round(
+            userSubmissions.reduce((sum, s) => sum + s.memoryUsed, 0) / userSubmissions.length,
+          )
+        : null;
+    const bestMemory =
+      userSubmissions.length > 0 ? Math.min(...userSubmissions.map((s) => s.memoryUsed)) : null;
 
     const uniqueAttemptedUsers = new Set<string>();
     const uniqueSolvedUsers = new Set<string>();
 
-    allSubmissions.forEach(sub => {
+    allSubmissions.forEach((sub) => {
       const uId = sub.userId || `anon_${sub.id}`;
       uniqueAttemptedUsers.add(uId);
       if (sub.status === 'ACCEPTED') {
@@ -823,9 +841,8 @@ else:
     const attemptedCount = uniqueAttemptedUsers.size;
     const solvedCount = uniqueSolvedUsers.size;
 
-    const acceptanceRate = attemptedCount > 0
-      ? Math.round((solvedCount / attemptedCount) * 100)
-      : 0;
+    const acceptanceRate =
+      attemptedCount > 0 ? Math.round((solvedCount / attemptedCount) * 100) : 0;
 
     return {
       submissions: submissions.slice(0, 10),
@@ -840,7 +857,7 @@ else:
       },
       globalStats: {
         totalCount: allSubmissions.length,
-        acceptedCount: allSubmissions.filter(s => s.status === 'ACCEPTED').length,
+        acceptedCount: allSubmissions.filter((s) => s.status === 'ACCEPTED').length,
         acceptanceRate,
       },
     };

@@ -80,7 +80,9 @@ export async function huggingFaceChat(params: {
 
           if (!response.ok) {
             const errText = await response.text();
-            throw new Error(`HuggingFace ${model} returned ${response.status}: ${errText.slice(0, 200)}`);
+            throw new Error(
+              `HuggingFace ${model} returned ${response.status}: ${errText.slice(0, 200)}`,
+            );
           }
 
           const data = (await response.json()) as any;

@@ -1,6 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from '@tanstack/react-router';
-import { ArrowLeft, BrainCircuit, AlertTriangle, Loader2, GripHorizontal, GripVertical, Send, Trophy } from 'lucide-react';
+import {
+  ArrowLeft,
+  BrainCircuit,
+  AlertTriangle,
+  Loader2,
+  GripHorizontal,
+  GripVertical,
+  Send,
+  Trophy,
+} from 'lucide-react';
 
 import { ActionButtons } from '../components/action-buttons';
 import { CodeEditor } from '../components/code-editor';
@@ -10,16 +19,44 @@ import { MentorPanel } from '../components/mentor-panel';
 import { OutputConsole } from '../components/output-console';
 import { useCodeEditor } from '../hooks/use-code-editor';
 import { useMentor } from '../hooks/use-mentor';
-import type { Problem } from '../types/editor-types';
+import type { Problem, ExecutionResult } from '../types/editor-types';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-function mapBackendToEditorProblem(q: any): Problem {
+interface BackendProblem {
+  id: string;
+  slug?: string;
+  title?: string;
+  difficulty?: 'Easy' | 'Medium' | 'Hard';
+  topics?: string[];
+  acceptance_rate?: number;
+  description?: string;
+  constraints?: string[];
+  test_cases?: {
+    input: string;
+    expected_output: string;
+    is_hidden: boolean;
+    explanation?: string;
+  }[];
+  hints?: string[];
+  explanation?: string;
+  starter_code?: {
+    javascript?: string;
+    python?: string;
+    typescript?: string;
+    java?: string;
+    cpp?: string;
+  };
+  time_limit?: number;
+  memory_limit?: number;
+}
+
+function mapBackendToEditorProblem(q: BackendProblem): Problem {
   const sampleCases = (q.test_cases || [])
-    .filter((tc: any) => !tc.is_hidden)
-    .map((tc: any, index: number) => ({
+    .filter((tc) => !tc.is_hidden)
+    .map((tc, index: number) => ({
       id: index + 1,
       input: tc.input,
       output: tc.expected_output,
@@ -38,7 +75,7 @@ function mapBackendToEditorProblem(q: any): Problem {
     examples: sampleCases,
     hints: q.hints || [],
     explanation: q.explanation || '',
-    testCases: (q.test_cases || []).map((tc: any) => ({
+    testCases: (q.test_cases || []).map((tc) => ({
       input: tc.input,
       expected_output: tc.expected_output,
       is_hidden: tc.is_hidden,
@@ -64,6 +101,7 @@ export function EditorPage() {
   useEffect(() => {
     if (!problemSlug) return;
     let active = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
 
@@ -152,12 +190,16 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const navigate = useNavigate();
   const workspaceRef = useRef<HTMLDivElement>(null);
   const centerRef = useRef<HTMLDivElement>(null);
-  const [leftWidth, setLeftWidth] = useState(() => Number(window.sessionStorage.getItem('skill-lens:editor:left-width')) || 38);
-  const [bottomHeight, setBottomHeight] = useState(() => Number(window.sessionStorage.getItem('skill-lens:editor:bottom-height')) || 260);
+  const [leftWidth, setLeftWidth] = useState(
+    () => Number(window.sessionStorage.getItem('skill-lens:editor:left-width')) || 38,
+  );
+  const [bottomHeight, setBottomHeight] = useState(
+    () => Number(window.sessionStorage.getItem('skill-lens:editor:bottom-height')) || 260,
+  );
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
-  const lastTriggeredResultRef = useRef<any>(null);
+  const lastTriggeredResultRef = useRef<ExecutionResult | null>(null);
 
   const {
     isCodeLoading,
@@ -237,6 +279,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   // Celebration on Accepted
   useEffect(() => {
     if (submitResult?.status === 'Accepted') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowCelebration(true);
       const t = setTimeout(() => setShowCelebration(false), 4000);
       return () => clearTimeout(t);
@@ -268,7 +311,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     if (submitResult?.status !== 'Accepted') return;
 
     const key = 'skill-lens:practice:solved-problems';
-    let solvedIds: string[] = [];
+    let solvedIds: string[];
     try {
       solvedIds = JSON.parse(window.localStorage.getItem(key) || '[]') as string[];
     } catch {
@@ -277,15 +320,21 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
     const next = solvedIds.includes(problem.id) ? solvedIds : [...solvedIds, problem.id];
     window.localStorage.setItem(key, JSON.stringify(next));
-    window.dispatchEvent(new CustomEvent('skill-lens:practice-progress-updated', {
-      detail: { problemId: problem.id, solvedQuestionIds: next },
-    }));
-    window.dispatchEvent(new CustomEvent('skill-lens:dashboard-refresh-requested', {
-      detail: { problemId: problem.id },
-    }));
-    window.dispatchEvent(new CustomEvent('skill-lens:leaderboard-refresh-requested', {
-      detail: { problemId: problem.id },
-    }));
+    window.dispatchEvent(
+      new CustomEvent('skill-lens:practice-progress-updated', {
+        detail: { problemId: problem.id, solvedQuestionIds: next },
+      }),
+    );
+    window.dispatchEvent(
+      new CustomEvent('skill-lens:dashboard-refresh-requested', {
+        detail: { problemId: problem.id },
+      }),
+    );
+    window.dispatchEvent(
+      new CustomEvent('skill-lens:leaderboard-refresh-requested', {
+        detail: { problemId: problem.id },
+      }),
+    );
   }, [problem.id, submitResult?.id, submitResult?.status]);
 
   const startHorizontalResize = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -331,13 +380,15 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
       {/* Celebration overlay */}
       {showCelebration && (
         <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
-          <div className="animate-in zoom-in-50 fade-in duration-500 flex flex-col items-center gap-4 rounded-3xl border border-emerald-500/30 bg-slate-950/90 px-12 py-8 shadow-2xl shadow-emerald-900/40 backdrop-blur-xl">
+          <div className="animate-in zoom-in-50 fade-in flex flex-col items-center gap-4 rounded-3xl border border-emerald-500/30 bg-slate-950/90 px-12 py-8 shadow-2xl shadow-emerald-900/40 backdrop-blur-xl duration-500">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-900/50">
               <Trophy className="h-8 w-8 text-white" />
             </div>
             <div className="text-center">
               <p className="text-2xl font-black tracking-tight text-emerald-400">Accepted! 🎉</p>
-              <p className="mt-1 text-sm text-slate-400">All test cases passed. Outstanding work!</p>
+              <p className="mt-1 text-sm text-slate-400">
+                All test cases passed. Outstanding work!
+              </p>
             </div>
             <div className="flex gap-2">
               {[...Array(5)].map((_, i) => (
@@ -395,7 +446,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
           {/* Accepted badge */}
           {submitResult?.status === 'Accepted' && (
-            <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1 animate-pulse">
+            <div className="flex animate-pulse items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1">
               <Trophy className="h-3 w-3 text-emerald-400" />
               <span className="font-mono text-[10px] font-bold text-emerald-400">Accepted</span>
             </div>
@@ -414,7 +465,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
             <span>Mentor AI</span>
             {mentor.messages.length > 0 && (
               <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-[8px] font-black text-slate-950">
-                {mentor.messages.filter(m => m.role === 'mentor').length}
+                {mentor.messages.filter((m) => m.role === 'mentor').length}
               </span>
             )}
           </button>
@@ -446,7 +497,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
         <button
           onMouseDown={startHorizontalResize}
-          onClick={() => setLeftCollapsed(prev => !prev)}
+          onClick={() => setLeftCollapsed((prev) => !prev)}
           title="Drag to resize problem panel. Click to collapse or expand."
           className="mx-1 flex w-2 cursor-col-resize items-center justify-center rounded bg-slate-900/80 text-slate-600 transition hover:bg-slate-800 hover:text-amber-400"
         >
@@ -456,7 +507,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
         {/* Center — Code Editor + Console */}
         <div
           ref={centerRef}
-          className="flex flex-1 min-w-0 flex-col overflow-hidden md:h-full transition-all duration-300"
+          className="flex min-w-0 flex-1 flex-col overflow-hidden transition-all duration-300 md:h-full"
         >
           <div className="relative min-h-0 flex-1">
             <div className="absolute inset-0">
@@ -471,7 +522,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
           <button
             onMouseDown={startVerticalResize}
-            onClick={() => setBottomCollapsed(prev => !prev)}
+            onClick={() => setBottomCollapsed((prev) => !prev)}
             title="Drag to resize terminal. Click to collapse or expand."
             className="my-1 flex h-2 cursor-row-resize items-center justify-center rounded bg-slate-900/80 text-slate-600 transition hover:bg-slate-800 hover:text-amber-400"
           >
@@ -486,7 +537,10 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               {bottomCollapsed ? (
                 <div className="flex h-full items-center justify-between px-4 text-xs text-slate-500">
                   <span>Terminal collapsed</span>
-                  <button onClick={() => setBottomCollapsed(false)} className="text-amber-400 hover:text-amber-300">
+                  <button
+                    onClick={() => setBottomCollapsed(false)}
+                    className="text-amber-400 hover:text-amber-300"
+                  >
                     Expand
                   </button>
                 </div>
@@ -520,7 +574,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
 
         {/* Right — Mentor Panel (slide in) */}
         {mentor.isOpen && (
-          <div className="hidden h-full w-full shrink-0 overflow-hidden md:block md:w-[25%] animate-in slide-in-from-right-4 duration-200">
+          <div className="animate-in slide-in-from-right-4 hidden h-full w-full shrink-0 overflow-hidden duration-200 md:block md:w-[25%]">
             <MentorPanel
               messages={mentor.messages}
               isLoading={mentor.isLoading}

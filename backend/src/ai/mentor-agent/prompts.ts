@@ -23,14 +23,22 @@ export interface PromptContext {
  * Used to enrich Level 1 hints.
  */
 const CONCEPT_ANALOGIES: Record<string, string> = {
-  'Stack': 'like a stack of cafeteria plates — the last plate added is the first one you take off (LIFO).',
-  'Queue': 'like people waiting in line — the first person to arrive is the first to be served (FIFO).',
-  'Hash Map': 'like a phone book — you can instantly look up a person\'s number by their name, without scanning every entry.',
-  'Recursion': 'like Russian nesting dolls — each function call opens a smaller version of the same problem until you hit the base case.',
-  'Dynamic Programming': 'like keeping a notebook of answers — instead of re-solving sub-problems, you look up what you already computed.',
-  'Binary Search': 'like finding a word in a dictionary — you open to the middle, decide which half to search, and repeat.',
-  'Two Pointer': 'like two people walking toward each other from opposite ends of a row — they meet in the middle and reduce the search space.',
-  'Sliding Window': 'like a camera lens panning across a row of elements — it keeps a fixed view and moves one step at a time.',
+  Stack:
+    'like a stack of cafeteria plates — the last plate added is the first one you take off (LIFO).',
+  Queue:
+    'like people waiting in line — the first person to arrive is the first to be served (FIFO).',
+  'Hash Map':
+    "like a phone book — you can instantly look up a person's number by their name, without scanning every entry.",
+  Recursion:
+    'like Russian nesting dolls — each function call opens a smaller version of the same problem until you hit the base case.',
+  'Dynamic Programming':
+    'like keeping a notebook of answers — instead of re-solving sub-problems, you look up what you already computed.',
+  'Binary Search':
+    'like finding a word in a dictionary — you open to the middle, decide which half to search, and repeat.',
+  'Two Pointer':
+    'like two people walking toward each other from opposite ends of a row — they meet in the middle and reduce the search space.',
+  'Sliding Window':
+    'like a camera lens panning across a row of elements — it keeps a fixed view and moves one step at a time.',
 };
 
 function getConceptAnalogy(concept: string): string | null {
@@ -85,9 +93,10 @@ CATEGORY: GENERAL HINT REQUEST
  */
 export function buildMentorSystemPrompt(ctx: PromptContext): string {
   const analogy = getConceptAnalogy(ctx.targetedConcept);
-  const prevHintSummary = ctx.previousHints.length > 0
-    ? `\nPREVIOUS HINTS ALREADY GIVEN:\n${ctx.previousHints.map((h, i) => `  ${i + 1}. [Level ${h.level}] ${h.feedback.slice(0, 120)}...`).join('\n')}`
-    : '\nNo previous hints have been given yet.';
+  const prevHintSummary =
+    ctx.previousHints.length > 0
+      ? `\nPREVIOUS HINTS ALREADY GIVEN:\n${ctx.previousHints.map((h, i) => `  ${i + 1}. [Level ${h.level}] ${h.feedback.slice(0, 120)}...`).join('\n')}`
+      : '\nNo previous hints have been given yet.';
 
   return `
 You are the Mentor Agent for the AI-Powered Coding Practice Coach (Skill Lens).

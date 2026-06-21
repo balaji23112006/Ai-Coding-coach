@@ -38,7 +38,13 @@ export interface MentorRequest {
   /** Previous chat messages for context */
   messages?: Array<{ role: 'user' | 'bot'; text: string }>;
   /** What triggered this mentor request */
-  triggerEvent?: 'compile_error' | 'runtime_error' | 'test_fail' | 'timeout' | 'hint_request' | 'chat';
+  triggerEvent?:
+    | 'compile_error'
+    | 'runtime_error'
+    | 'test_fail'
+    | 'timeout'
+    | 'hint_request'
+    | 'chat';
   /** Optional free-form question from the user */
   userQuestion?: string;
 }

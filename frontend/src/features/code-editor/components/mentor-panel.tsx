@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   ShieldAlert,
   ArrowRight,
+  type LucideIcon,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -31,7 +32,10 @@ interface GuidanceSection {
   content: string;
 }
 
-const SECTION_STYLE_MAP: Record<string, { icon: any; iconColor: string; bgGradient: string; border: string }> = {
+const SECTION_STYLE_MAP: Record<
+  string,
+  { icon: LucideIcon; iconColor: string; bgGradient: string; border: string }
+> = {
   'Problem Understanding': {
     icon: BookOpen,
     iconColor: 'text-sky-400',
@@ -44,7 +48,7 @@ const SECTION_STYLE_MAP: Record<string, { icon: any; iconColor: string; bgGradie
     bgGradient: 'from-amber-500/5 to-transparent',
     border: 'border-amber-500/15',
   },
-  'Approach': {
+  Approach: {
     icon: Compass,
     iconColor: 'text-teal-400',
     bgGradient: 'from-teal-500/5 to-transparent',
@@ -62,7 +66,7 @@ const SECTION_STYLE_MAP: Record<string, { icon: any; iconColor: string; bgGradie
     bgGradient: 'from-purple-500/5 to-transparent',
     border: 'border-purple-500/15',
   },
-  'Optimization': {
+  Optimization: {
     icon: Zap,
     iconColor: 'text-indigo-400',
     bgGradient: 'from-indigo-500/5 to-transparent',
@@ -74,13 +78,13 @@ const SECTION_STYLE_MAP: Record<string, { icon: any; iconColor: string; bgGradie
     bgGradient: 'from-emerald-500/10 to-emerald-500/5',
     border: 'border-emerald-500/25 shadow-emerald-950/20 shadow-sm',
   },
-  'Guidance': {
+  Guidance: {
     icon: BrainCircuit,
     iconColor: 'text-amber-400',
     bgGradient: 'from-amber-500/5 to-transparent',
     border: 'border-slate-800/80',
   },
-  'Introduction': {
+  Introduction: {
     icon: Sparkles,
     iconColor: 'text-violet-400',
     bgGradient: 'from-violet-500/5 to-transparent',
@@ -101,7 +105,7 @@ function parseGuidance(text: string): GuidanceSection[] {
     'Common Mistakes',
     'Edge Cases',
     'Optimization',
-    'Next Step'
+    'Next Step',
   ];
 
   for (const line of lines) {
@@ -109,7 +113,10 @@ function parseGuidance(text: string): GuidanceSection[] {
     let matchedTitle: string | null = null;
 
     for (const title of titlePatterns) {
-      const regex = new RegExp(`^(?:#+\\s*|\\*\\*\\s*|\\*\\s*)?(${title})(?:\\s*\\*\\*|\\s*\\*|\\s*:\\s*|\\s*#+)*$`, 'i');
+      const regex = new RegExp(
+        `^(?:#+\\s*|\\*\\*\\s*|\\*\\s*)?(${title})(?:\\s*\\*\\*|\\s*\\*|\\s*:\\s*|\\s*#+)*$`,
+        'i',
+      );
       if (regex.test(trimmedLine)) {
         matchedTitle = title;
         break;
@@ -120,7 +127,7 @@ function parseGuidance(text: string): GuidanceSection[] {
       if (currentLines.length > 0) {
         sections.push({
           title: currentTitle,
-          content: currentLines.join('\n').trim()
+          content: currentLines.join('\n').trim(),
         });
         currentLines = [];
       }
@@ -133,11 +140,11 @@ function parseGuidance(text: string): GuidanceSection[] {
   if (currentLines.length > 0 || sections.length > 0) {
     sections.push({
       title: currentTitle,
-      content: currentLines.join('\n').trim()
+      content: currentLines.join('\n').trim(),
     });
   }
 
-  const filtered = sections.filter(s => s.content.length > 0);
+  const filtered = sections.filter((s) => s.content.length > 0);
   if (filtered.length > 1 && filtered[0].title === 'Guidance') {
     filtered[0].title = 'Introduction';
   }
@@ -155,14 +162,24 @@ function GuidanceCard({ section, index }: { section: GuidanceSection; index: num
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.06, ease: 'easeOut' }}
       className={cn(
-        "group relative overflow-hidden rounded-xl border p-4 bg-slate-900/30 backdrop-blur-md transition-all duration-300 hover:bg-slate-900/50",
-        style.border
+        'group relative overflow-hidden rounded-xl border bg-slate-900/30 p-4 backdrop-blur-md transition-all duration-300 hover:bg-slate-900/50',
+        style.border,
       )}
     >
-      <div className={cn("absolute inset-0 bg-gradient-to-br opacity-40 transition-opacity duration-300 group-hover:opacity-65 pointer-events-none", style.bgGradient)} />
-      
-      <div className="relative z-10 flex items-center gap-2 mb-2">
-        <div className={cn("flex h-6 w-6 items-center justify-center rounded-lg bg-slate-950/60 border border-white/[0.03] shadow-inner", style.iconColor)}>
+      <div
+        className={cn(
+          'pointer-events-none absolute inset-0 bg-gradient-to-br opacity-40 transition-opacity duration-300 group-hover:opacity-65',
+          style.bgGradient,
+        )}
+      />
+
+      <div className="relative z-10 mb-2 flex items-center gap-2">
+        <div
+          className={cn(
+            'flex h-6 w-6 items-center justify-center rounded-lg border border-white/[0.03] bg-slate-950/60 shadow-inner',
+            style.iconColor,
+          )}
+        >
           <Icon className="h-3.5 w-3.5" />
         </div>
         <h4 className="text-[10px] font-black uppercase tracking-wider text-slate-200">
@@ -171,7 +188,7 @@ function GuidanceCard({ section, index }: { section: GuidanceSection; index: num
       </div>
 
       <div className="relative z-10 pl-8">
-        <p className="text-xs leading-relaxed text-slate-300 whitespace-pre-wrap font-sans">
+        <p className="whitespace-pre-wrap font-sans text-xs leading-relaxed text-slate-300">
           {section.content}
         </p>
       </div>
@@ -185,8 +202,8 @@ function MentorMessageBubble({ msg }: { msg: MentorMessage }) {
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-violet-600/20 border border-violet-500/20 px-3.5 py-2">
-          <p className="text-xs leading-relaxed text-slate-200 font-sans">{msg.text}</p>
+        <div className="max-w-[85%] rounded-2xl rounded-br-sm border border-violet-500/20 bg-violet-600/20 px-3.5 py-2">
+          <p className="font-sans text-xs leading-relaxed text-slate-200">{msg.text}</p>
         </div>
       </div>
     );
@@ -277,7 +294,7 @@ export function MentorPanel({
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-950/80 backdrop-blur-xl shadow-2xl shadow-black/40">
+    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-950/80 shadow-2xl shadow-black/40 backdrop-blur-xl">
       {/* Header */}
       <div className="flex h-11 shrink-0 items-center justify-between border-b border-slate-800/60 bg-slate-950/40 px-4">
         <div className="flex items-center gap-2">
@@ -302,7 +319,7 @@ export function MentorPanel({
         {isEmpty && !isLoading ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 py-8 text-center">
             <div className="relative">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400/20 to-amber-600/10 border border-amber-500/20 shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-400/20 to-amber-600/10 shadow-lg">
                 <Sparkles className="h-6 w-6 text-amber-400" />
               </div>
               <div className="absolute -right-1 -top-1 h-4 w-4 animate-pulse rounded-full border border-amber-500/30 bg-amber-500/20" />
@@ -324,7 +341,7 @@ export function MentorPanel({
           </div>
         ) : (
           <div className="space-y-4">
-            {messages.map(msg => (
+            {messages.map((msg) => (
               <MentorMessageBubble key={msg.id} msg={msg} />
             ))}
             {isLoading && <TypingIndicator />}
@@ -348,13 +365,13 @@ export function MentorPanel({
 
       {/* Input */}
       <div className="border-t border-slate-800/60 bg-slate-950/40 p-3">
-        <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-900/60 px-3 py-2 focus-within:border-amber-500/40 focus-within:shadow-sm transition">
+        <div className="flex items-center gap-2 rounded-xl border border-slate-700/50 bg-slate-900/60 px-3 py-2 transition focus-within:border-amber-500/40 focus-within:shadow-sm">
           <MessageSquare className="h-3.5 w-3.5 shrink-0 text-slate-500" />
           <input
             ref={inputRef}
             type="text"
             value={inputText}
-            onChange={e => setInputText(e.target.value)}
+            onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask your mentor anything..."
             disabled={isLoading}

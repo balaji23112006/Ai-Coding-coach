@@ -16,7 +16,8 @@ async function get_concept_analogy(topic: string) {
     loop: 'Imagine walking around a circular track; each step moves you to the next position.',
     hashmap: 'Think of a phone book where you look up a name to get a number quickly.',
     recursion: 'Like a set of nested Russian dolls, each one contains a smaller copy of itself.',
-    'dynamic programming': 'Building a table of solutions step by step, like filling out a spreadsheet.'
+    'dynamic programming':
+      'Building a table of solutions step by step, like filling out a spreadsheet.',
   };
   return analogies[topic] ?? '';
 }
@@ -39,7 +40,7 @@ export class MentorService {
     // 1. Fetch history & metadata
     const [hintHistory, questionMeta] = await Promise.all([
       get_hint_history(userId, questionId),
-      get_question_metadata(questionId)
+      get_question_metadata(questionId),
     ]);
 
     // 2. Classify error type
@@ -78,11 +79,18 @@ export class MentorService {
     const hintMetadata = {
       category,
       level,
-      targetedConcept: concept
+      targetedConcept: concept,
     };
 
     // 6. Save hint log
-    await save_hint_log({ userId, questionId, category, level, concept, timestamp: new Date().toISOString() });
+    await save_hint_log({
+      userId,
+      questionId,
+      category,
+      level,
+      concept,
+      timestamp: new Date().toISOString(),
+    });
 
     logger.debug('Generated mentor hint', { mentorFeedback, hintMetadata });
     return { mentorFeedback, hintMetadata };

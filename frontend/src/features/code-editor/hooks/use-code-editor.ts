@@ -30,11 +30,14 @@ export function useCodeEditor(
   const [submitResult, setSubmitResult] = useState<Submission | null>(null);
   const [submissionHistory, setSubmissionHistory] = useState<Submission[]>([]);
   const [stats, setStats] = useState<SubmissionStats | null>(null);
-  const [activeConsoleTab, setActiveConsoleTab] = useState<'testcase' | 'result' | 'submissions'>('testcase');
+  const [activeConsoleTab, setActiveConsoleTab] = useState<'testcase' | 'result' | 'submissions'>(
+    'testcase',
+  );
 
   // Hook 1: Unified initialization (runs when problemId or user changes)
   useEffect(() => {
     let active = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsInitializing(true);
 
     async function initialize() {
@@ -50,7 +53,8 @@ export function useCodeEditor(
 
         // Determine the initial language and code to load
         let initialLang = selectedLanguage;
-        const latestSubmission = data.submissions && data.submissions.length > 0 ? data.submissions[0] : null;
+        const latestSubmission =
+          data.submissions && data.submissions.length > 0 ? data.submissions[0] : null;
 
         if (latestSubmission && latestSubmission.language) {
           initialLang = latestSubmission.language as SupportedLanguage;
@@ -90,7 +94,7 @@ export function useCodeEditor(
       const draftCode = await submissionService.getDraft(problemId, selectedLanguage, user?.id);
       if (!active) return;
 
-      const subForLang = submissionHistory.find(s => s.language === selectedLanguage);
+      const subForLang = submissionHistory.find((s) => s.language === selectedLanguage);
 
       setCurrentCode(draftCode ?? subForLang?.code ?? templates[selectedLanguage]);
       setRunResult(null);
@@ -181,7 +185,9 @@ export function useCodeEditor(
           userStats: {
             ...prev.userStats,
             attempts: prev.userStats.attempts + 1,
-            acceptedCount: isAccepted ? prev.userStats.acceptedCount + 1 : prev.userStats.acceptedCount,
+            acceptedCount: isAccepted
+              ? prev.userStats.acceptedCount + 1
+              : prev.userStats.acceptedCount,
           },
         };
       });

@@ -75,10 +75,14 @@ export function checkGuardrail(response: string): GuardrailResult {
  */
 export function getFallbackResponse(category: string, level: number): string {
   const fallbacks: Record<string, string> = {
-    syntax: "Take a close look at the structure of your code: check for missing colons, brackets, declarations, or indentation. What does the first compiler error say about the line that caused it?",
-    logic: "Try tracing through your code manually with a simple example input. At what step does the actual output diverge from what you expect?",
-    timeout: "Your solution might be doing more work than necessary. Can you think of a way to store intermediate results so you don't recompute them? What data structure could help here?",
-    request: "Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?",
+    syntax:
+      'Take a close look at the structure of your code: check for missing colons, brackets, declarations, or indentation. What does the first compiler error say about the line that caused it?',
+    logic:
+      'Try tracing through your code manually with a simple example input. At what step does the actual output diverge from what you expect?',
+    timeout:
+      "Your solution might be doing more work than necessary. Can you think of a way to store intermediate results so you don't recompute them? What data structure could help here?",
+    request:
+      "Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?",
   };
 
   const base = fallbacks[category] || fallbacks.request;

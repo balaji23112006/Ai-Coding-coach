@@ -1,5 +1,127 @@
 [
   {
+    "id": "trace-refresh-Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z-1782034648299",
+    "timestamp": "2026-06-21T09:37:28.299Z",
+    "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
+    "trigger": "refresh",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-21T09:37:28.358Z] Executed Node: getUserHistoryNode",
+      "[2026-06-21T09:37:28.360Z] Executed Node: tool:getUserHistory",
+      "[2026-06-21T09:37:37.072Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
+      "[2026-06-21T09:37:37.077Z] Executed Node: getTopicStatsNode",
+      "[2026-06-21T09:37:37.078Z] Executed Node: tool:getTopicStats",
+      "[2026-06-21T09:37:39.408Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
+      "[2026-06-21T09:37:39.413Z] Executed Node: getSubmissionsNode",
+      "[2026-06-21T09:37:39.414Z] Executed Node: tool:getSubmissions",
+      "[2026-06-21T09:37:50.726Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
+      "[2026-06-21T09:37:50.727Z] Executed Node: getRecentActivityNode",
+      "[2026-06-21T09:37:50.727Z] Executed Node: tool:getRecentActivity",
+      "[2026-06-21T09:37:53.003Z] D4 (Recent activity check): Recent activity missing/insufficient but tool already tried. Proceeding to analyzeMasteryNode.",
+      "[2026-06-21T09:37:53.006Z] Executed Node: analyzeMasteryNode",
+      "[2026-06-21T09:37:53.256Z] Executed Node: detectTrendsNode",
+      "[2026-06-21T09:37:53.515Z] Executed Node: assessDifficultyNode",
+      "[2026-06-21T09:37:54.891Z] Executed Node: classifyLevelNode",
+      "[2026-06-21T09:37:55.690Z] Executed Node: identifyStrengthsNode",
+      "[2026-06-21T09:37:56.549Z] Executed Node: identifyWeaknessesNode",
+      "[2026-06-21T09:37:56.891Z] Executed Node: generateRecommendationsNode",
+      "[2026-06-21T09:37:57.141Z] D7 (Significance check): No significant change in profile metrics. Routing to END.",
+      "[2026-06-21T09:38:21.702Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory",
+      "getTopicStatsNode",
+      "tool:getTopicStats",
+      "getSubmissionsNode",
+      "tool:getSubmissions",
+      "getRecentActivityNode",
+      "tool:getRecentActivity",
+      "analyzeMasteryNode",
+      "detectTrendsNode",
+      "assessDifficultyNode",
+      "classifyLevelNode",
+      "identifyStrengthsNode",
+      "identifyWeaknessesNode",
+      "generateRecommendationsNode"
+    ],
+    "prompts": [
+      {
+        "type": "profile_summary",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Intermediate\n- Strengths: None identified yet\n- Areas for Improvement: HashMap, Linked List, Stack, Binary Search, Graphs, DFS, BFS, Grid, Directed Graph, Cycle Detection, Design, Multi-Source BFS, Topological Sort\n- Topic Mastery Scores: {\"Arrays\":62,\"Strings\":63,\"HashMap\":56,\"Linked List\":73,\"Stack\":56,\"Binary Search\":39,\"Trees\":65,\"Graphs\":49,\"DFS\":45,\"BFS\":52,\"Grid\":48,\"Directed Graph\":0,\"Cycle Detection\":0,\"Design\":0,\"Multi-Source BFS\":34,\"Topological Sort\":0}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• STANDING: You're currently at an Intermediate skill level, showing a good foundation to build upon.\n• KEY STRENGTHS: You demonstrate a promising grasp in Linked Lists, scoring your highest in this area, indicating a solid understanding of this fundamental data structure.\n• AREAS TO IMPROVE: Significant opportunities for growth exist in Binary Search, Graphs and their related algorithms such as DFS, BFS, Grid traversal, Directed Graphs, Cycle Detection, Multi-Source BFS, and Topological Sort. Further development in HashMap and Stack usage would also be beneficial.\n• RECOMMENDED FOCUS: To build a robust problem-solving toolkit, focus next on strengthening your understanding and application of Binary Search, followed by the foundational Graph traversal algorithms like DFS and BFS, and then progressing to specialized Graph topics such as Directed Graphs and Cycle Detection.",
+        "timestamp": "2026-06-21T09:38:04.795Z"
+      },
+      {
+        "type": "trend_explanation",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * Binary Search: Declining (from 60% to 0%)\n  * Linked List: Declining (from 80% to 0%)\n  * HashMap: Declining (from 75% to 0%)\n  * Strings: Improving (from 60% to 100%)\n  * Struggling recently with 3 consecutive incorrect submissions.\n  * High recent learning velocity: 9 submission attempts in the last 48 hours.\n  * Struggling with Medium difficulty problems (success rate: 20%).\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• Your recent activity shows an impressive learning velocity with 9 submission attempts in the last 48 hours and 10 overall recently, which speaks volumes about your dedication and consistent effort.\n• You've made excellent progress with Strings, now achieving a 100% success rate, which is a great area of strength! However, you're currently facing a challenge with Medium difficulty problems, reflected in a 20% success rate, and have encountered 3 consecutive incorrect submissions. We also see declining trends in Binary Search, Linked Lists, and HashMaps, with success rates dropping to 0%.\n• To build back momentum, I suggest leveraging your strength in Strings by perhaps trying problems that combine Strings with one of the declining topics to build confidence. Consider taking a brief step back from Medium problems to specifically review Binary Search, Linked Lists, and HashMaps, perhaps by re-tackling a few Easy or foundational problems in those areas to solidify understanding before returning to more complex challenges. Your high learning velocity is a huge asset; adjust your focus slightly to consolidate learning in these key areas.",
+        "timestamp": "2026-06-21T09:38:21.702Z"
+      }
+    ],
+    "request": {
+      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z"
+    },
+    "response": {
+      "success": true,
+      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
+      "level": "Intermediate",
+      "confidence": 1,
+      "mastery": {
+        "Arrays": 62,
+        "Strings": 63,
+        "HashMap": 56,
+        "Linked List": 73,
+        "Stack": 56,
+        "Binary Search": 39,
+        "Trees": 65,
+        "Graphs": 49,
+        "DFS": 45,
+        "BFS": 52,
+        "Grid": 48,
+        "Directed Graph": 0,
+        "Cycle Detection": 0,
+        "Design": 0,
+        "Multi-Source BFS": 34,
+        "Topological Sort": 0
+      },
+      "strongAreas": [],
+      "weakAreas": [
+        "HashMap",
+        "Linked List",
+        "Stack",
+        "Binary Search",
+        "Graphs",
+        "DFS",
+        "BFS",
+        "Grid",
+        "Directed Graph",
+        "Cycle Detection",
+        "Design",
+        "Multi-Source BFS",
+        "Topological Sort"
+      ],
+      "trends": [
+        "Binary Search: Declining (from 60% to 0%)",
+        "Linked List: Declining (from 80% to 0%)",
+        "HashMap: Declining (from 75% to 0%)",
+        "Strings: Improving (from 60% to 100%)",
+        "Struggling recently with 3 consecutive incorrect submissions.",
+        "High recent learning velocity: 9 submission attempts in the last 48 hours.",
+        "Struggling with Medium difficulty problems (success rate: 20%)."
+      ],
+      "profileStatus": "UNINITIALIZED",
+      "easySolved": 11,
+      "mediumSolved": 17,
+      "hardSolved": 0,
+      "solvedCount": 28,
+      "recommendedFocus": "Directed Graph",
+      "recommendedDifficulty": "Medium",
+      "summary": "• STANDING: You're currently at an Intermediate skill level, showing a good foundation to build upon.\n• KEY STRENGTHS: You demonstrate a promising grasp in Linked Lists, scoring your highest in this area, indicating a solid understanding of this fundamental data structure.\n• AREAS TO IMPROVE: Significant opportunities for growth exist in Binary Search, Graphs and their related algorithms such as DFS, BFS, Grid traversal, Directed Graphs, Cycle Detection, Multi-Source BFS, and Topological Sort. Further development in HashMap and Stack usage would also be beneficial.\n• RECOMMENDED FOCUS: To build a robust problem-solving toolkit, focus next on strengthening your understanding and application of Binary Search, followed by the foundational Graph traversal algorithms like DFS and BFS, and then progressing to specialized Graph topics such as Directed Graphs and Cycle Detection.",
+      "trendExplanation": "• Your recent activity shows an impressive learning velocity with 9 submission attempts in the last 48 hours and 10 overall recently, which speaks volumes about your dedication and consistent effort.\n• You've made excellent progress with Strings, now achieving a 100% success rate, which is a great area of strength! However, you're currently facing a challenge with Medium difficulty problems, reflected in a 20% success rate, and have encountered 3 consecutive incorrect submissions. We also see declining trends in Binary Search, Linked Lists, and HashMaps, with success rates dropping to 0%.\n• To build back momentum, I suggest leveraging your strength in Strings by perhaps trying problems that combine Strings with one of the declining topics to build confidence. Consider taking a brief step back from Medium problems to specifically review Binary Search, Linked Lists, and HashMaps, perhaps by re-tackling a few Easy or foundational problems in those areas to solidify understanding before returning to more complex challenges. Your high learning velocity is a huge asset; adjust your focus slightly to consolidate learning in these key areas."
+    }
+  },
+  {
     "id": "trace-mentor-Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z-671e4a77-959e-4ce8-a5e3-02a51d66249c-1782029541054",
     "timestamp": "2026-06-21T08:12:21.054Z",
     "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
@@ -69,13 +191,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T08:12:31.806Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -143,13 +259,7 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T08:11:29.094Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -242,13 +352,7 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T07:47:48.595Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -263,9 +367,7 @@
       "[2026-06-21T07:47:32.617Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:47:32.617Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -316,13 +418,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -413,13 +509,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -501,13 +591,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:28:47.353Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -576,13 +660,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:05:52.794Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -597,9 +675,7 @@
       "[2026-06-21T07:05:33.669Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:05:33.669Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -619,13 +695,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -697,13 +767,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T07:00:56.043Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -718,9 +782,7 @@
       "[2026-06-21T07:00:30.813Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:00:30.813Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -745,13 +807,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -814,13 +870,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -883,13 +933,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:56:31.930Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -904,9 +948,7 @@
       "[2026-06-21T03:48:34.300Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T03:48:34.300Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -926,13 +968,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -995,13 +1031,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1083,11 +1113,7 @@
         "Dynamic Programming": 0
       },
       "strongAreas": [],
-      "weakAreas": [
-        "HashMap",
-        "Trees",
-        "Dynamic Programming"
-      ],
+      "weakAreas": ["HashMap", "Trees", "Dynamic Programming"],
       "trends": [
         "Struggling recently with 3 consecutive incorrect submissions.",
         "Moderate activity: 1 submission attempts in the last 48 hours.",
@@ -8081,10 +8107,7 @@
       "[2026-06-19T01:55:23.781Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:55:23.781Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg",
@@ -8105,10 +8128,7 @@
       "[2026-06-19T01:22:34.038Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:22:34.038Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8129,10 +8149,7 @@
       "[2026-06-19T01:21:22.111Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:21:22.111Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8153,10 +8170,7 @@
       "[2026-06-19T01:20:03.215Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:20:03.215Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8177,10 +8191,7 @@
       "[2026-06-19T01:18:48.747Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:18:48.747Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8201,10 +8212,7 @@
       "[2026-06-19T01:05:06.496Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:05:06.496Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8225,37 +8233,11 @@
       "[2026-06-19T01:03:54.028Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:03:54.028Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
       "submissionId": "cmqk86wvv0000pz7ognewrpbz"
-    },
-    "response": null,
-    "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."
-  },
-  {
-    "id": "trace-refresh-WadprLlnQH4IWtRwRMwzgBf962Uq1rwg-1781776578088",
-    "timestamp": "2026-06-18T09:56:18.088Z",
-    "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg",
-    "trigger": "refresh",
-    "status": "failed",
-    "decisions": [
-      "[2026-06-18T09:56:18.097Z] Executed Node: getUserHistoryNode",
-      "[2026-06-18T09:56:18.097Z] Executed Node: tool:getUserHistory",
-      "[2026-06-18T09:56:18.108Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
-      "[2026-06-18T09:56:18.108Z] Run finalized: status = failed"
-    ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
-    "prompts": [],
-    "request": {
-      "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg"
     },
     "response": null,
     "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."

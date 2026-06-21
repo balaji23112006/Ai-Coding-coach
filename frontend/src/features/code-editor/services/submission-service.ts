@@ -121,7 +121,8 @@ export const submissionService = {
       memory: data.memoryUsed ? Math.round(data.memoryUsed / 1024 / 1024) : 0,
       ...parseTestCounts(stdout),
       failedCases: data.failedCases
-        ? data.failedCases.map((fc: any) => ({
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data.failedCases.map((fc: any) => ({
             testCaseId: String(fc.index),
             input: fc.input || '',
             expectedOutput: fc.expectedOutput || '',
@@ -170,7 +171,8 @@ export const submissionService = {
       passedCount: data.passedCount || 0,
       totalCount: data.totalCount || 0,
       failedCases: data.failedCases
-        ? data.failedCases.map((fc: any) => ({
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data.failedCases.map((fc: any) => ({
             testCaseId: String(fc.index),
             input: fc.input || '',
             expectedOutput: fc.expectedOutput || '',
@@ -189,6 +191,7 @@ export const submissionService = {
         if (res.ok) {
           const data = await res.json();
           return {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             submissions: (data.submissions || []).map((submission: any) => ({
               id: submission.id,
               problemId: submission.questionId || problemId,

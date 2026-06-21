@@ -23,7 +23,6 @@ export interface UseMentorOptions {
 
 export function useMentor({
   problemId,
-  problemTitle: _problemTitle,
   currentCode,
   language,
   executionResult,
@@ -33,7 +32,7 @@ export function useMentor({
   const [isOpen, setIsOpen] = useState(false);
 
   const addMessage = useCallback((msg: Omit<MentorMessage, 'id' | 'timestamp'>) => {
-    setMessages(prev => [
+    setMessages((prev) => [
       ...prev,
       {
         ...msg,
@@ -51,7 +50,13 @@ export function useMentor({
   const sendMentorRequest = useCallback(
     async (
       userQuestion?: string,
-      triggerEvent: 'hint_request' | 'chat' | 'compile_error' | 'runtime_error' | 'test_fail' | 'timeout' = 'chat',
+      triggerEvent:
+        | 'hint_request'
+        | 'chat'
+        | 'compile_error'
+        | 'runtime_error'
+        | 'test_fail'
+        | 'timeout' = 'chat',
     ) => {
       if (isLoading) return;
 
@@ -75,7 +80,7 @@ export function useMentor({
                 stderr: executionResult.stderr,
               }
             : undefined,
-          messages: messages.slice(-6).map(m => ({
+          messages: messages.slice(-6).map((m) => ({
             role: m.role === 'mentor' ? 'bot' : 'user',
             text: m.text,
           })),
@@ -101,6 +106,7 @@ export function useMentor({
           hintMetadata: data.hintMetadata,
         });
       } catch (err) {
+        console.error('[useMentor] Error requesting hint:', err);
         addMessage({
           role: 'mentor',
           text: "I'm having trouble connecting right now. Try tracing through your code manually — what does it do step-by-step with a simple input?",
@@ -138,7 +144,7 @@ export function useMentor({
   }, []);
 
   const toggleOpen = useCallback(() => {
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
   }, []);
 
   return {

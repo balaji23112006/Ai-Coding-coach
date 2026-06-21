@@ -6,7 +6,8 @@ dotenv.config();
 
 const publicKey = process.env.LANGFUSE_PUBLIC_KEY || '';
 const secretKey = process.env.LANGFUSE_SECRET_KEY || '';
-const baseUrl = process.env.LANGFUSE_BASE_URL || process.env.LANGFUSE_HOST || 'https://cloud.langfuse.com';
+const baseUrl =
+  process.env.LANGFUSE_BASE_URL || process.env.LANGFUSE_HOST || 'https://cloud.langfuse.com';
 
 const enabled = Boolean(publicKey && secretKey);
 
@@ -34,11 +35,14 @@ function truncate(value: string, max = 4000): string {
 
 export function sanitizeForTrace<T>(value: T): T {
   if (typeof value === 'string') {
-    return SECRET_PATTERNS.reduce((text, pattern) => text.replace(pattern, '[REDACTED]'), truncate(value)) as T;
+    return SECRET_PATTERNS.reduce(
+      (text, pattern) => text.replace(pattern, '[REDACTED]'),
+      truncate(value),
+    ) as T;
   }
 
   if (Array.isArray(value)) {
-    return value.map(item => sanitizeForTrace(item)) as T;
+    return value.map((item) => sanitizeForTrace(item)) as T;
   }
 
   if (value && typeof value === 'object') {
@@ -60,7 +64,9 @@ export async function flushLangfuse() {
   try {
     await langfuse.flushAsync();
   } catch (error) {
-    logger.warn(`[Langfuse] flush failed: ${error instanceof Error ? error.message : String(error)}`);
+    logger.warn(
+      `[Langfuse] flush failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
@@ -169,6 +175,8 @@ export async function traceApiResponse(params: {
       }),
     });
   } catch (error) {
-    logger.warn(`[Langfuse] API trace failed: ${error instanceof Error ? error.message : String(error)}`);
+    logger.warn(
+      `[Langfuse] API trace failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }

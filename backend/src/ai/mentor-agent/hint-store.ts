@@ -28,7 +28,9 @@ export function getHintHistory(userId: string, questionId: string): HintRecord[]
 /**
  * Saves a newly delivered hint to the store.
  */
-export function saveHint(params: Omit<HintRecord, 'id' | 'timestamp'> & { timestamp?: string }): HintRecord {
+export function saveHint(
+  params: Omit<HintRecord, 'id' | 'timestamp'> & { timestamp?: string },
+): HintRecord {
   const key = makeKey(params.userId, params.questionId);
   const existing = hintHistory.get(key) ?? [];
 
@@ -92,4 +94,3 @@ export function cacheHint(
   const key = makeCacheKey(userId, questionId, sourceCode, triggerEvent);
   hintCache.set(key, response);
 }
-

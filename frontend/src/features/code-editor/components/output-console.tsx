@@ -38,9 +38,7 @@ export function OutputConsole({
   const passed = runResult?.passedCount ?? 0;
   const total = runResult?.totalCount ?? 0;
   const allPassed = runResult?.status === 'Success' && passed === total && total > 0;
-  const hasError = 
-    runResult?.status === 'Compile Error' || 
-    runResult?.status === 'Runtime Error';
+  const hasError = runResult?.status === 'Compile Error' || runResult?.status === 'Runtime Error';
 
   return (
     <SectionCard
