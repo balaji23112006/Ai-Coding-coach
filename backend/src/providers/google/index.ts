@@ -6,8 +6,8 @@ dotenv.config();
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '';
 
-// Detect if this is an OAuth/Bearer token (starts with AQ.) vs a standard API key (starts with AIza)
-const isOAuthToken = apiKey.startsWith('AQ.') || apiKey.startsWith('ya29.');
+// Detect if this is an OAuth/Bearer token (starts with ya29.) vs a standard API key
+const isOAuthToken = apiKey.startsWith('ya29.');
 
 // Standard SDK client (for AIza... keys)
 export const genAI = new GoogleGenerativeAI(apiKey);
@@ -18,6 +18,7 @@ export function getGeminiModel(modelName = 'gemini-2.0-flash') {
 
 // Model candidates to try in order
 const MODEL_CANDIDATES = [
+  'gemini-2.5-flash',
   'gemini-2.0-flash',
   'gemini-2.0-flash-exp',
   'gemini-1.5-flash-latest',
