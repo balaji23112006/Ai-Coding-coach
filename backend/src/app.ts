@@ -10,10 +10,10 @@ import problemRoutes from './features/problems/routes/problem.routes.js';
 import progressRoutes from './features/progress/routes/progress.routes.js';
 import mentorRoutes from './features/mentor/routes/mentor.routes.js';
 import profileRoutes from './features/profiles/routes/profile.routes.js';
+import problemRecommendationRoutes from './ai/problem-recommendation-agent/problem-recommendation.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
-
 import { executionLogs } from './shared/utils/executionLogger.js';
 
 // Perform startup check for Docker availability
@@ -98,7 +98,9 @@ app.use((req, res, next) => {
       if (typeof body === 'string') {
         try {
           parsedBody = JSON.parse(body);
-        } catch {}
+        } catch {
+          parsedBody = body;
+        }
       }
 
       const logEntry = {
@@ -149,6 +151,12 @@ app.use('/api/mentor', mentorRoutes);
 
 // Mount AI profile & assessment routes
 app.use('/api/ai/profile', profileRoutes);
+
+// Mount AI problem recommendation routes
+app.use(
+  '/api/ai/problem-recommendation',
+  problemRecommendationRoutes
+);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

@@ -1,13 +1,13 @@
 import { prisma } from '../../../database/prisma.js';
-import { Prisma, UserProfile } from '@prisma/client';
+import { Prisma, Profile } from '@prisma/client';
 
 export class ProfileRepository {
   /**
    * Retrieves a UserProfile by the user's ID.
    * @param userId The unique user ID.
    */
-  async getProfile(userId: string): Promise<UserProfile | null> {
-    return prisma.userProfile.findUnique({
+  async getProfile(userId: string): Promise<Profile | null> {
+    return prisma.profile.findUnique({
       where: { userId },
     });
   }
@@ -16,8 +16,8 @@ export class ProfileRepository {
    * Saves a new UserProfile.
    * @param profile The profile creation payload.
    */
-  async saveProfile(profile: Prisma.UserProfileCreateInput): Promise<UserProfile> {
-    return prisma.userProfile.create({
+  async saveProfile(profile: Prisma.ProfileCreateInput): Promise<Profile> {
+    return prisma.profile.create({
       data: profile,
     });
   }
@@ -26,9 +26,9 @@ export class ProfileRepository {
    * Updates an existing UserProfile.
    * @param profile The profile update payload including the target userId.
    */
-  async updateProfile(profile: { userId: string } & Prisma.UserProfileUpdateInput): Promise<UserProfile> {
+  async updateProfile(profile: { userId: string } & Prisma.ProfileUpdateInput): Promise<Profile> {
     const { userId, ...data } = profile;
-    return prisma.userProfile.update({
+    return prisma.profile.update({
       where: { userId },
       data,
     });

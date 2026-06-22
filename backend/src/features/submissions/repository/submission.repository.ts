@@ -21,6 +21,17 @@ export class SubmissionRepository {
       },
     });
   }
+
+  async findByUserId(userId: string) {
+  return prisma.submission.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
 }
 
 export const submissionRepository = new SubmissionRepository();
