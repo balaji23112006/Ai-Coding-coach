@@ -47,27 +47,22 @@ router.post('/run', async (req: Request, res: Response, next: NextFunction): Pro
 
     // Only invoke LLM summary if not in bootstrap state
     if (finalState.profileStatus !== 'BOOTSTRAP') {
-      try {
-        summary = await profileSummaryService.generateProfileSummary({
-          level: finalState.level,
-          mastery: finalState.mastery,
-          strongAreas: finalState.strongAreas,
-          weakAreas: finalState.weakAreas,
-          traceId,
-        });
+      summary = await profileSummaryService.generateProfileSummary({
+        level: finalState.level,
+        mastery: finalState.mastery,
+        strongAreas: finalState.strongAreas,
+        weakAreas: finalState.weakAreas,
+        traceId,
+      });
 
-        trendExplanation = await profileSummaryService.generateTrendExplanation({
-          trends: finalState.trends,
-          recentActivityCount: finalState.recentActivity.length,
-          traceId,
-        });
-      } catch (err) {
-        console.error('[Profile API] Error generating AI summary content:', err);
-        summary = 'AI Feedback is temporarily unavailable. Keep practicing to update your records.';
-        trendExplanation = 'Trend tracking feedback is temporarily offline.';
-      }
+      trendExplanation = await profileSummaryService.generateTrendExplanation({
+        trends: finalState.trends,
+        recentActivityCount: finalState.recentActivity.length,
+        traceId,
+      });
     } else {
-      summary = 'Welcome to the coding practice coach! Submit some solutions to start tracking your skill metrics.';
+      summary =
+        'Welcome to the coding practice coach! Submit some solutions to start tracking your skill metrics.';
       trendExplanation = 'No recent coding attempts recorded.';
     }
 
@@ -149,25 +144,26 @@ router.get('/:userId', async (req: Request, res: Response, next: NextFunction): 
  * POST /api/ai/profile/refresh/:userId
  * Forces a refresh calculation by running the assessment graph.
  */
-router.post('/refresh/:userId', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { userId } = req.params;
-  if (!userId) {
-    res.status(400).json({ error: 'userId parameter is required.' });
-    return;
-  }
+router.post(
+  '/refresh/:userId',
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { userId } = req.params;
+    if (!userId) {
+      res.status(400).json({ error: 'userId parameter is required.' });
+      return;
+    }
 
-  const traceId = `trace-refresh-${userId}-${Date.now()}`;
-  agentLogger.startRun(userId, 'refresh', traceId);
-  agentLogger.logRequest(traceId, { userId });
+    const traceId = `trace-refresh-${userId}-${Date.now()}`;
+    agentLogger.startRun(userId, 'refresh', traceId);
+    agentLogger.logRequest(traceId, { userId });
 
-  try {
-    const finalState = await profileGraph.invoke({ userId, traceId });
+    try {
+      const finalState = await profileGraph.invoke({ userId, traceId });
 
-    let summary = '';
-    let trendExplanation = '';
+      let summary = '';
+      let trendExplanation = '';
 
-    if (finalState.profileStatus !== 'BOOTSTRAP') {
-      try {
+      if (finalState.profileStatus !== 'BOOTSTRAP') {
         summary = await profileSummaryService.generateProfileSummary({
           level: finalState.level,
           mastery: finalState.mastery,
@@ -181,48 +177,43 @@ router.post('/refresh/:userId', async (req: Request, res: Response, next: NextFu
           recentActivityCount: finalState.recentActivity.length,
           traceId,
         });
-      } catch (err) {
-        console.error('[Profile API] Error generating AI summary content during refresh:', err);
-        summary = 'AI Feedback is temporarily unavailable.';
-        trendExplanation = 'Trend tracking feedback is temporarily offline.';
+      } else {
+        summary = 'Welcome! Submit some solutions to start tracking your skill metrics.';
+        trendExplanation = 'No recent coding attempts recorded.';
       }
-    } else {
-      summary = 'Welcome! Submit some solutions to start tracking your skill metrics.';
-      trendExplanation = 'No recent coding attempts recorded.';
+
+      const responsePayload = {
+        success: true,
+        userId: finalState.userId,
+        level: finalState.level,
+        confidence: finalState.confidence,
+        mastery: finalState.mastery,
+        strongAreas: finalState.strongAreas,
+        weakAreas: finalState.weakAreas,
+        trends: finalState.trends,
+        profileStatus: finalState.profileStatus,
+        easySolved: finalState.easySolved || 0,
+        mediumSolved: finalState.mediumSolved || 0,
+        hardSolved: finalState.hardSolved || 0,
+        solvedCount: finalState.solvedCount || 0,
+        recommendedFocus: finalState.recommendedFocus || 'None',
+        recommendedDifficulty: finalState.recommendedDifficulty || 'Easy',
+        summary,
+        trendExplanation,
+      };
+
+      agentLogger.logResponse(traceId, responsePayload);
+      await agentLogger.finalizeRun(traceId, 'completed');
+
+      await langfuse.flushAsync();
+      res.status(200).json(responsePayload);
+    } catch (error: any) {
+      console.error('[Profile API] Refresh error:', error);
+      await agentLogger.finalizeRun(traceId, 'failed', error.message || String(error));
+      await langfuse.flushAsync();
+      next(error);
     }
-
-    const responsePayload = {
-      success: true,
-      userId: finalState.userId,
-      level: finalState.level,
-      confidence: finalState.confidence,
-      mastery: finalState.mastery,
-      strongAreas: finalState.strongAreas,
-      weakAreas: finalState.weakAreas,
-      trends: finalState.trends,
-      profileStatus: finalState.profileStatus,
-      easySolved: finalState.easySolved || 0,
-      mediumSolved: finalState.mediumSolved || 0,
-      hardSolved: finalState.hardSolved || 0,
-      solvedCount: finalState.solvedCount || 0,
-      recommendedFocus: finalState.recommendedFocus || 'None',
-      recommendedDifficulty: finalState.recommendedDifficulty || 'Easy',
-      summary,
-      trendExplanation,
-    };
-
-    agentLogger.logResponse(traceId, responsePayload);
-    await agentLogger.finalizeRun(traceId, 'completed');
-
-    await langfuse.flushAsync();
-    res.status(200).json(responsePayload);
-  } catch (error: any) {
-    console.error('[Profile API] Refresh error:', error);
-    await agentLogger.finalizeRun(traceId, 'failed', error.message || String(error));
-    await langfuse.flushAsync();
-    next(error);
-  }
-});
+  },
+);
 
 export default router;
-

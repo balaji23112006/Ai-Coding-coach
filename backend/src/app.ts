@@ -15,6 +15,7 @@ import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
 import { executionLogs } from './shared/utils/executionLogger.js';
+import { traceApiResponse } from './observability/langfuse.js';
 
 // Perform startup check for Docker availability
 checkDockerAvailability();
@@ -54,11 +55,27 @@ app.all('/api/auth/*', (req, res, next) => {
 app.use(express.json());
 
 // Comprehensive Request/Response Logging Middleware
+const formatBodyForTerminal = (body: any): string => {
+  if (body === undefined || body === null) return 'undefined';
+  const str = typeof body === 'string' ? body : JSON.stringify(body, null, 2);
+  if (str.length > 500) {
+    return str.substring(0, 500) + '\n... [TRUNCATED - Payload too large for terminal]';
+  }
+  return str;
+};
+
 app.use((req, res, next) => {
   const start = Date.now();
   const requestId = (req as any).id || '';
   const originalJson = res.json;
   const originalSend = res.send;
+  const shouldTraceApiResponse = () => {
+    return (
+      req.originalUrl.startsWith('/api/mentor') ||
+      req.originalUrl === '/api/run' ||
+      req.originalUrl === '/api/submit'
+    );
+  };
 
   res.json = function (body) {
     if (!(res as any)._logged) {
@@ -80,11 +97,29 @@ app.use((req, res, next) => {
         executionLogs.shift();
       }
 
-      console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
+      console.log(
+        `[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`,
+      );
       if (process.env.VERBOSE_LOGGING === 'true') {
-        console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
-        console.log(`[HTTP Response Body]:`, JSON.stringify(body, null, 2));
+        console.log(`[HTTP Request Body]:`, formatBodyForTerminal(req.body));
+        console.log(`[HTTP Response Body]:`, formatBodyForTerminal(body));
         console.log('----------------------------------------------------');
+      }
+
+      if (shouldTraceApiResponse()) {
+        void traceApiResponse({
+          name: `api-response ${req.method} ${req.originalUrl}`,
+          input: req.body,
+          output: body,
+          statusCode: res.statusCode,
+          durationMs: duration,
+          userId: (req as any).user?.id,
+          metadata: {
+            method: req.method,
+            url: req.originalUrl,
+            requestId,
+          },
+        });
       }
     }
     return originalJson.call(this, body);
@@ -99,8 +134,8 @@ app.use((req, res, next) => {
         try {
           parsedBody = JSON.parse(body);
         } catch {
-          parsedBody = body;
-        }
+  parsedBody = body;
+}
       }
 
       const logEntry = {
@@ -119,11 +154,29 @@ app.use((req, res, next) => {
         executionLogs.shift();
       }
 
-      console.log(`[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`);
+      console.log(
+        `[HTTP Logger] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} - Duration: ${duration}ms`,
+      );
       if (process.env.VERBOSE_LOGGING === 'true') {
-        console.log(`[HTTP Request Body]:`, JSON.stringify(req.body, null, 2));
-        console.log(`[HTTP Response Body]:`, JSON.stringify(parsedBody, null, 2));
+        console.log(`[HTTP Request Body]:`, formatBodyForTerminal(req.body));
+        console.log(`[HTTP Response Body]:`, formatBodyForTerminal(parsedBody));
         console.log('----------------------------------------------------');
+      }
+
+      if (shouldTraceApiResponse()) {
+        void traceApiResponse({
+          name: `api-response ${req.method} ${req.originalUrl}`,
+          input: req.body,
+          output: parsedBody,
+          statusCode: res.statusCode,
+          durationMs: duration,
+          userId: (req as any).user?.id,
+          metadata: {
+            method: req.method,
+            url: req.originalUrl,
+            requestId,
+          },
+        });
       }
     }
     return originalSend.call(this, body);

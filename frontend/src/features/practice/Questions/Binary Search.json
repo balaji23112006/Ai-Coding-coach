@@ -10,9 +10,7 @@
       "nums is sorted in strictly increasing order",
       "-1000000000 <= target <= 1000000000"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -127,9 +125,7 @@
       "nums is sorted in strictly increasing order",
       "-1000000000 <= target <= 1000000000"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -244,9 +240,7 @@
       "nums is sorted in non-decreasing order",
       "-1000000000 <= target <= 1000000000"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -360,9 +354,7 @@
       "-1000000000 <= nums[i] <= 1000000000",
       "nums[i] != nums[i + 1] for all valid i"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -482,9 +474,7 @@
       "nums is originally sorted in ascending order and then rotated",
       "-1000000000 <= target <= 1000000000"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -611,9 +601,7 @@
       "Exactly one element appears once",
       "All other elements appear exactly twice"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -727,9 +715,7 @@
       "1 <= piles[i] <= 1000000000",
       "piles.length <= h <= 1000000000"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -853,9 +839,7 @@
       "1 <= weights[i] <= 100000",
       "1 <= days <= weights.length"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -981,9 +965,7 @@
       "-1000000 <= nums1[i], nums2[i] <= 1000000",
       "nums1 and nums2 are sorted in non-decreasing order"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1107,9 +1089,7 @@
       "1 <= nums[i] <= 100000",
       "1 <= k <= min(50, nums.length)"
     ],
-    "topics": [
-      "Binary Search"
-    ],
+    "topics": ["Binary Search"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

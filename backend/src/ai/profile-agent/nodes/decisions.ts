@@ -76,7 +76,8 @@ export function routeTopicStatsAlternative(state: typeof ProfileAgentState.State
  * If no, check if we can run another tool to fetch them (D3A).
  */
 export function routeSubmissionsMeaningful(state: typeof ProfileAgentState.State): string {
-  const hasSubmissions = state.submissions && state.submissions.length >= ANALYSIS_CONFIG.MIN_SUBMISSIONS;
+  const hasSubmissions =
+    state.submissions && state.submissions.length >= ANALYSIS_CONFIG.MIN_SUBMISSIONS;
   if (hasSubmissions) {
     return 'checkRecentActivity';
   }
@@ -103,7 +104,8 @@ export function routeSubmissionsAlternative(state: typeof ProfileAgentState.Stat
  */
 export function routeRecentActivityAvailable(state: typeof ProfileAgentState.State): string {
   const recentSolved = state.recentActivity
-    ? state.recentActivity.filter(a => a.type === 'SUBMISSION' && a.meta.status === 'ACCEPTED').length
+    ? state.recentActivity.filter((a) => a.type === 'SUBMISSION' && a.meta.status === 'ACCEPTED')
+        .length
     : 0;
   const hasRecentActivity = recentSolved >= ANALYSIS_CONFIG.MIN_RECENT_ACTIVITY;
   if (hasRecentActivity) {

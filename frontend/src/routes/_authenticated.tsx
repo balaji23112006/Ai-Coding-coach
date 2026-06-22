@@ -1,24 +1,27 @@
-import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
-import { motion } from 'framer-motion'
-import { useEffect } from 'react'
-import { useAuth } from '@/features/authentication'
+import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router';
+import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { useAuth } from '@/features/authentication';
 
 export const Route = createFileRoute('/_authenticated')({
   component: AuthenticatedLayout,
-})
+});
 
 function AuthenticatedLayout() {
-  const { isAuthenticated, isLoading } = useAuth()
-  const navigate = useNavigate()
+  const { isAuthenticated, isLoading } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       void navigate({
         to: '/auth/login',
-        search: { redirect: window.location.href } as Record<string, string>,
-      })
+        search: { redirect: window.location.pathname + window.location.search } as Record<
+          string,
+          string
+        >,
+      });
     }
-  }, [isLoading, isAuthenticated, navigate])
+  }, [isLoading, isAuthenticated, navigate]);
 
   if (isLoading) {
     return (
@@ -31,16 +34,16 @@ function AuthenticatedLayout() {
         <motion.p
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="mt-6 text-sm font-bold uppercase tracking-widest text-violet-400 animate-pulse"
+          className="mt-6 animate-pulse text-sm font-bold uppercase tracking-widest text-violet-400"
         >
           Securing Environment...
         </motion.p>
       </div>
-    )
+    );
   }
 
   if (!isAuthenticated) {
-    return null
+    return null;
   }
 
   return (
@@ -51,6 +54,5 @@ function AuthenticatedLayout() {
         <Outlet />
       </div>
     </div>
-  )
+  );
 }
-

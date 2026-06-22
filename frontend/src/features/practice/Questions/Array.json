@@ -4,13 +4,8 @@
     "title": "Largest Element in Array",
     "difficulty": "Easy",
     "description": "Given an integer array nums, return the largest element present in the array.",
-    "constraints": [
-      "1 <= nums.length <= 100000",
-      "-1000000000 <= nums[i] <= 1000000000"
-    ],
-    "topics": [
-      "Arrays"
-    ],
+    "constraints": ["1 <= nums.length <= 100000", "-1000000000 <= nums[i] <= 1000000000"],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -103,13 +98,8 @@
     "title": "Maximum Consecutive Ones",
     "difficulty": "Easy",
     "description": "Given a binary array nums, return the maximum number of consecutive 1's in the array.",
-    "constraints": [
-      "1 <= nums.length <= 100000",
-      "nums[i] is either 0 or 1"
-    ],
-    "topics": [
-      "Arrays"
-    ],
+    "constraints": ["1 <= nums.length <= 100000", "nums[i] is either 0 or 1"],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -203,13 +193,8 @@
     "title": "Maximum Subarray",
     "difficulty": "Medium",
     "description": "Given an integer array nums, find the contiguous subarray with the largest sum and return its sum.",
-    "constraints": [
-      "1 <= nums.length <= 100000",
-      "-100000 <= nums[i] <= 100000"
-    ],
-    "topics": [
-      "Arrays"
-    ],
+    "constraints": ["1 <= nums.length <= 100000", "-100000 <= nums[i] <= 100000"],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -308,9 +293,7 @@
       "-100000 <= nums[i] <= 100000",
       "0 <= k <= 100000"
     ],
-    "topics": [
-      "Arrays"
-    ],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -404,13 +387,8 @@
     "title": "Move Zeroes",
     "difficulty": "Medium",
     "description": "Given an integer array nums, move all 0's to the end of the array while maintaining the relative order of the non-zero elements. Return the modified array.",
-    "constraints": [
-      "1 <= nums.length <= 100000",
-      "-100000 <= nums[i] <= 100000"
-    ],
-    "topics": [
-      "Arrays"
-    ],
+    "constraints": ["1 <= nums.length <= 100000", "-100000 <= nums[i] <= 100000"],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -504,13 +482,8 @@
     "title": "Best Time to Buy and Sell Stock",
     "difficulty": "Medium",
     "description": "You are given an array prices where prices[i] represents the price of a stock on the i-th day. You may choose one day to buy one stock and a different future day to sell that stock. Return the maximum profit you can achieve. If no profit can be made, return 0.",
-    "constraints": [
-      "1 <= prices.length <= 100000",
-      "0 <= prices[i] <= 100000"
-    ],
-    "topics": [
-      "Arrays"
-    ],
+    "constraints": ["1 <= prices.length <= 100000", "0 <= prices[i] <= 100000"],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -609,9 +582,7 @@
       "-1000000000 <= nums[i] <= 1000000000",
       "A majority element always exists"
     ],
-    "topics": [
-      "Arrays"
-    ],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -712,9 +683,7 @@
       "The number of positive and negative integers is equal",
       "0 is not present in the array"
     ],
-    "topics": [
-      "Arrays"
-    ],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -813,9 +782,7 @@
       "-10 <= nums[i] <= 10",
       "The answer will fit in a 32-bit signed integer"
     ],
-    "topics": [
-      "Arrays"
-    ],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -919,13 +886,8 @@
     "title": "Merge Overlapping Intervals",
     "difficulty": "Hard",
     "description": "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals and return an array of the non-overlapping intervals that cover all the intervals in the input.",
-    "constraints": [
-      "1 <= intervals.length <= 100000",
-      "0 <= starti <= endi <= 1000000"
-    ],
-    "topics": [
-      "Arrays"
-    ],
+    "constraints": ["1 <= intervals.length <= 100000", "0 <= starti <= endi <= 1000000"],
+    "topics": ["Arrays"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

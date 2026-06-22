@@ -13,7 +13,7 @@ async function runTests() {
       console.log("Hello from JavaScript!");
       const sum = (a, b) => a + b;
       console.log("Sum of 5 and 7 is:", sum(5, 7));
-    `
+    `,
   };
 
   const jsResult = await codeExecutionService.execute(jsPayload);
@@ -29,7 +29,7 @@ def fibonacci(n):
         return n
     return fibonacci(n-1) + fibonacci(n-2)
 print("Fibonacci(8) is:", fibonacci(8))
-`
+`,
   };
 
   const pyResult = await codeExecutionService.execute(pyPayload);

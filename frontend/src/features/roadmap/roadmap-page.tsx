@@ -1,49 +1,121 @@
-import { useState, useEffect, useRef, Suspense, useMemo } from 'react'
-import { Link } from '@tanstack/react-router'
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Sphere, Text } from '@react-three/drei'
-import * as THREE from 'three'
-import {
-  Bot,
-  CheckCircle2,
-  Lock,
-  PlayCircle,
-} from 'lucide-react'
+import { useState, useEffect, useRef, Suspense, useMemo } from 'react';
+import { Link } from '@tanstack/react-router';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Float, Sphere, Text } from '@react-three/drei';
+import * as THREE from 'three';
+import { Bot, CheckCircle2, Lock, PlayCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { TopNavigation } from '@/components/common/top-navigation'
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { TopNavigation } from '@/components/common/top-navigation';
 
 // --- Extended Data with Stats (All Zeroed) ---
-export type NodeStatus = 'completed' | 'current' | 'locked'
+export type NodeStatus = 'completed' | 'current' | 'locked';
 
 export interface RoadmapNode {
-  id: string
-  title: string
-  status: NodeStatus
-  problems: string
-  position: 'left' | 'right'
+  id: string;
+  title: string;
+  status: NodeStatus;
+  problems: string;
+  position: 'left' | 'right';
   stats: {
-    completion: number
-    accuracy: number
-    timeSpent: string
-  }
+    completion: number;
+    accuracy: number;
+    timeSpent: string;
+  };
 }
 
 const roadmapNodes: RoadmapNode[] = [
-  { id: 'basics', title: 'Programming Basics', status: 'current', problems: '0/15 Problems Solved', position: 'left', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'arrays', title: 'Arrays', status: 'locked', problems: '0/15 Problems Solved', position: 'right', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'strings', title: 'Strings', status: 'locked', problems: '0/12 Problems Solved', position: 'left', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'hashmaps', title: 'Hash Maps', status: 'locked', problems: '0/10 Problems Solved', position: 'right', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'linkedlists', title: 'Linked Lists', status: 'locked', problems: '0/12 Problems Solved', position: 'left', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'stack', title: 'Stack', status: 'locked', problems: '0/12 Problems Solved', position: 'right', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'binary-search', title: 'Binary Search', status: 'locked', problems: '0/12 Problems Solved', position: 'left', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'trees', title: 'Trees', status: 'locked', problems: '0/15 Problems Solved', position: 'right', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'graphs', title: 'Graphs', status: 'locked', problems: '0/20 Problems Solved', position: 'left', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'mixed-topics', title: 'Mixed Topics', status: 'locked', problems: '0/20 Problems Solved', position: 'right', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-  { id: 'dp', title: 'Dynamic Programming', status: 'locked', problems: '0/25 Problems Solved', position: 'left', stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' } },
-]
+  {
+    id: 'basics',
+    title: 'Programming Basics',
+    status: 'current',
+    problems: '0/15 Problems Solved',
+    position: 'left',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'arrays',
+    title: 'Arrays',
+    status: 'locked',
+    problems: '0/15 Problems Solved',
+    position: 'right',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'strings',
+    title: 'Strings',
+    status: 'locked',
+    problems: '0/12 Problems Solved',
+    position: 'left',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'hashmaps',
+    title: 'Hash Maps',
+    status: 'locked',
+    problems: '0/10 Problems Solved',
+    position: 'right',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'linkedlists',
+    title: 'Linked Lists',
+    status: 'locked',
+    problems: '0/12 Problems Solved',
+    position: 'left',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'stack',
+    title: 'Stack',
+    status: 'locked',
+    problems: '0/12 Problems Solved',
+    position: 'right',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'binary-search',
+    title: 'Binary Search',
+    status: 'locked',
+    problems: '0/12 Problems Solved',
+    position: 'left',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'trees',
+    title: 'Trees',
+    status: 'locked',
+    problems: '0/15 Problems Solved',
+    position: 'right',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'graphs',
+    title: 'Graphs',
+    status: 'locked',
+    problems: '0/20 Problems Solved',
+    position: 'left',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'mixed-topics',
+    title: 'Mixed Topics',
+    status: 'locked',
+    problems: '0/20 Problems Solved',
+    position: 'right',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+  {
+    id: 'dp',
+    title: 'Dynamic Programming',
+    status: 'locked',
+    problems: '0/25 Problems Solved',
+    position: 'left',
+    stats: { completion: 0, accuracy: 0, timeSpent: '0h 0m' },
+  },
+];
 
 const skillMastery = [
   { name: 'Basics', progress: 0 },
@@ -57,41 +129,62 @@ const skillMastery = [
   { name: 'Graphs', progress: 0 },
   { name: 'Mixed Topics', progress: 0 },
   { name: 'Dynamic Programming', progress: 0 },
-]
+];
 
-const codeSymbols = ['{ }', '</>', '0101', '=>', '[]', '()', '&&', '||', '!=', '++', 'return', 'const']
+const codeSymbols = [
+  '{ }',
+  '</>',
+  '0101',
+  '=>',
+  '[]',
+  '()',
+  '&&',
+  '||',
+  '!=',
+  '++',
+  'return',
+  'const',
+];
 
 // --- 3D Background with Coding Types & Mouse Parallax ---
 function CodingRoadmap3D({ isDark }: { isDark: boolean }) {
-  const groupRef = useRef<THREE.Group>(null)
-  const wireframeRef = useRef<THREE.Mesh>(null)
+  const groupRef = useRef<THREE.Group>(null);
+  const wireframeRef = useRef<THREE.Mesh>(null);
 
   // Track mouse movement to rotate the entire 3D scene (Parallax effect)
   useFrame((state) => {
-    const t = state.clock.getElapsedTime()
-    
+    const t = state.clock.getElapsedTime();
+
     if (wireframeRef.current) {
-      wireframeRef.current.rotation.x = t * 0.15
-      wireframeRef.current.rotation.y = t * 0.2
+      wireframeRef.current.rotation.x = t * 0.15;
+      wireframeRef.current.rotation.y = t * 0.2;
     }
 
     if (groupRef.current) {
-      groupRef.current.rotation.y += 0.001
+      groupRef.current.rotation.y += 0.001;
       // Interactive Mouse Parallax (Tilts based on cursor position)
-      const targetX = (state.pointer.x * 0.2)
-      const targetY = (state.pointer.y * 0.2)
-      
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -targetY, 0.05)
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetX, 0.05)
+      const targetX = state.pointer.x * 0.2;
+      const targetY = state.pointer.y * 0.2;
+
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(
+        groupRef.current.rotation.x,
+        -targetY,
+        0.05,
+      );
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(
+        groupRef.current.rotation.y,
+        targetX,
+        0.05,
+      );
     }
-  })
+  });
 
   // Memoize positions so they don't regenerate on every render
   const codeCloudConfig = useMemo(() => {
     return codeSymbols.map((symbol, i) => {
-      const phi = Math.acos(-1 + (2 * i) / codeSymbols.length)
-      const theta = Math.sqrt(codeSymbols.length * Math.PI) * phi
-      const radius = 6 // Spread out wider for background
+      const phi = Math.acos(-1 + (2 * i) / codeSymbols.length);
+      const theta = Math.sqrt(codeSymbols.length * Math.PI) * phi;
+      const radius = 6; // Spread out wider for background
 
       return {
         symbol,
@@ -99,19 +192,19 @@ function CodingRoadmap3D({ isDark }: { isDark: boolean }) {
         y: radius * Math.sin(theta) * Math.sin(phi),
         z: radius * Math.cos(phi),
         speed: 1.5 + ((i * 7) % 10) / 10,
-      }
-    })
-  }, [])
+      };
+    });
+  }, []);
 
   return (
     <group ref={groupRef}>
       {/* Central Tech Wireframe Sphere */}
       <Sphere ref={wireframeRef} args={[3, 16, 16]}>
-        <meshBasicMaterial 
-          color={isDark ? "#8b5cf6" : "#a78bfa"} 
-          wireframe 
-          transparent 
-          opacity={isDark ? 0.15 : 0.3} 
+        <meshBasicMaterial
+          color={isDark ? '#8b5cf6' : '#a78bfa'}
+          wireframe
+          transparent
+          opacity={isDark ? 0.15 : 0.3}
         />
       </Sphere>
 
@@ -121,7 +214,7 @@ function CodingRoadmap3D({ isDark }: { isDark: boolean }) {
           <Text
             position={[config.x, config.y, config.z]}
             fontSize={0.6}
-            color={isDark ? "#c4b5fd" : "#8b5cf6"}
+            color={isDark ? '#c4b5fd' : '#8b5cf6'}
             anchorX="center"
             anchorY="middle"
             fillOpacity={isDark ? 0.4 : 0.7}
@@ -131,91 +224,120 @@ function CodingRoadmap3D({ isDark }: { isDark: boolean }) {
         </Float>
       ))}
     </group>
-  )
+  );
 }
 
 // --- Main Page Component ---
 export function RoadmapPage() {
-  const [isDark, setIsDark] = useState(true)
-  const [expandedNode, setExpandedNode] = useState<string | null>(null)
-  const [data, setData] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const containerRef = useRef<HTMLDivElement>(null)
-  
+  const [isDark, setIsDark] = useState(true);
+  const [expandedNode, setExpandedNode] = useState<string | null>(null);
+  const [data, setData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    let active = true
-    fetch('/api/progress/roadmap')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch roadmap data')
-        return res.json()
-      })
-      .then(json => {
-        if (active && json.success) {
-          setData(json)
-        }
-      })
-      .catch(err => {
-        console.error('Error fetching roadmap:', err)
-      })
-      .finally(() => {
-        if (active) setIsLoading(false)
-      })
-    return () => { active = false }
-  }, [])
+    let active = true;
+
+    const loadData = () => {
+      fetch('/api/progress/roadmap')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch roadmap data');
+          return res.json();
+        })
+        .then((json) => {
+          if (active && json.success) {
+            setData(json);
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching roadmap:', err);
+        })
+        .finally(() => {
+          if (active) setIsLoading(false);
+        });
+    };
+
+    loadData();
+
+    const handleRefresh = () => {
+      loadData();
+    };
+
+    window.addEventListener('skill-lens:practice-progress-updated', handleRefresh);
+
+    return () => {
+      active = false;
+      window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh);
+    };
+  }, []);
 
   // Scroll Progress for the curved path
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
-  })
-  
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 15 })
+    offset: ['start start', 'end end'],
+  });
 
-  const themeClass = isDark 
-    ? 'dark bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a103c] via-[#0d081e] to-[#070510] text-slate-100' 
-    : 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-50 via-slate-50 to-slate-100 text-slate-900'
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 15 });
 
-  const panelClass = isDark 
-    ? 'rounded-2xl border border-white/[0.06] bg-[#120d20]/80 backdrop-blur-xl shadow-xl' 
-    : 'rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-xl shadow-xl'
+  const themeClass = isDark
+    ? 'dark bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a103c] via-[#0d081e] to-[#070510] text-slate-100'
+    : 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-50 via-slate-50 to-slate-100 text-slate-900';
 
-  const nodes = data?.roadmapNodes || roadmapNodes
-  const mastery = data?.skillMastery || skillMastery
-  const overallCompletion = data?.stats?.overallCompletion ?? 0
-  const completedTopicsCount = data?.stats?.completedTopicsCount ?? 0
-  const totalProblemsSolved = data?.stats?.totalProblemsSolved ?? 0
+  const panelClass = isDark
+    ? 'rounded-2xl border border-white/[0.06] bg-[#120d20]/80 backdrop-blur-xl shadow-xl'
+    : 'rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-xl shadow-xl';
+
+  const nodes = data?.roadmapNodes || roadmapNodes;
+  const mastery = data?.skillMastery || skillMastery;
+  const overallCompletion = data?.stats?.overallCompletion ?? 0;
+  const completedTopicsCount = data?.stats?.completedTopicsCount ?? 0;
+  const totalProblemsSolved = data?.stats?.totalProblemsSolved ?? 0;
 
   // Calculate current stage title dynamically
-  const currentStageNode = nodes.find((n: any) => n.status === 'current')
-  const currentStageTitle = currentStageNode ? currentStageNode.title : 'All Mastered!'
+  const currentStageNode = nodes.find((n: any) => n.status === 'current');
+  const currentStageTitle = currentStageNode ? currentStageNode.title : 'All Mastered!';
 
   // Dynamic AI coach advice
-  const coachAdviceTitle = overallCompletion === 0 
-    ? 'Start with the Basics.' 
-    : overallCompletion < 50 
-      ? 'Making steady progress!' 
-      : 'Tackling advanced topics!'
-  
-  const coachAdviceText = overallCompletion === 0
-    ? 'You are at the beginning of your journey. Solve foundational problems to start building your mastery score.'
-    : `You have completed ${completedTopicsCount} topics. Keep practicing to build confidence and unlock remaining modules.`
+  const coachAdviceTitle =
+    overallCompletion === 0
+      ? 'Start with the Basics.'
+      : overallCompletion < 50
+        ? 'Making steady progress!'
+        : 'Tackling advanced topics!';
+
+  const coachAdviceText =
+    overallCompletion === 0
+      ? 'You are at the beginning of your journey. Solve foundational problems to start building your mastery score.'
+      : `You have completed ${completedTopicsCount} topics. Keep practicing to build confidence and unlock remaining modules.`;
 
   if (isLoading) {
     return (
-      <div className={cn("min-h-screen flex items-center justify-center font-sans antialiased", themeClass)}>
+      <div
+        className={cn(
+          'flex min-h-screen items-center justify-center font-sans antialiased',
+          themeClass,
+        )}
+      >
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-violet-500 border-t-transparent animate-spin" />
-          <p className="text-sm font-bold tracking-wider text-violet-400">LOADING DYNAMIC ROADMAP...</p>
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-violet-500 border-t-transparent" />
+          <p className="text-sm font-bold tracking-wider text-violet-400">
+            LOADING DYNAMIC ROADMAP...
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className={cn("min-h-screen overflow-x-hidden font-sans antialiased transition-all duration-500", themeClass)} ref={containerRef}>
-      
+    <div
+      className={cn(
+        'min-h-screen overflow-x-hidden font-sans antialiased transition-all duration-500',
+        themeClass,
+      )}
+      ref={containerRef}
+    >
       {/* 3D Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      <div className="pointer-events-none fixed inset-0 z-0">
         <Suspense fallback={null}>
           <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
             <ambientLight intensity={isDark ? 0.6 : 1.2} />
@@ -228,45 +350,59 @@ export function RoadmapPage() {
       <TopNavigation isDark={isDark} setIsDark={setIsDark} activeTab="roadmap" />
 
       {/* Main Content */}
-      <main className="relative z-10 mx-auto max-w-[1400px] px-4 pt-36 pb-32 sm:px-6 lg:px-8">
-        
+      <main className="relative z-10 mx-auto max-w-[1400px] px-4 pb-32 pt-36 sm:px-6 lg:px-8">
         {/* Animated Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
           className="mb-16 text-center"
         >
-          <h1 className={cn("text-5xl md:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b", isDark ? "from-white via-slate-200 to-violet-400" : "from-slate-900 via-slate-700 to-violet-600")}>
+          <h1
+            className={cn(
+              'bg-gradient-to-b bg-clip-text text-5xl font-black tracking-tighter text-transparent md:text-7xl',
+              isDark
+                ? 'from-white via-slate-200 to-violet-400'
+                : 'from-slate-900 via-slate-700 to-violet-600',
+            )}
+          >
             YOUR ROADMAP
           </h1>
-          <p className={cn("mt-6 text-lg font-medium max-w-2xl mx-auto", isDark ? "text-slate-400" : "text-slate-600")}>
-            Track your progress, unlock new topics, and follow a structured, interactive path from beginner to advanced problem solving.
+          <p
+            className={cn(
+              'mx-auto mt-6 max-w-2xl text-lg font-medium',
+              isDark ? 'text-slate-400' : 'text-slate-600',
+            )}
+          >
+            Track your progress, unlock new topics, and follow a structured, interactive path from
+            beginner to advanced problem solving.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
-          
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_400px]">
           {/* Left Column: The Interactive Winding Roadmap */}
           <div className="relative py-10">
-            
             {/* The Winding SVG Path */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-[200px] -translate-x-1/2 pointer-events-none z-0">
-              <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 200 1000">
-                <path 
-                  d="M100,0 C200,150 0,300 100,500 C200,700 0,850 100,1000" 
-                  fill="none" 
-                  strokeWidth="4" 
-                  className={cn(isDark ? "stroke-white/[0.05]" : "stroke-slate-200")} 
+            <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 z-0 w-[200px] -translate-x-1/2">
+              <svg className="h-full w-full" preserveAspectRatio="none" viewBox="0 0 200 1000">
+                <path
+                  d="M100,0 C200,150 0,300 100,500 C200,700 0,850 100,1000"
+                  fill="none"
+                  strokeWidth="4"
+                  className={cn(isDark ? 'stroke-white/[0.05]' : 'stroke-slate-200')}
                   vectorEffect="non-scaling-stroke"
                 />
               </svg>
-              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 200 1000">
-                <motion.path 
-                  d="M100,0 C200,150 0,300 100,500 C200,700 0,850 100,1000" 
-                  fill="none" 
-                  strokeWidth="6" 
-                  className="stroke-violet-500" 
+              <svg
+                className="absolute inset-0 h-full w-full"
+                preserveAspectRatio="none"
+                viewBox="0 0 200 1000"
+              >
+                <motion.path
+                  d="M100,0 C200,150 0,300 100,500 C200,700 0,850 100,1000"
+                  fill="none"
+                  strokeWidth="6"
+                  className="stroke-violet-500"
                   vectorEffect="non-scaling-stroke"
                   style={{ pathLength: smoothProgress }}
                   strokeLinecap="round"
@@ -274,55 +410,95 @@ export function RoadmapPage() {
               </svg>
             </div>
 
-            <div className="space-y-28 relative z-10">
+            <div className="relative z-10 space-y-28">
               {nodes.map((node: any) => {
-                const isLeft = node.position === 'left'
-                const isLocked = node.status === 'locked'
-                const isCurrent = node.status === 'current'
-                const isExpanded = expandedNode === node.id
+                const isLeft = node.position === 'left';
+                const isLocked = node.status === 'locked';
+                const isCurrent = node.status === 'current';
+                const isExpanded = expandedNode === node.id;
 
                 return (
-                  <motion.div 
+                  <motion.div
                     key={node.id}
                     initial={{ opacity: 0, y: 60, scale: 0.95 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    viewport={{ once: false, amount: 0.3, margin: "0px 0px -100px 0px" }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className={cn("flex items-center w-full relative", isLeft ? "justify-start md:pr-[55%]" : "justify-end md:pl-[55%] flex-row-reverse md:flex-row")}
+                    viewport={{ once: false, amount: 0.3, margin: '0px 0px -100px 0px' }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    className={cn(
+                      'relative flex w-full items-center',
+                      isLeft
+                        ? 'justify-start md:pr-[55%]'
+                        : 'flex-row-reverse justify-end md:flex-row md:pl-[55%]',
+                    )}
                   >
                     {/* Interactive Node Card */}
-                    <div 
+                    <div
                       onClick={() => setExpandedNode(isExpanded ? null : node.id)}
                       className={cn(
-                        "w-full p-6 transition-all duration-500 cursor-pointer relative group",
+                        'group relative w-full cursor-pointer p-6 transition-all duration-500',
                         panelClass,
-                        "hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(139,92,246,0.2)]",
-                        isLocked && !isExpanded ? "opacity-80" : "opacity-100", 
-                        isCurrent && (isDark ? "ring-2 ring-violet-500 shadow-[0_0_20px_rgba(139,92,246,0.3)] bg-violet-500/10" : "ring-2 ring-violet-500 shadow-xl bg-violet-50"),
-                        isExpanded && "ring-2 ring-cyan-400 z-20"
+                        'hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(139,92,246,0.2)]',
+                        isLocked && !isExpanded ? 'opacity-80' : 'opacity-100',
+                        isCurrent &&
+                          (isDark
+                            ? 'bg-violet-500/10 shadow-[0_0_20px_rgba(139,92,246,0.3)] ring-2 ring-violet-500'
+                            : 'bg-violet-50 shadow-xl ring-2 ring-violet-500'),
+                        isExpanded && 'z-20 ring-2 ring-cyan-400',
                       )}
                     >
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className={cn("text-xl font-bold transition-colors", isDark ? "text-white group-hover:text-violet-300" : "text-slate-900 group-hover:text-violet-700")}>
+                      <div className="mb-2 flex items-center justify-between">
+                        <h3
+                          className={cn(
+                            'text-xl font-bold transition-colors',
+                            isDark
+                              ? 'text-white group-hover:text-violet-300'
+                              : 'text-slate-900 group-hover:text-violet-700',
+                          )}
+                        >
                           {node.title}
                         </h3>
-                        <div className={cn("flex items-center justify-center w-9 h-9 rounded-full transition-transform group-hover:scale-110", 
-                          isLocked ? (isDark ? "bg-white/10 text-slate-400" : "bg-slate-200 text-slate-500") :
-                          isCurrent ? "bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.6)]" : 
-                          "bg-emerald-500 text-white"
-                        )}>
-                          {isLocked ? <Lock className="w-4 h-4" /> : 
-                           isCurrent ? <PlayCircle className="w-4 h-4" /> : 
-                           <CheckCircle2 className="w-4 h-4" />}
+                        <div
+                          className={cn(
+                            'flex h-9 w-9 items-center justify-center rounded-full transition-transform group-hover:scale-110',
+                            isLocked
+                              ? isDark
+                                ? 'bg-white/10 text-slate-400'
+                                : 'bg-slate-200 text-slate-500'
+                              : isCurrent
+                                ? 'bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.6)]'
+                                : 'bg-emerald-500 text-white',
+                          )}
+                        >
+                          {isLocked ? (
+                            <Lock className="h-4 w-4" />
+                          ) : isCurrent ? (
+                            <PlayCircle className="h-4 w-4" />
+                          ) : (
+                            <CheckCircle2 className="h-4 w-4" />
+                          )}
                         </div>
                       </div>
-                      
-                      <p className={cn("text-sm font-semibold mb-4", isDark ? "text-slate-400" : "text-slate-500")}>
-                        {isCurrent ? "In Progress" : isLocked ? "Requires Previous Module" : "Mastered"}
+
+                      <p
+                        className={cn(
+                          'mb-4 text-sm font-semibold',
+                          isDark ? 'text-slate-400' : 'text-slate-500',
+                        )}
+                      >
+                        {isCurrent
+                          ? 'In Progress'
+                          : isLocked
+                            ? 'Requires Previous Module'
+                            : 'Mastered'}
                       </p>
 
                       <div className="flex items-center gap-3">
-                        <div className={cn("text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-md", isDark ? "bg-white/10 text-slate-200" : "bg-slate-100 text-slate-700")}>
+                        <div
+                          className={cn(
+                            'rounded-md px-3 py-1.5 text-xs font-bold uppercase tracking-wider',
+                            isDark ? 'bg-white/10 text-slate-200' : 'bg-slate-100 text-slate-700',
+                          )}
+                        >
                           {node.problems}
                         </div>
                       </div>
@@ -330,30 +506,81 @@ export function RoadmapPage() {
                       {/* Expandable Stats Section */}
                       <AnimatePresence>
                         {isExpanded && (
-                          <motion.div 
+                          <motion.div
                             initial={{ height: 0, opacity: 0, marginTop: 0 }}
                             animate={{ height: 'auto', opacity: 1, marginTop: 24 }}
                             exit={{ height: 0, opacity: 0, marginTop: 0 }}
                             className="overflow-hidden"
                           >
-                            <div className={cn("pt-4 border-t", isDark ? "border-white/10" : "border-slate-200")}>
+                            <div
+                              className={cn(
+                                'border-t pt-4',
+                                isDark ? 'border-white/10' : 'border-slate-200',
+                              )}
+                            >
                               <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                  <p className={cn("text-[10px] font-bold uppercase tracking-wider mb-1", isDark ? "text-slate-500" : "text-slate-400")}>Completion</p>
-                                  <p className={cn("text-lg font-black", isDark ? "text-cyan-400" : "text-violet-600")}>{node.stats.completion}%</p>
+                                  <p
+                                    className={cn(
+                                      'mb-1 text-[10px] font-bold uppercase tracking-wider',
+                                      isDark ? 'text-slate-500' : 'text-slate-400',
+                                    )}
+                                  >
+                                    Completion
+                                  </p>
+                                  <p
+                                    className={cn(
+                                      'text-lg font-black',
+                                      isDark ? 'text-cyan-400' : 'text-violet-600',
+                                    )}
+                                  >
+                                    {node.stats.completion}%
+                                  </p>
                                 </div>
                                 <div>
-                                  <p className={cn("text-[10px] font-bold uppercase tracking-wider mb-1", isDark ? "text-slate-500" : "text-slate-400")}>Accuracy</p>
-                                  <p className={cn("text-lg font-black", isDark ? "text-emerald-400" : "text-emerald-600")}>{node.stats.accuracy}%</p>
+                                  <p
+                                    className={cn(
+                                      'mb-1 text-[10px] font-bold uppercase tracking-wider',
+                                      isDark ? 'text-slate-500' : 'text-slate-400',
+                                    )}
+                                  >
+                                    Accuracy
+                                  </p>
+                                  <p
+                                    className={cn(
+                                      'text-lg font-black',
+                                      isDark ? 'text-emerald-400' : 'text-emerald-600',
+                                    )}
+                                  >
+                                    {node.stats.accuracy}%
+                                  </p>
                                 </div>
                                 <div>
-                                  <p className={cn("text-[10px] font-bold uppercase tracking-wider mb-1", isDark ? "text-slate-500" : "text-slate-400")}>Time</p>
-                                  <p className={cn("text-lg font-black", isDark ? "text-white" : "text-slate-900")}>{node.stats.timeSpent}</p>
+                                  <p
+                                    className={cn(
+                                      'mb-1 text-[10px] font-bold uppercase tracking-wider',
+                                      isDark ? 'text-slate-500' : 'text-slate-400',
+                                    )}
+                                  >
+                                    Time
+                                  </p>
+                                  <p
+                                    className={cn(
+                                      'text-lg font-black',
+                                      isDark ? 'text-white' : 'text-slate-900',
+                                    )}
+                                  >
+                                    {node.stats.timeSpent}
+                                  </p>
                                 </div>
                               </div>
-                              <Link to="/practice" className="w-full mt-6 block">
-                                <Button className="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold">
-                                  {isLocked ? "View Prerequisites" : isCurrent ? "Continue Practice" : "Review Problems"}
+                              <Link to="/practice" className="mt-6 block w-full">
+                                <Button className="w-full bg-violet-600 font-bold text-white hover:bg-violet-500">
+                                  {isLocked
+                                    ? 'View Prerequisites'
+                                    : isCurrent
+                                      ? 'Continue Practice'
+                                      : 'Review Problems'}
                                 </Button>
                               </Link>
                             </div>
@@ -363,51 +590,97 @@ export function RoadmapPage() {
                     </div>
 
                     {/* The Center Node Dot */}
-                    <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center w-8 h-8 rounded-full border-4 z-20 transition-transform hover:scale-125 cursor-pointer"
-                         style={{ backgroundColor: isDark ? '#0d081e' : '#f8fafc', borderColor: isDark ? '#0d081e' : '#f8fafc' } as React.CSSProperties}>
-                      <div className={cn(
-                        "w-full h-full rounded-full transition-colors duration-500",
-                        isLocked ? (isDark ? "bg-slate-700" : "bg-slate-300") : "bg-violet-500 shadow-[0_0_15px_rgba(139,92,246,1)]"
-                      )} />
+                    <div
+                      className="absolute left-1/2 z-20 flex h-8 w-8 -translate-x-1/2 cursor-pointer items-center justify-center rounded-full border-4 transition-transform hover:scale-125"
+                      style={
+                        {
+                          backgroundColor: isDark ? '#0d081e' : '#f8fafc',
+                          borderColor: isDark ? '#0d081e' : '#f8fafc',
+                        } as React.CSSProperties
+                      }
+                    >
+                      <div
+                        className={cn(
+                          'h-full w-full rounded-full transition-colors duration-500',
+                          isLocked
+                            ? isDark
+                              ? 'bg-slate-700'
+                              : 'bg-slate-300'
+                            : 'bg-violet-500 shadow-[0_0_15px_rgba(139,92,246,1)]',
+                        )}
+                      />
                     </div>
                   </motion.div>
-                )
+                );
               })}
             </div>
           </div>
 
           {/* Right Column: Sticky Sidebar Stats */}
-          <div className="space-y-6 md:sticky md:top-28 h-fit">
-            
+          <div className="h-fit space-y-6 md:sticky md:top-28">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               whileHover={{ y: -6, scale: 1.015 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
               className={cn(
                 panelClass,
-                "p-6 cursor-default transition-[border-color,background-color,box-shadow] duration-300",
+                'cursor-default p-6 transition-[border-color,background-color,box-shadow] duration-300',
                 isDark
-                  ? "hover:border-violet-500/50 hover:bg-violet-500/[0.08] hover:shadow-[0_18px_45px_rgba(139,92,246,0.2)]"
-                  : "hover:border-violet-300 hover:bg-violet-50/90 hover:shadow-[0_18px_45px_rgba(109,40,217,0.15)]"
+                  ? 'hover:border-violet-500/50 hover:bg-violet-500/[0.08] hover:shadow-[0_18px_45px_rgba(139,92,246,0.2)]'
+                  : 'hover:border-violet-300 hover:bg-violet-50/90 hover:shadow-[0_18px_45px_rgba(109,40,217,0.15)]',
               )}
             >
-              <h2 className={cn("text-xs font-black uppercase tracking-widest mb-6", isDark ? "text-slate-400" : "text-slate-500")}>Progress Overview</h2>
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className={cn("text-6xl font-black", isDark ? "text-white" : "text-slate-900")}>{overallCompletion}%</span>
-                <span className={cn("text-sm font-bold uppercase", isDark ? "text-slate-500" : "text-slate-500")}>Overall</span>
+              <h2
+                className={cn(
+                  'mb-6 text-xs font-black uppercase tracking-widest',
+                  isDark ? 'text-slate-400' : 'text-slate-500',
+                )}
+              >
+                Progress Overview
+              </h2>
+              <div className="mb-6 flex items-baseline gap-2">
+                <span
+                  className={cn('text-6xl font-black', isDark ? 'text-white' : 'text-slate-900')}
+                >
+                  {overallCompletion}%
+                </span>
+                <span
+                  className={cn(
+                    'text-sm font-bold uppercase',
+                    isDark ? 'text-slate-500' : 'text-slate-500',
+                  )}
+                >
+                  Overall
+                </span>
               </div>
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
-                  <span className={isDark ? "text-slate-400 font-medium" : "text-slate-600 font-medium"}>Topics Completed</span>
-                  <span className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>{completedTopicsCount} / {nodes.length}</span>
+                  <span
+                    className={isDark ? 'font-medium text-slate-400' : 'font-medium text-slate-600'}
+                  >
+                    Topics Completed
+                  </span>
+                  <span className={cn('font-bold', isDark ? 'text-white' : 'text-slate-900')}>
+                    {completedTopicsCount} / {nodes.length}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className={isDark ? "text-slate-400 font-medium" : "text-slate-600 font-medium"}>Problems Solved</span>
-                  <span className={cn("font-bold", isDark ? "text-white" : "text-slate-900")}>{totalProblemsSolved}</span>
+                  <span
+                    className={isDark ? 'font-medium text-slate-400' : 'font-medium text-slate-600'}
+                  >
+                    Problems Solved
+                  </span>
+                  <span className={cn('font-bold', isDark ? 'text-white' : 'text-slate-900')}>
+                    {totalProblemsSolved}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className={isDark ? "text-slate-400 font-medium" : "text-slate-600 font-medium"}>Current Stage</span>
+                  <span
+                    className={isDark ? 'font-medium text-slate-400' : 'font-medium text-slate-600'}
+                  >
+                    Current Stage
+                  </span>
                   <span className="font-bold text-violet-500">{currentStageTitle}</span>
                 </div>
               </div>
@@ -417,28 +690,47 @@ export function RoadmapPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               whileHover={{ y: -6, scale: 1.015 }}
-              transition={{ delay: 0.1, duration: 0.25, ease: "easeOut" }}
+              transition={{ delay: 0.1, duration: 0.25, ease: 'easeOut' }}
               className={cn(
                 panelClass,
-                "p-6 relative overflow-hidden cursor-default transition-[border-color,background-color,box-shadow] duration-300",
+                'relative cursor-default overflow-hidden p-6 transition-[border-color,background-color,box-shadow] duration-300',
                 isDark
-                  ? "hover:border-cyan-400/50 hover:bg-cyan-500/[0.07] hover:shadow-[0_18px_45px_rgba(34,211,238,0.18)]"
-                  : "hover:border-cyan-300 hover:bg-cyan-50/90 hover:shadow-[0_18px_45px_rgba(8,145,178,0.14)]"
+                  ? 'hover:border-cyan-400/50 hover:bg-cyan-500/[0.07] hover:shadow-[0_18px_45px_rgba(34,211,238,0.18)]'
+                  : 'hover:border-cyan-300 hover:bg-cyan-50/90 hover:shadow-[0_18px_45px_rgba(8,145,178,0.14)]',
               )}
             >
-              <div className={cn("absolute top-0 right-0 w-40 h-40 rounded-full blur-[60px] -z-10", isDark ? "bg-cyan-500/20" : "bg-cyan-400/20")} />
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/30">
-                  <Bot className="w-5 h-5" />
+              <div
+                className={cn(
+                  'absolute right-0 top-0 -z-10 h-40 w-40 rounded-full blur-[60px]',
+                  isDark ? 'bg-cyan-500/20' : 'bg-cyan-400/20',
+                )}
+              />
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 text-white shadow-lg shadow-cyan-500/30">
+                  <Bot className="h-5 w-5" />
                 </div>
-                <h2 className={cn("text-xs font-black uppercase tracking-widest", isDark ? "text-cyan-400" : "text-blue-700")}>AI Coach Advice</h2>
+                <h2
+                  className={cn(
+                    'text-xs font-black uppercase tracking-widest',
+                    isDark ? 'text-cyan-400' : 'text-blue-700',
+                  )}
+                >
+                  AI Coach Advice
+                </h2>
               </div>
-              <p className={cn("text-xl font-bold mb-3", isDark ? "text-white" : "text-slate-900")}>{coachAdviceTitle}</p>
-              <p className={cn("text-sm font-medium leading-relaxed mb-6", isDark ? "text-slate-400" : "text-slate-600")}>
+              <p className={cn('mb-3 text-xl font-bold', isDark ? 'text-white' : 'text-slate-900')}>
+                {coachAdviceTitle}
+              </p>
+              <p
+                className={cn(
+                  'mb-6 text-sm font-medium leading-relaxed',
+                  isDark ? 'text-slate-400' : 'text-slate-600',
+                )}
+              >
                 {coachAdviceText}
               </p>
-              <Link to="/practice" className="w-full block">
-                <Button className="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black tracking-wide">
+              <Link to="/practice" className="block w-full">
+                <Button className="w-full bg-cyan-500 font-black tracking-wide text-slate-950 hover:bg-cyan-400">
                   View Recommended Problems
                 </Button>
               </Link>
@@ -448,39 +740,54 @@ export function RoadmapPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               whileHover={{ y: -6, scale: 1.015 }}
-              transition={{ delay: 0.2, duration: 0.25, ease: "easeOut" }}
+              transition={{ delay: 0.2, duration: 0.25, ease: 'easeOut' }}
               className={cn(
                 panelClass,
-                "p-6 cursor-default transition-[border-color,background-color,box-shadow] duration-300",
+                'cursor-default p-6 transition-[border-color,background-color,box-shadow] duration-300',
                 isDark
-                  ? "hover:border-violet-500/50 hover:bg-violet-500/[0.08] hover:shadow-[0_18px_45px_rgba(139,92,246,0.2)]"
-                  : "hover:border-violet-300 hover:bg-violet-50/90 hover:shadow-[0_18px_45px_rgba(109,40,217,0.15)]"
+                  ? 'hover:border-violet-500/50 hover:bg-violet-500/[0.08] hover:shadow-[0_18px_45px_rgba(139,92,246,0.2)]'
+                  : 'hover:border-violet-300 hover:bg-violet-50/90 hover:shadow-[0_18px_45px_rgba(109,40,217,0.15)]',
               )}
             >
-              <h2 className={cn("text-xs font-black uppercase tracking-widest mb-6", isDark ? "text-slate-400" : "text-slate-500")}>Skill Mastery</h2>
+              <h2
+                className={cn(
+                  'mb-6 text-xs font-black uppercase tracking-widest',
+                  isDark ? 'text-slate-400' : 'text-slate-500',
+                )}
+              >
+                Skill Mastery
+              </h2>
               <div className="space-y-5">
                 {mastery.map((skill: any) => (
                   <div key={skill.name}>
-                    <div className="flex justify-between text-xs font-bold mb-2">
-                      <span className={isDark ? "text-slate-200" : "text-slate-800"}>{skill.name}</span>
-                      <span className={isDark ? "text-slate-400" : "text-slate-500"}>{skill.progress}%</span>
+                    <div className="mb-2 flex justify-between text-xs font-bold">
+                      <span className={isDark ? 'text-slate-200' : 'text-slate-800'}>
+                        {skill.name}
+                      </span>
+                      <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>
+                        {skill.progress}%
+                      </span>
                     </div>
-                    <div className={cn("h-2 w-full rounded-full overflow-hidden", isDark ? "bg-white/10" : "bg-slate-200")}>
-                      <motion.div 
+                    <div
+                      className={cn(
+                        'h-2 w-full overflow-hidden rounded-full',
+                        isDark ? 'bg-white/10' : 'bg-slate-200',
+                      )}
+                    >
+                      <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${skill.progress}%` }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="h-full bg-gradient-to-r from-violet-500 to-cyan-400 rounded-full" 
+                        transition={{ duration: 1, ease: 'easeOut' }}
+                        className="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400"
                       />
                     </div>
                   </div>
                 ))}
               </div>
             </motion.div>
-
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }

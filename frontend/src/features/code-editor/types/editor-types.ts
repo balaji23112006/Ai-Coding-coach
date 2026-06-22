@@ -45,15 +45,21 @@ export interface Submission {
   problemId: string;
   language: SupportedLanguage;
   code: string;
-  status: 'Accepted' | 'Wrong Answer' | 'Time Limit Exceeded' | 'Runtime Error' | 'Pending' | 'Compile Error';
+  status:
+    | 'Accepted'
+    | 'Wrong Answer'
+    | 'Time Limit Exceeded'
+    | 'Runtime Error'
+    | 'Pending'
+    | 'Compile Error';
   submittedAt: string;
+  stdout?: string;
   runtime?: number;
   memory?: number;
   passedCount?: number;
   totalCount?: number;
   failedCases?: FailedTestCase[];
   stderr?: string;
-  stdout?: string;
 }
 
 export type SubmissionStatus = Submission['status'];

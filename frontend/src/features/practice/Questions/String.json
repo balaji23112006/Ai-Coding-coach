@@ -4,13 +4,8 @@
     "title": "Valid Palindrome",
     "difficulty": "Easy",
     "description": "Given a string s, determine whether it is a palindrome after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters. Return true if it is a palindrome, otherwise return false.",
-    "constraints": [
-      "1 <= s.length <= 100000",
-      "s consists of printable ASCII characters"
-    ],
-    "topics": [
-      "Strings"
-    ],
+    "constraints": ["1 <= s.length <= 100000", "s consists of printable ASCII characters"],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -123,9 +118,7 @@
       "1 <= s.length <= 100000",
       "s contains English letters, digits, punctuation, and spaces"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -234,9 +227,7 @@
       "0 <= strs[i].length <= 1000",
       "strs[i] consists of lowercase English letters"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -345,9 +336,7 @@
       "t.length == s.length",
       "s and t consist of any valid ASCII characters"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -456,13 +445,8 @@
     "title": "String Compression",
     "difficulty": "Medium",
     "description": "Given a string s consisting of lowercase English letters, compress it using run-length encoding. Replace each sequence of consecutive identical characters with the character followed by its count. Return the compressed string.",
-    "constraints": [
-      "1 <= s.length <= 100000",
-      "s consists of lowercase English letters only"
-    ],
-    "topics": [
-      "Strings"
-    ],
+    "constraints": ["1 <= s.length <= 100000", "s consists of lowercase English letters only"],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -575,9 +559,7 @@
       "0 <= s.length <= 100000",
       "s consists of English letters, digits, symbols and spaces"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -691,9 +673,7 @@
       "0 <= strs[i].length <= 100",
       "strs[i] consists of lowercase English letters"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -802,9 +782,7 @@
       "1 <= t.length <= 100000",
       "s and t consist of English letters"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -913,13 +891,8 @@
     "title": "Longest Palindromic Substring",
     "difficulty": "Hard",
     "description": "Given a string s, return the longest palindromic substring in s. If multiple answers exist, return any one of them.",
-    "constraints": [
-      "1 <= s.length <= 1000",
-      "s consists of English letters and digits"
-    ],
-    "topics": [
-      "Strings"
-    ],
+    "constraints": ["1 <= s.length <= 1000", "s consists of English letters and digits"],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {
@@ -1033,9 +1006,7 @@
       "1 <= p.length <= 100000",
       "s and p consist of lowercase English letters"
     ],
-    "topics": [
-      "Strings"
-    ],
+    "topics": ["Strings"],
     "time_limit": 1000,
     "memory_limit": 256,
     "starter_code": {

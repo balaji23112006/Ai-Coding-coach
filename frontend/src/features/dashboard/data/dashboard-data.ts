@@ -10,13 +10,13 @@ export const activityData = [
   { day: 'Jun 6', solved: 8 },
   { day: 'Jun 9', solved: 12 },
   { day: 'Jun 11', solved: 11 },
-]
+];
 
 export const difficultyData = [
   { difficulty: 'Easy', solved: 78, fill: '#34d399' },
   { difficulty: 'Medium', solved: 56, fill: '#fbbf24' },
   { difficulty: 'Hard', solved: 22, fill: '#fb7185' },
-]
+];
 
 export const masteryData = [
   { topic: 'Arrays', mastery: 91 },
@@ -27,7 +27,7 @@ export const masteryData = [
   { topic: 'Greedy', mastery: 69 },
   { topic: 'Backtrack', mastery: 58 },
   { topic: 'Recursion', mastery: 75 },
-]
+];
 
 export const weakAreas = [
   {
@@ -54,7 +54,7 @@ export const weakAreas = [
     color: 'from-emerald-500 to-lime-400',
     problems: ['Jump Game', 'Gas Station', 'Partition Labels'],
   },
-]
+];
 
 export const recommendations = [
   {
@@ -78,22 +78,22 @@ export const recommendations = [
     time: '35 min',
     accent: 'amber',
   },
-]
+];
 
 export const recentActivity = [
   { title: 'Solved Two Sum', time: '2 hours ago', kind: 'solve' },
   { title: 'Completed Binary Search Topic', time: 'Yesterday', kind: 'topic' },
   { title: 'Achieved 10-Day Streak', time: '3 days ago', kind: 'streak' },
   { title: 'Unlocked Graph Explorer Badge', time: 'Last week', kind: 'badge' },
-]
+];
 
 export const heatmapData = Array.from({ length: 371 }, (_, index) => {
-  const value = (index * 7 + index * index * 3) % 13
-  const level = value < 4 ? 0 : value < 7 ? 1 : value < 10 ? 2 : value < 12 ? 3 : 4
+  const value = (index * 7 + index * index * 3) % 13;
+  const level = value < 4 ? 0 : value < 7 ? 1 : value < 10 ? 2 : value < 12 ? 3 : 4;
 
   return {
     id: `activity-day-${index + 1}`,
     level,
     count: level === 0 ? 0 : level * 2 + (index % 3),
-  }
-})
+  };
+});

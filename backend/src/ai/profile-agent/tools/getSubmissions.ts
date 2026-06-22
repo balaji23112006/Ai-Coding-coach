@@ -12,7 +12,9 @@ export interface GetSubmissionsParams {
  * Fetches user's coding submissions, sorted by date (newest first).
  * @param params Filters and pagination parameters.
  */
-export async function getSubmissions(params: GetSubmissionsParams): Promise<SubmissionWithQuestion[]> {
+export async function getSubmissions(
+  params: GetSubmissionsParams,
+): Promise<SubmissionWithQuestion[]> {
   const { userId, limit = 10, status } = params;
   try {
     const whereClause: any = { userId };
@@ -20,7 +22,7 @@ export async function getSubmissions(params: GetSubmissionsParams): Promise<Subm
       whereClause.status = status;
     }
 
-    return await prisma.submission.findMany({
+    return (await prisma.submission.findMany({
       where: whereClause,
       take: limit,
       orderBy: { createdAt: 'desc' },
@@ -33,16 +35,19 @@ export async function getSubmissions(params: GetSubmissionsParams): Promise<Subm
           },
         },
       },
-    }) as SubmissionWithQuestion[];
+    })) as SubmissionWithQuestion[];
   } catch (error) {
     console.error(`[Tool: getSubmissions] Error fetching submissions for user ${userId}:`, error);
-    throw new Error(`Failed to retrieve submissions: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to retrieve submissions: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
 export const getSubmissionsTool = {
   name: 'getSubmissions',
-  description: "Fetches user's code submissions, sorted by date (newest first), with optional limit and status filters.",
+  description:
+    "Fetches user's code submissions, sorted by date (newest first), with optional limit and status filters.",
   execute: async (params: GetSubmissionsParams): Promise<SubmissionWithQuestion[]> => {
     return await getSubmissions(params);
   },

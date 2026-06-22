@@ -60,13 +60,16 @@ export async function saveProfile(params: SaveProfileParams): Promise<UserProfil
     });
   } catch (error) {
     console.error(`[Tool: saveProfile] Error saving profile for user ${userId}:`, error);
-    throw new Error(`Failed to save user profile: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to save user profile: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
 export const saveProfileTool = {
   name: 'saveProfile',
-  description: "Saves or updates a user's skill profile, including coding category scores and solved problem statistics.",
+  description:
+    "Saves or updates a user's skill profile, including coding category scores and solved problem statistics.",
   execute: async (params: SaveProfileParams): Promise<UserProfile> => {
     return await saveProfile(params);
   },

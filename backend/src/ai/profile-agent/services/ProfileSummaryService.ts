@@ -13,7 +13,8 @@ export class ProfileSummaryService {
 
   constructor() {
     this.apiKey = process.env.GEMINI_API_KEY || '';
-    this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+    this.baseUrl =
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
   }
 
   /**
@@ -25,11 +26,10 @@ export class ProfileSummaryService {
   private async callGemini(
     prompt: string,
     traceId?: string,
-    promptType: string = 'gemini-llm-call'
+    promptType: string = 'gemini-llm-call',
   ): Promise<string> {
     if (!this.apiKey) {
-      console.warn('[ProfileSummaryService] GEMINI_API_KEY is not set. Returning fallback content.');
-      return 'AI Coach feedback: Please set GEMINI_API_KEY in your environment to load personalized feedback summaries.';
+      throw new Error('GEMINI_API_KEY is not configured in the environment.');
     }
 
     let generation: any = null;
@@ -91,6 +91,7 @@ export class ProfileSummaryService {
               totalTokens: usageMetadata?.totalTokenCount || 0,
             },
           });
+          await langfuse.flushAsync();
         } catch (err) {
           console.error('[ProfileSummaryService] Error ending Langfuse generation:', err);
         }
@@ -106,6 +107,7 @@ export class ProfileSummaryService {
             level: 'ERROR',
             statusMessage: error instanceof Error ? error.message : String(error),
           });
+          await langfuse.flushAsync();
         } catch (err) {
           console.error('[ProfileSummaryService] Error ending Langfuse generation on error:', err);
         }
@@ -150,18 +152,8 @@ Do NOT use markdown headers or markdown bullets. Just use the '•' character at
       }
       return response;
     } catch (err) {
-      console.warn('[ProfileSummaryService] Gemini call failed, generating smart fallback summary:', err);
-      const strengthsText = strongAreas.length > 0 
-        ? `You have shown strong competencies in ${strongAreas.join(', ')}.`
-        : 'You are starting to practice and establish initial competencies.';
-      
-      const weaknessesText = weakAreas.length > 0
-        ? `Focus on strengthening your understanding in ${weakAreas.join(', ')}.`
-        : 'Keep solving diverse challenges to identify focus areas.';
-      
-      const focusText = `We suggest targeting topics matching your focus parameters to build robust problem-solving patterns.`;
-
-      return `• STANDING: You are assessed at the ${level} skill level. Your progress is monitored by the AI coach.\n• KEY STRENGTHS: ${strengthsText}\n• AREAS TO IMPROVE: ${weaknessesText}\n• RECOMMENDED FOCUS: ${focusText}`;
+      console.error('[ProfileSummaryService] generateProfileSummary failed:', err);
+      throw err;
     }
   }
 
@@ -196,19 +188,10 @@ Do NOT use markdown headers or markdown bullets. Just use the '•' character at
       }
       return response;
     } catch (err) {
-      console.warn('[ProfileSummaryService] Gemini call failed, generating smart fallback trend explanation:', err);
-      const activityText = `Logged ${recentActivityCount} coding attempts recently, demonstrating active participation.`;
-      
-      const trendList = trends.length > 0
-        ? `${trends.join(', ')}.`
-        : 'Initial momentum is building. No distinct pattern changes detected yet.';
-
-      const motivationText = 'Consistent daily practice is the key to mastering complex algorithms. Keep pushing your limits!';
-
-      return `• LEARNING ACTIVITY: ${activityText}\n• CURRENT TRENDS: ${trendList}\n• MOMENTUM ADVICE: ${motivationText}`;
+      console.error('[ProfileSummaryService] generateTrendExplanation failed:', err);
+      throw err;
     }
   }
 }
 
 export const profileSummaryService = new ProfileSummaryService();
-

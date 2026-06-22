@@ -1,63 +1,63 @@
 import { Request, Response, NextFunction } from 'express';
 import { submissionService } from '../services/submission.service.js';
-import { auth } from '../../../lib/auth.js';
-import { fromNodeHeaders } from 'better-auth/node';
-import { prisma } from '../../../database/prisma.js';
+import { logger } from '../../../shared/utils/logger.js';
 
 export class SubmissionController {
-  async run(req: Request, res: Response, next: NextFunction) {
+  async runCode(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await submissionService.runCode(req.body);
+      const { questionId, language, sourceCode } = req.body;
+      const userId = (req as any).user?.id;
+
+      logger.info(`[SubmissionCtrl] runCode: questionId=${questionId}, language=${language}`);
+
+      const result = await submissionService.runCode({
+        questionId,
+        userId,
+        language,
+        sourceCode,
+      });
+
       return res.status(200).json(result);
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      logger.error('[SubmissionCtrl] runCode failed:', error);
+      next(error);
     }
   }
 
-  async submit(req: Request, res: Response, next: NextFunction) {
+  async submitCode(req: Request, res: Response, next: NextFunction) {
     try {
-      let userId = req.body.userId;
-      if (!userId) {
-        try {
-          const session = await auth.api.getSession({
-            headers: fromNodeHeaders(req.headers),
-          });
-          if (session?.user) {
-            userId = session.user.id;
-          } else {
-            // Fallback to example user so that dashboard progress updates
-            const exampleUser = await prisma.user.findUnique({
-              where: { email: 'aniket@example.com' },
-            });
-            if (exampleUser) {
-              userId = exampleUser.id;
-            }
-          }
-        } catch (e) {
-          console.error('[SubmissionController] Failed to resolve user session:', e);
-        }
-      }
+      const { questionId, language, sourceCode } = req.body;
+      const userId = (req as any).user?.id;
+
+      logger.info(`[SubmissionCtrl] submitCode: questionId=${questionId}, language=${language}`);
 
       const result = await submissionService.submitCode({
-        ...req.body,
+        questionId,
         userId,
+        language,
+        sourceCode,
       });
-      return res.status(201).json(result);
-    } catch (err) {
-      next(err);
+
+      return res.status(200).json(result);
+    } catch (error) {
+      logger.error('[SubmissionCtrl] submitCode failed:', error);
+      next(error);
     }
   }
 
-  async getById(req: Request, res: Response, next: NextFunction) {
+  async getSubmissions(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      const submission = await submissionService.getSubmission(id);
-      return res.status(200).json({
-        success: true,
-        data: submission,
-      });
-    } catch (err) {
-      next(err);
+      const { questionId } = req.params;
+      const userId = (req as any).user?.id;
+
+      logger.info(`[SubmissionCtrl] getSubmissions: questionId=${questionId}, userId=${userId}`);
+
+      const result = await submissionService.getSubmissionHistory(questionId, userId);
+
+      return res.status(200).json(result);
+    } catch (error) {
+      logger.error('[SubmissionCtrl] getSubmissions failed:', error);
+      next(error);
     }
   }
 }
