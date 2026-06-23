@@ -17,10 +17,17 @@ export async function searchProblems({
   topics: string[];
   difficulty: string;
 }) {
+  const selectedTopic =
+  topics.find(
+    (topic) =>
+      topic !== "Arrays & Hashing" &&
+      topic !== "Graphs & Trees" &&
+      topic !== "Stacks & Queues"
+  ) || topics[0];
   const { items } = (await problemRepository.findMany({
     page: 1,
     pageSize: 10,
-    topic: topics[0],
+    topic: selectedTopic,
     difficulty: difficulty as 'Easy' | 'Medium' | 'Hard',
   })) as { items: SearchProblemItem[] };
 

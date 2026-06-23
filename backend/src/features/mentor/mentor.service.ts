@@ -1,13 +1,16 @@
 // src/features/mentor/mentor.service.ts
 import { logger } from '../../shared/utils/logger.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { mapStringToLanguage } from '../../execution/types/execution.types.js';
 
 // Placeholder external tools – in real implementation they'd call actual services or DB
-async function get_hint_history(userId: string, questionId: string) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function get_hint_history(userId: string, _questionId: string) {
   // TODO: fetch from DB
   return [];
 }
-async function get_question_metadata(questionId: string) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function get_question_metadata(_questionId: string) {
   // TODO: fetch from DB
   return { description: '', constraints: '', starterCode: '' };
 }
@@ -35,10 +38,12 @@ export class MentorService {
     executionResult: { status: string; stdout: string; stderr: string };
     previousChat?: any[];
   }) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { userId, questionId, language, executionResult } = request;
 
     // 1. Fetch history & metadata
-    const [hintHistory, questionMeta] = await Promise.all([
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [hintHistory, _questionMeta] = await Promise.all([
       get_hint_history(userId, questionId),
       get_question_metadata(questionId),
     ]);

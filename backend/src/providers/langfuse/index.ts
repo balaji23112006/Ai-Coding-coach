@@ -25,7 +25,7 @@ export function getLangfuse(): Langfuse {
 
 // Backward-compatible export: proxies all property access to the lazily-initialized instance.
 export const langfuse: Langfuse = new Proxy({} as Langfuse, {
-  get(_target, prop, receiver) {
+  get(_target, prop, _receiver) {
     const instance = getLangfuse();
     const value = (instance as any)[prop];
     if (typeof value === 'function') {

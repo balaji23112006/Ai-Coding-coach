@@ -459,18 +459,18 @@ else:
       profileGraph
         .invoke({ userId, traceId })
         .then(async (finalState) => {
-          let summary = '';
-          let trendExplanation = '';
+          let _summary = '';
+          let _trendExplanation = '';
           if (finalState.profileStatus !== 'BOOTSTRAP') {
             try {
-              summary = await profileSummaryService.generateProfileSummary({
+              _summary = await profileSummaryService.generateProfileSummary({
                 level: finalState.level,
                 mastery: finalState.mastery,
                 strongAreas: finalState.strongAreas,
                 weakAreas: finalState.weakAreas,
                 traceId,
               });
-              trendExplanation = await profileSummaryService.generateTrendExplanation({
+              _trendExplanation = await profileSummaryService.generateTrendExplanation({
                 trends: finalState.trends,
                 recentActivityCount: finalState.recentActivity.length,
                 traceId,
