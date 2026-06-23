@@ -11,17 +11,17 @@ model User {
   id              String       @id @default(cuid())
   fullName        String
   username        String       @unique
+  displayUsername String?
   email           String       @unique
+  emailVerified   Boolean      @default(false)
+  image           String?
   password        String?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
-  emailVerified   Boolean      @default(false)
-  image           String?
-  displayUsername String?
   bio             String?
-  role            String?
   language        String?
-  profile         UserProfile?
+  role            String?
+  Profile         UserProfile?
   accounts        Account[]
   sessions        Session[]
   submissions     Submission[]
@@ -74,25 +74,6 @@ model Verification {
   @@map("verification")
 }
 
-model UserProfile {
-  id                    String   @id @default(cuid())
-  userId                String   @unique
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skills                Json     @default("{}")
-  solvedCount           Int      @default(0)
-  easySolved            Int      @default(0)
-  mediumSolved          Int      @default(0)
-  hardSolved            Int      @default(0)
-  learningTrack         String?
-  experienceLevel       String?
-  recommendedFocus      String?
-  recommendedDifficulty String?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-
-  @@map("user_profile")
-}
-
 model Submission {
   id              String           @id @default(cuid())
   language        Language
@@ -103,33 +84,13 @@ model Submission {
   executionTime   Int
   memoryUsed      Int
   outputTruncated Boolean          @default(false)
-  testsPassed     Int              @default(0)
-  testsTotal      Int              @default(0)
   createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @default(now()) @updatedAt
   userId          String?
   questionId      String?
   question        Question?        @relation(fields: [questionId], references: [id])
   user            User?            @relation(fields: [userId], references: [id])
-  testResults     TestResult[]
 
   @@map("submission")
-}
-
-model TestResult {
-  id            String     @id @default(cuid())
-  submissionId  String
-  submission    Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  testCaseId    String
-  passed        Boolean
-  expectedOutput String
-  actualOutput  String?
-  stderr        String?
-  executionTime Int?
-  memoryUsed    Int?
-  createdAt     DateTime   @default(now())
-
-  @@map("test_result")
 }
 
 model Question {
@@ -178,12 +139,28 @@ model TestCase {
   @@map("test_cases")
 }
 
+model UserProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills                Json     @default("{}")
+  solvedCount           Int      @default(0)
+  easySolved            Int      @default(0)
+  mediumSolved          Int      @default(0)
+  hardSolved            Int      @default(0)
+  learningTrack         String?
+  experienceLevel       String?
+  recommendedFocus      String?
+  recommendedDifficulty String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("user_profile")
+}
+
 enum Language {
   JAVASCRIPT
   PYTHON
-  TYPESCRIPT
-  JAVA
-  CPP
 }
 
 enum SubmissionStatus {

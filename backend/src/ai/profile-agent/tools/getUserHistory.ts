@@ -34,8 +34,14 @@ export interface UserHistoryResult {
  */
 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {
   try {
-    const profile = await prisma.userProfile.findUnique({
-      where: { userId },
+    console.log("Prisma:", prisma);
+
+console.log(
+  "Prisma UserProfile:",
+  prisma.user
+);
+    const profile = await prisma.user.findUnique({
+      where: { id: userId },
     });
 
     const submissions = await prisma.submission.findMany({
@@ -55,18 +61,18 @@ export async function getUserHistory(userId: string): Promise<UserHistoryResult>
     return {
       userId,
       profile: profile
-        ? {
-            skills: (profile.skills as Record<string, number>) || {},
-            solvedCount: profile.solvedCount,
-            easySolved: profile.easySolved,
-            mediumSolved: profile.mediumSolved,
-            hardSolved: profile.hardSolved,
-            learningTrack: profile.learningTrack,
-            experienceLevel: profile.experienceLevel,
-            recommendedFocus: (profile as any).recommendedFocus,
-            recommendedDifficulty: (profile as any).recommendedDifficulty,
-          }
-        : null,
+  ? {
+      skills: {},
+      solvedCount: 0,
+      easySolved: 0,
+      mediumSolved: 0,
+      hardSolved: 0,
+      learningTrack: null,
+      experienceLevel: null,
+      recommendedFocus: null,
+      recommendedDifficulty: null,
+    }
+  : null,
       submissions: submissions.map((sub) => ({
         id: sub.id,
         language: sub.language,
