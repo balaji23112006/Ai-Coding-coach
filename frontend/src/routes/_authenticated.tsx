@@ -13,9 +13,13 @@ function AuthenticatedLayout() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
+      const currentPath = window.location.pathname;
+      if (currentPath.startsWith('/auth/login')) {
+        return;
+      }
       void navigate({
         to: '/auth/login',
-        search: { redirect: window.location.pathname + window.location.search } as Record<
+        search: { redirect: currentPath + window.location.search } as Record<
           string,
           string
         >,

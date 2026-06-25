@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { agentLogger } from './AgentLogger.js';
 import { langfuse } from '../../../providers/langfuse/index.js';
+import { groq, isGroqConfigured } from '../../../providers/groq/index.js';
 
 /**
  * Service to interact with Gemini API (gemini-2.5-flash)
@@ -18,103 +19,202 @@ export class ProfileSummaryService {
   }
 
   /**
-   * Private helper to execute a fetch request to the Gemini API endpoint.
+   * Private helper to execute an LLM call.
+   * Tries Groq first (if configured), falling back to Gemini.
    * @param prompt The string prompt to send to the model.
    * @param traceId Optional trace ID to log the LLM generation.
    * @param promptType The category or name of this LLM task.
    */
-  private async callGemini(
+  private async callLLM(
     prompt: string,
     traceId?: string,
-    promptType: string = 'gemini-llm-call',
+    promptType: string = 'profile-agent-call',
   ): Promise<string> {
-    if (!this.apiKey) {
-      throw new Error('GEMINI_API_KEY is not configured in the environment.');
-    }
+    const errors: string[] = [];
 
-    let generation: any = null;
-    if (traceId) {
-      try {
-        const trace = langfuse.trace({ id: traceId });
-        generation = trace.generation({
-          name: promptType,
-          model: 'gemini-2.5-flash',
-          input: prompt,
-          startTime: new Date(),
-        });
-      } catch (err) {
-        console.error('[ProfileSummaryService] Error creating Langfuse generation:', err);
+    // 1. Try Groq (FREE – primary)
+    if (isGroqConfigured()) {
+      let generation: any = null;
+      if (traceId) {
+        try {
+          const trace = langfuse.trace({ id: traceId });
+          generation = trace.generation({
+            name: `${promptType}-groq`,
+            model: 'llama-3.3-70b-versatile',
+            input: prompt,
+            startTime: new Date(),
+          });
+        } catch (err) {
+          console.error('[ProfileSummaryService] Error creating Langfuse Groq generation:', err);
+        }
       }
-    }
 
-    try {
-      const response = await fetch(`${this.baseUrl}?key=${this.apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
+      try {
+        const res = await groq.chat.completions.create({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
             {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
+              role: 'user',
+              content: prompt,
             },
           ],
-        }),
-      });
+          temperature: 0.3,
+          max_tokens: 500,
+        });
 
-      if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Gemini API returned status ${response.status}: ${errText}`);
-      }
+        const output = res.choices[0]?.message?.content || '';
+        const responseText = output.trim();
 
-      const data = (await response.json()) as any;
-      const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!generatedText) {
-        throw new Error('Invalid response structure from Gemini API');
-      }
-
-      const responseText = generatedText.trim();
-
-      if (generation) {
-        try {
-          const usageMetadata = data.usageMetadata;
-          generation.end({
-            output: responseText,
-            endTime: new Date(),
-            usage: {
-              promptTokens: usageMetadata?.promptTokenCount || 0,
-              completionTokens: usageMetadata?.candidatesTokenCount || 0,
-              totalTokens: usageMetadata?.totalTokenCount || 0,
-            },
-          });
-          await langfuse.flushAsync();
-        } catch (err) {
-          console.error('[ProfileSummaryService] Error ending Langfuse generation:', err);
+        if (generation) {
+          try {
+            generation.end({
+              output: responseText,
+              endTime: new Date(),
+              usage: res.usage
+                ? {
+                    promptTokens: res.usage.prompt_tokens,
+                    completionTokens: res.usage.completion_tokens,
+                    totalTokens: res.usage.total_tokens,
+                  }
+                : undefined,
+            });
+            await langfuse.flushAsync();
+          } catch (err) {
+            console.error('[ProfileSummaryService] Error ending Langfuse Groq generation:', err);
+          }
         }
-      }
 
-      return responseText;
-    } catch (error) {
-      if (generation) {
-        try {
-          generation.end({
-            output: error instanceof Error ? error.message : String(error),
-            endTime: new Date(),
-            level: 'ERROR',
-            statusMessage: error instanceof Error ? error.message : String(error),
-          });
-          await langfuse.flushAsync();
-        } catch (err) {
-          console.error('[ProfileSummaryService] Error ending Langfuse generation on error:', err);
+        if (traceId) {
+          agentLogger.logDecision(traceId, `Response successfully received from Groq LLM for ${promptType}.`);
         }
+        return responseText;
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        if (generation) {
+          try {
+            generation.end({
+              output: errorMsg,
+              endTime: new Date(),
+              level: 'ERROR',
+              statusMessage: errorMsg,
+            });
+            await langfuse.flushAsync();
+          } catch (err) {
+            console.error('[ProfileSummaryService] Error ending Langfuse Groq generation on error:', err);
+          }
+        }
+        console.error('[ProfileSummaryService] Error calling Groq API:', error);
+        if (traceId) {
+          agentLogger.logDecision(traceId, `Groq LLM call failed for ${promptType}: ${errorMsg}`);
+        }
+        errors.push(`Groq failed: ${errorMsg}`);
       }
-      console.error('[ProfileSummaryService] Error calling Gemini API:', error);
-      throw error;
+    } else {
+      errors.push('Groq is not configured');
     }
+
+    // 2. Fall back to Gemini
+    if (this.apiKey) {
+      let generation: any = null;
+      if (traceId) {
+        try {
+          const trace = langfuse.trace({ id: traceId });
+          generation = trace.generation({
+            name: `${promptType}-gemini`,
+            model: 'gemini-2.5-flash',
+            input: prompt,
+            startTime: new Date(),
+          });
+        } catch (err) {
+          console.error('[ProfileSummaryService] Error creating Langfuse Gemini generation:', err);
+        }
+      }
+
+      try {
+        const response = await fetch(`${this.baseUrl}?key=${this.apiKey}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: prompt,
+                  },
+                ],
+              },
+            ],
+          }),
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Gemini API returned status ${response.status}: ${errText}`);
+        }
+
+        const data = (await response.json()) as any;
+        const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!generatedText) {
+          throw new Error('Invalid response structure from Gemini API');
+        }
+
+        const responseText = generatedText.trim();
+
+        if (generation) {
+          try {
+            const usageMetadata = data.usageMetadata;
+            generation.end({
+              output: responseText,
+              endTime: new Date(),
+              usage: {
+                promptTokens: usageMetadata?.promptTokenCount || 0,
+                completionTokens: usageMetadata?.candidatesTokenCount || 0,
+                totalTokens: usageMetadata?.totalTokenCount || 0,
+              },
+            });
+            await langfuse.flushAsync();
+          } catch (err) {
+            console.error('[ProfileSummaryService] Error ending Langfuse Gemini generation:', err);
+          }
+        }
+
+        if (traceId) {
+          agentLogger.logDecision(traceId, `Response successfully received from Gemini LLM for ${promptType}.`);
+        }
+        return responseText;
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        if (generation) {
+          try {
+            generation.end({
+              output: errorMsg,
+              endTime: new Date(),
+              level: 'ERROR',
+              statusMessage: errorMsg,
+            });
+            await langfuse.flushAsync();
+          } catch (err) {
+            console.error('[ProfileSummaryService] Error ending Langfuse Gemini generation on error:', err);
+          }
+        }
+        console.error('[ProfileSummaryService] Error calling Gemini API:', error);
+        if (traceId) {
+          agentLogger.logDecision(traceId, `Gemini LLM call failed for ${promptType}: ${errorMsg}`);
+        }
+        errors.push(`Gemini failed: ${errorMsg}`);
+      }
+    } else {
+      errors.push('Gemini is not configured');
+    }
+
+    // 3. Throw combined error if both failed
+    const errorDetails = errors.join('; ');
+    if (traceId) {
+      agentLogger.logDecision(traceId, `All LLM providers failed for ${promptType}. Errors: ${errorDetails}`);
+    }
+    throw new Error(`All LLM providers failed for ${promptType}. Errors: ${errorDetails}`);
   }
 
   /**
@@ -146,7 +246,7 @@ Do NOT use markdown headers or markdown bullets. Just use the '•' character at
 `;
 
     try {
-      const response = await this.callGemini(prompt, traceId, 'generate-profile-summary');
+      const response = await this.callLLM(prompt, traceId, 'generate-profile-summary');
       if (traceId) {
         agentLogger.logPrompt(traceId, 'profile_summary', prompt, response);
       }
@@ -182,7 +282,7 @@ Do NOT use markdown headers or markdown bullets. Just use the '•' character at
 `;
 
     try {
-      const response = await this.callGemini(prompt, traceId, 'generate-trend-explanation');
+      const response = await this.callLLM(prompt, traceId, 'generate-trend-explanation');
       if (traceId) {
         agentLogger.logPrompt(traceId, 'trend_explanation', prompt, response);
       }

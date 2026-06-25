@@ -185,15 +185,24 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       sessionId: questionId,
     };
 
+    const providerFailures: string[] = [];
+
     // ── 1. Groq (FREE – primary) ───────────────────────────────────────────────
-    if (!mentorFeedback && isGroqConfigured()) {
-      try {
-        mentorFeedback = await groqChat(llmParams);
-        providerUsed = 'groq';
-        logger.info('[MentorAgent] ✅ Response from Groq (free primary)');
-        agentLogger.logDecision(traceId, 'Response received from Groq LLM');
-      } catch (e) {
-        logger.warn(`[MentorAgent] Groq failed: ${e instanceof Error ? e.message : String(e)}`);
+    if (!mentorFeedback) {
+      if (isGroqConfigured()) {
+        try {
+          mentorFeedback = await groqChat(llmParams);
+          providerUsed = 'groq';
+          logger.info('[MentorAgent] ✅ Response from Groq (free primary)');
+          agentLogger.logDecision(traceId, 'Response received from Groq LLM');
+        } catch (e) {
+          const errorMsg = e instanceof Error ? e.message : String(e);
+          logger.warn(`[MentorAgent] Groq failed: ${errorMsg}`);
+          agentLogger.logDecision(traceId, `Groq LLM call failed: ${errorMsg}`);
+          providerFailures.push(`Groq failed: ${errorMsg}`);
+        }
+      } else {
+        providerFailures.push('Groq not configured');
       }
     }
 
@@ -205,40 +214,61 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
         logger.info('[MentorAgent] ✅ Response from Gemini (free fallback)');
         agentLogger.logDecision(traceId, 'Response received from Gemini LLM');
       } catch (e) {
-        logger.warn(`[MentorAgent] Gemini failed: ${e instanceof Error ? e.message : String(e)}`);
+        const errorMsg = e instanceof Error ? e.message : String(e);
+        logger.warn(`[MentorAgent] Gemini failed: ${errorMsg}`);
+        agentLogger.logDecision(traceId, `Gemini LLM call failed: ${errorMsg}`);
+        providerFailures.push(`Gemini failed: ${errorMsg}`);
       }
     }
 
     // ── 3. HuggingFace (FREE – fallback) ──────────────────────────────────────
-    if (!mentorFeedback && isHuggingFaceConfigured()) {
-      try {
-        mentorFeedback = await huggingFaceChat(llmParams);
-        providerUsed = 'huggingface';
-        logger.info('[MentorAgent] ✅ Response from HuggingFace (free fallback)');
-        agentLogger.logDecision(traceId, 'Response received from HuggingFace LLM');
-      } catch (e) {
-        logger.warn(
-          `[MentorAgent] HuggingFace failed: ${e instanceof Error ? e.message : String(e)}`,
-        );
+    if (!mentorFeedback) {
+      if (isHuggingFaceConfigured()) {
+        try {
+          mentorFeedback = await huggingFaceChat(llmParams);
+          providerUsed = 'huggingface';
+          logger.info('[MentorAgent] ✅ Response from HuggingFace (free fallback)');
+          agentLogger.logDecision(traceId, 'Response received from HuggingFace LLM');
+        } catch (e) {
+          const errorMsg = e instanceof Error ? e.message : String(e);
+          logger.warn(
+            `[MentorAgent] HuggingFace failed: ${errorMsg}`,
+          );
+          agentLogger.logDecision(traceId, `HuggingFace LLM call failed: ${errorMsg}`);
+          providerFailures.push(`HuggingFace failed: ${errorMsg}`);
+        }
+      } else {
+        providerFailures.push('HuggingFace not configured');
       }
     }
 
     // ── 4. OpenAI (paid – optional upgrade) ───────────────────────────────────
-    if (!mentorFeedback && isOpenAIConfigured()) {
-      try {
-        mentorFeedback = await openaiChat(llmParams);
-        providerUsed = 'openai';
-        logger.info('[MentorAgent] ✅ Response from OpenAI (paid upgrade)');
-        agentLogger.logDecision(traceId, 'Response received from OpenAI LLM');
-      } catch (e) {
-        logger.warn(`[MentorAgent] OpenAI failed: ${e instanceof Error ? e.message : String(e)}`);
+    if (!mentorFeedback) {
+      if (isOpenAIConfigured()) {
+        try {
+          mentorFeedback = await openaiChat(llmParams);
+          providerUsed = 'openai';
+          logger.info('[MentorAgent] ✅ Response from OpenAI (paid upgrade)');
+          agentLogger.logDecision(traceId, 'Response received from OpenAI LLM');
+        } catch (e) {
+          const errorMsg = e instanceof Error ? e.message : String(e);
+          logger.warn(`[MentorAgent] OpenAI failed: ${errorMsg}`);
+          agentLogger.logDecision(traceId, `OpenAI LLM call failed: ${errorMsg}`);
+          providerFailures.push(`OpenAI failed: ${errorMsg}`);
+        }
+      } else {
+        providerFailures.push('OpenAI not configured');
       }
     }
 
     // ── 5. Static fallback (always works) ─────────────────────────────────────
     if (!mentorFeedback) {
       logger.warn('[MentorAgent] All LLM providers failed — using static fallback');
-      agentLogger.logDecision(traceId, 'All LLMs failed or bypassed. Using static fallback.');
+      const details = providerFailures.length > 0 ? ` Details: ${providerFailures.join('; ')}` : '';
+      agentLogger.logDecision(
+        traceId,
+        `All LLM providers failed or were bypassed. Using static fallback.${details}`,
+      );
     }
 
     // Log the prompt and raw LLM response in AgentLogger
@@ -257,12 +287,16 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
         logger.warn(`[MentorAgent] Guardrail triggered: ${guardrailResult.reason}`);
         agentLogger.logDecision(
           traceId,
-          `Guardrail triggered: ${guardrailResult.reason}. Overriding response.`,
+          `Guardrail triggered: ${guardrailResult.reason}. Overriding response with fallback.`,
         );
         mentorFeedback = getFallbackResponse(category, level);
       }
     } else {
       // LLM failed or returned empty — use fallback
+      agentLogger.logDecision(
+        traceId,
+        'LLM failed or returned empty response. Using fallback response.',
+      );
       mentorFeedback = getFallbackResponse(category, level);
     }
 
