@@ -20,6 +20,8 @@ import { OutputConsole } from '../components/output-console';
 import { useCodeEditor } from '../hooks/use-code-editor';
 import { useMentor } from '../hooks/use-mentor';
 import type { Problem, ExecutionResult } from '../types/editor-types';
+import { useAuth } from '@/features/authentication';
+import { EvaluationPanel } from '../components/evaluation-panel';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -200,6 +202,10 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const lastTriggeredResultRef = useRef<ExecutionResult | null>(null);
+
+  const { user } = useAuth();
+  const [showEvaluation, setShowEvaluation] = useState(false);
+  const [isEvaluating, setIsEvaluating] = useState(false);
 
   const {
     isCodeLoading,
@@ -454,7 +460,10 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
           {/* Mentor Toggle Button */}
           <button
             id="mentor-toggle-btn"
-            onClick={mentor.toggleOpen}
+            onClick={() => {
+              setShowEvaluation(false);
+              mentor.toggleOpen();
+            }}
             className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition ${
               mentor.isOpen
                 ? 'border-amber-500/50 bg-amber-500/15 text-amber-400'
@@ -561,12 +570,20 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
             {!bottomCollapsed && (
               <ActionButtons
                 isRunning={isRunning}
-                isSubmitting={isSubmitting}
+                isSubmitting={isSubmitting || isEvaluating}
                 onRun={runCode}
-                onSubmit={submitCode}
+                onSubmit={() => {
+                  if (mentor.isOpen) {
+                    mentor.toggleOpen();
+                  }
+                  setShowEvaluation(true);
+                }}
                 onReset={resetCode}
                 isCoachOpen={mentor.isOpen}
-                onToggleCoach={mentor.toggleOpen}
+                onToggleCoach={() => {
+                  setShowEvaluation(false);
+                  mentor.toggleOpen();
+                }}
               />
             )}
           </div>
@@ -582,6 +599,22 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               onClose={mentor.toggleOpen}
               onRequestHint={handleRequestHint}
               onSendMessage={mentor.sendMessage}
+            />
+          </div>
+        )}
+
+        {/* Right — Evaluation Panel (slide in) */}
+        {showEvaluation && (
+          <div className="animate-in slide-in-from-right-4 hidden h-full w-full shrink-0 overflow-hidden duration-200 md:block md:w-[25%]">
+            <EvaluationPanel
+              problemId={problem.id}
+              submittedCode={currentCode}
+              testCases={problem.testCases}
+              userId={user?.id || 'anonymous'}
+              language={selectedLanguage}
+              onClose={() => setShowEvaluation(false)}
+              isEvaluating={isEvaluating}
+              setIsEvaluating={setIsEvaluating}
             />
           </div>
         )}

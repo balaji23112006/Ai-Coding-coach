@@ -97,11 +97,11 @@ export function ActionButtons({
                 className="min-h-9 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-5 text-xs font-bold text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.15)] shadow-md shadow-amber-950/10 transition-all duration-300 hover:from-amber-400 hover:to-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.35)]"
               >
                 {isSubmitting ? (
-                  <span className="mr-1.5 h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-950 border-t-transparent" />
+                  <span className="mr-1.5 text-xs">⏳</span>
                 ) : (
                   <Send className="mr-1.5 h-3.5 w-3.5" />
                 )}
-                <span>Submit</span>
+                <span>{isSubmitting ? 'Evaluating...' : 'Submit'}</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent className="border-slate-800 bg-slate-950 font-mono text-[10px] text-slate-400">

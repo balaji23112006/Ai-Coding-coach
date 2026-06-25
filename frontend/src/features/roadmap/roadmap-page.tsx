@@ -233,7 +233,7 @@ export function RoadmapPage() {
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -273,7 +273,7 @@ export function RoadmapPage() {
 
   // Scroll Progress for the curved path
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: container ? { current: container } : undefined,
     offset: ['start start', 'end end'],
   });
 
@@ -334,7 +334,7 @@ export function RoadmapPage() {
         'min-h-screen overflow-x-hidden font-sans antialiased transition-all duration-500',
         themeClass,
       )}
-      ref={containerRef}
+      ref={setContainer}
     >
       {/* 3D Background */}
       <div className="pointer-events-none fixed inset-0 z-0">
