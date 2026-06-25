@@ -1,16 +1,18 @@
-export async function analyzeSubmissions(
-  submissions: unknown[]
-) {
-  const totalSubmissions =
-    submissions.length;
+import { ExtendedSubmission, SubmissionAnalysis } from "../types/recommendation-state.js";
+import { RECOMMENDATION_CONFIG } from "../config.js";
 
-  const recentActivity =
-    submissions.slice(0, 5);
+export function analyzeSubmissions(
+  submissions: ExtendedSubmission[] | undefined
+): SubmissionAnalysis {
+  const safeSubmissions = submissions || [];
+  const totalSubmissions = safeSubmissions.length;
+
+  const recentActivity = safeSubmissions.slice(0, RECOMMENDATION_CONFIG.RECENT_ACTIVITY_SLICE);
 
   const activityLevel =
-    totalSubmissions >= 20
+    totalSubmissions >= RECOMMENDATION_CONFIG.HIGH_ACTIVITY_THRESHOLD
       ? "High"
-      : totalSubmissions >= 10
+      : totalSubmissions >= RECOMMENDATION_CONFIG.LOW_ACTIVITY_THRESHOLD
       ? "Medium"
       : "Low";
 

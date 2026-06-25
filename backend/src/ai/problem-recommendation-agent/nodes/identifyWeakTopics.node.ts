@@ -1,17 +1,17 @@
-// identifyWeakTopics node
 import { identifyWeakTopics } from "../tools/identify-weak-topics.tool.js";
 import { ProblemRecommendationState } from "../state.js";
 
 export async function identifyWeakTopicsNode(
   state: typeof ProblemRecommendationState.State
 ) {
-  const weakTopics =
-    await identifyWeakTopics(
+  try {
+    const weakTopics = identifyWeakTopics(
       state.profile,
       state.submissionAnalysis
     );
-
-  return {
-    weakTopics,
-  };
+    return { weakTopics };
+  } catch (error) {
+    console.error("[Node: identifyWeakTopics] Error:", error);
+    return { weakTopics: [] };
+  }
 }

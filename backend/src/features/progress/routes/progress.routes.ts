@@ -237,6 +237,13 @@ router.get('/summary', authMiddleware, async (req, res, next) => {
     });
 
     const solvedQuestionIds = Array.from(solvedQuestions);
+    const solvedQuestionSlugs = Array.from(
+      new Set(
+        submissions
+          .filter((sub) => sub.status === 'ACCEPTED' && sub.question)
+          .map((sub) => sub.question!.slug)
+      )
+    );
     const attemptedQuestionIds = Array.from(
       new Set(
         submissions
@@ -339,6 +346,7 @@ router.get('/summary', authMiddleware, async (req, res, next) => {
         totalAttempts: totalSubmissions,
       },
       solvedQuestionIds,
+      solvedQuestionSlugs,
       attemptedQuestionIds,
       skills,
       topicPerformance,

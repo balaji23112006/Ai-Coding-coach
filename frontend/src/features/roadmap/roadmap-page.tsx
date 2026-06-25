@@ -4,11 +4,12 @@ import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sphere, Text } from '@react-three/drei';
 import * as THREE from 'three';
-import { Bot, CheckCircle2, Lock, PlayCircle } from 'lucide-react';
+import { Bot, CheckCircle2, Lock, PlayCircle, Loader2, RefreshCw, Target } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { TopNavigation } from '@/components/common/top-navigation';
+import { useAuth } from '@/features/authentication/hooks/use-auth';
 
 // --- Extended Data with Stats (All Zeroed) ---
 export type NodeStatus = 'completed' | 'current' | 'locked';
@@ -229,11 +230,126 @@ function CodingRoadmap3D({ isDark }: { isDark: boolean }) {
 
 // --- Main Page Component ---
 export function RoadmapPage() {
+  const { user } = useAuth();
+  
   const [isDark, setIsDark] = useState(true);
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Recommendations state
+  const [recData, setRecData] = useState<any[] | null>(null);
+  const [recExplanation, setRecExplanation] = useState('');
+  const [isRecLoading, setIsRecLoading] = useState(false);
+  const [recError, setRecError] = useState('');
+  const [isUpdatingRec, setIsUpdatingRec] = useState(false);
+  const [pollCount, setPollCount] = useState(0);
+  const [recTimestamp, setRecTimestamp] = useState<number | null>(null);
+  const [showRecSection, setShowRecSection] = useState(false);
+
+  // Polling logic for recommendations
+  useEffect(() => {
+    let timeoutId: number;
+    if (isUpdatingRec && pollCount < 10) {
+      timeoutId = window.setTimeout(async () => {
+        try {
+          const res = await fetch('/api/ai/problem-recommendation/latest', {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      });
+          if (!res.ok) throw new Error('Failed to fetch');
+          const json = await res.json();
+          const data = json.success ? json.data : null;
+          
+          if (data && data.status === 'COMPLETED') {
+            setIsUpdatingRec(false);
+            setRecData(data.recommendations || []);
+            setRecExplanation(data.explanation || '');
+            setRecTimestamp(Date.now());
+            setPollCount(0);
+          } else {
+            setPollCount(p => p + 1);
+            if (pollCount + 1 >= 10) {
+              setIsUpdatingRec(false);
+              setRecError('Still generating recommendations... Please refresh in a moment.');
+            }
+          }
+        } catch (err) {
+          setPollCount(p => p + 1);
+        }
+      }, 3000);
+    }
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [isUpdatingRec, pollCount]);
+
+  const handleViewRecommendations = async () => {
+    if (!user) return;
+    
+    if (recData && recData.length > 0) {
+      setShowRecSection(true);
+      return;
+    }
+
+    setShowRecSection(true);
+    setIsRecLoading(true);
+    setRecError('');
+
+    try {
+      const res = await fetch('/api/ai/problem-recommendation/latest', {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch');
+      const json = await res.json();
+      const data = json.success ? json.data : null;
+      
+      if (data && data.status === 'COMPLETED') {
+        setRecData(data.recommendations || []);
+        setRecExplanation(data.explanation || '');
+        setRecTimestamp(Date.now());
+      } else {
+        setIsUpdatingRec(true);
+        setPollCount(0);
+        await fetch('/api/ai/problem-recommendation/run-background', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setRecError('Unable to load recommendations. Please try again.');
+    } finally {
+      setIsRecLoading(false);
+    }
+  };
+
+  const handleRefreshRecommendations = async () => {
+    if (!user || isUpdatingRec) return;
+    
+    setRecError('');
+    setIsUpdatingRec(true);
+    setPollCount(0);
+    
+    try {
+      await fetch('/api/ai/problem-recommendation/run-background', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      console.error(error);
+      setRecError('Unable to load recommendations. Please try again.');
+      setIsUpdatingRec(false);
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -729,11 +845,98 @@ export function RoadmapPage() {
               >
                 {coachAdviceText}
               </p>
-              <Link to="/practice" className="block w-full">
-                <Button className="w-full bg-cyan-500 font-black tracking-wide text-slate-950 hover:bg-cyan-400">
+              {!showRecSection ? (
+                <Button 
+                  onClick={handleViewRecommendations}
+                  disabled={isRecLoading}
+                  className="w-full bg-cyan-500 font-black tracking-wide text-slate-950 hover:bg-cyan-400"
+                >
+                  {isRecLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                   View Recommended Problems
                 </Button>
-              </Link>
+              ) : (
+                <div className="mt-4 space-y-4 rounded-xl bg-black/20 p-4 border border-white/5">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className={cn("text-sm font-bold flex items-center gap-2", isDark ? "text-cyan-400" : "text-blue-700")}>
+                      <Target className="h-4 w-4" /> Recommended for You
+                    </h3>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={handleRefreshRecommendations}
+                      disabled={isUpdatingRec}
+                      className={cn("h-8 px-2 text-xs", isDark ? "hover:bg-white/10 text-slate-300" : "hover:bg-black/5")}
+                    >
+                      <RefreshCw className={cn("h-3 w-3 mr-1", isUpdatingRec ? "animate-spin" : "")} />
+                      Refresh
+                    </Button>
+                  </div>
+
+                  {recError && (
+                    <div className="rounded border border-red-500/50 bg-red-500/10 p-3 text-sm text-red-400">
+                      {recError}
+                    </div>
+                  )}
+
+                  {isUpdatingRec && !recError && (
+                    <div className="flex items-center gap-3 rounded-lg border border-cyan-500/20 bg-cyan-500/10 p-4 text-sm text-cyan-300">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Analyzing your progress and generating new recommendations...
+                    </div>
+                  )}
+
+                  {!isUpdatingRec && recData && recData.length > 0 && (
+                    <div className="space-y-3">
+                      {recData.map((rec: any, idx: number) => (
+                        <div key={idx} className={cn("rounded-lg p-3 border", isDark ? "bg-[#1a1a24] border-white/10" : "bg-white border-slate-200")}>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className={cn("font-bold text-sm", isDark ? "text-white" : "text-slate-900")}>
+                              {rec.title}
+                            </span>
+                            <span className={cn(
+                              "text-[10px] uppercase font-bold px-2 py-0.5 rounded-full",
+                              rec.difficulty === 'Easy' ? "bg-green-500/20 text-green-400" :
+                              rec.difficulty === 'Medium' ? "bg-yellow-500/20 text-yellow-400" :
+                              "bg-red-500/20 text-red-400"
+                            )}>
+                              {rec.difficulty}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {rec.topics?.map((topic: string) => (
+                              <span key={topic} className={cn("text-[10px] px-1.5 py-0.5 rounded", isDark ? "bg-white/5 text-slate-400" : "bg-slate-100 text-slate-600")}>
+                                {topic}
+                              </span>
+                            ))}
+                          </div>
+                          {rec.slug !== 'all-solved' && (
+                            <div className="mt-3">
+                              <Link to={`/editor/${rec.slug}`}>
+                                <Button size="sm" variant="secondary" className="w-full text-xs h-8">
+                                  Solve Problem
+                                </Button>
+                              </Link>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      
+                      {recExplanation && (
+                        <div className={cn("mt-4 p-3 rounded-lg text-xs leading-relaxed border", isDark ? "bg-indigo-500/10 border-indigo-500/20 text-indigo-200" : "bg-indigo-50 border-indigo-100 text-indigo-800")}>
+                          <p className="font-semibold mb-1 opacity-80 uppercase tracking-wider text-[10px]">Why these problems?</p>
+                          {recExplanation}
+                        </div>
+                      )}
+
+                      {recTimestamp && (
+                        <div className="text-[10px] text-right text-slate-500 mt-2 italic">
+                          Recommended {Math.floor((Date.now() - recTimestamp) / 60000)} minutes ago
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </motion.div>
 
             <motion.div

@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import { validateEnv } from './config/validateEnv.js';
+validateEnv();
+
 import app from './app.js';
 import express from 'express';
 import cors from 'cors';

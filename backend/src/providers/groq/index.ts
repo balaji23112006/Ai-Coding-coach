@@ -51,53 +51,73 @@ export async function groqChat(params: {
     throw new Error('GROQ_API_KEY is not configured (must start with gsk_)');
   }
 
-  const model = 'llama-3.3-70b-versatile';
-  logger.info(`[Groq] Calling ${model} (temp=${params.temperature ?? 0.3})`);
+  const fallbackModels = [
+    'llama-3.3-70b-versatile',
+    'qwen-2.5-32b',
+    'mixtral-8x7b-32768',
+    'llama-3.1-8b-instant',
+  ];
 
-  return traceLLMCall<string>({
-    traceName: 'mentor-agent.groq',
-    generationName: 'groq-chat-completion',
-    provider: 'groq',
-    model,
-    userId: params.userId,
-    sessionId: params.sessionId,
-    input: {
-      systemPrompt: params.systemPrompt,
-      userMessage: params.userMessage,
-    },
-    modelParameters: {
-      temperature: params.temperature ?? 0.3,
-      maxTokens: params.maxTokens ?? 400,
-    },
-    call: async () => {
-      const response = await groq.chat.completions.create({
+  let lastError: any;
+
+  for (const model of fallbackModels) {
+    try {
+      logger.info(`[Groq] Calling ${model} (temp=${params.temperature ?? 0.3})`);
+
+      const result = await traceLLMCall<string>({
+        traceName: 'mentor-agent.groq',
+        generationName: 'groq-chat-completion',
+        provider: 'groq',
         model,
-        messages: [
-          { role: 'system', content: params.systemPrompt },
-          { role: 'user', content: params.userMessage },
-        ],
-        temperature: params.temperature ?? 0.3,
-        max_tokens: params.maxTokens ?? 400,
+        userId: params.userId,
+        sessionId: params.sessionId,
+        input: {
+          systemPrompt: params.systemPrompt,
+          userMessage: params.userMessage,
+        },
+        modelParameters: {
+          temperature: params.temperature ?? 0.3,
+          maxTokens: params.maxTokens ?? 400,
+        },
+        call: async () => {
+          const response = await groq.chat.completions.create({
+            model,
+            messages: [
+              { role: 'system', content: params.systemPrompt },
+              { role: 'user', content: params.userMessage },
+            ],
+            temperature: params.temperature ?? 0.3,
+            max_tokens: params.maxTokens ?? 400,
+          });
+
+          const text = response.choices[0]?.message?.content || '';
+          logger.info(`[Groq] Response received (${text.length} chars) from ${model}`);
+
+          return {
+            output: text,
+            raw: {
+              id: response.id,
+              created: response.created,
+              usage: response.usage,
+            },
+            usage: response.usage
+              ? {
+                  input: response.usage.prompt_tokens,
+                  output: response.usage.completion_tokens,
+                  total: response.usage.total_tokens,
+                }
+              : undefined,
+          };
+        },
       });
 
-      const text = response.choices[0]?.message?.content || '';
-      logger.info(`[Groq] Response received (${text.length} chars)`);
+      return result; // Return immediately on first success
+    } catch (error: any) {
+      logger.warn(`[Groq] Model ${model} failed: ${error.message}. Attempting fallback...`);
+      lastError = error;
+    }
+  }
 
-      return {
-        output: text,
-        raw: {
-          id: response.id,
-          created: response.created,
-          usage: response.usage,
-        },
-        usage: response.usage
-          ? {
-              input: response.usage.prompt_tokens,
-              output: response.usage.completion_tokens,
-              total: response.usage.total_tokens,
-            }
-          : undefined,
-      };
-    },
-  });
+  logger.error(`[Groq] All fallback models failed. Last error: ${lastError?.message}`);
+  throw new Error(`All Groq fallback models failed. Last error: ${lastError?.message}`);
 }

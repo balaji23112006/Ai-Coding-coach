@@ -34,12 +34,6 @@ export interface UserHistoryResult {
  */
 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {
   try {
-    console.log("Prisma:", prisma);
-
-console.log(
-  "Prisma UserProfile:",
-  prisma.user
-);
     const profile = await prisma.user.findUnique({
       where: { id: userId },
     });

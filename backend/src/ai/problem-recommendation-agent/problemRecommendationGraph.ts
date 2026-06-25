@@ -5,6 +5,7 @@ import { ProblemRecommendationState } from "./state.js";
 import { getProfileNode } from "./nodes/getProfile.node.js";
 import { getSubmissionsNode } from "./nodes/getSubmissions.node.js";
 import { analyzeSubmissionsNode } from "./nodes/analyzeSubmissions.node.js";
+import { analyzeMistakesNode } from "./nodes/analyzeMistakes.node.js";
 import { identifyWeakTopicsNode } from "./nodes/identifyWeakTopics.node.js";
 import { determineDifficultyNode } from "./nodes/determineDifficulty.node.js";
 import { searchProblemsNode } from "./nodes/searchProblems.node.js";
@@ -17,6 +18,7 @@ export const workflow = new StateGraph(
   .addNode("getProfile", getProfileNode)
   .addNode("getSubmissions", getSubmissionsNode)
   .addNode("analyzeSubmissions", analyzeSubmissionsNode)
+  .addNode("analyzeMistakes", analyzeMistakesNode)
   .addNode("identifyWeakTopics", identifyWeakTopicsNode)
   .addNode("determineDifficulty", determineDifficultyNode)
   .addNode("searchProblems", searchProblemsNode)
@@ -27,7 +29,8 @@ export const problemRecommendationGraph =
     .addEdge(START, "getProfile")
     .addEdge("getProfile", "getSubmissions")
     .addEdge("getSubmissions", "analyzeSubmissions")
-    .addEdge("analyzeSubmissions", "identifyWeakTopics")
+    .addEdge("analyzeSubmissions", "analyzeMistakes")
+    .addEdge("analyzeMistakes", "identifyWeakTopics")
     .addEdge("identifyWeakTopics", "determineDifficulty")
     .addEdge("determineDifficulty", "searchProblems")
     .addEdge("searchProblems", "rankProblems")

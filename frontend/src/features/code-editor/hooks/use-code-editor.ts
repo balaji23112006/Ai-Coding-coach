@@ -34,6 +34,26 @@ export function useCodeEditor(
     'testcase',
   );
 
+  // On-demand recommendation state
+  const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recommendationExplanation, setRecommendationExplanation] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [mistakeAnalysis, setMistakeAnalysis] = useState<any>(null);
+  const [recommendationError, setRecommendationError] = useState<string | null>(null);
+  
+  // Controls whether the user chose to view the recommendation
+  const [showRecommendationUI, setShowRecommendationUI] = useState(false);
+  const [pollIntervalId, setPollIntervalId] = useState<number | null>(null);
+
+  // Clear polling on unmount
+  useEffect(() => {
+    return () => {
+      if (pollIntervalId) window.clearInterval(pollIntervalId);
+    };
+  }, [pollIntervalId]);
+
   // Hook 1: Unified initialization (runs when problemId or user changes)
   useEffect(() => {
     let active = true;
@@ -107,6 +127,7 @@ export function useCodeEditor(
     return () => {
       active = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLanguage, isInitializing]);
 
   useEffect(() => {
@@ -117,6 +138,7 @@ export function useCodeEditor(
     }, 800);
 
     return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentCode, problemId, selectedLanguage, templates, user?.id, isInitializing]);
 
   const handleLanguageChange = (lang: SupportedLanguage) => {
@@ -153,11 +175,36 @@ export function useCodeEditor(
     setRunResult(null);
     setSubmitResult(null);
     setActiveConsoleTab('result');
+    // Reset recommendation state on new submission
+    setRecommendations([]);
+    setRecommendationExplanation('');
+    setMistakeAnalysis(null);
+    setRecommendationError(null);
+    setShowRecommendationUI(false);
+    if (pollIntervalId) {
+      window.clearInterval(pollIntervalId);
+      setPollIntervalId(null);
+    }
 
     try {
       const result = await submissionService.submitCode(problemId, selectedLanguage, currentCode);
       setSubmitResult(result);
       setSubmissionHistory((prev) => [result, ...prev]);
+
+      // Trigger background recommendation fetch immediately upon Accepted
+      if (result.status === 'Accepted' && user?.id && !isLoadingRecommendations) {
+        setIsLoadingRecommendations(true);
+        setRecommendationError(null);
+        
+        fetch('/api/ai/problem-recommendation/run-background', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id }),
+        }).catch(err => {
+          console.warn('Failed to start background recommendation', err);
+          setIsLoadingRecommendations(false);
+        });
+      }
 
       // Update local stats dynamically
       setStats((prev) => {
@@ -264,6 +311,49 @@ export function useCodeEditor(
     }
   };
 
+
+
+  // Fast heuristic recommendation (instantly fetches next problem)
+  useEffect(() => {
+    if (!showRecommendationUI || !user?.id) return;
+
+    if (recommendations.length > 0 || recommendationError) return;
+
+    setIsLoadingRecommendations(true);
+
+    const fetchFastRec = async () => {
+      try {
+        const res = await fetch('/api/questions?limit=100');
+        if (!res.ok) throw new Error('Failed to fetch questions');
+        const data = await res.json();
+        
+        // Simple heuristic: Pick a question that isn't the current one
+        const others = data.items.filter((q: any) => q.id !== problemId);
+        // Prefer problems with the same difficulty
+        // Or just pick a random one for now
+        const randomQ = others[Math.floor(Math.random() * others.length)];
+        
+        if (randomQ) {
+          setRecommendations([{
+            title: randomQ.title,
+            slug: randomQ.slug,
+            difficulty: randomQ.difficulty,
+            topics: randomQ.topics || []
+          }]);
+          setRecommendationExplanation('Here is another problem to practice your skills!');
+        } else {
+          setRecommendationError('No more problems available right now.');
+        }
+      } catch (err) {
+        setRecommendationError('Failed to fetch next problem.');
+      } finally {
+        setIsLoadingRecommendations(false);
+      }
+    };
+
+    void fetchFastRec();
+  }, [showRecommendationUI, user?.id, problemId, recommendations.length, recommendationError]);
+
   const resetCode = () => {
     setCurrentCode(templates[selectedLanguage]);
     setRunResult(null);
@@ -288,5 +378,14 @@ export function useCodeEditor(
     submitCode,
     resetCode,
     setActiveConsoleTab,
+    // Recommendations
+    isLoadingRecommendations,
+    recommendations,
+    recommendationExplanation,
+    mistakeAnalysis,
+    recommendationError,
+    showRecommendationUI,
+    setShowRecommendationUI,
   };
 }
+

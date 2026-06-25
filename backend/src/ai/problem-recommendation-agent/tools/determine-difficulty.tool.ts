@@ -1,6 +1,9 @@
-export async function determineDifficulty(
-  profile: any,
-  submissionAnalysis: any
+import { UserProfile } from "@prisma/client";
+import { SubmissionAnalysis } from "../types/recommendation-state.js";
+
+export function determineDifficulty(
+  profile: UserProfile | null | undefined,
+  submissionAnalysis: SubmissionAnalysis | undefined
 ) {
   if (
     submissionAnalysis?.activityLevel ===

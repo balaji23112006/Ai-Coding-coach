@@ -22,16 +22,28 @@ export class SubmissionRepository {
     });
   }
 
-  async findByUserId(userId: string) {
-  return prisma.submission.findMany({
-    where: {
-      userId,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
-}
+  async findByUserId(userId: string, limit?: number) {
+    return prisma.submission.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: limit,
+      include: {
+        question: {
+          include: {
+            topics: {
+              include: {
+                topic: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }
 
 export const submissionRepository = new SubmissionRepository();

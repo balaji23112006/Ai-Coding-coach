@@ -64,6 +64,7 @@ export class ProfileSummaryService {
             },
           ],
         }),
+        signal: AbortSignal.timeout(15000),
       });
 
       if (!response.ok) {
