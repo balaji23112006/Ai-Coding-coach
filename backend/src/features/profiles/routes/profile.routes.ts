@@ -111,9 +111,35 @@ router.get('/:userId', async (req: Request, res: Response, next: NextFunction): 
       return;
     }
 
-    const profile = await profileRepository.getProfile(userId);
+    let profile = await profileRepository.getProfile(userId);
     if (!profile) {
-      res.status(404).json({ error: `No profile record found for user ID: ${userId}` });
+      try {
+        profile = await profileRepository.saveProfile({
+          userId,
+          skills: {},
+          solvedCount: 0,
+          easySolved: 0,
+          mediumSolved: 0,
+          hardSolved: 0,
+          learningTrack: 'Software Engineering',
+          experienceLevel: 'Beginner',
+          recommendedFocus: 'Arrays & Hashing',
+          recommendedDifficulty: 'Easy',
+        });
+      } catch (err) {
+        console.warn(
+          `[Profile API] Could not auto-bootstrap profile for user ${userId}:`,
+          err instanceof Error ? err.message : String(err),
+        );
+      }
+    }
+
+    if (!profile) {
+      res.status(200).json({
+        success: true,
+        profile: null,
+        message: `No profile record found for user ID: ${userId}`,
+      });
       return;
     }
 

@@ -13,6 +13,7 @@ import profileRoutes from './features/profiles/routes/profile.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
+import { evalRouter } from './agents/code_evaluation_agent/api.js';
 
 import { executionLogs } from './shared/utils/executionLogger.js';
 import { traceApiResponse } from './observability/langfuse.js';
@@ -204,6 +205,9 @@ app.use('/api/mentor', mentorRoutes);
 
 // Mount AI profile & assessment routes
 app.use('/api/ai/profile', profileRoutes);
+
+// Mount Code Evaluation Agent route
+app.use('/api', evalRouter);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

@@ -1,5 +1,290 @@
 [
   {
+    "id": "trace-mentor-SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx-328b91f6-8548-45da-a8be-3e72063c9d72-1782099723767",
+    "timestamp": "2026-06-22T03:42:03.767Z",
+    "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx",
+    "trigger": "hint_request",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-22T03:42:03.768Z] Executed Node: Cache Check with data: {\"hit\":false}",
+      "[2026-06-22T03:42:03.768Z] Executed Node: Fetch History",
+      "[2026-06-22T03:42:03.769Z] Found 1 previous hints",
+      "[2026-06-22T03:42:03.769Z] Executed Node: Fetch Metadata",
+      "[2026-06-22T03:42:03.772Z] Question Title: \"Same Tree\"",
+      "[2026-06-22T03:42:03.772Z] Executed Node: Classify Error",
+      "[2026-06-22T03:42:03.773Z] Classified error category: request",
+      "[2026-06-22T03:42:03.773Z] Executed Node: Identify Concept",
+      "[2026-06-22T03:42:03.773Z] Targeted concept: Problem Solving",
+      "[2026-06-22T03:42:03.773Z] Executed Node: Determine Escalation",
+      "[2026-06-22T03:42:03.773Z] Hint escalation level: 2",
+      "[2026-06-22T03:42:03.773Z] Executed Node: Call LLM",
+      "[2026-06-22T03:42:04.510Z] All LLMs failed or bypassed. Using static fallback.",
+      "[2026-06-22T03:42:04.510Z] Executed Node: Check Guardrail",
+      "[2026-06-22T03:42:04.511Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "Cache Check",
+      "Fetch History",
+      "Fetch Metadata",
+      "Classify Error",
+      "Identify Concept",
+      "Determine Escalation",
+      "Call LLM",
+      "Check Guardrail"
+    ],
+    "prompts": [
+      {
+        "type": "static-fallback",
+        "prompt": "[SYSTEM PROMPT]:\nYou are the Mentor Agent for the AI-Powered Coding Practice Coach (Skill Lens).\nYour role is an experienced, Socratic coding tutor. You guide students to solutions through\nquestions and hints. You NEVER write complete code solutions for them.\n\nSTRICT RULES (NEVER VIOLATE):\n1. Help the student learn; do not jump straight to the final answer.\n2. Do NOT provide complete function implementations unless the student explicitly asks after multiple hints.\n3. Do NOT write more than 3 lines of actual code syntax.\n4. Do NOT reveal an end-to-end algorithm at low hint levels.\n5. DO identify syntax, compilation, runtime, logic, time complexity, and space complexity issues when visible.\n6. DO explain why the issue occurs and how the student can fix the idea without rewriting their whole program.\n7. DO suggest edge cases, clean-code improvements, and targeted test cases.\n8. ALWAYS end your response with a question for the student.\n9. Start directly with the conceptual guidance and descriptive section headers. Do NOT write any conversational introduction, greetings, filler, or chit-chat (such as \"That's an excellent question!\", \"Sure, I can help with that!\", or \"It is always good to...\"). Skip directly to the conceptual explanation. Never write direct solution code for the student's specific task.\n10. Adapt your response length dynamically to match the user's request:\n    - If the student asks a brief question, keep it concise, clear, and direct.\n    - If the student requests extremely detailed, extensive, step-by-step, or multi-page information (even explicitly asking for \"10 pages of information\" or \"exhaustive analysis\"), you MUST generate an exceptionally long, deep, thorough, and exhaustive explanation. Expand on every concept from first principles, include detailed logical step-by-step traces, list multiple generalized examples/analogies, explain design trade-offs, detail multiple levels of optimization strategies, outline comprehensive edge cases, walk through dry-runs, and provide detailed conceptual descriptions to satisfy the request. Fulfill the requested volume completely and do not synthesize or abbreviate.\n11. Structure your response using one or more of these descriptive section titles (using markdown '### Section Title' format) to make the guidance professional and easy to read:\n    - ### Problem Understanding\n    - ### Key Insight\n    - ### Approach\n    - ### Common Mistakes\n    - ### Edge Cases\n    - ### Optimization\n    - ### Next Step\n    Choose only the most relevant sections for this specific message. Always end your response with a question in the '### Next Step' section. Do not use generic labels like \"Hint 1\" or \"Concept Hint\" in your headers or text.\n\nMENTOR WORKFLOW:\n- Use the execution result and test output to identify syntax errors, runtime crashes, wrong answers, or TLE.\n- Detect the smallest likely concept gap, such as loops, arrays, recursion, hash maps, dynamic programming, or stacks.\n- Escalate based on previous hints: concept explanation, targeted clue, pseudocode/dry run, then guardrail redirect.\n- Avoid repeating advice already listed in PREVIOUS HINTS.\n- When reviewing code, summarize what it is trying to do, then point to the smallest suspicious line or block.\n- When code passes, congratulate briefly, mention whether the approach appears optimal, and suggest one possible improvement.\n\nPROBLEM CONTEXT:\n- Title: Same Tree\n- Description: Given the roots of two binary trees p and q, return true if they are structurally identical and the nodes have the same values. Otherwise, return false.\n- Targeted Concept: Problem Solving\n\n\nCATEGORY: GENERAL HINT REQUEST\n- Understand what the student is asking.\n- Give conceptual guidance relevant to the problem.\n- Ask a guiding question to help them make the next step themselves.\n\nHINT LEVEL 2 – LOCATION / CLUE:\n- Reference the student's specific code, but only point to WHERE the issue is.\n- Do NOT show how to fix it.\n- Ask a Socratic question about the problematic section.\nExample style: \"Look closely at line X where you compare arr[i] with arr[i+1]. Does this always check every possible pair?\"\n\nPREVIOUS HINTS ALREADY GIVEN:\n  1. [Level 1] Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?...\n\nSTUDENT'S CODE:\n```\nfunction isSameTree(p, q) {\n    if (p.length !== q.length) return false;\n\n    for (let i = 0; i < p.length; i++) {\n        if (p[i] !== q[i]) return false;\n    }\n\n    return true;\n}\n```\nEXECUTION OUTPUT:\n```\n\n--- TEST RESULTS ---\nPASSED: 5\nTOTAL: 5\nALL_TESTS_PASSED\n\n```\n\n\nRespond as a mentor. Provide complete, thorough explanations with examples, matching the depth and length requested by the student, and end with a question.\n\n[USER MESSAGE]:\nStudent: all tests cases are passedor any one failed\nMentor: Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?\nStudent: I am stuck. Can you give me a hint without telling me the full solution?",
+        "response": "[Fallback Used]",
+        "timestamp": "2026-06-22T03:42:04.510Z"
+      }
+    ],
+    "request": {
+      "questionId": "328b91f6-8548-45da-a8be-3e72063c9d72",
+      "sourceCode": "function isSameTree(p, q) {\n    if (p.length !== q.length) return false;\n\n    for (let i = 0; i < p.length; i++) {\n        if (p[i] !== q[i]) return false;\n    }\n\n    return true;\n}",
+      "language": "javascript",
+      "executionResult": {
+        "status": "ACCEPTED",
+        "stdout": "\n--- TEST RESULTS ---\nPASSED: 5\nTOTAL: 5\nALL_TESTS_PASSED\n",
+        "stderr": ""
+      },
+      "messages": [
+        {
+          "role": "user",
+          "text": "all tests cases are passedor any one failed"
+        },
+        {
+          "role": "bot",
+          "text": "Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?"
+        }
+      ],
+      "triggerEvent": "hint_request",
+      "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx"
+    },
+    "response": {
+      "mentorFeedback": "Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?",
+      "hintMetadata": {
+        "category": "request",
+        "level": 2,
+        "targetedConcept": "Problem Solving"
+      },
+      "workflow": {
+        "triggeredBy": "hint_request",
+        "savedAt": "2026-06-22T03:42:04.510Z",
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
+      }
+    }
+  },
+  {
+    "id": "trace-mentor-SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx-328b91f6-8548-45da-a8be-3e72063c9d72-1782099687737",
+    "timestamp": "2026-06-22T03:41:27.738Z",
+    "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx",
+    "trigger": "chat",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-22T03:41:27.739Z] Executed Node: Cache Check with data: {\"hit\":false}",
+      "[2026-06-22T03:41:27.739Z] Executed Node: Fetch History",
+      "[2026-06-22T03:41:27.740Z] Found 0 previous hints",
+      "[2026-06-22T03:41:27.740Z] Executed Node: Fetch Metadata",
+      "[2026-06-22T03:41:27.743Z] Question Title: \"Same Tree\"",
+      "[2026-06-22T03:41:27.743Z] Executed Node: Classify Error",
+      "[2026-06-22T03:41:27.743Z] Classified error category: request",
+      "[2026-06-22T03:41:27.743Z] Executed Node: Identify Concept",
+      "[2026-06-22T03:41:27.744Z] Targeted concept: Problem Solving",
+      "[2026-06-22T03:41:27.744Z] Executed Node: Determine Escalation",
+      "[2026-06-22T03:41:27.744Z] Hint escalation level: 1",
+      "[2026-06-22T03:41:27.745Z] Executed Node: Call LLM",
+      "[2026-06-22T03:41:28.196Z] All LLMs failed or bypassed. Using static fallback.",
+      "[2026-06-22T03:41:28.196Z] Executed Node: Check Guardrail",
+      "[2026-06-22T03:41:28.197Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "Cache Check",
+      "Fetch History",
+      "Fetch Metadata",
+      "Classify Error",
+      "Identify Concept",
+      "Determine Escalation",
+      "Call LLM",
+      "Check Guardrail"
+    ],
+    "prompts": [
+      {
+        "type": "static-fallback",
+        "prompt": "[SYSTEM PROMPT]:\nYou are the Mentor Agent for the AI-Powered Coding Practice Coach (Skill Lens).\nYour role is an experienced, Socratic coding tutor. You guide students to solutions through\nquestions and hints. You NEVER write complete code solutions for them.\n\nSTRICT RULES (NEVER VIOLATE):\n1. Help the student learn; do not jump straight to the final answer.\n2. Do NOT provide complete function implementations unless the student explicitly asks after multiple hints.\n3. Do NOT write more than 3 lines of actual code syntax.\n4. Do NOT reveal an end-to-end algorithm at low hint levels.\n5. DO identify syntax, compilation, runtime, logic, time complexity, and space complexity issues when visible.\n6. DO explain why the issue occurs and how the student can fix the idea without rewriting their whole program.\n7. DO suggest edge cases, clean-code improvements, and targeted test cases.\n8. ALWAYS end your response with a question for the student.\n9. Start directly with the conceptual guidance and descriptive section headers. Do NOT write any conversational introduction, greetings, filler, or chit-chat (such as \"That's an excellent question!\", \"Sure, I can help with that!\", or \"It is always good to...\"). Skip directly to the conceptual explanation. Never write direct solution code for the student's specific task.\n10. Adapt your response length dynamically to match the user's request:\n    - If the student asks a brief question, keep it concise, clear, and direct.\n    - If the student requests extremely detailed, extensive, step-by-step, or multi-page information (even explicitly asking for \"10 pages of information\" or \"exhaustive analysis\"), you MUST generate an exceptionally long, deep, thorough, and exhaustive explanation. Expand on every concept from first principles, include detailed logical step-by-step traces, list multiple generalized examples/analogies, explain design trade-offs, detail multiple levels of optimization strategies, outline comprehensive edge cases, walk through dry-runs, and provide detailed conceptual descriptions to satisfy the request. Fulfill the requested volume completely and do not synthesize or abbreviate.\n11. Structure your response using one or more of these descriptive section titles (using markdown '### Section Title' format) to make the guidance professional and easy to read:\n    - ### Problem Understanding\n    - ### Key Insight\n    - ### Approach\n    - ### Common Mistakes\n    - ### Edge Cases\n    - ### Optimization\n    - ### Next Step\n    Choose only the most relevant sections for this specific message. Always end your response with a question in the '### Next Step' section. Do not use generic labels like \"Hint 1\" or \"Concept Hint\" in your headers or text.\n\nMENTOR WORKFLOW:\n- Use the execution result and test output to identify syntax errors, runtime crashes, wrong answers, or TLE.\n- Detect the smallest likely concept gap, such as loops, arrays, recursion, hash maps, dynamic programming, or stacks.\n- Escalate based on previous hints: concept explanation, targeted clue, pseudocode/dry run, then guardrail redirect.\n- Avoid repeating advice already listed in PREVIOUS HINTS.\n- When reviewing code, summarize what it is trying to do, then point to the smallest suspicious line or block.\n- When code passes, congratulate briefly, mention whether the approach appears optimal, and suggest one possible improvement.\n\nPROBLEM CONTEXT:\n- Title: Same Tree\n- Description: Given the roots of two binary trees p and q, return true if they are structurally identical and the nodes have the same values. Otherwise, return false.\n- Targeted Concept: Problem Solving\n\n\nCATEGORY: GENERAL HINT REQUEST\n- Understand what the student is asking.\n- Give conceptual guidance relevant to the problem.\n- Ask a guiding question to help them make the next step themselves.\n\nHINT LEVEL 1 – CONCEPT EXPLANATION:\n- Give a general educational explanation of the relevant concept.\n- Do NOT reference the student's specific code yet.\n- Focus on the principle, not the solution.\n- End with a question that prompts reflection.\nExample style: \"A hash map lets you look up values in O(1) time using keys. Have you considered what data structure would let you find a complement in one pass?\"\n\nNo previous hints have been given yet.\n\nSTUDENT'S CODE:\n```\nfunction isSameTree(p, q) {\n    if (p.length !== q.length) return false;\n\n    for (let i = 0; i < p.length; i++) {\n        if (p[i] !== q[i]) return false;\n    }\n\n    return true;\n}\n```\nEXECUTION OUTPUT:\n```\n\n--- TEST RESULTS ---\nPASSED: 5\nTOTAL: 5\nALL_TESTS_PASSED\n\n```\nSTUDENT'S QUESTION: \"all tests cases are passedor any one failed\"\n\nRespond as a mentor. Provide complete, thorough explanations with examples, matching the depth and length requested by the student, and end with a question.\n\n[USER MESSAGE]:\nStudent: all tests cases are passedor any one failed",
+        "response": "[Fallback Used]",
+        "timestamp": "2026-06-22T03:41:28.196Z"
+      }
+    ],
+    "request": {
+      "questionId": "328b91f6-8548-45da-a8be-3e72063c9d72",
+      "sourceCode": "function isSameTree(p, q) {\n    if (p.length !== q.length) return false;\n\n    for (let i = 0; i < p.length; i++) {\n        if (p[i] !== q[i]) return false;\n    }\n\n    return true;\n}",
+      "language": "javascript",
+      "executionResult": {
+        "status": "ACCEPTED",
+        "stdout": "\n--- TEST RESULTS ---\nPASSED: 5\nTOTAL: 5\nALL_TESTS_PASSED\n",
+        "stderr": ""
+      },
+      "messages": [],
+      "triggerEvent": "chat",
+      "userQuestion": "all tests cases are passedor any one failed",
+      "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx"
+    },
+    "response": {
+      "mentorFeedback": "Let's break the problem down step by step. What is the first thing your algorithm needs to figure out?",
+      "hintMetadata": {
+        "category": "request",
+        "level": 1,
+        "targetedConcept": "Problem Solving"
+      },
+      "workflow": {
+        "triggeredBy": "chat",
+        "savedAt": "2026-06-22T03:41:28.197Z",
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
+      }
+    }
+  },
+  {
+    "id": "trace-mentor-SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx-c90874d6-6124-4915-95e7-eac94c02b356-1782053321915",
+    "timestamp": "2026-06-21T14:48:41.915Z",
+    "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx",
+    "trigger": "runtime_error",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-21T14:48:41.916Z] Executed Node: Cache Check with data: {\"hit\":true}",
+      "[2026-06-21T14:48:41.916Z] Found matching hint in backend cache. Bypassing LLM calls.",
+      "[2026-06-21T14:48:41.916Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "Cache Check"
+    ],
+    "prompts": [],
+    "request": {
+      "questionId": "c90874d6-6124-4915-95e7-eac94c02b356",
+      "sourceCode": "class Solution {\npublic:\n    int maxSum = INT_MIN;\n\n    int dfs(TreeNode* root) {\n        if (root == nullptr) return 0;\n\n        int left = max(0, dfs(root->left));\n        int right = max(0, dfs(root->right));\n\n        // Path passing through current node\n        maxSum = max(maxSum, root->val + left + right);\n\n        // Return maximum gain to parent\n        return root->val + max(left, right);\n    }\n\n    int maxPathSum(TreeNode* root) {\n        dfs(root);\n        return maxSum;\n    }\n};",
+      "language": "cpp",
+      "executionResult": {
+        "status": "RUNTIME_ERROR",
+        "stdout": "",
+        "stderr": "[stdin]:2\r\npublic:\r\n\r\nUnexpected token `dfs`. Expected * for generator, private key, identifier or async\r\n\r\nSyntaxError: Unexpected strict mode reserved word\r\n    at makeContextifyScript (node:internal/vm:194:14)\r\n    at compileScript (node:internal/process/execution:388:10)\r\n    at evalTypeScript (node:internal/process/execution:260:22)\r\n    at node:internal/main/eval_stdin:51:5\r\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\r\n    at Socket.emit (node:events:520:35)\r\n    at endReadableNT (node:internal/streams/readable:1701:12)\r\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)\r\n\r\nNode.js v24.13.0\r\n"
+      },
+      "messages": [
+        {
+          "role": "bot",
+          "text": "Try tracing through your code manually with a simple example input. At what step does the actual output diverge from what you expect?"
+        }
+      ],
+      "triggerEvent": "runtime_error",
+      "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx"
+    },
+    "response": {
+      "mentorFeedback": "Try tracing through your code manually with a simple example input. At what step does the actual output diverge from what you expect?",
+      "hintMetadata": {
+        "category": "logic",
+        "level": 1,
+        "targetedConcept": "Logic Flow"
+      },
+      "workflow": {
+        "triggeredBy": "runtime_error",
+        "savedAt": "2026-06-21T14:48:11.159Z",
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
+      }
+    }
+  },
+  {
+    "id": "trace-mentor-SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx-c90874d6-6124-4915-95e7-eac94c02b356-1782053288797",
+    "timestamp": "2026-06-21T14:48:08.798Z",
+    "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx",
+    "trigger": "runtime_error",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-21T14:48:08.801Z] Executed Node: Cache Check with data: {\"hit\":false}",
+      "[2026-06-21T14:48:08.801Z] Executed Node: Fetch History",
+      "[2026-06-21T14:48:08.801Z] Found 0 previous hints",
+      "[2026-06-21T14:48:08.801Z] Executed Node: Fetch Metadata",
+      "[2026-06-21T14:48:08.805Z] Question Title: \"Binary Tree Maximum Path Sum\"",
+      "[2026-06-21T14:48:08.805Z] Executed Node: Classify Error",
+      "[2026-06-21T14:48:08.805Z] Classified error category: logic",
+      "[2026-06-21T14:48:08.805Z] Executed Node: Identify Concept",
+      "[2026-06-21T14:48:08.806Z] Targeted concept: Logic Flow",
+      "[2026-06-21T14:48:08.806Z] Executed Node: Determine Escalation",
+      "[2026-06-21T14:48:08.807Z] Hint escalation level: 1",
+      "[2026-06-21T14:48:08.808Z] Executed Node: Call LLM",
+      "[2026-06-21T14:48:11.158Z] All LLMs failed or bypassed. Using static fallback.",
+      "[2026-06-21T14:48:11.159Z] Executed Node: Check Guardrail",
+      "[2026-06-21T14:48:11.160Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "Cache Check",
+      "Fetch History",
+      "Fetch Metadata",
+      "Classify Error",
+      "Identify Concept",
+      "Determine Escalation",
+      "Call LLM",
+      "Check Guardrail"
+    ],
+    "prompts": [
+      {
+        "type": "static-fallback",
+        "prompt": "[SYSTEM PROMPT]:\nYou are the Mentor Agent for the AI-Powered Coding Practice Coach (Skill Lens).\nYour role is an experienced, Socratic coding tutor. You guide students to solutions through\nquestions and hints. You NEVER write complete code solutions for them.\n\nSTRICT RULES (NEVER VIOLATE):\n1. Help the student learn; do not jump straight to the final answer.\n2. Do NOT provide complete function implementations unless the student explicitly asks after multiple hints.\n3. Do NOT write more than 3 lines of actual code syntax.\n4. Do NOT reveal an end-to-end algorithm at low hint levels.\n5. DO identify syntax, compilation, runtime, logic, time complexity, and space complexity issues when visible.\n6. DO explain why the issue occurs and how the student can fix the idea without rewriting their whole program.\n7. DO suggest edge cases, clean-code improvements, and targeted test cases.\n8. ALWAYS end your response with a question for the student.\n9. Start directly with the conceptual guidance and descriptive section headers. Do NOT write any conversational introduction, greetings, filler, or chit-chat (such as \"That's an excellent question!\", \"Sure, I can help with that!\", or \"It is always good to...\"). Skip directly to the conceptual explanation. Never write direct solution code for the student's specific task.\n10. Adapt your response length dynamically to match the user's request:\n    - If the student asks a brief question, keep it concise, clear, and direct.\n    - If the student requests extremely detailed, extensive, step-by-step, or multi-page information (even explicitly asking for \"10 pages of information\" or \"exhaustive analysis\"), you MUST generate an exceptionally long, deep, thorough, and exhaustive explanation. Expand on every concept from first principles, include detailed logical step-by-step traces, list multiple generalized examples/analogies, explain design trade-offs, detail multiple levels of optimization strategies, outline comprehensive edge cases, walk through dry-runs, and provide detailed conceptual descriptions to satisfy the request. Fulfill the requested volume completely and do not synthesize or abbreviate.\n11. Structure your response using one or more of these descriptive section titles (using markdown '### Section Title' format) to make the guidance professional and easy to read:\n    - ### Problem Understanding\n    - ### Key Insight\n    - ### Approach\n    - ### Common Mistakes\n    - ### Edge Cases\n    - ### Optimization\n    - ### Next Step\n    Choose only the most relevant sections for this specific message. Always end your response with a question in the '### Next Step' section. Do not use generic labels like \"Hint 1\" or \"Concept Hint\" in your headers or text.\n\nMENTOR WORKFLOW:\n- Use the execution result and test output to identify syntax errors, runtime crashes, wrong answers, or TLE.\n- Detect the smallest likely concept gap, such as loops, arrays, recursion, hash maps, dynamic programming, or stacks.\n- Escalate based on previous hints: concept explanation, targeted clue, pseudocode/dry run, then guardrail redirect.\n- Avoid repeating advice already listed in PREVIOUS HINTS.\n- When reviewing code, summarize what it is trying to do, then point to the smallest suspicious line or block.\n- When code passes, congratulate briefly, mention whether the approach appears optimal, and suggest one possible improvement.\n\nPROBLEM CONTEXT:\n- Title: Binary Tree Maximum Path Sum\n- Description: A path in a binary tree is a sequence of nodes where each pair of adjacent nodes is connected by an edge. A path may start and end at any node in the tree and must contain at least one node. Given the root of a binary tree, return the maximum path sum of any path.\n- Targeted Concept: Logic Flow\n\n\nCATEGORY: LOGIC / FAILED TESTS\n- Compare expected vs actual behavior conceptually.\n- Identify which step in their reasoning is flawed.\n- Encourage them to trace through the code manually.\n- Ask a specific Socratic question about the problematic logic.\n\nHINT LEVEL 1 – CONCEPT EXPLANATION:\n- Give a general educational explanation of the relevant concept.\n- Do NOT reference the student's specific code yet.\n- Focus on the principle, not the solution.\n- End with a question that prompts reflection.\nExample style: \"A hash map lets you look up values in O(1) time using keys. Have you considered what data structure would let you find a complement in one pass?\"\n\nNo previous hints have been given yet.\n\nSTUDENT'S CODE:\n```\nclass Solution {\npublic:\n    int maxSum = INT_MIN;\n\n    int dfs(TreeNode* root) {\n        if (root == nullptr) return 0;\n\n        int left = max(0, dfs(root->left));\n        int right = max(0, dfs(root->right));\n\n        // Path passing through current node\n        maxSum = max(maxSum, root->val + left + right);\n\n        // Return maximum gain to parent\n        return root->val + max(left, right);\n    }\n\n    int maxPathSum(TreeNode* root) {\n        dfs(root);\n        return maxSum;\n    }\n};\n```\nEXECUTION OUTPUT:\n```\n[stdin]:2\r\npublic:\r\n\r\nUnexpected token `dfs`. Expected * for generator, private key, identifier or async\r\n\r\nSyntaxError: Unexpected strict mode reserved word\r\n    at makeContextifyScript (node:internal/vm:194:14)\r\n    at compileScript (node:internal/process/execution:388:10)\r\n    at evalTypeScript (node:internal/process/execution:260:22)\r\n    at node:internal/main/eval_stdin:51:5\r\n    at Socket.<a\n```\n\n\nRespond as a mentor. Provide complete, thorough explanations with examples, matching the depth and length requested by the student, and end with a question.\n\n[USER MESSAGE]:\nStudent: My code is crashing at runtime. Can you help me figure out why?",
+        "response": "[Fallback Used]",
+        "timestamp": "2026-06-21T14:48:11.159Z"
+      }
+    ],
+    "request": {
+      "questionId": "c90874d6-6124-4915-95e7-eac94c02b356",
+      "sourceCode": "class Solution {\npublic:\n    int maxSum = INT_MIN;\n\n    int dfs(TreeNode* root) {\n        if (root == nullptr) return 0;\n\n        int left = max(0, dfs(root->left));\n        int right = max(0, dfs(root->right));\n\n        // Path passing through current node\n        maxSum = max(maxSum, root->val + left + right);\n\n        // Return maximum gain to parent\n        return root->val + max(left, right);\n    }\n\n    int maxPathSum(TreeNode* root) {\n        dfs(root);\n        return maxSum;\n    }\n};",
+      "language": "cpp",
+      "executionResult": {
+        "status": "RUNTIME_ERROR",
+        "stdout": "",
+        "stderr": "[stdin]:2\r\npublic:\r\n\r\nUnexpected token `dfs`. Expected * for generator, private key, identifier or async\r\n\r\nSyntaxError: Unexpected strict mode reserved word\r\n    at makeContextifyScript (node:internal/vm:194:14)\r\n    at compileScript (node:internal/process/execution:388:10)\r\n    at evalTypeScript (node:internal/process/execution:260:22)\r\n    at node:internal/main/eval_stdin:51:5\r\n    at Socket.<anonymous> (node:internal/process/execution:205:5)\r\n    at Socket.emit (node:events:520:35)\r\n    at endReadableNT (node:internal/streams/readable:1701:12)\r\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)\r\n\r\nNode.js v24.13.0\r\n"
+      },
+      "messages": [],
+      "triggerEvent": "runtime_error",
+      "userId": "SoVOt0oT7vkyRStkC1cDyBqPvLrmnTYx"
+    },
+    "response": {
+      "mentorFeedback": "Try tracing through your code manually with a simple example input. At what step does the actual output diverge from what you expect?",
+      "hintMetadata": {
+        "category": "logic",
+        "level": 1,
+        "targetedConcept": "Logic Flow"
+      },
+      "workflow": {
+        "triggeredBy": "runtime_error",
+        "savedAt": "2026-06-21T14:48:11.159Z",
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
+      }
+    }
+  },
+  {
     "id": "trace-refresh-Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z-1782034648299",
     "timestamp": "2026-06-21T09:37:28.299Z",
     "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
@@ -191,7 +476,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T08:12:31.806Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -259,7 +550,13 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T08:11:29.094Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -352,7 +649,13 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T07:47:48.595Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -367,7 +670,9 @@
       "[2026-06-21T07:47:32.617Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:47:32.617Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -418,7 +723,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -509,7 +820,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -591,7 +908,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:28:47.353Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -660,7 +983,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:05:52.794Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -675,7 +1004,9 @@
       "[2026-06-21T07:05:33.669Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:05:33.669Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -695,7 +1026,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -767,7 +1104,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T07:00:56.043Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -782,7 +1125,9 @@
       "[2026-06-21T07:00:30.813Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:00:30.813Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -807,7 +1152,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -870,7 +1221,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -933,7 +1290,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:56:31.930Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -948,7 +1311,9 @@
       "[2026-06-21T03:48:34.300Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T03:48:34.300Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -968,7 +1333,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1031,7 +1402,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1113,7 +1490,11 @@
         "Dynamic Programming": 0
       },
       "strongAreas": [],
-      "weakAreas": ["HashMap", "Trees", "Dynamic Programming"],
+      "weakAreas": [
+        "HashMap",
+        "Trees",
+        "Dynamic Programming"
+      ],
       "trends": [
         "Struggling recently with 3 consecutive incorrect submissions.",
         "Moderate activity: 1 submission attempts in the last 48 hours.",
@@ -8107,7 +8488,10 @@
       "[2026-06-19T01:55:23.781Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:55:23.781Z] Run finalized: status = failed"
     ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory"
+    ],
     "prompts": [],
     "request": {
       "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg",
@@ -8128,7 +8512,10 @@
       "[2026-06-19T01:22:34.038Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:22:34.038Z] Run finalized: status = failed"
     ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory"
+    ],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8149,95 +8536,14 @@
       "[2026-06-19T01:21:22.111Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:21:22.111Z] Run finalized: status = failed"
     ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory"
+    ],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
       "submissionId": "cmqk8tdph0004pz7oxpri6ol6"
-    },
-    "response": null,
-    "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."
-  },
-  {
-    "id": "trace-submission-FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb-1781832003198",
-    "timestamp": "2026-06-19T01:20:03.198Z",
-    "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-    "trigger": "submission",
-    "status": "failed",
-    "decisions": [
-      "[2026-06-19T01:20:03.207Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T01:20:03.207Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T01:20:03.215Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
-      "[2026-06-19T01:20:03.215Z] Run finalized: status = failed"
-    ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
-    "prompts": [],
-    "request": {
-      "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-      "submissionId": "cmqk8rou10003pz7org4ek2ao"
-    },
-    "response": null,
-    "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."
-  },
-  {
-    "id": "trace-submission-FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb-1781831928722",
-    "timestamp": "2026-06-19T01:18:48.722Z",
-    "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-    "trigger": "submission",
-    "status": "failed",
-    "decisions": [
-      "[2026-06-19T01:18:48.735Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T01:18:48.736Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T01:18:48.747Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
-      "[2026-06-19T01:18:48.747Z] Run finalized: status = failed"
-    ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
-    "prompts": [],
-    "request": {
-      "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-      "submissionId": "cmqk8q3cz0002pz7ob0kjz04x"
-    },
-    "response": null,
-    "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."
-  },
-  {
-    "id": "trace-submission-FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb-1781831106476",
-    "timestamp": "2026-06-19T01:05:06.476Z",
-    "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-    "trigger": "submission",
-    "status": "failed",
-    "decisions": [
-      "[2026-06-19T01:05:06.487Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T01:05:06.488Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T01:05:06.496Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
-      "[2026-06-19T01:05:06.496Z] Run finalized: status = failed"
-    ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
-    "prompts": [],
-    "request": {
-      "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-      "submissionId": "cmqk88gx00001pz7o3vdtz91w"
-    },
-    "response": null,
-    "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."
-  },
-  {
-    "id": "trace-submission-FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb-1781831033894",
-    "timestamp": "2026-06-19T01:03:53.895Z",
-    "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-    "trigger": "submission",
-    "status": "failed",
-    "decisions": [
-      "[2026-06-19T01:03:53.946Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T01:03:53.956Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T01:03:54.028Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
-      "[2026-06-19T01:03:54.028Z] Run finalized: status = failed"
-    ],
-    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
-    "prompts": [],
-    "request": {
-      "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
-      "submissionId": "cmqk86wvv0000pz7ognewrpbz"
     },
     "response": null,
     "error": "Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database."
