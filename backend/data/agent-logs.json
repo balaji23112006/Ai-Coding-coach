@@ -72,13 +72,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-22T03:42:04.510Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -147,13 +141,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-22T03:41:28.197Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -168,9 +156,7 @@
       "[2026-06-21T14:48:41.916Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T14:48:41.916Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "c90874d6-6124-4915-95e7-eac94c02b356",
@@ -200,13 +186,7 @@
       "workflow": {
         "triggeredBy": "runtime_error",
         "savedAt": "2026-06-21T14:48:11.159Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -274,13 +254,7 @@
       "workflow": {
         "triggeredBy": "runtime_error",
         "savedAt": "2026-06-21T14:48:11.159Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -476,13 +450,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T08:12:31.806Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -550,13 +518,7 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T08:11:29.094Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -649,13 +611,7 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T07:47:48.595Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -670,9 +626,7 @@
       "[2026-06-21T07:47:32.617Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:47:32.617Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -723,13 +677,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -820,13 +768,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -908,13 +850,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:28:47.353Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -983,13 +919,7 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:05:52.794Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1004,9 +934,7 @@
       "[2026-06-21T07:05:33.669Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:05:33.669Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1026,13 +954,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1104,13 +1026,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T07:00:56.043Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1125,9 +1041,7 @@
       "[2026-06-21T07:00:30.813Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:00:30.813Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1152,13 +1066,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1221,13 +1129,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1290,13 +1192,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:56:31.930Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1311,9 +1207,7 @@
       "[2026-06-21T03:48:34.300Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T03:48:34.300Z] Run finalized: status = completed"
     ],
-    "nodes": [
-      "Cache Check"
-    ],
+    "nodes": ["Cache Check"],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1333,13 +1227,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1402,13 +1290,7 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": [
-          "groq",
-          "gemini",
-          "huggingface",
-          "openai",
-          "static-fallback"
-        ]
+        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
       }
     }
   },
@@ -1490,11 +1372,7 @@
         "Dynamic Programming": 0
       },
       "strongAreas": [],
-      "weakAreas": [
-        "HashMap",
-        "Trees",
-        "Dynamic Programming"
-      ],
+      "weakAreas": ["HashMap", "Trees", "Dynamic Programming"],
       "trends": [
         "Struggling recently with 3 consecutive incorrect submissions.",
         "Moderate activity: 1 submission attempts in the last 48 hours.",
@@ -8488,10 +8366,7 @@
       "[2026-06-19T01:55:23.781Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:55:23.781Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg",
@@ -8512,10 +8387,7 @@
       "[2026-06-19T01:22:34.038Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:22:34.038Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",
@@ -8536,10 +8408,7 @@
       "[2026-06-19T01:21:22.111Z] Error encountered: Failed to retrieve user history: \nInvalid `prisma.userProfile.findUnique()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\getUserHistory.ts:37:46\n\n  34  */\n  35 export async function getUserHistory(userId: string): Promise<UserHistoryResult> {\n  36   try {\n→ 37     const profile = await prisma.userProfile.findUnique(\nThe table `public.user_profile` does not exist in the current database.",
       "[2026-06-19T01:21:22.111Z] Run finalized: status = failed"
     ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory"
-    ],
+    "nodes": ["getUserHistoryNode", "tool:getUserHistory"],
     "prompts": [],
     "request": {
       "userId": "FcvXZb3xHQAs8YYQcsrtIjXj06lwr8Jb",

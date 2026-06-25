@@ -15,7 +15,7 @@ import {
 async function executeTracedNode(
   nodeName: string,
   state: AgentState,
-  nodeFn: (state: AgentState) => Promise<Partial<AgentState>> | Partial<AgentState>
+  nodeFn: (state: AgentState) => Promise<Partial<AgentState>> | Partial<AgentState>,
 ): Promise<AgentState> {
   console.log(`🔧 [Node: ${nodeName}] Starting execution...`);
   const startTime = Date.now();
@@ -172,14 +172,14 @@ export async function generateFeedbackNode(state: AgentState): Promise<AgentStat
     // Correctness feedback
     if (s.testResults) {
       feedbackList.push(
-        `✅ Correctness: Passed ${s.testResults.passed}/${s.testResults.total} test cases (${s.testResults.passRate.toFixed(1)}%).`
+        `✅ Correctness: Passed ${s.testResults.passed}/${s.testResults.total} test cases (${s.testResults.passRate.toFixed(1)}%).`,
       );
     }
 
     // Bugs feedback
     if (s.bugReport && s.bugReport.hasBugs) {
       feedbackList.push(
-        `⚠️ Bugs: Found ${s.bugReport.bugCount} issue(s). ${s.bugReport.bugs.map((b) => `${b.message} (Line ${b.line || 'unknown'}): ${b.hint}`).join('; ')}`
+        `⚠️ Bugs: Found ${s.bugReport.bugCount} issue(s). ${s.bugReport.bugs.map((b) => `${b.message} (Line ${b.line || 'unknown'}): ${b.hint}`).join('; ')}`,
       );
     } else {
       feedbackList.push('🎉 Code runs smoothly without syntax or runtime exceptions.');
@@ -192,7 +192,7 @@ export async function generateFeedbackNode(state: AgentState): Promise<AgentStat
           s.complexity.isOptimal
             ? 'Optimal performance achieved.'
             : s.complexity.suggestion || 'Improvements are possible.'
-        }`
+        }`,
       );
     }
 
@@ -205,7 +205,7 @@ export async function generateFeedbackNode(state: AgentState): Promise<AgentStat
           s.qualityReview.issues.length > 0
             ? `Issues: ${s.qualityReview.issues.join(', ')}`
             : 'Excellent code structure and naming conventions.'
-        }`
+        }`,
       );
     }
 

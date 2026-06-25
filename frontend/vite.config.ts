@@ -19,10 +19,7 @@ export default defineConfig({
   },
   server: {
     fs: {
-      allow: [
-        path.resolve(__dirname),
-        path.resolve(__dirname, '..'),
-      ],
+      allow: [path.resolve(__dirname), path.resolve(__dirname, '..')],
     },
     proxy: {
       '/api': {

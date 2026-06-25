@@ -16,6 +16,12 @@ import { langfuse } from '../../../providers/langfuse/index.js';
 
 type QuestionWithTestCases = {
   id: string;
+  slug?: string;
+  topics?: Array<{
+    topic: {
+      name: string;
+    };
+  }>;
   testCases: Array<{
     input: string;
     expectedOutput: string;
@@ -522,8 +528,7 @@ else:
     const testCases = question?.testCases.filter((tc) => includeHiddenTests || !tc.isHidden) ?? [];
     const hasTestCases = testCases.length > 0;
 
-    const isTreeQuestion =
-      question?.topics?.some((t: any) => t.topic.name === 'Trees') || false;
+    const isTreeQuestion = question?.topics?.some((t: any) => t.topic.name === 'Trees') || false;
     const questionSlug = question?.slug || '';
 
     const finalCode = hasTestCases

@@ -31,7 +31,7 @@ export async function runTests(
   problemId: string,
   code: string,
   testCases: Array<{ input: string; expectedOutput: string }>,
-  language: string
+  language: string,
 ): Promise<TestResults> {
   const question = await prisma.question.findUnique({
     where: { id: problemId },
@@ -46,7 +46,9 @@ export async function runTests(
   if (language === 'javascript' || language === 'typescript') {
     const functionName =
       code.match(/function\s+([a-zA-Z0-9_]+)\s*\(/)?.[1] ??
-      code.match(/(?:const|let|var)\s+([a-zA-Z0-9_]+)\s*=\s*(?:\([^)]*\)|[a-zA-Z0-9_]+)\s*=>/)?.[1] ??
+      code.match(
+        /(?:const|let|var)\s+([a-zA-Z0-9_]+)\s*=\s*(?:\([^)]*\)|[a-zA-Z0-9_]+)\s*=>/,
+      )?.[1] ??
       '';
 
     const jsTreeHelper = isTreeQuestion
@@ -114,7 +116,7 @@ const testCases = [
     inputStr: ${JSON.stringify(tc.input)},
     input: [${tc.input}],
     expected: ${tc.expectedOutput}
-  }`
+  }`,
     )
     .join(',\n  ')}
 ];
@@ -299,7 +301,7 @@ test_cases = [
     "inputStr": ${JSON.stringify(tc.input)},
     "input": [${tc.input}],
     "expected": ${tc.expectedOutput}
-  }`
+  }`,
     )
     .join(',\n  ')}
 ]
@@ -493,7 +495,10 @@ export function detectErrors(code: string, stderr: string, failedTests: any[]): 
     }
 
     // Extract cleaner error message (first or last few lines)
-    const lines = stderr.split('\n').map((l) => l.trim()).filter(Boolean);
+    const lines = stderr
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean);
     if (lines.length > 0) {
       const lastLine = lines[lines.length - 1];
       if (lastLine.includes('Error:') || lastLine.includes('Exception:')) {
@@ -577,7 +582,11 @@ function getRuntimeErrorHint(message: string): string {
   if (msg.includes('indexerror') || msg.includes('out of bounds') || msg.includes('undefined')) {
     return 'Array Index Out of Bounds: You are attempting to read or write to an array element index that does not exist. Verify your loop limits.';
   }
-  if (msg.includes('nullpointer') || msg.includes("cannot read properties of null") || msg.includes("noneType' object has no attribute")) {
+  if (
+    msg.includes('nullpointer') ||
+    msg.includes('cannot read properties of null') ||
+    msg.includes("noneType' object has no attribute")
+  ) {
     return 'Null Reference: You are trying to dereference a null/None object. Check tree node children or search lookups.';
   }
   if (msg.includes('syntaxerror') || msg.includes('unexpected token')) {
@@ -589,7 +598,10 @@ function getRuntimeErrorHint(message: string): string {
 /**
  * Tool 4: analyzeComplexity(code, problemId?): ComplexityResult
  */
-export async function analyzeComplexity(code: string, problemId?: string): Promise<ComplexityResult> {
+export async function analyzeComplexity(
+  code: string,
+  problemId?: string,
+): Promise<ComplexityResult> {
   let timeComplexity = 'O(n)';
   let spaceComplexity = 'O(1)';
   let suggestion: string | null = null;
@@ -774,11 +786,14 @@ export function reviewCode(code: string): QualityResult {
     feedback.push('Structure your code inside functions/methods for better reusability.');
   }
 
-  const singleLetterVar =
-    /\b(const|let|var)\s+([a-hj-lmn-z])\b|\b([a-hj-lmn-z])\s*=[^=]/i.test(code);
+  const singleLetterVar = /\b(const|let|var)\s+([a-hj-lmn-z])\b|\b([a-hj-lmn-z])\s*=[^=]/i.test(
+    code,
+  );
   if (singleLetterVar) {
     score -= 10;
-    issues.push('Use of single-letter variable names (other than common loop counters like i, j, k).');
+    issues.push(
+      'Use of single-letter variable names (other than common loop counters like i, j, k).',
+    );
     feedback.push('Use descriptive names for variables to convey their purpose clearly.');
   }
 
@@ -787,7 +802,9 @@ export function reviewCode(code: string): QualityResult {
   if (hasLongLines) {
     score -= 5;
     issues.push('Some lines of code exceed 80 characters.');
-    feedback.push('Keep lines under 80 characters to comply with standard style guides and prevent horizontal scrolling.');
+    feedback.push(
+      'Keep lines under 80 characters to comply with standard style guides and prevent horizontal scrolling.',
+    );
   }
 
   const hasTabs = lines.some((line) => line.includes('\t'));
@@ -795,7 +812,9 @@ export function reviewCode(code: string): QualityResult {
   if (hasTabs && hasSpaces) {
     score -= 10;
     issues.push('Mixed tabs and spaces for indentation.');
-    feedback.push('Consistently use either tabs or spaces (spaces are preferred) to prevent indentation errors, especially in Python.');
+    feedback.push(
+      'Consistently use either tabs or spaces (spaces are preferred) to prevent indentation errors, especially in Python.',
+    );
   }
 
   score = Math.max(0, Math.min(100, score));

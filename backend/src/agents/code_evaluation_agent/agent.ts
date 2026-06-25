@@ -54,8 +54,10 @@ export async function runEvaluation(input: {
   trigger: 'run' | 'submit';
   language?: string;
 }): Promise<AgentState> {
-  console.log(`🚀 [Agent] Initiating LangGraph workflow for user=${input.userId} problem=${input.problemId}`);
-  
+  console.log(
+    `🚀 [Agent] Initiating LangGraph workflow for user=${input.userId} problem=${input.problemId}`,
+  );
+
   const result = await appGraph.invoke({
     userId: input.userId,
     problemId: input.problemId,
@@ -65,6 +67,8 @@ export async function runEvaluation(input: {
     language: input.language || 'javascript',
   });
 
-  console.log(`🚀 [Agent] Workflow complete. Verdict: ${result.verdict}. Final score: ${result.evalScore}`);
+  console.log(
+    `🚀 [Agent] Workflow complete. Verdict: ${result.verdict}. Final score: ${result.evalScore}`,
+  );
   return result;
 }

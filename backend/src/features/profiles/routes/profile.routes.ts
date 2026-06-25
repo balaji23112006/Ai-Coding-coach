@@ -115,7 +115,7 @@ router.get('/:userId', async (req: Request, res: Response, next: NextFunction): 
     if (!profile) {
       try {
         profile = await profileRepository.saveProfile({
-          userId,
+          user: { connect: { id: userId } },
           skills: {},
           solvedCount: 0,
           easySolved: 0,

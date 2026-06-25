@@ -21,12 +21,7 @@ export interface UseMentorOptions {
   executionResult?: ExecutionResult | null;
 }
 
-export function useMentor({
-  problemId,
-  currentCode,
-  language,
-  executionResult,
-}: UseMentorOptions) {
+export function useMentor({ problemId, currentCode, language, executionResult }: UseMentorOptions) {
   const [messages, setMessages] = useState<MentorMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);

@@ -21,7 +21,7 @@ export function registerWebSocketServer(server: any) {
       'HTTP/1.1 101 Switching Protocols\r\n' +
         'Upgrade: websocket\r\n' +
         'Connection: Upgrade\r\n' +
-        `Sec-WebSocket-Accept: ${hash}\r\n\r\n`
+        `Sec-WebSocket-Accept: ${hash}\r\n\r\n`,
     );
 
     clients.add(socket);
@@ -35,7 +35,9 @@ export function registerWebSocketServer(server: any) {
     socket.on('error', (err: any) => {
       clients.delete(socket);
       if (err.code === 'ECONNRESET' || err.code === 'ECONNABORTED' || err.code === 'EPIPE') {
-        logger.info(`[WS] Socket connection reset/aborted (${err.code}). Total clients: ${clients.size}`);
+        logger.info(
+          `[WS] Socket connection reset/aborted (${err.code}). Total clients: ${clients.size}`,
+        );
       } else {
         logger.error('[WS] Socket error:', err);
       }
