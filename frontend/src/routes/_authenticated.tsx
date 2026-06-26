@@ -19,10 +19,7 @@ function AuthenticatedLayout() {
       }
       void navigate({
         to: '/auth/login',
-        search: { redirect: currentPath + window.location.search } as Record<
-          string,
-          string
-        >,
+        search: { redirect: currentPath + window.location.search } as Record<string, string>,
       });
     }
   }, [isLoading, isAuthenticated, navigate]);

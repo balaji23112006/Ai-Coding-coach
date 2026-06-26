@@ -914,7 +914,7 @@ for i, tc in enumerate(test_cases):
             
         result = ${functionName}(*args)
         final_actual = result
-        if isinstance(result, TreeNode):
+        if result and type(result).__name__ == 'TreeNode':
             final_actual = result.val
         if compare_outputs(final_actual, tc["expected"]):
             passed += 1

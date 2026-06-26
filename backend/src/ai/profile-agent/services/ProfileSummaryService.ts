@@ -85,7 +85,10 @@ export class ProfileSummaryService {
         }
 
         if (traceId) {
-          agentLogger.logDecision(traceId, `Response successfully received from Groq LLM for ${promptType}.`);
+          agentLogger.logDecision(
+            traceId,
+            `Response successfully received from Groq LLM for ${promptType}.`,
+          );
         }
         return responseText;
       } catch (error) {
@@ -100,7 +103,10 @@ export class ProfileSummaryService {
             });
             await langfuse.flushAsync();
           } catch (err) {
-            console.error('[ProfileSummaryService] Error ending Langfuse Groq generation on error:', err);
+            console.error(
+              '[ProfileSummaryService] Error ending Langfuse Groq generation on error:',
+              err,
+            );
           }
         }
         console.error('[ProfileSummaryService] Error calling Groq API:', error);
@@ -181,7 +187,10 @@ export class ProfileSummaryService {
         }
 
         if (traceId) {
-          agentLogger.logDecision(traceId, `Response successfully received from Gemini LLM for ${promptType}.`);
+          agentLogger.logDecision(
+            traceId,
+            `Response successfully received from Gemini LLM for ${promptType}.`,
+          );
         }
         return responseText;
       } catch (error) {
@@ -196,7 +205,10 @@ export class ProfileSummaryService {
             });
             await langfuse.flushAsync();
           } catch (err) {
-            console.error('[ProfileSummaryService] Error ending Langfuse Gemini generation on error:', err);
+            console.error(
+              '[ProfileSummaryService] Error ending Langfuse Gemini generation on error:',
+              err,
+            );
           }
         }
         console.error('[ProfileSummaryService] Error calling Gemini API:', error);
@@ -212,7 +224,10 @@ export class ProfileSummaryService {
     // 3. Throw combined error if both failed
     const errorDetails = errors.join('; ');
     if (traceId) {
-      agentLogger.logDecision(traceId, `All LLM providers failed for ${promptType}. Errors: ${errorDetails}`);
+      agentLogger.logDecision(
+        traceId,
+        `All LLM providers failed for ${promptType}. Errors: ${errorDetails}`,
+      );
     }
     throw new Error(`All LLM providers failed for ${promptType}. Errors: ${errorDetails}`);
   }

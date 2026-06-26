@@ -231,9 +231,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
           agentLogger.logDecision(traceId, 'Response received from HuggingFace LLM');
         } catch (e) {
           const errorMsg = e instanceof Error ? e.message : String(e);
-          logger.warn(
-            `[MentorAgent] HuggingFace failed: ${errorMsg}`,
-          );
+          logger.warn(`[MentorAgent] HuggingFace failed: ${errorMsg}`);
           agentLogger.logDecision(traceId, `HuggingFace LLM call failed: ${errorMsg}`);
           providerFailures.push(`HuggingFace failed: ${errorMsg}`);
         }
