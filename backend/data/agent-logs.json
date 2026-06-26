@@ -1,5 +1,181 @@
 [
   {
+    "id": "trace-run-438yQlaYuz6DaRqZyEbztJTTToXjFO1f-1782475669758",
+    "timestamp": "2026-06-26T12:07:49.758Z",
+    "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+    "trigger": "run",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-26T12:07:49.763Z] Executed Node: getUserHistoryNode",
+      "[2026-06-26T12:07:49.763Z] Executed Node: tool:getUserHistory",
+      "[2026-06-26T12:07:51.619Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
+      "[2026-06-26T12:07:51.622Z] Executed Node: getTopicStatsNode",
+      "[2026-06-26T12:07:51.622Z] Executed Node: tool:getTopicStats",
+      "[2026-06-26T12:07:52.950Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
+      "[2026-06-26T12:07:52.951Z] Executed Node: getSubmissionsNode",
+      "[2026-06-26T12:07:52.952Z] Executed Node: tool:getSubmissions",
+      "[2026-06-26T12:07:54.014Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
+      "[2026-06-26T12:07:54.016Z] Executed Node: getRecentActivityNode",
+      "[2026-06-26T12:07:54.016Z] Executed Node: tool:getRecentActivity",
+      "[2026-06-26T12:07:54.869Z] D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.",
+      "[2026-06-26T12:07:54.870Z] Executed Node: analyzeMasteryNode",
+      "[2026-06-26T12:07:55.088Z] Executed Node: detectTrendsNode",
+      "[2026-06-26T12:07:56.314Z] Executed Node: assessDifficultyNode",
+      "[2026-06-26T12:07:56.543Z] Executed Node: classifyLevelNode",
+      "[2026-06-26T12:07:56.775Z] Executed Node: identifyStrengthsNode",
+      "[2026-06-26T12:07:57.013Z] Executed Node: identifyWeaknessesNode",
+      "[2026-06-26T12:07:58.597Z] Executed Node: generateRecommendationsNode",
+      "[2026-06-26T12:07:58.832Z] D7 (Significance check): No significant change in profile metrics. Routing to END.",
+      "[2026-06-26T12:08:01.402Z] Response successfully received from Groq LLM for generate-profile-summary.",
+      "[2026-06-26T12:08:01.724Z] Groq LLM call failed for generate-trend-explanation: 429 {\"error\":{\"message\":\"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kvbk8ahzf3ca443vertdr0mc` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99677, Requested 732. Please try again in 5m53.376s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}",
+      "[2026-06-26T12:08:07.758Z] Response successfully received from Gemini LLM for generate-trend-explanation.",
+      "[2026-06-26T12:08:07.758Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory",
+      "getTopicStatsNode",
+      "tool:getTopicStats",
+      "getSubmissionsNode",
+      "tool:getSubmissions",
+      "getRecentActivityNode",
+      "tool:getRecentActivity",
+      "analyzeMasteryNode",
+      "detectTrendsNode",
+      "assessDifficultyNode",
+      "classifyLevelNode",
+      "identifyStrengthsNode",
+      "identifyWeaknessesNode",
+      "generateRecommendationsNode"
+    ],
+    "prompts": [
+      {
+        "type": "profile_summary",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Intermediate\n- Strengths: None identified yet\n- Areas for Improvement: HashMap, Strings, Stack, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, Cycle Detection\n- Topic Mastery Scores: {\"HashMap\":58,\"Strings\":58,\"Arrays\":68,\"Stack\":45,\"Linked List\":72,\"Binary Search\":52,\"Trees\":28,\"Graphs\":0,\"DFS\":0,\"BFS\":0,\"Grid\":0,\"Directed Graph\":0,\"Cycle Detection\":0}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• STANDING: As an intermediate-level learner, you have a solid foundation in programming and are poised to take your skills to the next level, with a good balance of topics to explore and improve upon.\n• KEY STRENGTHS: Although no specific strengths have been identified yet, your scores in Arrays and Linked List show promise, with a respectable 68 and 72 respectively, indicating a good grasp of fundamental data structures.\n• AREAS TO IMPROVE: It's clear that you need to work on a range of topics, including HashMap, Strings, Stack, Binary Search, Trees, Graphs, and several advanced graph-related concepts, where your scores are currently below 60 or not attempted.\n• RECOMMENDED FOCUS: To make significant progress, consider focusing on building a strong understanding of HashMap, Stack, and Binary Search first, as these are foundational concepts that will help you tackle more complex topics like Trees, Graphs, and their related algorithms, allowing you to systematically address your weaker areas and fill the gaps in your knowledge.",
+        "timestamp": "2026-06-26T12:08:01.402Z"
+      },
+      {
+        "type": "trend_explanation",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * HashMap: Stable (100%)\n  * Strings: Stable (100%)\n  * Struggling recently with 3 consecutive incorrect submissions.\n  * Moderate activity: 3 submission attempts in the last 48 hours.\n  * Struggling with Medium difficulty problems (success rate: 40%).\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• LEARNING ACTIVITY: Your recent activity of 10 submission attempts, including 3 in the last 48 hours, indicates a consistent and moderate engagement with coding challenges, showing a steady velocity in your learning journey.\n\n• CURRENT TRENDS: You're demonstrating strong foundational understanding in HashMap and Strings, maintaining a 100% stable success rate in these areas. However, you've recently hit a rough patch with 3 consecutive incorrect submissions and are finding Medium difficulty problems challenging, with a 40% success rate.\n\n• MOMENTUM ADVICE: To regain momentum and break the streak of incorrect submissions, consider tackling a slightly easier problem or a 'warm-up' problem focused on your strong areas like HashMap or Strings to secure a quick win. For Medium difficulty problems, try focusing on thorough problem analysis, reviewing common patterns, and perhaps breaking down the problem into smaller, manageable sub-problems before attempting to code.",
+        "timestamp": "2026-06-26T12:08:07.758Z"
+      }
+    ],
+    "request": {
+      "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f"
+    },
+    "response": {
+      "success": true,
+      "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+      "level": "Intermediate",
+      "confidence": 1,
+      "mastery": {
+        "HashMap": 58,
+        "Strings": 58,
+        "Arrays": 68,
+        "Stack": 45,
+        "Linked List": 72,
+        "Binary Search": 52,
+        "Trees": 28,
+        "Graphs": 0,
+        "DFS": 0,
+        "BFS": 0,
+        "Grid": 0,
+        "Directed Graph": 0,
+        "Cycle Detection": 0
+      },
+      "strongAreas": [],
+      "weakAreas": [
+        "HashMap",
+        "Strings",
+        "Stack",
+        "Binary Search",
+        "Trees",
+        "Graphs",
+        "DFS",
+        "BFS",
+        "Grid",
+        "Directed Graph",
+        "Cycle Detection"
+      ],
+      "trends": [
+        "HashMap: Stable (100%)",
+        "Strings: Stable (100%)",
+        "Struggling recently with 3 consecutive incorrect submissions.",
+        "Moderate activity: 3 submission attempts in the last 48 hours.",
+        "Struggling with Medium difficulty problems (success rate: 40%)."
+      ],
+      "profileStatus": "UNINITIALIZED",
+      "easySolved": 8,
+      "mediumSolved": 8,
+      "hardSolved": 0,
+      "solvedCount": 16,
+      "recommendedFocus": "Graphs",
+      "recommendedDifficulty": "Medium",
+      "summary": "• STANDING: As an intermediate-level learner, you have a solid foundation in programming and are poised to take your skills to the next level, with a good balance of topics to explore and improve upon.\n• KEY STRENGTHS: Although no specific strengths have been identified yet, your scores in Arrays and Linked List show promise, with a respectable 68 and 72 respectively, indicating a good grasp of fundamental data structures.\n• AREAS TO IMPROVE: It's clear that you need to work on a range of topics, including HashMap, Strings, Stack, Binary Search, Trees, Graphs, and several advanced graph-related concepts, where your scores are currently below 60 or not attempted.\n• RECOMMENDED FOCUS: To make significant progress, consider focusing on building a strong understanding of HashMap, Stack, and Binary Search first, as these are foundational concepts that will help you tackle more complex topics like Trees, Graphs, and their related algorithms, allowing you to systematically address your weaker areas and fill the gaps in your knowledge.",
+      "trendExplanation": "• LEARNING ACTIVITY: Your recent activity of 10 submission attempts, including 3 in the last 48 hours, indicates a consistent and moderate engagement with coding challenges, showing a steady velocity in your learning journey.\n\n• CURRENT TRENDS: You're demonstrating strong foundational understanding in HashMap and Strings, maintaining a 100% stable success rate in these areas. However, you've recently hit a rough patch with 3 consecutive incorrect submissions and are finding Medium difficulty problems challenging, with a 40% success rate.\n\n• MOMENTUM ADVICE: To regain momentum and break the streak of incorrect submissions, consider tackling a slightly easier problem or a 'warm-up' problem focused on your strong areas like HashMap or Strings to secure a quick win. For Medium difficulty problems, try focusing on thorough problem analysis, reviewing common patterns, and perhaps breaking down the problem into smaller, manageable sub-problems before attempting to code."
+    }
+  },
+  {
+    "id": "trace-run-topper_user-1782475603085",
+    "timestamp": "2026-06-26T12:06:43.085Z",
+    "userId": "topper_user",
+    "trigger": "run",
+    "status": "failed",
+    "decisions": [
+      "[2026-06-26T12:06:43.101Z] Executed Node: getUserHistoryNode",
+      "[2026-06-26T12:06:43.102Z] Executed Node: tool:getUserHistory",
+      "[2026-06-26T12:06:44.764Z] D1 (History sufficiency check): Insufficient history but tool already tried. Proceeding to Topic Stats check.",
+      "[2026-06-26T12:06:44.767Z] Executed Node: getTopicStatsNode",
+      "[2026-06-26T12:06:44.768Z] Executed Node: tool:getTopicStats",
+      "[2026-06-26T12:06:45.425Z] D2 (Topic stats check): Topic stats missing but tool already tried. Proceeding to Submissions check.",
+      "[2026-06-26T12:06:45.426Z] Executed Node: getSubmissionsNode",
+      "[2026-06-26T12:06:45.426Z] Executed Node: tool:getSubmissions",
+      "[2026-06-26T12:06:47.308Z] D3 (Submissions check): Submissions missing/insufficient but tool already tried. Proceeding to Recent Activity check.",
+      "[2026-06-26T12:06:47.310Z] Executed Node: getRecentActivityNode",
+      "[2026-06-26T12:06:47.311Z] Executed Node: tool:getRecentActivity",
+      "[2026-06-26T12:06:49.258Z] D4 (Recent activity check): Recent activity missing/insufficient but tool already tried. Proceeding to analyzeMasteryNode.",
+      "[2026-06-26T12:06:49.261Z] Executed Node: analyzeMasteryNode",
+      "[2026-06-26T12:06:49.509Z] Executed Node: detectTrendsNode",
+      "[2026-06-26T12:06:49.866Z] Executed Node: assessDifficultyNode",
+      "[2026-06-26T12:06:50.089Z] Executed Node: classifyLevelNode",
+      "[2026-06-26T12:06:50.333Z] Executed Node: identifyStrengthsNode",
+      "[2026-06-26T12:06:50.551Z] Executed Node: identifyWeaknessesNode",
+      "[2026-06-26T12:06:50.794Z] Executed Node: generateRecommendationsNode",
+      "[2026-06-26T12:06:51.026Z] D7 (Significance check): Calculated profile metrics differ significantly from baseline. Routing to saveProfileNode.",
+      "[2026-06-26T12:06:51.027Z] Executed Node: saveProfileNode",
+      "[2026-06-26T12:06:51.028Z] Executed Node: tool:saveProfile",
+      "[2026-06-26T12:06:52.583Z] Error encountered: Failed to save user profile: \nInvalid `any).upsert()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\saveProfile.ts:35:46\n\n  32   recommendedDifficulty,\n  33 } = params;\n  34 try {\n→ 35   return await (prisma.userProfile as any).upsert(\nForeign key constraint violated: `user_profile_userId_fkey (index)`",
+      "[2026-06-26T12:06:52.583Z] Run finalized: status = failed"
+    ],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory",
+      "getTopicStatsNode",
+      "tool:getTopicStats",
+      "getSubmissionsNode",
+      "tool:getSubmissions",
+      "getRecentActivityNode",
+      "tool:getRecentActivity",
+      "analyzeMasteryNode",
+      "detectTrendsNode",
+      "assessDifficultyNode",
+      "classifyLevelNode",
+      "identifyStrengthsNode",
+      "identifyWeaknessesNode",
+      "generateRecommendationsNode",
+      "saveProfileNode",
+      "tool:saveProfile"
+    ],
+    "prompts": [],
+    "request": {
+      "userId": "topper_user"
+    },
+    "response": null,
+    "error": "Failed to save user profile: \nInvalid `any).upsert()` invocation in\nC:\\A\\PROJECT\\Practice\\Ai-Coding-coach\\backend\\src\\ai\\profile-agent\\tools\\saveProfile.ts:35:46\n\n  32   recommendedDifficulty,\n  33 } = params;\n  34 try {\n→ 35   return await (prisma.userProfile as any).upsert(\nForeign key constraint violated: `user_profile_userId_fkey (index)`"
+  },
+  {
     "id": "trace-mentor-438yQlaYuz6DaRqZyEbztJTTToXjFO1f-d17fb374-4073-4ee2-b744-90d7d956be65-1782475040939",
     "timestamp": "2026-06-26T11:57:20.939Z",
     "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
@@ -10,7 +186,9 @@
       "[2026-06-26T11:57:20.940Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-26T11:57:20.940Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
@@ -52,7 +230,13 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-26T11:57:16.709Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -134,7 +318,13 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-26T11:57:16.709Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -149,7 +339,9 @@
       "[2026-06-26T11:56:42.982Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-26T11:56:42.982Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
@@ -178,7 +370,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-26T11:53:56.120Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -242,7 +440,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-26T11:56:08.697Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -310,7 +514,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-26T11:53:56.120Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -508,7 +718,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-22T03:42:04.510Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -577,7 +793,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-22T03:41:28.197Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -592,7 +814,9 @@
       "[2026-06-21T14:48:41.916Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T14:48:41.916Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "c90874d6-6124-4915-95e7-eac94c02b356",
@@ -622,7 +846,13 @@
       "workflow": {
         "triggeredBy": "runtime_error",
         "savedAt": "2026-06-21T14:48:11.159Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -690,7 +920,13 @@
       "workflow": {
         "triggeredBy": "runtime_error",
         "savedAt": "2026-06-21T14:48:11.159Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -886,7 +1122,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T08:12:31.806Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -954,7 +1196,13 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T08:11:29.094Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1047,7 +1295,13 @@
       "workflow": {
         "triggeredBy": "test_fail",
         "savedAt": "2026-06-21T07:47:48.595Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1062,7 +1316,9 @@
       "[2026-06-21T07:47:32.617Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:47:32.617Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1113,7 +1369,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1204,7 +1466,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:35:08.541Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1286,7 +1554,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:28:47.353Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1355,7 +1629,13 @@
       "workflow": {
         "triggeredBy": "chat",
         "savedAt": "2026-06-21T07:05:52.794Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1370,7 +1650,9 @@
       "[2026-06-21T07:05:33.669Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:05:33.669Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1390,7 +1672,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1462,7 +1750,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T07:00:56.043Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1477,7 +1771,9 @@
       "[2026-06-21T07:00:30.813Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T07:00:30.813Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1502,7 +1798,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1565,7 +1867,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:59:09.586Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1628,7 +1936,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T06:56:31.930Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1643,7 +1957,9 @@
       "[2026-06-21T03:48:34.300Z] Found matching hint in backend cache. Bypassing LLM calls.",
       "[2026-06-21T03:48:34.300Z] Run finalized: status = completed"
     ],
-    "nodes": ["Cache Check"],
+    "nodes": [
+      "Cache Check"
+    ],
     "prompts": [],
     "request": {
       "questionId": "671e4a77-959e-4ce8-a5e3-02a51d66249c",
@@ -1663,7 +1979,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1726,7 +2048,13 @@
       "workflow": {
         "triggeredBy": "hint_request",
         "savedAt": "2026-06-21T03:47:05.439Z",
-        "providerPreference": ["groq", "gemini", "huggingface", "openai", "static-fallback"]
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
       }
     }
   },
@@ -1808,7 +2136,11 @@
         "Dynamic Programming": 0
       },
       "strongAreas": [],
-      "weakAreas": ["HashMap", "Trees", "Dynamic Programming"],
+      "weakAreas": [
+        "HashMap",
+        "Trees",
+        "Dynamic Programming"
+      ],
       "trends": [
         "Struggling recently with 3 consecutive incorrect submissions.",
         "Moderate activity: 1 submission attempts in the last 48 hours.",
@@ -8386,192 +8718,6 @@
       "recommendedDifficulty": "Easy",
       "summary": "• STANDING: You are at the exciting very beginning of your coding journey, with a skill level currently unclassified, indicating a fresh start and immense potential to grow.\n• KEY STRENGTHS: As you embark on this learning path, all your strengths are waiting to be discovered and honed. This is a fantastic opportunity to build a solid foundation from scratch.\n• AREAS TO IMPROVE: With no specific areas for improvement identified yet, every new concept you learn will contribute to defining and refining your path forward as you progress.\n• RECOMMENDED FOCUS: To begin, we recommend focusing on fundamental programming concepts to establish a strong base, such as variables, data types, control flow, and functions.",
       "trendExplanation": "• Your recent activity count of 0 indicates a very low current learning velocity, suggesting a pause in your coding submission attempts.\n• With no recent submissions, there are currently no significant patterns or trends to analyze in your coding activity.\n• To build momentum, try starting with a small, manageable coding task or revisiting a familiar concept. Setting a brief, dedicated time slot for even a quick coding session can help you restart your progress."
-    }
-  },
-  {
-    "id": "trace-run-rich_test_user-1781850309249",
-    "timestamp": "2026-06-19T06:25:09.249Z",
-    "userId": "rich_test_user",
-    "trigger": "run",
-    "status": "completed",
-    "decisions": [
-      "[2026-06-19T06:25:09.262Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T06:25:09.265Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T06:25:09.320Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
-      "[2026-06-19T06:25:09.322Z] Executed Node: getTopicStatsNode",
-      "[2026-06-19T06:25:09.323Z] Executed Node: tool:getTopicStats",
-      "[2026-06-19T06:25:09.333Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
-      "[2026-06-19T06:25:09.334Z] Executed Node: getSubmissionsNode",
-      "[2026-06-19T06:25:09.334Z] Executed Node: tool:getSubmissions",
-      "[2026-06-19T06:25:09.372Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
-      "[2026-06-19T06:25:09.373Z] Executed Node: getRecentActivityNode",
-      "[2026-06-19T06:25:09.373Z] Executed Node: tool:getRecentActivity",
-      "[2026-06-19T06:25:09.379Z] D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.",
-      "[2026-06-19T06:25:09.380Z] Executed Node: analyzeMasteryNode",
-      "[2026-06-19T06:25:09.381Z] Executed Node: detectTrendsNode",
-      "[2026-06-19T06:25:09.389Z] Executed Node: assessDifficultyNode",
-      "[2026-06-19T06:25:09.391Z] Executed Node: classifyLevelNode",
-      "[2026-06-19T06:25:09.394Z] Executed Node: identifyStrengthsNode",
-      "[2026-06-19T06:25:09.395Z] Executed Node: identifyWeaknessesNode",
-      "[2026-06-19T06:25:09.428Z] Executed Node: generateRecommendationsNode",
-      "[2026-06-19T06:25:09.431Z] D7 (Significance check): Calculated profile metrics differ significantly from baseline. Routing to saveProfileNode.",
-      "[2026-06-19T06:25:09.431Z] Executed Node: saveProfileNode",
-      "[2026-06-19T06:25:09.432Z] Executed Node: tool:saveProfile",
-      "[2026-06-19T06:25:20.466Z] Run finalized: status = completed"
-    ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory",
-      "getTopicStatsNode",
-      "tool:getTopicStats",
-      "getSubmissionsNode",
-      "tool:getSubmissions",
-      "getRecentActivityNode",
-      "tool:getRecentActivity",
-      "analyzeMasteryNode",
-      "detectTrendsNode",
-      "assessDifficultyNode",
-      "classifyLevelNode",
-      "identifyStrengthsNode",
-      "identifyWeaknessesNode",
-      "generateRecommendationsNode",
-      "saveProfileNode",
-      "tool:saveProfile"
-    ],
-    "prompts": [
-      {
-        "type": "profile_summary",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Beginner\n- Strengths: None identified yet\n- Areas for Improvement: HashMap, Strings, Stack, Linked List, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, Cycle Detection\n- Topic Mastery Scores: {\"HashMap\":44,\"Strings\":62,\"Stack\":58,\"Linked List\":58,\"Binary Search\":45,\"Trees\":45,\"Graphs\":0,\"DFS\":0,\"BFS\":0,\"Grid\":0,\"Directed Graph\":0,\"Cycle Detection\":0}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• STANDING: You are at the exciting beginning of your coding journey as a Beginner, laying a solid foundation for future growth.\n• KEY STRENGTHS: While specific strengths are still emerging, your current highest score in Strings (62%) indicates a good starting point and a foundation to build upon. This shows you're engaging with core concepts.\n• AREAS TO IMPROVE: Focus on developing your understanding and application of HashMap, Strings, Stack, Linked List, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, and Cycle Detection.\n• RECOMMENDED FOCUS: To build momentum, we recommend initially focusing on strengthening your understanding of Strings, as it's your highest-scoring topic. Following that, delve into fundamental data structures like Stack, Linked List, and HashMap, where you already have some initial exposure, to progressively build confidence and master these essential concepts.",
-        "timestamp": "2026-06-19T06:25:14.619Z"
-      },
-      {
-        "type": "trend_explanation",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * Strings: Declining (from 100% to 67%)\n  * Currently on a 3-problem solved streak!\n  * Moderate activity: 2 submission attempts in the last 48 hours.\n  * Demonstrates strong comfort with Easy difficulty problems (success rate: 100%).\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• LEARNING ACTIVITY: Your activity demonstrates consistent, moderate engagement with coding challenges, evidenced by 2 submission attempts in the last 48 hours and 10 recent attempts overall. This indicates a steady, positive velocity in your learning.\n• CURRENT TRENDS: You are currently on an impressive 3-problem solved streak and show strong comfort with Easy difficulty problems, maintaining a 100% success rate in that category. However, your comfort level with String-related problems has declined from 100% to 67%.\n• MOMENTUM ADVICE: To maintain your excellent problem-solving streak and strong performance, consider dedicating a bit more focused practice to String problems to bring that comfort level back up. Once you've solidified your string skills, strategically introduce problems of slightly higher difficulty to continue your growth and leverage your momentum.",
-        "timestamp": "2026-06-19T06:25:20.466Z"
-      }
-    ],
-    "request": {
-      "userId": "rich_test_user"
-    },
-    "response": {
-      "success": true,
-      "userId": "rich_test_user",
-      "level": "Beginner",
-      "confidence": 0.5,
-      "mastery": {
-        "HashMap": 44,
-        "Strings": 62,
-        "Stack": 58,
-        "Linked List": 58,
-        "Binary Search": 45,
-        "Trees": 45,
-        "Graphs": 0,
-        "DFS": 0,
-        "BFS": 0,
-        "Grid": 0,
-        "Directed Graph": 0,
-        "Cycle Detection": 0
-      },
-      "strongAreas": [],
-      "weakAreas": [
-        "HashMap",
-        "Strings",
-        "Stack",
-        "Linked List",
-        "Binary Search",
-        "Trees",
-        "Graphs",
-        "DFS",
-        "BFS",
-        "Grid",
-        "Directed Graph",
-        "Cycle Detection"
-      ],
-      "trends": [
-        "Strings: Declining (from 100% to 67%)",
-        "Currently on a 3-problem solved streak!",
-        "Moderate activity: 2 submission attempts in the last 48 hours.",
-        "Demonstrates strong comfort with Easy difficulty problems (success rate: 100%)."
-      ],
-      "profileStatus": "SAVED",
-      "easySolved": 3,
-      "mediumSolved": 3,
-      "hardSolved": 0,
-      "solvedCount": 6,
-      "recommendedFocus": "Graphs",
-      "recommendedDifficulty": "Easy",
-      "summary": "• STANDING: You are at the exciting beginning of your coding journey as a Beginner, laying a solid foundation for future growth.\n• KEY STRENGTHS: While specific strengths are still emerging, your current highest score in Strings (62%) indicates a good starting point and a foundation to build upon. This shows you're engaging with core concepts.\n• AREAS TO IMPROVE: Focus on developing your understanding and application of HashMap, Strings, Stack, Linked List, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, and Cycle Detection.\n• RECOMMENDED FOCUS: To build momentum, we recommend initially focusing on strengthening your understanding of Strings, as it's your highest-scoring topic. Following that, delve into fundamental data structures like Stack, Linked List, and HashMap, where you already have some initial exposure, to progressively build confidence and master these essential concepts.",
-      "trendExplanation": "• LEARNING ACTIVITY: Your activity demonstrates consistent, moderate engagement with coding challenges, evidenced by 2 submission attempts in the last 48 hours and 10 recent attempts overall. This indicates a steady, positive velocity in your learning.\n• CURRENT TRENDS: You are currently on an impressive 3-problem solved streak and show strong comfort with Easy difficulty problems, maintaining a 100% success rate in that category. However, your comfort level with String-related problems has declined from 100% to 67%.\n• MOMENTUM ADVICE: To maintain your excellent problem-solving streak and strong performance, consider dedicating a bit more focused practice to String problems to bring that comfort level back up. Once you've solidified your string skills, strategically introduce problems of slightly higher difficulty to continue your growth and leverage your momentum."
-    }
-  },
-  {
-    "id": "trace-run-WadprLlnQH4IWtRwRMwzgBf962Uq1rwg-1781850075852",
-    "timestamp": "2026-06-19T06:21:15.853Z",
-    "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg",
-    "trigger": "run",
-    "status": "completed",
-    "decisions": [
-      "[2026-06-19T06:21:15.870Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T06:21:15.873Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T06:21:15.939Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
-      "[2026-06-19T06:21:15.941Z] Executed Node: getTopicStatsNode",
-      "[2026-06-19T06:21:15.941Z] Executed Node: tool:getTopicStats",
-      "[2026-06-19T06:21:15.951Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
-      "[2026-06-19T06:21:15.952Z] Executed Node: getSubmissionsNode",
-      "[2026-06-19T06:21:15.952Z] Executed Node: tool:getSubmissions",
-      "[2026-06-19T06:21:15.992Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
-      "[2026-06-19T06:21:15.993Z] Executed Node: getRecentActivityNode",
-      "[2026-06-19T06:21:15.993Z] Executed Node: tool:getRecentActivity",
-      "[2026-06-19T06:21:15.999Z] D4 (Recent activity check): Recent activity missing and tool already tried. Routing to bootstrap.",
-      "[2026-06-19T06:21:16.000Z] Executed Node: bootstrap",
-      "[2026-06-19T06:21:16.003Z] Executed Node: saveProfileNode",
-      "[2026-06-19T06:21:16.003Z] Executed Node: tool:saveProfile",
-      "[2026-06-19T06:21:23.230Z] Run finalized: status = completed"
-    ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory",
-      "getTopicStatsNode",
-      "tool:getTopicStats",
-      "getSubmissionsNode",
-      "tool:getSubmissions",
-      "getRecentActivityNode",
-      "tool:getRecentActivity",
-      "bootstrap",
-      "saveProfileNode",
-      "tool:saveProfile"
-    ],
-    "prompts": [
-      {
-        "type": "trend_explanation",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * No significant trends detected yet.\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• Your recent activity of 10 submission attempts indicates a good initial velocity in your learning, showing consistent effort and engagement with the coding challenges.\n\n• Currently, there are no significant trends detected in your submissions, which is common when you're actively exploring and building foundational habits.\n\n• To build momentum, focus on maintaining this consistent effort and try to reflect briefly after each submission, noting what went well and what you might try differently next time.",
-        "timestamp": "2026-06-19T06:21:23.230Z"
-      }
-    ],
-    "request": {
-      "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg"
-    },
-    "response": {
-      "success": true,
-      "userId": "WadprLlnQH4IWtRwRMwzgBf962Uq1rwg",
-      "level": "Unclassified",
-      "confidence": 0.05,
-      "mastery": {},
-      "strongAreas": [],
-      "weakAreas": [],
-      "trends": [],
-      "profileStatus": "SAVED",
-      "easySolved": 1,
-      "mediumSolved": 0,
-      "hardSolved": 0,
-      "solvedCount": 1,
-      "recommendedFocus": "None",
-      "recommendedDifficulty": "Easy",
-      "summary": "• STANDING: You are assessed at the Unclassified skill level. Your progress is monitored by the AI coach.\n• KEY STRENGTHS: You are starting to practice and establish initial competencies.\n• AREAS TO IMPROVE: Keep solving diverse challenges to identify focus areas.\n• RECOMMENDED FOCUS: We suggest targeting topics matching your focus parameters to build robust problem-solving patterns.",
-      "trendExplanation": "• Your recent activity of 10 submission attempts indicates a good initial velocity in your learning, showing consistent effort and engagement with the coding challenges.\n\n• Currently, there are no significant trends detected in your submissions, which is common when you're actively exploring and building foundational habits.\n\n• To build momentum, focus on maintaining this consistent effort and try to reflect briefly after each submission, noting what went well and what you might try differently next time."
     }
   }
 ]
