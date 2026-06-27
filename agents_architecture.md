@@ -1,24 +1,29 @@
 # AI Coding Coach: Agents Architecture & Design
 
-This document details the architecture, internal structures (graphs, nodes, and tools), and interaction patterns of the three specialized agent systems in the **AI Coding Coach** platform:
+This document details the architecture, internal structures (graphs, nodes, and tools), and interaction patterns of the four specialized agent systems in the **AI Coding Coach** platform:
 
 1. **Mentor Agent** (Real-time Socratic Tutor)
 2. **Profile Agent** (Background Mastery Modeling)
 3. **Problem Recommendation Agent** (Dynamic Adaptive Learning Path)
+4. **Supervisor Agent** (Event-Driven Orchestrator & Traffic Controller)
 
 ---
 
 ## Architecture Overview
 
-The system uses a combination of structured decision-making code, stateful graph orchestration (**LangGraph**), and specialized tools to manage the student's learning journey.
+The system uses a combination of structured decision-making code, stateful graph orchestration (**LangGraph**), and specialized tools to manage the student's learning journey. The **Supervisor Agent** acts as the central traffic controller, routing system events to the correct specialized agent.
 
 ```mermaid
 graph TD
-    User([Student Workspace]) -->|Submits Code / Requests Hint| Mentor[Mentor Agent]
+    User([Student Workspace]) -->|System Event / Action| Supervisor[Supervisor Agent]
+    Supervisor -->|Routes to Escalate| Mentor[Mentor Agent]
+    Supervisor -->|Routes to Recommend| Recs[Problem Recommendation Agent]
+    Supervisor -->|Routes to Refresh| Profile[Profile Agent]
+    
     User -->|Code Submission Accepted/Failed| DB[(Database)]
-    DB -->|Trigger Profile Sync| Profile[Profile Agent]
+    DB -->|Trigger Profile Sync| Profile
     Profile -->|Updates Mastery Profile| DB
-    DB -->|Trigger Next Problem recommendation| Recs[Problem Recommendation Agent]
+    DB -->|Trigger Next Problem recommendation| Recs
     Recs -->|Reads Profile & History| DB
     Recs -->|Generates Next Problem Suggestions| User
 ```
@@ -129,31 +134,70 @@ Located in [problem-recommendation-agent/nodes/](file:///c:/A/PROJECT/Practice/A
 
 ---
 
+## 4. Supervisor Agent
+
+### Responsibilities
+The **Supervisor Agent** is the central orchestration and traffic-routing system. It processes events from the application (such as hints requested, code submitted, profile refreshed, or agent completions), evaluates user state/history context, and decides which agent should be triggered next.
+
+### LangGraph Topology
+Organized as a stateful routing graph inside [graph.ts](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/supervisor-agent/graph.ts):
+
+```mermaid
+graph TD
+    START([Start]) --> collectOutputs[collectAgentOutputs]
+    collectOutputs --> getProfile[getUserProfileAndRoadmap]
+    getProfile --> validate[validateAgentOutputs]
+    
+    validate --> D1{Conflicts Exist?}
+    D1 -->|Yes| resolve[resolveConflicts]
+    D1 -->|No| applyPolicies[applyPolicies]
+    
+    resolve --> applyPolicies
+    applyPolicies --> analyze[analyzeOverallContext]
+    analyze --> decide[decideNextAction]
+    
+    decide --> D2{Action == Escalate?}
+    D2 -->|Yes| escalate[escalateIntervention]
+    D2 -->|No| prepare[prepareDecisionOutput]
+    
+    escalate --> prepare
+    prepare --> logDecision[logSupervisorDecision]
+    logDecision --> triggerNext[triggerNextAgent]
+    triggerNext --> END([End])
+```
+
+### Core Nodes
+Located in [supervisor-agent/node.ts](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/supervisor-agent/node.ts):
+* **`collectAgentOutputs`:** Gathers events and previous agent execution outputs.
+* **`getUserProfileAndRoadmap`:** Loads the user's solved metrics, current experience level, and active roadmap focus.
+* **`validateAgentOutputs`:** Ensures incoming payload attributes are valid.
+* **`applyPolicies`:** Evaluates policies such as hint limits (e.g. escalating to the mentor after 3 hints).
+* **`analyzeOverallContext`:** Classifies user distress level based on failed attempts or intervention count.
+* **`decideNextAction`:** Routes to target agents based on event type and user state:
+  * **Intervention Needed (>= 3 failures):** Escalate to `mentor-agent` (High Priority).
+  * **`request_hint`:** Route to `hint-agent` / `mentor-agent`.
+  * **`submission_completed` / `submission_failed`:** Route to `code-review-agent`.
+  * **`profile_refresh`:** Route to `profile-skill-assessment-agent`.
+  * **Default / `request_problem`:** Route to `problem-recommendation-agent`.
+
+---
+
 ## Agent Interactions & Data Flow
 
 ```
-   Student Submits Code
-            │
-            ▼
-   1. DB records submission status (Accepted / Rejected)
-            │
-            ├─────────────────────────────────────────┐
-            ▼ (Async Background Job)                  ▼ (If Accepted)
-   2. Profile Agent Run                      3. Recommendation Agent Run
-            │                                         │
-            ├─► Reads history                         ├─► Reads updated Profile
-            ├─► Updates CS concepts mastery stats     ├─► Analyzes learning gaps/mistakes
-            │                                         ├─► Searches & ranks next problem
-            ▼                                         ├─► Generates explanation
-   Save Mastery Profile                               ▼
-                                             Updates DB `Recommendation` record
-                                                      │
-                                                      ▼
-                                             Frontend polls and displays recommendation
+      Application Event Emitted
+                 │
+                 ▼
+       1. Supervisor Agent Run
+                 │
+      ┌──────────┼──────────┐
+      ▼          ▼          ▼
+   Mentor     Profile     Problem Recommendation
+    Agent      Agent              Agent
+ (Escalate)  (Refresh)         (Recommend)
 ```
 
-1. **Triggering Events:** Code submissions immediately log records in the database.
-2. **Mastery Updates:** The Profile Agent runs on every submission. It evaluates progress, saves the calculated statistics to the database, and informs the Dashboard.
-3. **Adaptive Pipeline:** When a submission is `Accepted`, the frontend triggers the background job endpoint `/run-background` to execute the Problem Recommendation Agent.
-4. **Pedagogical Explanation:** The Recommendation Agent reads the updated mastery profile, selects the best problem, and writes a detailed pedagogical reason.
-5. **Real-time feedback:** The frontend UI code editor polls the `/latest` recommendations endpoint, prompting the student with the personalized next-step overlay when generation completes.
+1. **Orchestrated Routing:** The Supervisor Agent evaluates all application actions. When a user is stuck (e.g., >= 3 failed submissions), it overrides typical hint flows to trigger the `mentor-agent`.
+2. **Mastery updates:** The Profile Agent dynamically updates concept mastery after submission evaluations.
+3. **Adaptive Recommendations:** The Problem Recommendation Agent dynamically suggests next-step exercises when triggered.
+4. **Agent Logs Dashboard:** Every execution from all 4 agents is logged to [agent-logs.json](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/data/agent-logs.json) via `agentLogger` and is viewable in the Admin Agent Logs panel.

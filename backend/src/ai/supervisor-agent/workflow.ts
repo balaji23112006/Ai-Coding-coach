@@ -1,36 +1,36 @@
-import { StateGraph, END } from '@langchain/langgraph';
-import { AgentState } from './state.js';
+import { createSupervisorGraph } from "./graph.js";
+import { AgentState } from "./state.js";
+import { createSupervisorCallback } from '../../providers/langfuse/langchain.js';
 
-// Worker node placeholders
-const supervisorNode = async (_state: typeof AgentState.State) => {
-  console.log('[Supervisor Node] Executing supervisor routing logic...');
-  return { nextAgent: 'mentor-agent' };
-};
+export type SupervisorWorkflowInput = typeof AgentState.Update;
 
-const profileAgentNode = async (_state: typeof AgentState.State) => {
-  console.log('[Profile Agent Node] Analyzing skill gaps and profiles...');
-  return { nextAgent: 'supervisor' };
-};
+export interface SupervisorWorkflowOptions {
+  userId?: string;
+  sessionId?: string;
+}
 
-const problemGenerationNode = async (_state: typeof AgentState.State) => {
-  console.log('[Problem Gen Agent] Generating targeted problem...');
-  return { nextAgent: 'supervisor' };
-};
+const workflowBuilder = createSupervisorGraph();
 
-const evaluationNode = async (_state: typeof AgentState.State) => {
-  console.log('[Evaluation Agent] Reviewing user code submission...');
-  return { nextAgent: 'supervisor' };
-};
+export const workflow = workflowBuilder.compile();
+export const graph = workflow;
 
-const mentorNode = async (_state: typeof AgentState.State) => {
-  console.log('[Mentor Agent] Constructing coaching advice...');
-  return { nextAgent: END };
-};
+export async function runSupervisorWorkflow(
+  input: SupervisorWorkflowInput,
+  options: SupervisorWorkflowOptions = {},
+) {
+  const callback = createSupervisorCallback(options);
 
-// Assemble StateGraph
-export const workflow = new StateGraph(AgentState)
-  .addNode('supervisor', supervisorNode)
-  .addNode('profile-agent', profileAgentNode)
-  .addNode('problem-generation-agent', problemGenerationNode)
-  .addNode('evaluation-agent', evaluationNode)
-  .addNode('mentor-agent', mentorNode);
+  return workflow.invoke(input, {
+    configurable: {
+      thread_id: options.sessionId,
+    },
+    callbacks: callback ? [callback] : undefined,
+    runName: 'supervisor-workflow',
+    tags: ['supervisor-agent', 'langgraph'],
+    metadata: {
+      langfuseUserId: options.userId,
+      langfuseSessionId: options.sessionId,
+      feature: 'supervisor-agent',
+    },
+  });
+}

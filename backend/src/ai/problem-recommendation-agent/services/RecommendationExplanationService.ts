@@ -1,5 +1,6 @@
 import { RECOMMENDATION_CONFIG } from "../config.js";
 import { groqChat } from "../../../providers/groq/index.js";
+import { geminiChat } from "../../../providers/google/index.js";
 import { agentLogger } from "../../../ai/profile-agent/services/AgentLogger.js";
 
 export class RecommendationExplanationService {
@@ -53,18 +54,46 @@ STRICT RULES:
 
       return response;
     } catch (error) {
-      console.error("[RecommendationExplanationService] Groq failed:", error);
-      const errorMsg = error instanceof Error ? error.message : String(error);
+      console.error("[RecommendationExplanationService] Groq failed, attempting Gemini fallback:", error);
+      const groqErrorMsg = error instanceof Error ? error.message : String(error);
 
       if (params.traceId) {
-        agentLogger.logDecision(params.traceId, `Groq LLM call failed for recommendation explanation: ${errorMsg}`);
+        agentLogger.logDecision(params.traceId, `Groq LLM call failed for recommendation explanation: ${groqErrorMsg}`);
       }
 
-      if (params.mistakeAnalysis && params.mistakeAnalysis.primaryMistake !== "None") {
-        return `We noticed several ${params.mistakeAnalysis.primaryMistake.toLowerCase()}-related issues in your recent attempts. Practicing "${params.recommendationTitle}" will help strengthen your skills in this area while reinforcing your ${weakTopic} fundamentals.`;
-      }
+      try {
+        const response = await geminiChat({
+          systemPrompt: "You are an expert AI Coding Coach generating personalized problem recommendations.",
+          userMessage: prompt,
+          temperature: 0.3,
+          maxTokens: 150
+        });
 
-      return `Recommended "${params.recommendationTitle}" because your focus area is ${weakTopic} and your target difficulty is ${params.difficulty}.`;
+        if (params.traceId) {
+          agentLogger.logPrompt(
+            params.traceId,
+            "gemini",
+            `[SYSTEM PROMPT]:\nYou are an expert AI Coding Coach generating personalized problem recommendations.\n\n[USER MESSAGE]:\n${prompt}`,
+            response
+          );
+          agentLogger.logDecision(params.traceId, `Successfully generated recommendation explanation using Gemini LLM fallback.`);
+        }
+
+        return response;
+      } catch (geminiError) {
+        console.error("[RecommendationExplanationService] Gemini failed:", geminiError);
+        const geminiErrorMsg = geminiError instanceof Error ? geminiError.message : String(geminiError);
+
+        if (params.traceId) {
+          agentLogger.logDecision(params.traceId, `Gemini LLM call failed for recommendation explanation: ${geminiErrorMsg}`);
+        }
+
+        if (params.mistakeAnalysis && params.mistakeAnalysis.primaryMistake !== "None") {
+          return `We noticed several ${params.mistakeAnalysis.primaryMistake.toLowerCase()}-related issues in your recent attempts. Practicing "${params.recommendationTitle}" will help strengthen your skills in this area while reinforcing your ${weakTopic} fundamentals.`;
+        }
+
+        return `Recommended "${params.recommendationTitle}" because your focus area is ${weakTopic} and your target difficulty is ${params.difficulty}.`;
+      }
     }
   }
 }
