@@ -168,10 +168,6 @@ export function useProfileAgent() {
             strongAreas: [],
             weakAreas: [],
           });
-        } else {
-          console.log(
-            '[useProfileAgent] Profile not found (null), automatic graph execution is disabled.',
-          );
         }
       } else if (res.status === 404) {
         console.log(

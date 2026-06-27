@@ -9,6 +9,7 @@ import {
   GripVertical,
   Send,
   Trophy,
+  Sparkles,
 } from 'lucide-react';
 
 import { ActionButtons } from '../components/action-buttons';
@@ -22,6 +23,7 @@ import { useMentor } from '../hooks/use-mentor';
 import type { Problem, ExecutionResult } from '../types/editor-types';
 import { useAuth } from '@/features/authentication';
 import { EvaluationPanel } from '../components/evaluation-panel';
+import { cn } from '@/lib/utils';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -206,6 +208,8 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const { user } = useAuth();
   const [showEvaluation, setShowEvaluation] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
+  const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
+  const [hasDismissedRecommendation, setHasDismissedRecommendation] = useState(false);
 
   const {
     isCodeLoading,
@@ -224,6 +228,13 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     submitCode,
     resetCode,
     setActiveConsoleTab,
+    isLoadingRecommendations,
+    recommendations,
+    recommendationExplanation,
+    mistakeAnalysis,
+    recommendationError,
+    showRecommendationUI,
+    setShowRecommendationUI,
   } = useCodeEditor(problem.id, problem.templates);
 
   const mentor = useMentor({
@@ -282,15 +293,32 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     }
   }, [runResult, isRunning, isSubmitting, mentor.isLoading, mentor.isOpen, mentor.toggleOpen]);
 
-  // Celebration on Accepted
+  // Celebration on Accepted & trigger Recommendation Popup
   useEffect(() => {
     if (submitResult?.status === 'Accepted') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowCelebration(true);
       const t = setTimeout(() => setShowCelebration(false), 4000);
-      return () => clearTimeout(t);
+
+      let timer: number | undefined;
+      if (!hasDismissedRecommendation) {
+        timer = window.setTimeout(() => {
+          setShowRecommendationPopup(true);
+        }, 3500);
+      }
+      
+      return () => {
+        clearTimeout(t);
+        if (timer) clearTimeout(timer);
+      };
     }
-  }, [submitResult?.id, submitResult?.status]);
+  }, [submitResult?.id, submitResult?.status, hasDismissedRecommendation]);
+
+  // Reset popup states on problem change
+  useEffect(() => {
+    setHasDismissedRecommendation(false);
+    setShowRecommendationPopup(false);
+  }, [problem.id]);
 
   // Map runResult status to mentor trigger event
   const getMentorTrigger = (): Parameters<typeof mentor.requestHint>[0] => {
@@ -404,6 +432,159 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                   style={{ animationDelay: `${i * 120}ms` }}
                 />
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Recommendation Popup overlay — appears after celebration ends */}
+      {showRecommendationPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm">
+          <div className="animate-in zoom-in-95 fade-in w-full max-w-md rounded-2xl border border-cyan-500/20 bg-slate-950 p-6 shadow-2xl shadow-cyan-900/20 duration-300">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3 text-slate-300">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-900/40">
+                  <BrainCircuit className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    AI Recommendation
+                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-cyan-400 animate-pulse">
+                    🎯 Next Problem
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setHasDismissedRecommendation(true);
+                  setShowRecommendationPopup(false);
+                }}
+                className="flex h-6 w-6 items-center justify-center rounded-lg border border-slate-700 text-slate-500 transition hover:border-slate-600 hover:text-slate-300"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-6">
+              {!showRecommendationUI ? (
+                <div className="text-center space-y-5">
+                  <p className="text-sm text-slate-300">
+                    Your code was accepted! Would you like an AI recommendation for your next problem based on your performance?
+                  </p>
+                  <div className="flex items-center justify-center gap-3">
+                    <button
+                      onClick={() => setShowRecommendationUI(true)}
+                      className="inline-flex items-center gap-2 rounded border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-emerald-400 transition hover:bg-emerald-500/20"
+                    >
+                      <Sparkles className="h-3.5 w-3.5" />
+                      Suggest next problem
+                    </button>
+                    <button
+                      onClick={() => {
+                        setHasDismissedRecommendation(true);
+                        setShowRecommendationPopup(false);
+                      }}
+                      className="inline-flex items-center gap-2 rounded border border-slate-700 bg-slate-800/40 px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-400 transition hover:bg-slate-700/60 hover:text-slate-300"
+                    >
+                      Skip
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {isLoadingRecommendations ? (
+                    <div className="flex flex-col items-center justify-center gap-3 py-6 text-cyan-400">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                      <span className="text-xs font-semibold animate-pulse">Analyzing and generating recommendation...</span>
+                    </div>
+                  ) : recommendationError ? (
+                    <div className="py-4 text-center text-sm text-rose-400">
+                      {recommendationError}
+                    </div>
+                  ) : recommendations.length > 0 ? (
+                    <div className="space-y-4 text-slate-300">
+                      {mistakeAnalysis && mistakeAnalysis.primaryMistake !== "None" && (
+                        <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-3.5">
+                          <div className="flex items-center gap-2">
+                            <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-rose-400">
+                              Detected Learning Gap: {mistakeAnalysis.primaryMistake}
+                            </p>
+                          </div>
+                          {mistakeAnalysis.evidence?.length > 0 && (
+                            <p className="mt-1 text-[11px] font-medium leading-relaxed text-slate-400">
+                              Reason: {mistakeAnalysis.evidence[0]}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      <div>
+                        <p className="text-lg font-bold text-white mb-2">
+                          {recommendations[0]?.title}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className={cn(
+                              'inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider',
+                              recommendations[0]?.difficulty === 'Easy'
+                                ? 'bg-green-500/10 text-green-400'
+                                : recommendations[0]?.difficulty === 'Medium'
+                                  ? 'bg-amber-500/10 text-amber-400'
+                                  : 'bg-rose-500/10 text-rose-400',
+                            )}
+                          >
+                            {recommendations[0]?.difficulty || 'Medium'}
+                          </span>
+                          {(recommendations[0]?.topics || []).slice(0, 3).map((topic: string) => (
+                            <span
+                              key={topic}
+                              className="inline-flex rounded-full bg-slate-800 px-2.5 py-0.5 text-[10px] font-semibold text-slate-300"
+                            >
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                          Explanation:
+                        </p>
+                        <p className="text-sm leading-relaxed text-slate-400">
+                          {recommendationExplanation}
+                        </p>
+                      </div>
+
+                      <div className="mt-5 flex items-center gap-3">
+                        <button
+                          onClick={() => {
+                            setShowRecommendationPopup(false);
+                            navigate({ to: '/editor/$problemSlug', params: { problemSlug: recommendations[0]?.slug } });
+                          }}
+                          className="flex-1 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-cyan-900/30 transition hover:from-cyan-400 hover:to-blue-500"
+                        >
+                          Solve Next Problem →
+                        </button>
+                        <button
+                          onClick={() => {
+                            setHasDismissedRecommendation(true);
+                            setShowRecommendationPopup(false);
+                          }}
+                          className="rounded-lg border border-slate-700 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-400 transition hover:border-slate-600 hover:text-slate-300"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="py-4 text-center text-sm text-slate-400">
+                      No recommendations available at this time.
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

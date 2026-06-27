@@ -283,6 +283,7 @@ export function ProfilePage() {
     joinDate: 'dd-mm-yyyy',
     role: 'Student',
     language: 'TypeScript',
+    image: '',
   });
 
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
@@ -310,6 +311,30 @@ export function ProfilePage() {
   const isDark = preferences.theme === 'System' ? systemIsDark : preferences.theme === 'Dark';
   const profileInitial = userData.name.trim().charAt(0).toUpperCase() || 'U';
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setErrorMessage('Please upload an image smaller than 2MB.');
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus('idle'), 4000);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserData((prev) => ({ ...prev, image: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   useEffect(() => {
     if (user) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -327,6 +352,7 @@ export function ProfilePage() {
           : 'dd-mm-yyyy',
         role: user.role || 'Student',
         language: user.language || 'TypeScript',
+        image: user.image || '',
       });
     }
   }, [user]);
@@ -386,12 +412,17 @@ export function ProfilePage() {
           bio: userData.bio,
           role: userData.role,
           language: userData.language,
+          image: userData.image,
         }),
       });
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({ error: 'Failed to update profile' }));
-        throw new Error(errData.error || 'Failed to update profile');
+        const errMsg =
+          typeof errData.error === 'object'
+            ? errData.error.message || JSON.stringify(errData.error)
+            : errData.error;
+        throw new Error(errMsg || 'Failed to update profile');
       }
 
       await checkSession();
@@ -512,11 +543,26 @@ export function ProfilePage() {
                   className="rounded-2xl border border-white/[0.06] bg-[#121214]/60 p-8 shadow-xl backdrop-blur-xl"
                 >
                   <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-center">
-                    <div className="group relative cursor-pointer">
-                      <div className="h-28 w-28 rounded-full bg-gradient-to-br from-violet-600 to-cyan-500 p-1">
-                        <div className="flex h-full w-full items-center justify-center rounded-full bg-[#09090b] text-3xl font-black text-white">
-                          {profileInitial}
-                        </div>
+                    <div onClick={handleImageClick} className="group relative cursor-pointer">
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageChange}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <div className="h-28 w-28 rounded-full bg-gradient-to-br from-violet-600 to-cyan-500 p-1 overflow-hidden">
+                        {userData.image ? (
+                          <img
+                            src={userData.image}
+                            alt={userData.name}
+                            className="h-full w-full rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center rounded-full bg-[#09090b] text-3xl font-black text-white">
+                            {profileInitial}
+                          </div>
+                        )}
                       </div>
                       <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                         <Camera className="h-6 w-6 text-white" />

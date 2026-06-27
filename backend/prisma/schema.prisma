@@ -25,6 +25,7 @@ model User {
   accounts        Account[]
   sessions        Session[]
   submissions     Submission[]
+  recommendations Recommendation[]
 
   @@map("user")
 }
@@ -198,4 +199,16 @@ enum Difficulty {
   Easy
   Medium
   Hard
+}
+
+model Recommendation {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    String   @default("PENDING") // PENDING, COMPLETED, FAILED
+  data      Json?    // Storing title, slug, difficulty, topics, explanation, mistakeAnalysis
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("recommendation")
 }

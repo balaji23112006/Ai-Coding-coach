@@ -178,7 +178,15 @@ export function TopNavigation({ isDark, setIsDark, activeTab }: TopNavigationPro
                       isDark ? 'bg-violet-600 text-white' : 'bg-white text-violet-600',
                     )}
                   >
-                    {userInitials}
+                    {user?.image ? (
+                      <img
+                        src={user.image}
+                        alt={user.fullName || 'User'}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      userInitials
+                    )}
                   </span>
                   <ChevronDown
                     className={cn(

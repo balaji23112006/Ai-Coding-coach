@@ -203,12 +203,7 @@ function LoginPage() {
         } catch (e) {
           console.error('[Login] Failed to parse redirect URL:', e);
         }
-
-        if (targetPath.startsWith('/auth/login') || targetPath === '/auth/login') {
-          void navigate({ to: '/dashboard' });
-        } else {
-          void navigate({ to: targetPath });
-        }
+        void navigate({ to: targetPath });
       } else {
         void navigate({ to: '/dashboard' });
       }
@@ -264,12 +259,7 @@ function LoginPage() {
         } catch (e) {
           console.error('[Signup] Failed to parse redirect URL:', e);
         }
-
-        if (targetPath.startsWith('/auth/login') || targetPath === '/auth/login') {
-          void navigate({ to: '/dashboard' });
-        } else {
-          void navigate({ to: targetPath });
-        }
+        void navigate({ to: targetPath });
       } else {
         void navigate({ to: '/dashboard' });
       }

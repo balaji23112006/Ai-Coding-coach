@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useCallback, useState, useEffect, useRef, Suspense } from 'react';
 
-import { Link } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, Float, Text } from '@react-three/drei';
 import * as THREE from 'three';
-import { AlertTriangle, Bot, CheckCircle2, Flame, Target, Trophy } from 'lucide-react';
+import { AlertTriangle, Bot, CheckCircle2, Flame, Loader2, Target, Trophy } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -30,6 +31,7 @@ import { TopNavigation } from '@/components/common/top-navigation';
 import { AiHelper } from '@/components/common/ai-helper';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import type { ChartConfig } from '@/components/ui/chart';
+import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { useProfileAgent } from '@/hooks/useProfileAgent';
 
 const activityChartConfig: ChartConfig = {
@@ -183,6 +185,102 @@ export function DashboardPage() {
   const [dashboardData, setDashboardData] = useState<any>(null);
   const { profile, aiSummary, trendExplanation } = useProfileAgent();
 
+  const [recData, setRecData] = useState<{ title: string; slug: string; difficulty: string; topics: string[] } | null>(null);
+  const [recExplanation, setRecExplanation] = useState('');
+  const [recMistakeAnalysis, setRecMistakeAnalysis] = useState<any>(null);
+  const [recLoading, setRecLoading] = useState(false);
+  const [isUpdatingRec, setIsUpdatingRec] = useState(false);
+
+  const fetchFallbackQuestion = async () => {
+    try {
+      const fallbackRes = await fetch('/api/questions?limit=10');
+      if (fallbackRes.ok) {
+        const fallbackData = await fallbackRes.json();
+        const q = fallbackData.items[0];
+        if (q) {
+          setRecData({
+            title: q.title,
+            slug: q.slug,
+            difficulty: q.difficulty,
+            topics: q.topics || [],
+          });
+          setRecExplanation('Solve this problem to get personalized recommendations!');
+          setRecMistakeAnalysis(null);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Fallback fetch failed', e);
+    }
+    setRecData(null);
+    setRecExplanation('');
+    setRecMistakeAnalysis(null);
+  };
+
+  const loadRecommendation = useCallback(async () => {
+    try {
+      setRecLoading(true);
+      const res = await fetch('/api/ai/problem-recommendation/latest', {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      });
+      let data = null;
+      let hasCompletedRec = false;
+
+      if (res.ok) {
+        const json = await res.json();
+        data = json.data;
+
+        if (data && data.status === 'COMPLETED') {
+          const rec = data.recommendations?.[0];
+          setIsUpdatingRec(data.isUpdating || false);
+          if (rec) {
+            hasCompletedRec = true;
+            setRecData({
+              title: rec.title || '',
+              slug: rec.slug || '',
+              difficulty: rec.difficulty || 'Medium',
+              topics: rec.topics || [],
+            });
+            setRecExplanation(data.explanation || '');
+            setRecMistakeAnalysis(data.mistakeAnalysis || null);
+          }
+        } else {
+          setIsUpdatingRec(data?.isUpdating || false);
+        }
+      }
+
+      if (!hasCompletedRec) {
+        await fetchFallbackQuestion();
+      }
+    } catch (err) {
+      console.warn('Could not fetch recommendation', err);
+      await fetchFallbackQuestion();
+    } finally {
+      setRecLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadRecommendation();
+  }, [loadRecommendation]);
+
+  // Poll for updates if recommendation is still generating
+  useEffect(() => {
+    let timeoutId: number;
+    if (isUpdatingRec) {
+      timeoutId = window.setTimeout(() => {
+        loadRecommendation();
+      }, 3000);
+    }
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [isUpdatingRec, loadRecommendation]);
+
   useEffect(() => {
     let active = true;
 
@@ -213,13 +311,15 @@ export function DashboardPage() {
 
     window.addEventListener('skill-lens:dashboard-refresh-requested', handleRefresh);
     window.addEventListener('skill-lens:practice-progress-updated', handleRefresh);
+    window.addEventListener('skill-lens:recommendation-updated', loadRecommendation);
 
     return () => {
       active = false;
       window.removeEventListener('skill-lens:dashboard-refresh-requested', handleRefresh);
       window.removeEventListener('skill-lens:practice-progress-updated', handleRefresh);
+      window.removeEventListener('skill-lens:recommendation-updated', loadRecommendation);
     };
-  }, []);
+  }, [loadRecommendation]);
 
   // Gradient Backgrounds instead of flat black/white
   const themeClass = isDark
@@ -289,6 +389,17 @@ export function DashboardPage() {
             isDark={isDark}
             data={dashboardData}
             profile={profile}
+          />
+
+          <ContinueLearning
+            panelClass={panelClass}
+            isDark={isDark}
+            recData={recData}
+            recExplanation={recExplanation}
+            recMistakeAnalysis={recMistakeAnalysis}
+            recLoading={recLoading}
+            isUpdatingRec={isUpdatingRec}
+            isSolved={recData ? dashboardData?.solvedQuestionSlugs?.includes(recData.slug) : false}
           />
 
           <motion.div variants={rowVariants} className="grid gap-6 xl:grid-cols-[1.35fr_0.85fr]">
@@ -469,6 +580,7 @@ export function DashboardPage() {
               data={dashboardData}
               aiSummary={aiSummary}
               trendExplanation={trendExplanation}
+              profile={profile}
             />
             <WeakAreas
               panelClass={panelClass}
@@ -487,7 +599,7 @@ export function DashboardPage() {
 
 function Hero() {
   const typewriterText =
-    'Ready to level up today? Every problem solved brings you one step closer to mastering coding interviews.';
+    'Elevate your craft, one challenge at a time.';
 
   return (
     <motion.section
@@ -536,8 +648,6 @@ function Hero() {
     </motion.section>
   );
 }
-
-import { AnimatedCounter } from '@/components/ui/animated-counter';
 
 function StatsGrid({
   panelClass,
@@ -780,18 +890,231 @@ function ConsistencyHeatmap({
   );
 }
 
+function ContinueLearning({
+  panelClass,
+  isDark,
+  recData,
+  recExplanation,
+  recMistakeAnalysis,
+  recLoading,
+  isUpdatingRec,
+  isSolved,
+}: {
+  panelClass: string;
+  isDark: boolean;
+  recData: { title: string; slug: string; difficulty: string; topics: string[] } | null;
+  recExplanation: string;
+  recMistakeAnalysis: any;
+  recLoading: boolean;
+  isUpdatingRec?: boolean;
+  isSolved?: boolean;
+}) {
+  const navigate = useNavigate();
+  return (
+    <motion.section variants={blockVariants} className={cn(panelClass, 'p-6')}>
+      <div className="flex items-center gap-3">
+        <span
+          className={cn(
+            'flex h-8 w-8 items-center justify-center rounded-lg',
+            isDark ? 'bg-cyan-50/10 text-cyan-400' : 'bg-cyan-100 text-cyan-700',
+          )}
+        >
+          <Target className="h-4 w-4" />
+        </span>
+        <div>
+          <h2 className={cn('text-base font-semibold', isDark ? 'text-white' : 'text-slate-900')}>
+            Continue Learning
+          </h2>
+          <p className={cn('mt-0.5 text-xs font-medium', isDark ? 'text-slate-500' : 'text-slate-500')}>
+            AI-powered next problem recommendation
+          </p>
+        </div>
+      </div>
+
+      {/* Loading state */}
+      {recLoading && (
+        <div className="mt-6 flex items-center justify-center gap-3 py-12">
+          <Loader2 className="h-5 w-5 animate-spin text-cyan-400" />
+          <p className="text-sm font-medium text-slate-400">
+            Checking your progress...
+          </p>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!recLoading && !recData && (
+        <div
+          className={cn(
+            'mt-6 flex h-32 items-center justify-center rounded-xl border border-dashed',
+            isDark ? 'border-white/[0.05] bg-[#161618]' : 'border-slate-300 bg-slate-50',
+          )}
+        >
+          <p
+            className={cn(
+              'px-4 text-center text-sm font-medium',
+              isDark ? 'text-slate-500' : 'text-slate-500',
+            )}
+          >
+            Solve and get accepted on a problem to receive your personalized recommendation.
+          </p>
+        </div>
+      )}
+
+      {/* Recommendation card */}
+      {!recLoading && recData && (
+        <div className="mt-6 space-y-4">
+          <div
+            className={cn(
+              'rounded-xl border p-5 transition-all',
+              isDark
+                ? 'border-cyan-500/20 bg-cyan-500/5 hover:bg-cyan-500/10'
+                : 'border-cyan-200 bg-cyan-50 hover:bg-cyan-100',
+            )}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between mb-0.5">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    {isSolved ? 'Previously Recommended Problem:' : 'Recommended Problem:'}
+                  </p>
+                  {isUpdatingRec && (
+                    <div className="flex items-center gap-1.5">
+                      <Loader2 className="h-3.5 w-3.5 animate-spin text-cyan-400" />
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 animate-pulse">
+                        Analyzing latest submission...
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <h3 className={cn('text-lg font-bold', isDark ? 'text-white' : 'text-slate-900')}>
+                    {recData.title}
+                  </h3>
+                  {isSolved && (
+                    <span className="flex items-center gap-1 rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 border border-emerald-500/20">
+                      <CheckCircle2 className="h-3 w-3" /> Solved
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span
+                    className={cn(
+                      'inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider',
+                      recData.difficulty === 'Easy'
+                        ? isDark
+                          ? 'bg-green-500/10 text-green-400'
+                          : 'bg-green-100 text-green-700'
+                        : recData.difficulty === 'Medium'
+                          ? isDark
+                            ? 'bg-amber-500/10 text-amber-400'
+                            : 'bg-amber-100 text-amber-700'
+                          : isDark
+                            ? 'bg-rose-500/10 text-rose-400'
+                            : 'bg-rose-100 text-rose-700',
+                    )}
+                  >
+                    {recData.difficulty}
+                  </span>
+                  {recData.topics.slice(0, 3).map((topic) => (
+                    <span
+                      key={topic}
+                      className={cn(
+                        'inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-semibold',
+                        isDark
+                          ? 'bg-slate-800 text-slate-300'
+                          : 'bg-slate-200 text-slate-700',
+                      )}
+                    >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+
+                {recMistakeAnalysis && recMistakeAnalysis.primaryMistake !== "None" && !isSolved && (
+                  <div className={cn(
+                    'mt-3.5 rounded-xl border p-3.5 flex flex-col gap-1',
+                    isDark ? 'border-rose-500/20 bg-rose-500/5' : 'border-rose-200 bg-rose-50'
+                  )}>
+                    <div className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-rose-500">
+                        Detected Learning Gap: {recMistakeAnalysis.primaryMistake}
+                      </p>
+                    </div>
+                    {recMistakeAnalysis.evidence?.length > 0 && (
+                      <p className={cn('text-[11px] font-medium leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-600')}>
+                        Reason: {recMistakeAnalysis.evidence[0]}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {recExplanation && !isSolved && (
+                  <>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-3.5">
+                      Explanation:
+                    </p>
+                    <p className={cn('mt-0.5 text-sm leading-relaxed', isDark ? 'text-slate-400' : 'text-slate-600')}>
+                      {recExplanation}
+                    </p>
+                  </>
+                )}
+
+                {!isSolved && (
+                  <p className={cn('mt-3 text-xs font-medium', isDark ? 'text-slate-500' : 'text-slate-500')}>
+                    Based on your recent submissions, this is the best next problem to strengthen your skills.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {recData.slug !== 'all-solved' && (
+              <div className="mt-4 flex items-center gap-3">
+                <button
+                  onClick={() => navigate({ to: '/editor/$problemSlug', params: { problemSlug: recData.slug } })}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition",
+                    isSolved
+                      ? "bg-slate-700 hover:bg-slate-600 shadow-slate-900/30 text-slate-300"
+                      : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-cyan-900/30"
+                  )}
+                >
+                  {isSolved ? (
+                    <>
+                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                      Review Problem
+                    </>
+                  ) : (
+                    <>
+                      Continue Problem
+                      <Target className="h-3.5 w-3.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </motion.section>
+  );
+}
+
 function AiInsights({
   panelClass,
   isDark,
   data,
   aiSummary,
   trendExplanation,
+  profile,
 }: {
   panelClass: string;
   isDark: boolean;
   data: any;
   aiSummary: string;
   trendExplanation: string;
+  profile: any;
 }) {
   const solvedCount = data?.stats?.solved ?? 0;
   const insights: Array<{ text: string; badge: string }> = [];
@@ -864,32 +1187,60 @@ function AiInsights({
         ))}
       </div>
 
-      <div
-        className={cn(
-          'mt-5 flex flex-col gap-4 rounded-xl border p-4 sm:flex-row sm:items-center sm:justify-between',
-          isDark ? 'border-violet-500/20 bg-violet-500/5' : 'border-violet-200 bg-violet-50',
-        )}
-      >
-        <div>
-          <p
+      {profile && (
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div
             className={cn(
-              'mb-1 text-xs font-bold uppercase tracking-wider',
-              isDark ? 'text-violet-400' : 'text-violet-700',
+              'rounded-xl border p-4 flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]',
+              isDark ? 'border-white/[0.04] bg-[#161618] hover:bg-[#18181b]' : 'border-slate-100 bg-slate-50 hover:bg-slate-100/80',
             )}
           >
-            Recommended first topic
-          </p>
-          <p className={cn('text-sm font-bold', isDark ? 'text-white' : 'text-slate-900')}>
-            Arrays & Hashing
-          </p>
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", isDark ? "bg-violet-500/10 text-violet-400" : "bg-violet-100 text-violet-700")}>
+              <Bot className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Skill Level</p>
+              <p className={cn("text-xs font-semibold mt-0.5", isDark ? "text-slate-200" : "text-slate-800")}>
+                {profile.experienceLevel || 'Beginner'}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              'rounded-xl border p-4 flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]',
+              isDark ? 'border-white/[0.04] bg-[#161618] hover:bg-[#18181b]' : 'border-slate-100 bg-slate-50 hover:bg-slate-100/80',
+            )}
+          >
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", isDark ? "bg-cyan-500/10 text-cyan-400" : "bg-cyan-100 text-cyan-700")}>
+              <Target className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Target Focus</p>
+              <p className={cn("text-xs font-semibold mt-0.5", isDark ? "text-slate-200" : "text-slate-800")}>
+                {profile.recommendedFocus || 'Arrays & Hashing'}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              'rounded-xl border p-4 flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]',
+              isDark ? 'border-white/[0.04] bg-[#161618] hover:bg-[#18181b]' : 'border-slate-100 bg-slate-50 hover:bg-slate-100/80',
+            )}
+          >
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", isDark ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-100 text-emerald-700")}>
+              <Trophy className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Target Difficulty</p>
+              <p className={cn("text-xs font-semibold mt-0.5", isDark ? "text-slate-200" : "text-slate-800")}>
+                {profile.recommendedDifficulty || 'Easy'}
+              </p>
+            </div>
+          </div>
         </div>
-        <Link
-          to="/practice"
-          className="inline-flex items-center justify-center rounded-full bg-violet-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-violet-700"
-        >
-          Start learning
-        </Link>
-      </div>
+      )}
     </motion.section>
   );
 }

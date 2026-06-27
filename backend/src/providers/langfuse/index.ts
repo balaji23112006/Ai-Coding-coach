@@ -9,23 +9,38 @@ let _langfuse: Langfuse | null = null;
  */
 export function getLangfuse(): Langfuse {
   if (!_langfuse) {
-    const publicKey = process.env.LANGFUSE_PUBLIC_KEY || 'mock_public_key';
-    const secretKey = process.env.LANGFUSE_SECRET_KEY || 'mock_secret_key';
+    const publicKey = process.env.LANGFUSE_PUBLIC_KEY;
+    const secretKey = process.env.LANGFUSE_SECRET_KEY;
     const baseUrl =
       process.env.LANGFUSE_HOST || process.env.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com';
 
-    console.log(
-      `[Langfuse] Initializing client → host=${baseUrl}, publicKey=${publicKey.slice(0, 20)}...`,
-    );
-
-    _langfuse = new Langfuse({ publicKey, secretKey, baseUrl });
+    if (!publicKey || !secretKey) {
+      console.log(
+        `[Langfuse] Telemetry disabled (LANGFUSE_PUBLIC_KEY or LANGFUSE_SECRET_KEY missing)`,
+      );
+      // Return a dummy object that implements the required methods as no-ops
+      _langfuse = {
+        trace: () => ({
+          generation: () => ({}),
+          span: () => ({}),
+          event: () => ({}),
+          update: () => ({}),
+        }),
+        flushAsync: async () => {},
+      } as unknown as Langfuse;
+    } else {
+      console.log(
+        `[Langfuse] Initializing client → host=${baseUrl}, publicKey=${publicKey.slice(0, 20)}...`,
+      );
+      _langfuse = new Langfuse({ publicKey, secretKey, baseUrl });
+    }
   }
   return _langfuse;
 }
 
 // Backward-compatible export: proxies all property access to the lazily-initialized instance.
 export const langfuse: Langfuse = new Proxy({} as Langfuse, {
-  get(_target, prop, receiver) {
+  get(_target, prop, _receiver) {
     const instance = getLangfuse();
     const value = (instance as any)[prop];
     if (typeof value === 'function') {

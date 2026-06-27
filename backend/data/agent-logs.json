@@ -1,5 +1,1877 @@
 [
   {
+    "id": "trace-refresh-438yQlaYuz6DaRqZyEbztJTTToXjFO1f-1782533842739",
+    "timestamp": "2026-06-27T04:17:22.739Z",
+    "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+    "trigger": "refresh",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-27T04:17:22.750Z] Executed Node: getUserHistoryNode",
+      "[2026-06-27T04:17:22.753Z] Executed Node: tool:getUserHistory",
+      "[2026-06-27T04:17:24.630Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
+      "[2026-06-27T04:17:24.636Z] Executed Node: getTopicStatsNode",
+      "[2026-06-27T04:17:24.636Z] Executed Node: tool:getTopicStats",
+      "[2026-06-27T04:17:25.721Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
+      "[2026-06-27T04:17:25.725Z] Executed Node: getSubmissionsNode",
+      "[2026-06-27T04:17:25.725Z] Executed Node: tool:getSubmissions",
+      "[2026-06-27T04:17:26.543Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
+      "[2026-06-27T04:17:26.548Z] Executed Node: getRecentActivityNode",
+      "[2026-06-27T04:17:26.549Z] Executed Node: tool:getRecentActivity",
+      "[2026-06-27T04:17:27.347Z] D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.",
+      "[2026-06-27T04:17:27.350Z] Executed Node: analyzeMasteryNode",
+      "[2026-06-27T04:17:27.649Z] Executed Node: detectTrendsNode",
+      "[2026-06-27T04:17:28.470Z] Executed Node: assessDifficultyNode",
+      "[2026-06-27T04:17:28.724Z] Executed Node: classifyLevelNode",
+      "[2026-06-27T04:17:28.968Z] Executed Node: identifyStrengthsNode",
+      "[2026-06-27T04:17:29.233Z] Executed Node: identifyWeaknessesNode",
+      "[2026-06-27T04:17:31.971Z] Executed Node: generateRecommendationsNode",
+      "[2026-06-27T04:17:32.222Z] D7 (Significance check): No significant change in profile metrics. Routing to END.",
+      "[2026-06-27T04:17:33.548Z] Response successfully received from Groq LLM for generate-profile-summary.",
+      "[2026-06-27T04:17:35.050Z] Response successfully received from Groq LLM for generate-trend-explanation.",
+      "[2026-06-27T04:17:35.050Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory",
+      "getTopicStatsNode",
+      "tool:getTopicStats",
+      "getSubmissionsNode",
+      "tool:getSubmissions",
+      "getRecentActivityNode",
+      "tool:getRecentActivity",
+      "analyzeMasteryNode",
+      "detectTrendsNode",
+      "assessDifficultyNode",
+      "classifyLevelNode",
+      "identifyStrengthsNode",
+      "identifyWeaknessesNode",
+      "generateRecommendationsNode"
+    ],
+    "prompts": [
+      {
+        "type": "profile_summary",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Intermediate\n- Strengths: None identified yet\n- Areas for Improvement: HashMap, Strings, Stack, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, Cycle Detection\n- Topic Mastery Scores: {\"HashMap\":58,\"Strings\":58,\"Arrays\":68,\"Stack\":45,\"Linked List\":72,\"Binary Search\":52,\"Trees\":28,\"Graphs\":0,\"DFS\":0,\"BFS\":0,\"Grid\":0,\"Directed Graph\":0,\"Cycle Detection\":0}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• STANDING: As an intermediate-level learner, you have a solid foundation in programming and are now looking to expand your skills into more complex areas, which is a great step forward in your coding journey.\n• KEY STRENGTHS: Although no specific strengths have been identified yet, your scores in Arrays and Linked List are relatively high, indicating a good grasp of fundamental data structures, which will serve as a strong base for further learning.\n• AREAS TO IMPROVE: You have several areas where improvement is needed, including HashMap, Strings, Stack, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, and Cycle Detection, which are crucial for advanced programming concepts and problem-solving.\n• RECOMMENDED FOCUS: Given your current scores and areas for improvement, it would be beneficial to focus on building a strong understanding of HashMap, Strings, and Stack, as these are foundational concepts that will help you tackle more complex topics like Trees, Graphs, and advanced algorithms, allowing you to progress systematically and effectively.",
+        "timestamp": "2026-06-27T04:17:33.548Z"
+      },
+      {
+        "type": "trend_explanation",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * Strings: Stable (100%)\n  * HashMap: Stable (100%)\n  * Struggling recently with 3 consecutive incorrect submissions.\n  * Moderate activity: 3 submission attempts in the last 48 hours.\n  * Struggling with Medium difficulty problems (success rate: 40%).\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• LEARNING ACTIVITY: The student has shown a decent velocity in their learning activity, with 10 recent submission attempts, indicating they are actively engaged and trying to make progress, although the moderate activity level in the last 48 hours suggests they might be able to increase their pace slightly.\n• CURRENT TRENDS: The student is currently struggling with a streak of 3 consecutive incorrect submissions, and they have a low success rate of 40% with Medium difficulty problems, which indicates they might need to revisit and reinforce their understanding of these concepts, particularly since they are performing well with Strings and HashMap.\n• MOMENTUM ADVICE: To improve their momentum, it would be beneficial for the student to take a step back, review the concepts related to Medium difficulty problems, and practice consistently, focusing on building a strong foundation before moving on to more challenging topics, and also consider taking breaks between submissions to reflect on their mistakes and adjust their approach to break the streak of incorrect submissions.",
+        "timestamp": "2026-06-27T04:17:35.050Z"
+      }
+    ],
+    "request": {
+      "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f"
+    },
+    "response": {
+      "success": true,
+      "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+      "level": "Intermediate",
+      "confidence": 1,
+      "mastery": {
+        "HashMap": 58,
+        "Strings": 58,
+        "Arrays": 68,
+        "Stack": 45,
+        "Linked List": 72,
+        "Binary Search": 52,
+        "Trees": 28,
+        "Graphs": 0,
+        "DFS": 0,
+        "BFS": 0,
+        "Grid": 0,
+        "Directed Graph": 0,
+        "Cycle Detection": 0
+      },
+      "strongAreas": [],
+      "weakAreas": [
+        "HashMap",
+        "Strings",
+        "Stack",
+        "Binary Search",
+        "Trees",
+        "Graphs",
+        "DFS",
+        "BFS",
+        "Grid",
+        "Directed Graph",
+        "Cycle Detection"
+      ],
+      "trends": [
+        "Strings: Stable (100%)",
+        "HashMap: Stable (100%)",
+        "Struggling recently with 3 consecutive incorrect submissions.",
+        "Moderate activity: 3 submission attempts in the last 48 hours.",
+        "Struggling with Medium difficulty problems (success rate: 40%)."
+      ],
+      "profileStatus": "UNINITIALIZED",
+      "easySolved": 8,
+      "mediumSolved": 8,
+      "hardSolved": 0,
+      "solvedCount": 16,
+      "recommendedFocus": "Graphs",
+      "recommendedDifficulty": "Medium",
+      "summary": "• STANDING: As an intermediate-level learner, you have a solid foundation in programming and are now looking to expand your skills into more complex areas, which is a great step forward in your coding journey.\n• KEY STRENGTHS: Although no specific strengths have been identified yet, your scores in Arrays and Linked List are relatively high, indicating a good grasp of fundamental data structures, which will serve as a strong base for further learning.\n• AREAS TO IMPROVE: You have several areas where improvement is needed, including HashMap, Strings, Stack, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, and Cycle Detection, which are crucial for advanced programming concepts and problem-solving.\n• RECOMMENDED FOCUS: Given your current scores and areas for improvement, it would be beneficial to focus on building a strong understanding of HashMap, Strings, and Stack, as these are foundational concepts that will help you tackle more complex topics like Trees, Graphs, and advanced algorithms, allowing you to progress systematically and effectively.",
+      "trendExplanation": "• LEARNING ACTIVITY: The student has shown a decent velocity in their learning activity, with 10 recent submission attempts, indicating they are actively engaged and trying to make progress, although the moderate activity level in the last 48 hours suggests they might be able to increase their pace slightly.\n• CURRENT TRENDS: The student is currently struggling with a streak of 3 consecutive incorrect submissions, and they have a low success rate of 40% with Medium difficulty problems, which indicates they might need to revisit and reinforce their understanding of these concepts, particularly since they are performing well with Strings and HashMap.\n• MOMENTUM ADVICE: To improve their momentum, it would be beneficial for the student to take a step back, review the concepts related to Medium difficulty problems, and practice consistently, focusing on building a strong foundation before moving on to more challenging topics, and also consider taking breaks between submissions to reflect on their mistakes and adjust their approach to break the streak of incorrect submissions."
+    }
+  },
+  {
+    "id": "trace-rec-438yQlaYuz6DaRqZyEbztJTTToXjFO1f-1782533818187",
+    "timestamp": "2026-06-27T04:16:58.188Z",
+    "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+    "trigger": "recommendation",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-27T04:16:58.467Z] Executed Node: getProfile",
+      "[2026-06-27T04:16:58.664Z] Executed Node: getSubmissions",
+      "[2026-06-27T04:16:59.343Z] Executed Node: analyzeSubmissions",
+      "[2026-06-27T04:16:59.354Z] Executed Node: analyzeMistakes",
+      "[2026-06-27T04:16:59.366Z] Executed Node: identifyWeakTopics",
+      "[2026-06-27T04:16:59.376Z] Executed Node: determineDifficulty",
+      "[2026-06-27T04:16:59.387Z] Executed Node: searchProblems",
+      "[2026-06-27T04:17:00.722Z] Executed Node: rankProblems",
+      "[2026-06-27T04:17:00.731Z] Executed Node: generateExplanation",
+      "[2026-06-27T04:17:01.496Z] Successfully generated recommendation explanation using Groq LLM.",
+      "[2026-06-27T04:17:02.600Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "getProfile",
+      "getSubmissions",
+      "analyzeSubmissions",
+      "analyzeMistakes",
+      "identifyWeakTopics",
+      "determineDifficulty",
+      "searchProblems",
+      "rankProblems",
+      "generateExplanation"
+    ],
+    "prompts": [
+      {
+        "type": "groq",
+        "prompt": "[SYSTEM PROMPT]:\nYou are an expert AI Coding Coach generating personalized problem recommendations.\n\n[USER MESSAGE]:\n\nYou are an AI Coding Coach.\n\nDetected coding mistake pattern: Wrong Answer (Evidence: Wrong Answer (passed 0 test cases) on \"Course Schedule\"., Wrong Answer (passed 0 test cases) on \"Find if Path Exists in Graph\"., Wrong Answer (passed 0 test cases) on \"Same Tree\".)\nWeak Topic: BFS\nTarget Difficulty: Medium\nRecommended Problem: Rotting Oranges\n\nExplain why this problem was recommended and how it helps the student improve.\nSTRICT RULES:\n1. Write EXACTLY 2 or 3 short sentences.\n2. DO NOT use any markdown formatting (NO asterisks **, NO bold, NO bullet points).\n3. Be direct, encouraging, and use plain text only.\n",
+        "response": "The problem Rotting Oranges was recommended because it targets the weak topic of BFS and is of medium difficulty, making it a suitable challenge for improvement. This problem helps the student improve by requiring the application of BFS concepts to a real-world scenario, allowing them to practice and reinforce their understanding. It will help the student to develop problem-solving skills and build confidence in using BFS.",
+        "timestamp": "2026-06-27T04:17:01.496Z"
+      }
+    ],
+    "request": {
+      "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f"
+    },
+    "response": {
+      "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+      "traceId": "trace-rec-438yQlaYuz6DaRqZyEbztJTTToXjFO1f-1782533818187",
+      "profile": {
+        "id": "cmquvao6m001cqi6dgzrpqkm7",
+        "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+        "skills": {
+          "BFS": 0,
+          "DFS": 0,
+          "Grid": 0,
+          "Stack": 45,
+          "Trees": 28,
+          "Arrays": 68,
+          "Graphs": 0,
+          "HashMap": 58,
+          "Strings": 58,
+          "Linked List": 72,
+          "Binary Search": 52,
+          "Directed Graph": 0,
+          "Cycle Detection": 0
+        },
+        "solvedCount": 16,
+        "easySolved": 8,
+        "mediumSolved": 8,
+        "hardSolved": 0,
+        "learningTrack": "Data Structures & Algorithms",
+        "experienceLevel": "Intermediate",
+        "recommendedFocus": "Graphs",
+        "recommendedDifficulty": "Medium",
+        "createdAt": "2026-06-26T11:48:22.126Z",
+        "updatedAt": "2026-06-26T11:49:22.162Z"
+      },
+      "submissions": [
+        {
+          "id": "cmquvgseu0000s04cr9pbllnn",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "def twoSum(nums: list[int], target: int) -> list[int]:\r\n    num_map = {} # Stores: number -> index\r\n    \r\n    for i, num in enumerate(nums):\r\n        complement = target - num\r\n        \r\n        # Check if the complement exists in the dictionary\r\n        if complement in num_map:\r\n            return [num_map[complement], i]\r\n            \r\n        # Store the current number and its index\r\n        num_map[num] = i\r\n        \r\n    return [] # Return empty if no solution is found\r\n",
+          "stdout": "{\"evalScore\":100,\"verdict\":\"Pass\",\"feedback\":[\"✅ Correctness: Passed 5/5 test cases (100.0%).\",\"🎉 Code runs smoothly without syntax or runtime exceptions.\",\"⚡ Complexity: Time O(n) | Space O(1). Optimal performance achieved.\",\"✍️ Code Quality: Score 100/100 (Grade: Excellent). Excellent code structure and naming conventions.\"],\"complexity\":{\"timeComplexity\":\"O(n)\",\"spaceComplexity\":\"O(1)\",\"isOptimal\":true,\"suggestion\":null},\"qualityReview\":{\"qualityScore\":100,\"grade\":\"Excellent\",\"issues\":[],\"feedback\":[\"Good job commenting your code.\"]},\"bugReport\":null,\"savedAt\":\"2026-06-26T11:53:07.327Z\"}",
+          "stderr": "",
+          "executionTime": 0,
+          "memoryUsed": 0,
+          "outputTruncated": false,
+          "testsPassed": 5,
+          "testsTotal": 5,
+          "createdAt": "2026-06-26T11:53:07.543Z",
+          "updatedAt": "2026-06-26T11:53:07.543Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
+          "question": {
+            "id": "d17fb374-4073-4ee2-b744-90d7d956be65",
+            "slug": "two-sum",
+            "title": "Two Sum",
+            "difficulty": "Easy",
+            "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target. You may assume that each input has exactly one solution, and you may not use the same element twice. Return the indices in ascending order.",
+            "constraints": "[\"2 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"-1000000000 <= target <= 1000000000\",\"Exactly one valid answer exists\"]",
+            "starterCode": {
+              "go": "func twoSum(nums []int, target int) []int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int[] twoSum(int[] nums, int target) {\n        \n    }\n}",
+              "rust": "fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n\n}",
+              "python": "def twoSum(nums, target):\n    pass",
+              "javascript": "function twoSum(nums, target) {\n\n}",
+              "typescript": "function twoSum(nums: number[], target: number): number[] {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:29:06.453Z",
+            "updatedAt": "2026-06-26T11:29:06.453Z",
+            "topics": [
+              {
+                "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
+                "topicId": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                "topic": {
+                  "id": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                  "name": "HashMap"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvao3j001aqi6dwplu064o",
+          "language": "PYTHON",
+          "status": "FAILED",
+          "sourceCode": "// Intermediate user submission for course-schedule",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 137,
+          "memoryUsed": 17948,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-25T09:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:22.015Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+          "question": {
+            "id": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+            "slug": "course-schedule",
+            "title": "Course Schedule",
+            "difficulty": "Medium",
+            "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b before course a. Return true if it is possible to finish all courses, otherwise return false.",
+            "constraints": "[\"1 <= numCourses <= 100000\",\"0 <= prerequisites.length <= 200000\",\"prerequisites[i].length == 2\",\"0 <= ai, bi < numCourses\",\"ai != bi\"]",
+            "starterCode": {
+              "go": "func canFinish(numCourses int, prerequisites [][]int) bool {\n\n}",
+              "cpp": "class Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public boolean canFinish(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {\n\n    }\n}",
+              "python": "def canFinish(numCourses, prerequisites):\n    pass",
+              "javascript": "function canFinish(numCourses, prerequisites) {\n\n}",
+              "typescript": "function canFinish(numCourses: number, prerequisites: number[][]): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:28:33.373Z",
+            "updatedAt": "2026-06-26T11:28:33.373Z",
+            "topics": [
+              {
+                "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+                "topicId": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                "topic": {
+                  "id": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                  "name": "Graphs"
+                }
+              },
+              {
+                "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+                "topicId": "1ecff88f-13dd-4ab7-a1b1-e31d4762ac88",
+                "topic": {
+                  "id": "1ecff88f-13dd-4ab7-a1b1-e31d4762ac88",
+                  "name": "Directed Graph"
+                }
+              },
+              {
+                "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+                "topicId": "ce52d7aa-0f69-4e59-86f5-49e4da8e2cf1",
+                "topic": {
+                  "id": "ce52d7aa-0f69-4e59-86f5-49e4da8e2cf1",
+                  "name": "Cycle Detection"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvanzu0018qi6d8x8als6w",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for longest-common-prefix",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 107,
+          "memoryUsed": 13172,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-25T06:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.882Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "d31048d8-fd94-4db7-aaed-55c18e3381a2",
+          "question": {
+            "id": "d31048d8-fd94-4db7-aaed-55c18e3381a2",
+            "slug": "longest-common-prefix",
+            "title": "Longest Common Prefix",
+            "difficulty": "Medium",
+            "description": "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.",
+            "constraints": "[\"1 <= strs.length <= 10000\",\"0 <= strs[i].length <= 1000\",\"strs[i] consists of lowercase English letters\"]",
+            "starterCode": {
+              "go": "func longestCommonPrefix(strs []string) string {\n\n}",
+              "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static String longestCommonPrefix(String[] strs) {\n        \n    }\n}",
+              "rust": "fn longest_common_prefix(strs: Vec<String>) -> String {\n\n}",
+              "python": "def longestCommonPrefix(strs):\n    pass",
+              "javascript": "function longestCommonPrefix(strs) {\n\n}",
+              "typescript": "function longestCommonPrefix(strs: string[]): string {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:32:19.018Z",
+            "updatedAt": "2026-06-26T11:32:19.018Z",
+            "topics": [
+              {
+                "questionId": "d31048d8-fd94-4db7-aaed-55c18e3381a2",
+                "topicId": "40c04193-be9e-415c-961d-91ebd4ed287c",
+                "topic": {
+                  "id": "40c04193-be9e-415c-961d-91ebd4ed287c",
+                  "name": "Strings"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvanw30016qi6dlgphkhjy",
+          "language": "JAVASCRIPT",
+          "status": "RUNTIME_ERROR",
+          "sourceCode": "// Intermediate user submission for number-of-islands",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 115,
+          "memoryUsed": 17723,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-24T08:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.747Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+          "question": {
+            "id": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+            "slug": "number-of-islands",
+            "title": "Number of Islands",
+            "difficulty": "Medium",
+            "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
+            "constraints": "[\"1 <= m, n <= 300\",\"grid[i][j] is either '0' or '1'\"]",
+            "starterCode": {
+              "go": "func numIslands(grid [][]byte) int {\n\n}",
+              "cpp": "class Solution {\npublic:\n    int numIslands(vector<vector<char>>& grid) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public int numIslands(char[][] grid) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {\n\n    }\n}",
+              "python": "def numIslands(grid):\n    pass",
+              "javascript": "function numIslands(grid) {\n\n}",
+              "typescript": "function numIslands(grid: string[][]): number {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:28:22.556Z",
+            "updatedAt": "2026-06-26T11:28:22.556Z",
+            "topics": [
+              {
+                "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                "topicId": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                "topic": {
+                  "id": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                  "name": "Graphs"
+                }
+              },
+              {
+                "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                "topicId": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                "topic": {
+                  "id": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                  "name": "DFS"
+                }
+              },
+              {
+                "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                "topicId": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                "topic": {
+                  "id": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                  "name": "BFS"
+                }
+              },
+              {
+                "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                "topicId": "e69d1781-b046-4633-a846-0a7add7d9b4a",
+                "topic": {
+                  "id": "e69d1781-b046-4633-a846-0a7add7d9b4a",
+                  "name": "Grid"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvansp0014qi6df54lh21x",
+          "language": "PYTHON",
+          "status": "FAILED",
+          "sourceCode": "// Intermediate user submission for find-if-path-exists-in-graph",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 132,
+          "memoryUsed": 15312,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-24T05:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.626Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+          "question": {
+            "id": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+            "slug": "find-if-path-exists-in-graph",
+            "title": "Find if Path Exists in Graph",
+            "difficulty": "Easy",
+            "description": "There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1. You are given an array edges where edges[i] = [ui, vi] indicates that there is an undirected edge between vertices ui and vi. Given integers source and destination, return true if there is a valid path from source to destination, or false otherwise.",
+            "constraints": "[\"1 <= n <= 200000\",\"0 <= edges.length <= 200000\",\"edges[i].length == 2\",\"0 <= ui, vi < n\",\"ui != vi\",\"0 <= source, destination < n\"]",
+            "starterCode": {
+              "go": "func validPath(n int, edges [][]int, source int, destination int) bool {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public boolean validPath(int n, int[][] edges, int source, int destination) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn valid_path(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -> bool {\n\n    }\n}",
+              "python": "def validPath(n, edges, source, destination):\n    pass",
+              "javascript": "function validPath(n, edges, source, destination) {\n\n}",
+              "typescript": "function validPath(n: number, edges: number[][], source: number, destination: number): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:28:08.639Z",
+            "updatedAt": "2026-06-26T11:28:08.639Z",
+            "topics": [
+              {
+                "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+                "topicId": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                "topic": {
+                  "id": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                  "name": "Graphs"
+                }
+              },
+              {
+                "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+                "topicId": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                "topic": {
+                  "id": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                  "name": "DFS"
+                }
+              },
+              {
+                "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+                "topicId": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                "topic": {
+                  "id": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                  "name": "BFS"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvanpc0012qi6dc8m7z4qd",
+          "language": "JAVASCRIPT",
+          "status": "TIMEOUT",
+          "sourceCode": "// Intermediate user submission for validate-binary-search-tree",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 5000,
+          "memoryUsed": 17582,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-23T10:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.504Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "ce5b0d9e-cace-4b87-972b-44708dcd1a8e",
+          "question": {
+            "id": "ce5b0d9e-cace-4b87-972b-44708dcd1a8e",
+            "slug": "validate-binary-search-tree",
+            "title": "Validate Binary Search Tree",
+            "difficulty": "Medium",
+            "description": "Given the root of a binary tree, determine whether it is a valid Binary Search Tree (BST). A BST is valid if for every node: all values in its left subtree are strictly less than the node's value, and all values in its right subtree are strictly greater than the node's value. Both left and right subtrees must also be valid BSTs.",
+            "constraints": "[\"1 <= number of nodes <= 100000\",\"-2147483648 <= Node.val <= 2147483647\"]",
+            "starterCode": {
+              "go": "func isValidBST(root *TreeNode) bool {\n\n}",
+              "cpp": "class Solution {\npublic:\n    bool isValidBST(TreeNode* root) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public boolean isValidBST(TreeNode root) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn is_valid_bst(root: Option<Rc<RefCell<TreeNode>>>) -> bool {\n\n    }\n}",
+              "python": "def isValidBST(root):\n    pass",
+              "javascript": "function isValidBST(root) {\n\n}",
+              "typescript": "function isValidBST(root: TreeNode | null): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:32:47.079Z",
+            "updatedAt": "2026-06-26T11:32:47.079Z",
+            "topics": [
+              {
+                "questionId": "ce5b0d9e-cace-4b87-972b-44708dcd1a8e",
+                "topicId": "4a26f911-9252-4f7c-952f-1922798514cb",
+                "topic": {
+                  "id": "4a26f911-9252-4f7c-952f-1922798514cb",
+                  "name": "Trees"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvanm00010qi6d02ctdtc1",
+          "language": "JAVASCRIPT",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for same-tree",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 112,
+          "memoryUsed": 15393,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-23T08:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.385Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "cc6e5d3f-b2ac-4c98-b620-1a916bc875ea",
+          "question": {
+            "id": "cc6e5d3f-b2ac-4c98-b620-1a916bc875ea",
+            "slug": "same-tree",
+            "title": "Same Tree",
+            "difficulty": "Easy",
+            "description": "Given the roots of two binary trees p and q, return true if they are structurally identical and the nodes have the same values. Otherwise, return false.",
+            "constraints": "[\"0 <= number of nodes in each tree <= 100000\",\"-10000 <= Node.val <= 10000\"]",
+            "starterCode": {
+              "go": "func isSameTree(p *TreeNode, q *TreeNode) bool {\n\n}",
+              "cpp": "class Solution {\npublic:\n    bool isSameTree(TreeNode* p, TreeNode* q) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public boolean isSameTree(TreeNode p, TreeNode q) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn is_same_tree(\n        p: Option<Rc<RefCell<TreeNode>>>,\n        q: Option<Rc<RefCell<TreeNode>>>\n    ) -> bool {\n\n    }\n}",
+              "python": "def isSameTree(p, q):\n    pass",
+              "javascript": "function isSameTree(p, q) {\n\n}",
+              "typescript": "function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:32:40.583Z",
+            "updatedAt": "2026-06-26T11:32:40.583Z",
+            "topics": [
+              {
+                "questionId": "cc6e5d3f-b2ac-4c98-b620-1a916bc875ea",
+                "topicId": "4a26f911-9252-4f7c-952f-1922798514cb",
+                "topic": {
+                  "id": "4a26f911-9252-4f7c-952f-1922798514cb",
+                  "name": "Trees"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvanio000yqi6dxtrzsjjp",
+          "language": "PYTHON",
+          "status": "FAILED",
+          "sourceCode": "// Intermediate user submission for same-tree",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 59,
+          "memoryUsed": 17251,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-23T07:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.264Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "cc6e5d3f-b2ac-4c98-b620-1a916bc875ea",
+          "question": {
+            "id": "cc6e5d3f-b2ac-4c98-b620-1a916bc875ea",
+            "slug": "same-tree",
+            "title": "Same Tree",
+            "difficulty": "Easy",
+            "description": "Given the roots of two binary trees p and q, return true if they are structurally identical and the nodes have the same values. Otherwise, return false.",
+            "constraints": "[\"0 <= number of nodes in each tree <= 100000\",\"-10000 <= Node.val <= 10000\"]",
+            "starterCode": {
+              "go": "func isSameTree(p *TreeNode, q *TreeNode) bool {\n\n}",
+              "cpp": "class Solution {\npublic:\n    bool isSameTree(TreeNode* p, TreeNode* q) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public boolean isSameTree(TreeNode p, TreeNode q) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn is_same_tree(\n        p: Option<Rc<RefCell<TreeNode>>>,\n        q: Option<Rc<RefCell<TreeNode>>>\n    ) -> bool {\n\n    }\n}",
+              "python": "def isSameTree(p, q):\n    pass",
+              "javascript": "function isSameTree(p, q) {\n\n}",
+              "typescript": "function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:32:40.583Z",
+            "updatedAt": "2026-06-26T11:32:40.583Z",
+            "topics": [
+              {
+                "questionId": "cc6e5d3f-b2ac-4c98-b620-1a916bc875ea",
+                "topicId": "4a26f911-9252-4f7c-952f-1922798514cb",
+                "topic": {
+                  "id": "4a26f911-9252-4f7c-952f-1922798514cb",
+                  "name": "Trees"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvanfr000wqi6d29fcokzu",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for maximum-depth-of-binary-tree",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 89,
+          "memoryUsed": 12303,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-23T04:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.159Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "afc4f20b-b624-48db-a4d7-7ac477cb9e6f",
+          "question": {
+            "id": "afc4f20b-b624-48db-a4d7-7ac477cb9e6f",
+            "slug": "maximum-depth-of-binary-tree",
+            "title": "Maximum Depth of Binary Tree",
+            "difficulty": "Easy",
+            "description": "Given the root of a binary tree, return its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+            "constraints": "[\"0 <= number of nodes <= 100000\",\"-1000 <= Node.val <= 1000\"]",
+            "starterCode": {
+              "go": "func maxDepth(root *TreeNode) int {\n\n}",
+              "cpp": "class Solution {\npublic:\n    int maxDepth(TreeNode* root) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public int maxDepth(TreeNode root) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {\n\n    }\n}",
+              "python": "def maxDepth(root):\n    pass",
+              "javascript": "function maxDepth(root) {\n\n}",
+              "typescript": "function maxDepth(root: TreeNode | null): number {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:32:38.085Z",
+            "updatedAt": "2026-06-26T11:32:38.085Z",
+            "topics": [
+              {
+                "questionId": "afc4f20b-b624-48db-a4d7-7ac477cb9e6f",
+                "topicId": "4a26f911-9252-4f7c-952f-1922798514cb",
+                "topic": {
+                  "id": "4a26f911-9252-4f7c-952f-1922798514cb",
+                  "name": "Trees"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvancw000uqi6dc2rl16tk",
+          "language": "JAVASCRIPT",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for search-in-rotated-sorted-array",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 99,
+          "memoryUsed": 16108,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-22T10:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:21.056Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "12da8267-02e5-44ef-8981-4ec9876ffc46",
+          "question": {
+            "id": "12da8267-02e5-44ef-8981-4ec9876ffc46",
+            "slug": "search-in-rotated-sorted-array",
+            "title": "Search in Rotated Sorted Array",
+            "difficulty": "Medium",
+            "description": "There is an integer array nums sorted in ascending order with distinct values. Before being passed to your function, nums is rotated at an unknown pivot index. Given the rotated array nums and an integer target, return the index of target if it exists in the array. Otherwise, return -1. Your solution must run in O(log n) time.",
+            "constraints": "[\"1 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"All values in nums are unique\",\"nums is originally sorted in ascending order and then rotated\",\"-1000000000 <= target <= 1000000000\"]",
+            "starterCode": {
+              "go": "func search(nums []int, target int) int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int search(int[] nums, int target) {\n        \n    }\n}",
+              "rust": "fn search(nums: Vec<i32>, target: i32) -> i32 {\n\n}",
+              "python": "def search(nums, target):\n    pass",
+              "javascript": "function search(nums, target) {\n\n}",
+              "typescript": "function search(nums: number[], target: number): number {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:27:49.737Z",
+            "updatedAt": "2026-06-26T11:27:49.737Z",
+            "topics": [
+              {
+                "questionId": "12da8267-02e5-44ef-8981-4ec9876ffc46",
+                "topicId": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                "topic": {
+                  "id": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                  "name": "Binary Search"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvana6000sqi6ddffabdta",
+          "language": "JAVASCRIPT",
+          "status": "FAILED",
+          "sourceCode": "// Intermediate user submission for search-in-rotated-sorted-array",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 72,
+          "memoryUsed": 19288,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-22T09:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.959Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "12da8267-02e5-44ef-8981-4ec9876ffc46",
+          "question": {
+            "id": "12da8267-02e5-44ef-8981-4ec9876ffc46",
+            "slug": "search-in-rotated-sorted-array",
+            "title": "Search in Rotated Sorted Array",
+            "difficulty": "Medium",
+            "description": "There is an integer array nums sorted in ascending order with distinct values. Before being passed to your function, nums is rotated at an unknown pivot index. Given the rotated array nums and an integer target, return the index of target if it exists in the array. Otherwise, return -1. Your solution must run in O(log n) time.",
+            "constraints": "[\"1 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"All values in nums are unique\",\"nums is originally sorted in ascending order and then rotated\",\"-1000000000 <= target <= 1000000000\"]",
+            "starterCode": {
+              "go": "func search(nums []int, target int) int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int search(int[] nums, int target) {\n        \n    }\n}",
+              "rust": "fn search(nums: Vec<i32>, target: i32) -> i32 {\n\n}",
+              "python": "def search(nums, target):\n    pass",
+              "javascript": "function search(nums, target) {\n\n}",
+              "typescript": "function search(nums: number[], target: number): number {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:27:49.737Z",
+            "updatedAt": "2026-06-26T11:27:49.737Z",
+            "topics": [
+              {
+                "questionId": "12da8267-02e5-44ef-8981-4ec9876ffc46",
+                "topicId": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                "topic": {
+                  "id": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                  "name": "Binary Search"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvan66000qqi6ds5k5qkhk",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for search-insert-position",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 108,
+          "memoryUsed": 18334,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-22T06:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.814Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "8f136ae4-4f01-46aa-9ea9-43427ef2e3d1",
+          "question": {
+            "id": "8f136ae4-4f01-46aa-9ea9-43427ef2e3d1",
+            "slug": "search-insert-position",
+            "title": "Search Insert Position",
+            "difficulty": "Easy",
+            "description": "Given a sorted array of distinct integers nums and a target value, return the index if the target is found. If not, return the index where it would be inserted to maintain the sorted order. Your solution must run in O(log n) time.",
+            "constraints": "[\"1 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"nums is sorted in strictly increasing order\",\"-1000000000 <= target <= 1000000000\"]",
+            "starterCode": {
+              "go": "func searchInsert(nums []int, target int) int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int searchInsert(vector<int>& nums, int target) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int searchInsert(int[] nums, int target) {\n        \n    }\n}",
+              "rust": "fn search_insert(nums: Vec<i32>, target: i32) -> i32 {\n\n}",
+              "python": "def searchInsert(nums, target):\n    pass",
+              "javascript": "function searchInsert(nums, target) {\n\n}",
+              "typescript": "function searchInsert(nums: number[], target: number): number {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:27:36.701Z",
+            "updatedAt": "2026-06-26T11:27:36.701Z",
+            "topics": [
+              {
+                "questionId": "8f136ae4-4f01-46aa-9ea9-43427ef2e3d1",
+                "topicId": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                "topic": {
+                  "id": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                  "name": "Binary Search"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvan2u000oqi6dplm2irm5",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for binary-search",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 29,
+          "memoryUsed": 13230,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-22T03:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.694Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "29d0db39-3f41-4713-8bda-f3931e898815",
+          "question": {
+            "id": "29d0db39-3f41-4713-8bda-f3931e898815",
+            "slug": "binary-search",
+            "title": "Binary Search",
+            "difficulty": "Easy",
+            "description": "Given a sorted array of integers nums sorted in ascending order and an integer target, return the index of target if it exists in the array. Otherwise, return -1. Your solution must run in O(log n) time complexity.",
+            "constraints": "[\"1 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"nums is sorted in strictly increasing order\",\"-1000000000 <= target <= 1000000000\"]",
+            "starterCode": {
+              "go": "func search(nums []int, target int) int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int search(int[] nums, int target) {\n        \n    }\n}",
+              "rust": "fn search(nums: Vec<i32>, target: i32) -> i32 {\n\n}",
+              "python": "def search(nums, target):\n    pass",
+              "javascript": "function search(nums, target) {\n\n}",
+              "typescript": "function search(nums: number[], target: number): number {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:27:32.804Z",
+            "updatedAt": "2026-06-26T11:27:32.804Z",
+            "topics": [
+              {
+                "questionId": "29d0db39-3f41-4713-8bda-f3931e898815",
+                "topicId": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                "topic": {
+                  "id": "f0c7e51a-7784-4159-892e-a258f9bb0b1a",
+                  "name": "Binary Search"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamzx000mqi6dtdw5dvfz",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for linked-list-cycle",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 39,
+          "memoryUsed": 16468,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-21T08:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.589Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "84cc7603-e503-4300-b479-4622c97cc5ab",
+          "question": {
+            "id": "84cc7603-e503-4300-b479-4622c97cc5ab",
+            "slug": "linked-list-cycle",
+            "title": "Linked List Cycle",
+            "difficulty": "Medium",
+            "description": "Given the head of a linked list, determine whether the linked list contains a cycle. A cycle exists if some node in the list can be reached again by continuously following the next pointer. Return true if there is a cycle; otherwise, return false.",
+            "constraints": "[\"0 <= number of nodes <= 100000\",\"-100000 <= Node.val <= 100000\"]",
+            "starterCode": {
+              "go": "func hasCycle(head *ListNode) bool {\n\n}",
+              "cpp": "class Solution {\npublic:\n    bool hasCycle(ListNode *head) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public boolean hasCycle(ListNode head) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn has_cycle(head: Option<Box<ListNode>>) -> bool {\n\n    }\n}",
+              "python": "def hasCycle(head):\n    pass",
+              "javascript": "function hasCycle(head) {\n\n}",
+              "typescript": "function hasCycle(head: ListNode | null): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:29:58.927Z",
+            "updatedAt": "2026-06-26T11:29:58.927Z",
+            "topics": [
+              {
+                "questionId": "84cc7603-e503-4300-b479-4622c97cc5ab",
+                "topicId": "45cc8162-24b1-45e6-8565-0cdfa39126f6",
+                "topic": {
+                  "id": "45cc8162-24b1-45e6-8565-0cdfa39126f6",
+                  "name": "Linked List"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamx4000kqi6dm91tnv3c",
+          "language": "JAVASCRIPT",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for middle-of-the-linked-list",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 99,
+          "memoryUsed": 16491,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-21T05:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.488Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "25013329-f964-42ff-8848-20d6a3f35b1e",
+          "question": {
+            "id": "25013329-f964-42ff-8848-20d6a3f35b1e",
+            "slug": "middle-of-the-linked-list",
+            "title": "Middle of the Linked List",
+            "difficulty": "Medium",
+            "description": "Given the head of a singly linked list, return the middle node of the linked list. If there are two middle nodes, return the second middle node.",
+            "constraints": "[\"1 <= number of nodes <= 100000\",\"-100000 <= Node.val <= 100000\"]",
+            "starterCode": {
+              "go": "func middleNode(head *ListNode) *ListNode {\n\n}",
+              "cpp": "class Solution {\npublic:\n    ListNode* middleNode(ListNode* head) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public ListNode middleNode(ListNode head) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn middle_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n\n    }\n}",
+              "python": "def middleNode(head):\n    pass",
+              "javascript": "function middleNode(head) {\n\n}",
+              "typescript": "function middleNode(head: ListNode | null): ListNode | null {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:29:51.572Z",
+            "updatedAt": "2026-06-26T11:29:51.572Z",
+            "topics": [
+              {
+                "questionId": "25013329-f964-42ff-8848-20d6a3f35b1e",
+                "topicId": "45cc8162-24b1-45e6-8565-0cdfa39126f6",
+                "topic": {
+                  "id": "45cc8162-24b1-45e6-8565-0cdfa39126f6",
+                  "name": "Linked List"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamud000iqi6ds2l5029t",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for reverse-linked-list",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 25,
+          "memoryUsed": 17188,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-21T02:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.389Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "9a4f284a-09a6-49c0-ae07-4c66e52ebb47",
+          "question": {
+            "id": "9a4f284a-09a6-49c0-ae07-4c66e52ebb47",
+            "slug": "reverse-linked-list",
+            "title": "Reverse Linked List",
+            "difficulty": "Easy",
+            "description": "Given the head of a singly linked list, reverse the list and return the new head.",
+            "constraints": "[\"0 <= number of nodes <= 100000\",\"-100000 <= Node.val <= 100000\"]",
+            "starterCode": {
+              "go": "func reverseList(head *ListNode) *ListNode {\n\n}",
+              "cpp": "class Solution {\npublic:\n    ListNode* reverseList(ListNode* head) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public ListNode reverseList(ListNode head) {\n        \n    }\n}",
+              "rust": "impl Solution {\n    pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {\n\n    }\n}",
+              "python": "def reverseList(head):\n    pass",
+              "javascript": "function reverseList(head) {\n\n}",
+              "typescript": "function reverseList(head: ListNode | null): ListNode | null {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:29:43.598Z",
+            "updatedAt": "2026-06-26T11:29:43.598Z",
+            "topics": [
+              {
+                "questionId": "9a4f284a-09a6-49c0-ae07-4c66e52ebb47",
+                "topicId": "45cc8162-24b1-45e6-8565-0cdfa39126f6",
+                "topic": {
+                  "id": "45cc8162-24b1-45e6-8565-0cdfa39126f6",
+                  "name": "Linked List"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamr8000gqi6dks6s2psr",
+          "language": "JAVASCRIPT",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for min-stack",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 38,
+          "memoryUsed": 15984,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-20T09:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.277Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "6d66c4ff-e93d-410f-abd2-6a5742614a0b",
+          "question": {
+            "id": "6d66c4ff-e93d-410f-abd2-6a5742614a0b",
+            "slug": "min-stack",
+            "title": "Min Stack",
+            "difficulty": "Medium",
+            "description": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. Implement the MinStack class with the following methods: push(val), pop(), top(), and getMin(). All operations must run in O(1) time.",
+            "constraints": "[\"-100000 <= val <= 100000\",\"At most 100000 operations will be performed\",\"pop(), top(), and getMin() will only be called on non-empty stacks\"]",
+            "starterCode": {
+              "go": "type MinStack struct {\n}\n\nfunc Constructor() MinStack {\n\n}\n\nfunc (this *MinStack) Push(val int) {\n\n}\n\nfunc (this *MinStack) Pop() {\n\n}\n\nfunc (this *MinStack) Top() int {\n\n}\n\nfunc (this *MinStack) GetMin() int {\n\n}",
+              "cpp": "#include <stack>\nusing namespace std;\n\nclass MinStack {\npublic:\n    MinStack() {\n\n    }\n\n    void push(int val) {\n\n    }\n\n    void pop() {\n\n    }\n\n    int top() {\n\n    }\n\n    int getMin() {\n\n    }\n};",
+              "java": "class MinStack {\n    public MinStack() {\n\n    }\n\n    public void push(int val) {\n\n    }\n\n    public void pop() {\n\n    }\n\n    public int top() {\n\n    }\n\n    public int getMin() {\n\n    }\n}",
+              "rust": "struct MinStack {\n}\n\nimpl MinStack {\n    fn new() -> Self {\n\n    }\n\n    fn push(&mut self, val: i32) {\n\n    }\n\n    fn pop(&mut self) {\n\n    }\n\n    fn top(&self) -> i32 {\n\n    }\n\n    fn get_min(&self) -> i32 {\n\n    }\n}",
+              "python": "class MinStack:\n    def __init__(self):\n        pass\n\n    def push(self, val: int) -> None:\n        pass\n\n    def pop(self) -> None:\n        pass\n\n    def top(self) -> int:\n        pass\n\n    def getMin(self) -> int:\n        pass",
+              "javascript": "class MinStack {\n    constructor() {\n\n    }\n\n    push(val) {\n\n    }\n\n    pop() {\n\n    }\n\n    top() {\n\n    }\n\n    getMin() {\n\n    }\n}",
+              "typescript": "class MinStack {\n    constructor() {\n\n    }\n\n    push(val: number): void {\n\n    }\n\n    pop(): void {\n\n    }\n\n    top(): number {\n\n    }\n\n    getMin(): number {\n\n    }\n}"
+            },
+            "createdAt": "2026-06-26T11:31:57.786Z",
+            "updatedAt": "2026-06-26T11:31:57.786Z",
+            "topics": [
+              {
+                "questionId": "6d66c4ff-e93d-410f-abd2-6a5742614a0b",
+                "topicId": "1e27e3eb-e432-4b1c-bc7f-451eaf05f4af",
+                "topic": {
+                  "id": "1e27e3eb-e432-4b1c-bc7f-451eaf05f4af",
+                  "name": "Stack"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamog000eqi6d0xrgrlrm",
+          "language": "PYTHON",
+          "status": "FAILED",
+          "sourceCode": "// Intermediate user submission for min-stack",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 49,
+          "memoryUsed": 14118,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-20T08:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.176Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "6d66c4ff-e93d-410f-abd2-6a5742614a0b",
+          "question": {
+            "id": "6d66c4ff-e93d-410f-abd2-6a5742614a0b",
+            "slug": "min-stack",
+            "title": "Min Stack",
+            "difficulty": "Medium",
+            "description": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time. Implement the MinStack class with the following methods: push(val), pop(), top(), and getMin(). All operations must run in O(1) time.",
+            "constraints": "[\"-100000 <= val <= 100000\",\"At most 100000 operations will be performed\",\"pop(), top(), and getMin() will only be called on non-empty stacks\"]",
+            "starterCode": {
+              "go": "type MinStack struct {\n}\n\nfunc Constructor() MinStack {\n\n}\n\nfunc (this *MinStack) Push(val int) {\n\n}\n\nfunc (this *MinStack) Pop() {\n\n}\n\nfunc (this *MinStack) Top() int {\n\n}\n\nfunc (this *MinStack) GetMin() int {\n\n}",
+              "cpp": "#include <stack>\nusing namespace std;\n\nclass MinStack {\npublic:\n    MinStack() {\n\n    }\n\n    void push(int val) {\n\n    }\n\n    void pop() {\n\n    }\n\n    int top() {\n\n    }\n\n    int getMin() {\n\n    }\n};",
+              "java": "class MinStack {\n    public MinStack() {\n\n    }\n\n    public void push(int val) {\n\n    }\n\n    public void pop() {\n\n    }\n\n    public int top() {\n\n    }\n\n    public int getMin() {\n\n    }\n}",
+              "rust": "struct MinStack {\n}\n\nimpl MinStack {\n    fn new() -> Self {\n\n    }\n\n    fn push(&mut self, val: i32) {\n\n    }\n\n    fn pop(&mut self) {\n\n    }\n\n    fn top(&self) -> i32 {\n\n    }\n\n    fn get_min(&self) -> i32 {\n\n    }\n}",
+              "python": "class MinStack:\n    def __init__(self):\n        pass\n\n    def push(self, val: int) -> None:\n        pass\n\n    def pop(self) -> None:\n        pass\n\n    def top(self) -> int:\n        pass\n\n    def getMin(self) -> int:\n        pass",
+              "javascript": "class MinStack {\n    constructor() {\n\n    }\n\n    push(val) {\n\n    }\n\n    pop() {\n\n    }\n\n    top() {\n\n    }\n\n    getMin() {\n\n    }\n}",
+              "typescript": "class MinStack {\n    constructor() {\n\n    }\n\n    push(val: number): void {\n\n    }\n\n    pop(): void {\n\n    }\n\n    top(): number {\n\n    }\n\n    getMin(): number {\n\n    }\n}"
+            },
+            "createdAt": "2026-06-26T11:31:57.786Z",
+            "updatedAt": "2026-06-26T11:31:57.786Z",
+            "topics": [
+              {
+                "questionId": "6d66c4ff-e93d-410f-abd2-6a5742614a0b",
+                "topicId": "1e27e3eb-e432-4b1c-bc7f-451eaf05f4af",
+                "topic": {
+                  "id": "1e27e3eb-e432-4b1c-bc7f-451eaf05f4af",
+                  "name": "Stack"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamlu000cqi6d8svn1zya",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for valid-parentheses",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 55,
+          "memoryUsed": 14394,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-20T06:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:20.082Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "371b9ebc-9dff-45dc-baf1-5954a23edc8f",
+          "question": {
+            "id": "371b9ebc-9dff-45dc-baf1-5954a23edc8f",
+            "slug": "valid-parentheses",
+            "title": "Valid Parentheses",
+            "difficulty": "Easy",
+            "description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if every opening bracket has a corresponding closing bracket of the same type and the brackets are closed in the correct order.",
+            "constraints": "[\"1 <= s.length <= 100000\",\"s consists only of '(', ')', '{', '}', '[' and ']'\"]",
+            "starterCode": {
+              "go": "func isValid(s string) bool {\n\n}",
+              "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isValid(string s) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static boolean isValid(String s) {\n        \n    }\n}",
+              "rust": "fn is_valid(s: String) -> bool {\n\n}",
+              "python": "def isValid(s):\n    pass",
+              "javascript": "function isValid(s) {\n\n}",
+              "typescript": "function isValid(s: string): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:31:37.367Z",
+            "updatedAt": "2026-06-26T11:31:37.367Z",
+            "topics": [
+              {
+                "questionId": "371b9ebc-9dff-45dc-baf1-5954a23edc8f",
+                "topicId": "1e27e3eb-e432-4b1c-bc7f-451eaf05f4af",
+                "topic": {
+                  "id": "1e27e3eb-e432-4b1c-bc7f-451eaf05f4af",
+                  "name": "Stack"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamic000aqi6dbce2z2zr",
+          "language": "JAVASCRIPT",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for valid-anagram",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 71,
+          "memoryUsed": 16676,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-20T03:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:19.956Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "7011aecc-20c9-4c91-98d9-38c52d450b69",
+          "question": {
+            "id": "7011aecc-20c9-4c91-98d9-38c52d450b69",
+            "slug": "valid-anagram",
+            "title": "Valid Anagram",
+            "difficulty": "Medium",
+            "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. Two strings are anagrams if they contain exactly the same characters with the same frequencies.",
+            "constraints": "[\"1 <= s.length <= 100000\",\"1 <= t.length <= 100000\",\"s and t consist of lowercase English letters\"]",
+            "starterCode": {
+              "go": "func isAnagram(s string, t string) bool {\n\n}",
+              "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static boolean isAnagram(String s, String t) {\n        \n    }\n}",
+              "rust": "fn is_anagram(s: String, t: String) -> bool {\n\n}",
+              "python": "def isAnagram(s, t):\n    pass",
+              "javascript": "function isAnagram(s, t) {\n\n}",
+              "typescript": "function isAnagram(s: string, t: string): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:29:18.271Z",
+            "updatedAt": "2026-06-26T11:29:18.271Z",
+            "topics": [
+              {
+                "questionId": "7011aecc-20c9-4c91-98d9-38c52d450b69",
+                "topicId": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                "topic": {
+                  "id": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                  "name": "HashMap"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamf60008qi6dpzg6k5qa",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for move-zeroes",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 137,
+          "memoryUsed": 15979,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-19T08:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:19.843Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "03a602d4-0103-4140-967a-4ee4e269bd99",
+          "question": {
+            "id": "03a602d4-0103-4140-967a-4ee4e269bd99",
+            "slug": "move-zeroes",
+            "title": "Move Zeroes",
+            "difficulty": "Medium",
+            "description": "Given an integer array nums, move all 0's to the end of the array while maintaining the relative order of the non-zero elements. Return the modified array.",
+            "constraints": "[\"1 <= nums.length <= 100000\",\"-100000 <= nums[i] <= 100000\"]",
+            "starterCode": {
+              "go": "func moveZeroes(nums []int) []int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> moveZeroes(vector<int>& nums) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int[] moveZeroes(int[] nums) {\n        \n    }\n}",
+              "rust": "fn move_zeroes(nums: Vec<i32>) -> Vec<i32> {\n\n}",
+              "python": "def moveZeroes(nums):\n    pass",
+              "javascript": "function moveZeroes(nums) {\n\n}",
+              "typescript": "function moveZeroes(nums: number[]): number[] {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:27:04.731Z",
+            "updatedAt": "2026-06-26T11:27:04.731Z",
+            "topics": [
+              {
+                "questionId": "03a602d4-0103-4140-967a-4ee4e269bd99",
+                "topicId": "454bee4b-ae3a-46d1-a7df-c2ca6015436b",
+                "topic": {
+                  "id": "454bee4b-ae3a-46d1-a7df-c2ca6015436b",
+                  "name": "Arrays"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvamc70006qi6dtu1olqw0",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for rotate-array",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 32,
+          "memoryUsed": 15046,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-19T05:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:19.736Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "c818b35c-f58e-4997-9cf6-387cd2804da9",
+          "question": {
+            "id": "c818b35c-f58e-4997-9cf6-387cd2804da9",
+            "slug": "rotate-array",
+            "title": "Rotate Array",
+            "difficulty": "Medium",
+            "description": "Given an integer array nums and a non-negative integer k, rotate the array to the right by k steps.",
+            "constraints": "[\"1 <= nums.length <= 100000\",\"-100000 <= nums[i] <= 100000\",\"0 <= k <= 100000\"]",
+            "starterCode": {
+              "go": "func rotateArray(nums []int, k int) []int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> rotateArray(vector<int>& nums, int k) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int[] rotateArray(int[] nums, int k) {\n        \n    }\n}",
+              "rust": "fn rotate_array(nums: Vec<i32>, k: i32) -> Vec<i32> {\n\n}",
+              "python": "def rotateArray(nums, k):\n    pass",
+              "javascript": "function rotateArray(nums, k) {\n\n}",
+              "typescript": "function rotateArray(nums: number[], k: number): number[] {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:27:00.276Z",
+            "updatedAt": "2026-06-26T11:27:00.276Z",
+            "topics": [
+              {
+                "questionId": "c818b35c-f58e-4997-9cf6-387cd2804da9",
+                "topicId": "454bee4b-ae3a-46d1-a7df-c2ca6015436b",
+                "topic": {
+                  "id": "454bee4b-ae3a-46d1-a7df-c2ca6015436b",
+                  "name": "Arrays"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvam9d0004qi6dalg7uic3",
+          "language": "PYTHON",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for valid-palindrome",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 132,
+          "memoryUsed": 17112,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-18T09:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:19.633Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "ea4fe0d5-fcf5-4638-90b5-e92b5b93c36b",
+          "question": {
+            "id": "ea4fe0d5-fcf5-4638-90b5-e92b5b93c36b",
+            "slug": "valid-palindrome",
+            "title": "Valid Palindrome",
+            "difficulty": "Easy",
+            "description": "Given a string s, determine whether it is a palindrome after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters. Return true if it is a palindrome, otherwise return false.",
+            "constraints": "[\"1 <= s.length <= 100000\",\"s consists of printable ASCII characters\"]",
+            "starterCode": {
+              "go": "func isPalindrome(s string) bool {\n\n}",
+              "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPalindrome(string s) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static boolean isPalindrome(String s) {\n        \n    }\n}",
+              "rust": "fn is_palindrome(s: String) -> bool {\n\n}",
+              "python": "def isPalindrome(s):\n    pass",
+              "javascript": "function isPalindrome(s) {\n\n}",
+              "typescript": "function isPalindrome(s: string): boolean {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:32:12.206Z",
+            "updatedAt": "2026-06-26T11:32:12.206Z",
+            "topics": [
+              {
+                "questionId": "ea4fe0d5-fcf5-4638-90b5-e92b5b93c36b",
+                "topicId": "40c04193-be9e-415c-961d-91ebd4ed287c",
+                "topic": {
+                  "id": "40c04193-be9e-415c-961d-91ebd4ed287c",
+                  "name": "Strings"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmquvam1a0002qi6dncpwtytj",
+          "language": "JAVASCRIPT",
+          "status": "ACCEPTED",
+          "sourceCode": "// Intermediate user submission for two-sum",
+          "stdout": null,
+          "stderr": null,
+          "executionTime": 97,
+          "memoryUsed": 16153,
+          "outputTruncated": false,
+          "testsPassed": 0,
+          "testsTotal": 0,
+          "createdAt": "2026-06-18T07:48:19.339Z",
+          "updatedAt": "2026-06-26T11:48:19.342Z",
+          "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+          "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
+          "question": {
+            "id": "d17fb374-4073-4ee2-b744-90d7d956be65",
+            "slug": "two-sum",
+            "title": "Two Sum",
+            "difficulty": "Easy",
+            "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target. You may assume that each input has exactly one solution, and you may not use the same element twice. Return the indices in ascending order.",
+            "constraints": "[\"2 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"-1000000000 <= target <= 1000000000\",\"Exactly one valid answer exists\"]",
+            "starterCode": {
+              "go": "func twoSum(nums []int, target int) []int {\n\n}",
+              "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};",
+              "java": "public class Solution {\n    public static int[] twoSum(int[] nums, int target) {\n        \n    }\n}",
+              "rust": "fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n\n}",
+              "python": "def twoSum(nums, target):\n    pass",
+              "javascript": "function twoSum(nums, target) {\n\n}",
+              "typescript": "function twoSum(nums: number[], target: number): number[] {\n\n}"
+            },
+            "createdAt": "2026-06-26T11:29:06.453Z",
+            "updatedAt": "2026-06-26T11:29:06.453Z",
+            "topics": [
+              {
+                "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
+                "topicId": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                "topic": {
+                  "id": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                  "name": "HashMap"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "submissionAnalysis": {
+        "totalSubmissions": 24,
+        "recentActivity": [
+          {
+            "id": "cmquvgseu0000s04cr9pbllnn",
+            "language": "PYTHON",
+            "status": "ACCEPTED",
+            "sourceCode": "def twoSum(nums: list[int], target: int) -> list[int]:\r\n    num_map = {} # Stores: number -> index\r\n    \r\n    for i, num in enumerate(nums):\r\n        complement = target - num\r\n        \r\n        # Check if the complement exists in the dictionary\r\n        if complement in num_map:\r\n            return [num_map[complement], i]\r\n            \r\n        # Store the current number and its index\r\n        num_map[num] = i\r\n        \r\n    return [] # Return empty if no solution is found\r\n",
+            "stdout": "{\"evalScore\":100,\"verdict\":\"Pass\",\"feedback\":[\"✅ Correctness: Passed 5/5 test cases (100.0%).\",\"🎉 Code runs smoothly without syntax or runtime exceptions.\",\"⚡ Complexity: Time O(n) | Space O(1). Optimal performance achieved.\",\"✍️ Code Quality: Score 100/100 (Grade: Excellent). Excellent code structure and naming conventions.\"],\"complexity\":{\"timeComplexity\":\"O(n)\",\"spaceComplexity\":\"O(1)\",\"isOptimal\":true,\"suggestion\":null},\"qualityReview\":{\"qualityScore\":100,\"grade\":\"Excellent\",\"issues\":[],\"feedback\":[\"Good job commenting your code.\"]},\"bugReport\":null,\"savedAt\":\"2026-06-26T11:53:07.327Z\"}",
+            "stderr": "",
+            "executionTime": 0,
+            "memoryUsed": 0,
+            "outputTruncated": false,
+            "testsPassed": 5,
+            "testsTotal": 5,
+            "createdAt": "2026-06-26T11:53:07.543Z",
+            "updatedAt": "2026-06-26T11:53:07.543Z",
+            "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+            "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
+            "question": {
+              "id": "d17fb374-4073-4ee2-b744-90d7d956be65",
+              "slug": "two-sum",
+              "title": "Two Sum",
+              "difficulty": "Easy",
+              "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target. You may assume that each input has exactly one solution, and you may not use the same element twice. Return the indices in ascending order.",
+              "constraints": "[\"2 <= nums.length <= 100000\",\"-1000000000 <= nums[i] <= 1000000000\",\"-1000000000 <= target <= 1000000000\",\"Exactly one valid answer exists\"]",
+              "starterCode": {
+                "go": "func twoSum(nums []int, target int) []int {\n\n}",
+                "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};",
+                "java": "public class Solution {\n    public static int[] twoSum(int[] nums, int target) {\n        \n    }\n}",
+                "rust": "fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n\n}",
+                "python": "def twoSum(nums, target):\n    pass",
+                "javascript": "function twoSum(nums, target) {\n\n}",
+                "typescript": "function twoSum(nums: number[], target: number): number[] {\n\n}"
+              },
+              "createdAt": "2026-06-26T11:29:06.453Z",
+              "updatedAt": "2026-06-26T11:29:06.453Z",
+              "topics": [
+                {
+                  "questionId": "d17fb374-4073-4ee2-b744-90d7d956be65",
+                  "topicId": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                  "topic": {
+                    "id": "72e3070e-4894-4a17-a659-fb9db8daef7c",
+                    "name": "HashMap"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "cmquvao3j001aqi6dwplu064o",
+            "language": "PYTHON",
+            "status": "FAILED",
+            "sourceCode": "// Intermediate user submission for course-schedule",
+            "stdout": null,
+            "stderr": null,
+            "executionTime": 137,
+            "memoryUsed": 17948,
+            "outputTruncated": false,
+            "testsPassed": 0,
+            "testsTotal": 0,
+            "createdAt": "2026-06-25T09:48:19.339Z",
+            "updatedAt": "2026-06-26T11:48:22.015Z",
+            "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+            "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+            "question": {
+              "id": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+              "slug": "course-schedule",
+              "title": "Course Schedule",
+              "difficulty": "Medium",
+              "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b before course a. Return true if it is possible to finish all courses, otherwise return false.",
+              "constraints": "[\"1 <= numCourses <= 100000\",\"0 <= prerequisites.length <= 200000\",\"prerequisites[i].length == 2\",\"0 <= ai, bi < numCourses\",\"ai != bi\"]",
+              "starterCode": {
+                "go": "func canFinish(numCourses int, prerequisites [][]int) bool {\n\n}",
+                "cpp": "class Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};",
+                "java": "public class Solution {\n    public boolean canFinish(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+                "rust": "impl Solution {\n    pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {\n\n    }\n}",
+                "python": "def canFinish(numCourses, prerequisites):\n    pass",
+                "javascript": "function canFinish(numCourses, prerequisites) {\n\n}",
+                "typescript": "function canFinish(numCourses: number, prerequisites: number[][]): boolean {\n\n}"
+              },
+              "createdAt": "2026-06-26T11:28:33.373Z",
+              "updatedAt": "2026-06-26T11:28:33.373Z",
+              "topics": [
+                {
+                  "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+                  "topicId": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                  "topic": {
+                    "id": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                    "name": "Graphs"
+                  }
+                },
+                {
+                  "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+                  "topicId": "1ecff88f-13dd-4ab7-a1b1-e31d4762ac88",
+                  "topic": {
+                    "id": "1ecff88f-13dd-4ab7-a1b1-e31d4762ac88",
+                    "name": "Directed Graph"
+                  }
+                },
+                {
+                  "questionId": "2cedc108-f881-494d-b6bf-f6ef91a9f981",
+                  "topicId": "ce52d7aa-0f69-4e59-86f5-49e4da8e2cf1",
+                  "topic": {
+                    "id": "ce52d7aa-0f69-4e59-86f5-49e4da8e2cf1",
+                    "name": "Cycle Detection"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "cmquvanzu0018qi6d8x8als6w",
+            "language": "PYTHON",
+            "status": "ACCEPTED",
+            "sourceCode": "// Intermediate user submission for longest-common-prefix",
+            "stdout": null,
+            "stderr": null,
+            "executionTime": 107,
+            "memoryUsed": 13172,
+            "outputTruncated": false,
+            "testsPassed": 0,
+            "testsTotal": 0,
+            "createdAt": "2026-06-25T06:48:19.339Z",
+            "updatedAt": "2026-06-26T11:48:21.882Z",
+            "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+            "questionId": "d31048d8-fd94-4db7-aaed-55c18e3381a2",
+            "question": {
+              "id": "d31048d8-fd94-4db7-aaed-55c18e3381a2",
+              "slug": "longest-common-prefix",
+              "title": "Longest Common Prefix",
+              "difficulty": "Medium",
+              "description": "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.",
+              "constraints": "[\"1 <= strs.length <= 10000\",\"0 <= strs[i].length <= 1000\",\"strs[i] consists of lowercase English letters\"]",
+              "starterCode": {
+                "go": "func longestCommonPrefix(strs []string) string {\n\n}",
+                "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        \n    }\n};",
+                "java": "public class Solution {\n    public static String longestCommonPrefix(String[] strs) {\n        \n    }\n}",
+                "rust": "fn longest_common_prefix(strs: Vec<String>) -> String {\n\n}",
+                "python": "def longestCommonPrefix(strs):\n    pass",
+                "javascript": "function longestCommonPrefix(strs) {\n\n}",
+                "typescript": "function longestCommonPrefix(strs: string[]): string {\n\n}"
+              },
+              "createdAt": "2026-06-26T11:32:19.018Z",
+              "updatedAt": "2026-06-26T11:32:19.018Z",
+              "topics": [
+                {
+                  "questionId": "d31048d8-fd94-4db7-aaed-55c18e3381a2",
+                  "topicId": "40c04193-be9e-415c-961d-91ebd4ed287c",
+                  "topic": {
+                    "id": "40c04193-be9e-415c-961d-91ebd4ed287c",
+                    "name": "Strings"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "cmquvanw30016qi6dlgphkhjy",
+            "language": "JAVASCRIPT",
+            "status": "RUNTIME_ERROR",
+            "sourceCode": "// Intermediate user submission for number-of-islands",
+            "stdout": null,
+            "stderr": null,
+            "executionTime": 115,
+            "memoryUsed": 17723,
+            "outputTruncated": false,
+            "testsPassed": 0,
+            "testsTotal": 0,
+            "createdAt": "2026-06-24T08:48:19.339Z",
+            "updatedAt": "2026-06-26T11:48:21.747Z",
+            "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+            "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+            "question": {
+              "id": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+              "slug": "number-of-islands",
+              "title": "Number of Islands",
+              "difficulty": "Medium",
+              "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
+              "constraints": "[\"1 <= m, n <= 300\",\"grid[i][j] is either '0' or '1'\"]",
+              "starterCode": {
+                "go": "func numIslands(grid [][]byte) int {\n\n}",
+                "cpp": "class Solution {\npublic:\n    int numIslands(vector<vector<char>>& grid) {\n        \n    }\n};",
+                "java": "public class Solution {\n    public int numIslands(char[][] grid) {\n        \n    }\n}",
+                "rust": "impl Solution {\n    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {\n\n    }\n}",
+                "python": "def numIslands(grid):\n    pass",
+                "javascript": "function numIslands(grid) {\n\n}",
+                "typescript": "function numIslands(grid: string[][]): number {\n\n}"
+              },
+              "createdAt": "2026-06-26T11:28:22.556Z",
+              "updatedAt": "2026-06-26T11:28:22.556Z",
+              "topics": [
+                {
+                  "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                  "topicId": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                  "topic": {
+                    "id": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                    "name": "Graphs"
+                  }
+                },
+                {
+                  "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                  "topicId": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                  "topic": {
+                    "id": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                    "name": "DFS"
+                  }
+                },
+                {
+                  "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                  "topicId": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                  "topic": {
+                    "id": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                    "name": "BFS"
+                  }
+                },
+                {
+                  "questionId": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+                  "topicId": "e69d1781-b046-4633-a846-0a7add7d9b4a",
+                  "topic": {
+                    "id": "e69d1781-b046-4633-a846-0a7add7d9b4a",
+                    "name": "Grid"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "cmquvansp0014qi6df54lh21x",
+            "language": "PYTHON",
+            "status": "FAILED",
+            "sourceCode": "// Intermediate user submission for find-if-path-exists-in-graph",
+            "stdout": null,
+            "stderr": null,
+            "executionTime": 132,
+            "memoryUsed": 15312,
+            "outputTruncated": false,
+            "testsPassed": 0,
+            "testsTotal": 0,
+            "createdAt": "2026-06-24T05:48:19.339Z",
+            "updatedAt": "2026-06-26T11:48:21.626Z",
+            "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
+            "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+            "question": {
+              "id": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+              "slug": "find-if-path-exists-in-graph",
+              "title": "Find if Path Exists in Graph",
+              "difficulty": "Easy",
+              "description": "There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1. You are given an array edges where edges[i] = [ui, vi] indicates that there is an undirected edge between vertices ui and vi. Given integers source and destination, return true if there is a valid path from source to destination, or false otherwise.",
+              "constraints": "[\"1 <= n <= 200000\",\"0 <= edges.length <= 200000\",\"edges[i].length == 2\",\"0 <= ui, vi < n\",\"ui != vi\",\"0 <= source, destination < n\"]",
+              "starterCode": {
+                "go": "func validPath(n int, edges [][]int, source int, destination int) bool {\n\n}",
+                "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {\n        \n    }\n};",
+                "java": "public class Solution {\n    public boolean validPath(int n, int[][] edges, int source, int destination) {\n        \n    }\n}",
+                "rust": "impl Solution {\n    pub fn valid_path(n: i32, edges: Vec<Vec<i32>>, source: i32, destination: i32) -> bool {\n\n    }\n}",
+                "python": "def validPath(n, edges, source, destination):\n    pass",
+                "javascript": "function validPath(n, edges, source, destination) {\n\n}",
+                "typescript": "function validPath(n: number, edges: number[][], source: number, destination: number): boolean {\n\n}"
+              },
+              "createdAt": "2026-06-26T11:28:08.639Z",
+              "updatedAt": "2026-06-26T11:28:08.639Z",
+              "topics": [
+                {
+                  "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+                  "topicId": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                  "topic": {
+                    "id": "9eb4a9c1-a954-4cfe-aa8b-20e4746e431f",
+                    "name": "Graphs"
+                  }
+                },
+                {
+                  "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+                  "topicId": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                  "topic": {
+                    "id": "6c75e93b-839d-43b8-a578-803a2ca288be",
+                    "name": "DFS"
+                  }
+                },
+                {
+                  "questionId": "d2df0393-c3a4-4583-bbc6-46e54d277ceb",
+                  "topicId": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                  "topic": {
+                    "id": "703d3c5a-1b67-4af2-a0e3-d2b04468b9e0",
+                    "name": "BFS"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "activityLevel": "High"
+      },
+      "mistakeAnalysis": {
+        "primaryMistake": "Wrong Answer",
+        "confidence": 0.99,
+        "evidence": [
+          "Wrong Answer (passed 0 test cases) on \"Course Schedule\".",
+          "Wrong Answer (passed 0 test cases) on \"Find if Path Exists in Graph\".",
+          "Wrong Answer (passed 0 test cases) on \"Same Tree\"."
+        ]
+      },
+      "weakTopics": [
+        "BFS",
+        "DFS"
+      ],
+      "difficulty": "Medium",
+      "candidateProblems": [
+        {
+          "id": "235c83dc-0260-4bb6-8a9a-217e7a1a5dc8",
+          "slug": "rotting-oranges",
+          "title": "Rotting Oranges",
+          "difficulty": "Medium",
+          "description": "You are given an m x n grid where each cell can have one of three values: 0 representing an empty cell, 1 representing a fresh orange, and 2 representing a rotten orange. Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes required until no fresh orange remains. If this is impossible, return -1.",
+          "constraints": "[\"1 <= m, n <= 100\",\"grid[i][j] is 0, 1, or 2\"]",
+          "starter_code": {
+            "go": "func orangesRotting(grid [][]int) int {\n\n}",
+            "cpp": "class Solution {\npublic:\n    int orangesRotting(vector<vector<int>>& grid) {\n        \n    }\n};",
+            "java": "public class Solution {\n    public int orangesRotting(int[][] grid) {\n        \n    }\n}",
+            "rust": "impl Solution {\n    pub fn oranges_rotting(grid: Vec<Vec<i32>>) -> i32 {\n\n    }\n}",
+            "python": "def orangesRotting(grid):\n    pass",
+            "javascript": "function orangesRotting(grid) {\n\n}",
+            "typescript": "function orangesRotting(grid: number[][]): number {\n\n}"
+          },
+          "topics": [
+            "Graphs",
+            "BFS",
+            "Multi-Source BFS",
+            "Grid"
+          ]
+        },
+        {
+          "id": "42ce0408-167c-4c32-8f25-a688101134c3",
+          "slug": "course-schedule-ii",
+          "title": "Course Schedule II",
+          "difficulty": "Medium",
+          "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b before course a. Return any valid ordering of courses that allows you to finish all courses. If it is impossible, return an empty array.",
+          "constraints": "[\"1 <= numCourses <= 100000\",\"0 <= prerequisites.length <= 200000\",\"prerequisites[i].length == 2\",\"0 <= ai, bi < numCourses\",\"ai != bi\"]",
+          "starter_code": {
+            "go": "func findOrder(numCourses int, prerequisites [][]int) []int {\n\n}",
+            "cpp": "class Solution {\npublic:\n    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};",
+            "java": "public class Solution {\n    public int[] findOrder(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+            "rust": "impl Solution {\n    pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {\n\n    }\n}",
+            "python": "def findOrder(numCourses, prerequisites):\n    pass",
+            "javascript": "function findOrder(numCourses, prerequisites) {\n\n}",
+            "typescript": "function findOrder(numCourses: number, prerequisites: number[][]): number[] {\n\n}"
+          },
+          "topics": [
+            "Graphs",
+            "Topological Sort",
+            "BFS"
+          ]
+        },
+        {
+          "id": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+          "slug": "number-of-islands",
+          "title": "Number of Islands",
+          "difficulty": "Medium",
+          "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
+          "constraints": "[\"1 <= m, n <= 300\",\"grid[i][j] is either '0' or '1'\"]",
+          "starter_code": {
+            "go": "func numIslands(grid [][]byte) int {\n\n}",
+            "cpp": "class Solution {\npublic:\n    int numIslands(vector<vector<char>>& grid) {\n        \n    }\n};",
+            "java": "public class Solution {\n    public int numIslands(char[][] grid) {\n        \n    }\n}",
+            "rust": "impl Solution {\n    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {\n\n    }\n}",
+            "python": "def numIslands(grid):\n    pass",
+            "javascript": "function numIslands(grid) {\n\n}",
+            "typescript": "function numIslands(grid: string[][]): number {\n\n}"
+          },
+          "topics": [
+            "Graphs",
+            "DFS",
+            "BFS",
+            "Grid"
+          ]
+        }
+      ],
+      "recommendations": [
+        {
+          "id": "235c83dc-0260-4bb6-8a9a-217e7a1a5dc8",
+          "slug": "rotting-oranges",
+          "title": "Rotting Oranges",
+          "difficulty": "Medium",
+          "description": "You are given an m x n grid where each cell can have one of three values: 0 representing an empty cell, 1 representing a fresh orange, and 2 representing a rotten orange. Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes required until no fresh orange remains. If this is impossible, return -1.",
+          "constraints": "[\"1 <= m, n <= 100\",\"grid[i][j] is 0, 1, or 2\"]",
+          "starter_code": {
+            "go": "func orangesRotting(grid [][]int) int {\n\n}",
+            "cpp": "class Solution {\npublic:\n    int orangesRotting(vector<vector<int>>& grid) {\n        \n    }\n};",
+            "java": "public class Solution {\n    public int orangesRotting(int[][] grid) {\n        \n    }\n}",
+            "rust": "impl Solution {\n    pub fn oranges_rotting(grid: Vec<Vec<i32>>) -> i32 {\n\n    }\n}",
+            "python": "def orangesRotting(grid):\n    pass",
+            "javascript": "function orangesRotting(grid) {\n\n}",
+            "typescript": "function orangesRotting(grid: number[][]): number {\n\n}"
+          },
+          "topics": [
+            "Graphs",
+            "BFS",
+            "Multi-Source BFS",
+            "Grid"
+          ],
+          "score": 180
+        },
+        {
+          "id": "42ce0408-167c-4c32-8f25-a688101134c3",
+          "slug": "course-schedule-ii",
+          "title": "Course Schedule II",
+          "difficulty": "Medium",
+          "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b before course a. Return any valid ordering of courses that allows you to finish all courses. If it is impossible, return an empty array.",
+          "constraints": "[\"1 <= numCourses <= 100000\",\"0 <= prerequisites.length <= 200000\",\"prerequisites[i].length == 2\",\"0 <= ai, bi < numCourses\",\"ai != bi\"]",
+          "starter_code": {
+            "go": "func findOrder(numCourses int, prerequisites [][]int) []int {\n\n}",
+            "cpp": "class Solution {\npublic:\n    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};",
+            "java": "public class Solution {\n    public int[] findOrder(int numCourses, int[][] prerequisites) {\n        \n    }\n}",
+            "rust": "impl Solution {\n    pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {\n\n    }\n}",
+            "python": "def findOrder(numCourses, prerequisites):\n    pass",
+            "javascript": "function findOrder(numCourses, prerequisites) {\n\n}",
+            "typescript": "function findOrder(numCourses: number, prerequisites: number[][]): number[] {\n\n}"
+          },
+          "topics": [
+            "Graphs",
+            "Topological Sort",
+            "BFS"
+          ],
+          "score": 180
+        },
+        {
+          "id": "bbdcd100-e83e-495f-8cf6-5ed1cb31ee91",
+          "slug": "number-of-islands",
+          "title": "Number of Islands",
+          "difficulty": "Medium",
+          "description": "Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are surrounded by water.",
+          "constraints": "[\"1 <= m, n <= 300\",\"grid[i][j] is either '0' or '1'\"]",
+          "starter_code": {
+            "go": "func numIslands(grid [][]byte) int {\n\n}",
+            "cpp": "class Solution {\npublic:\n    int numIslands(vector<vector<char>>& grid) {\n        \n    }\n};",
+            "java": "public class Solution {\n    public int numIslands(char[][] grid) {\n        \n    }\n}",
+            "rust": "impl Solution {\n    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {\n\n    }\n}",
+            "python": "def numIslands(grid):\n    pass",
+            "javascript": "function numIslands(grid) {\n\n}",
+            "typescript": "function numIslands(grid: string[][]): number {\n\n}"
+          },
+          "topics": [
+            "Graphs",
+            "DFS",
+            "BFS",
+            "Grid"
+          ],
+          "score": 180
+        }
+      ],
+      "explanation": "The problem Rotting Oranges was recommended because it targets the weak topic of BFS and is of medium difficulty, making it a suitable challenge for improvement. This problem helps the student improve by requiring the application of BFS concepts to a real-world scenario, allowing them to practice and reinforce their understanding. It will help the student to develop problem-solving skills and build confidence in using BFS."
+    }
+  },
+  {
+    "id": "trace-mentor-cmquuiqsv000010vhxnjjupcc-35c3b0a4-b6ae-4485-8361-039ceaf7dde8-1782532603744",
+    "timestamp": "2026-06-27T03:56:43.744Z",
+    "userId": "cmquuiqsv000010vhxnjjupcc",
+    "trigger": "hint_request",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-27T03:56:43.751Z] Executed Node: Cache Check with data: {\"hit\":false}",
+      "[2026-06-27T03:56:43.751Z] Executed Node: Fetch History",
+      "[2026-06-27T03:56:43.751Z] Found 0 previous hints",
+      "[2026-06-27T03:56:43.751Z] Executed Node: Fetch Metadata",
+      "[2026-06-27T03:56:43.949Z] Question Title: \"Largest Element in Array\"",
+      "[2026-06-27T03:56:43.949Z] Executed Node: Classify Error",
+      "[2026-06-27T03:56:43.949Z] Classified error category: request",
+      "[2026-06-27T03:56:43.949Z] Executed Node: Identify Concept",
+      "[2026-06-27T03:56:43.949Z] Targeted concept: Problem Solving",
+      "[2026-06-27T03:56:43.949Z] Executed Node: Determine Escalation",
+      "[2026-06-27T03:56:43.950Z] Hint escalation level: 1",
+      "[2026-06-27T03:56:43.951Z] Executed Node: Call LLM",
+      "[2026-06-27T03:56:45.301Z] Response received from Groq LLM",
+      "[2026-06-27T03:56:45.301Z] Executed Node: Check Guardrail",
+      "[2026-06-27T03:56:45.302Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "Cache Check",
+      "Fetch History",
+      "Fetch Metadata",
+      "Classify Error",
+      "Identify Concept",
+      "Determine Escalation",
+      "Call LLM",
+      "Check Guardrail"
+    ],
+    "prompts": [
+      {
+        "type": "groq",
+        "prompt": "[SYSTEM PROMPT]:\nYou are the Mentor Agent for the AI-Powered Coding Practice Coach (Skill Lens).\nYour role is an experienced, Socratic coding tutor. You guide students to solutions through\nquestions and hints. You NEVER write complete code solutions for them.\n\nSTRICT RULES (NEVER VIOLATE):\n1. Help the student learn; do not jump straight to the final answer.\n2. Do NOT provide complete function implementations unless the student explicitly asks after multiple hints.\n3. Do NOT write more than 3 lines of actual code syntax.\n4. Do NOT reveal an end-to-end algorithm at low hint levels.\n5. DO identify syntax, compilation, runtime, logic, time complexity, and space complexity issues when visible.\n6. DO explain why the issue occurs and how the student can fix the idea without rewriting their whole program.\n7. DO suggest edge cases, clean-code improvements, and targeted test cases.\n8. ALWAYS end your response with a question for the student.\n9. Start directly with the conceptual guidance and descriptive section headers. Do NOT write any conversational introduction, greetings, filler, or chit-chat (such as \"That's an excellent question!\", \"Sure, I can help with that!\", or \"It is always good to...\"). Skip directly to the conceptual explanation. Never write direct solution code for the student's specific task.\n10. Adapt your response length dynamically to match the user's request:\n    - If the student asks a brief question, keep it concise, clear, and direct.\n    - If the student requests extremely detailed, extensive, step-by-step, or multi-page information (even explicitly asking for \"10 pages of information\" or \"exhaustive analysis\"), you MUST generate an exceptionally long, deep, thorough, and exhaustive explanation. Expand on every concept from first principles, include detailed logical step-by-step traces, list multiple generalized examples/analogies, explain design trade-offs, detail multiple levels of optimization strategies, outline comprehensive edge cases, walk through dry-runs, and provide detailed conceptual descriptions to satisfy the request. Fulfill the requested volume completely and do not synthesize or abbreviate.\n11. Structure your response using one or more of these descriptive section titles (using markdown '### Section Title' format) to make the guidance professional and easy to read:\n    - ### Problem Understanding\n    - ### Key Insight\n    - ### Approach\n    - ### Common Mistakes\n    - ### Edge Cases\n    - ### Optimization\n    - ### Next Step\n    Choose only the most relevant sections for this specific message. Always end your response with a question in the '### Next Step' section. Do not use generic labels like \"Hint 1\" or \"Concept Hint\" in your headers or text.\n\nMENTOR WORKFLOW:\n- Use the execution result and test output to identify syntax errors, runtime crashes, wrong answers, or TLE.\n- Detect the smallest likely concept gap, such as loops, arrays, recursion, hash maps, dynamic programming, or stacks.\n- Escalate based on previous hints: concept explanation, targeted clue, pseudocode/dry run, then guardrail redirect.\n- Avoid repeating advice already listed in PREVIOUS HINTS.\n- When reviewing code, summarize what it is trying to do, then point to the smallest suspicious line or block.\n- When code passes, congratulate briefly, mention whether the approach appears optimal, and suggest one possible improvement.\n\nPROBLEM CONTEXT:\n- Title: Largest Element in Array\n- Description: Given an integer array nums, return the largest element present in the array.\n- Targeted Concept: Problem Solving\n\n\nCATEGORY: GENERAL HINT REQUEST\n- Understand what the student is asking.\n- Give conceptual guidance relevant to the problem.\n- Ask a guiding question to help them make the next step themselves.\n\nHINT LEVEL 1 – CONCEPT EXPLANATION:\n- Give a general educational explanation of the relevant concept.\n- Do NOT reference the student's specific code yet.\n- Focus on the principle, not the solution.\n- End with a question that prompts reflection.\nExample style: \"A hash map lets you look up values in O(1) time using keys. Have you considered what data structure would let you find a complement in one pass?\"\n\nNo previous hints have been given yet.\n\nSTUDENT'S CODE:\n```\nfunction twoSum(nums, target) { return []; }\n```\n\n\n\nRespond as a mentor. Provide complete, thorough explanations with examples, matching the depth and length requested by the student, and end with a question.\n\n[USER MESSAGE]:\nStudent: I am stuck. Can you give me a hint without telling me the full solution?",
+        "response": "### Problem Understanding\nThe problem asks to find the largest element in an array of integers. This involves iterating through the array and keeping track of the maximum value encountered so far.\n\n### Key Insight\nTo solve this problem, you need to understand the concept of iteration and comparison. You will need to iterate through each element in the array and compare it with the current maximum value. If the current element is greater than the maximum value, you update the maximum value.\n\n### Approach\nOne possible approach is to initialize the maximum value with the first element of the array and then iterate through the rest of the array, updating the maximum value as needed. This approach ensures that you consider all elements in the array and find the largest one.\n\n### Common Mistakes\nA common mistake is to assume that the maximum value is always at the beginning or end of the array. However, this is not necessarily true, and you need to consider all elements in the array.\n\n### Edge Cases\nYou should also consider edge cases, such as an empty array or an array with a single element. In these cases, you need to handle the situation accordingly, such as returning an error message or the single element itself.\n\n### Optimization\nIn terms of optimization, this problem has a time complexity of O(n), where n is the number of elements in the array. This is because you need to iterate through all elements in the array to find the maximum value.\n\n### Next Step\nWhat data structure or variable do you think you can use to keep track of the maximum value encountered so far, and how will you initialize it before iterating through the array?",
+        "timestamp": "2026-06-27T03:56:45.301Z"
+      }
+    ],
+    "request": {
+      "userId": "cmquuiqsv000010vhxnjjupcc",
+      "questionId": "35c3b0a4-b6ae-4485-8361-039ceaf7dde8",
+      "sourceCode": "function twoSum(nums, target) { return []; }",
+      "language": "javascript",
+      "triggerEvent": "hint_request"
+    },
+    "response": {
+      "mentorFeedback": "### Problem Understanding\nThe problem asks to find the largest element in an array of integers. This involves iterating through the array and keeping track of the maximum value encountered so far.\n\n### Key Insight\nTo solve this problem, you need to understand the concept of iteration and comparison. You will need to iterate through each element in the array and compare it with the current maximum value. If the current element is greater than the maximum value, you update the maximum value.\n\n### Approach\nOne possible approach is to initialize the maximum value with the first element of the array and then iterate through the rest of the array, updating the maximum value as needed. This approach ensures that you consider all elements in the array and find the largest one.\n\n### Common Mistakes\nA common mistake is to assume that the maximum value is always at the beginning or end of the array. However, this is not necessarily true, and you need to consider all elements in the array.\n\n### Edge Cases\nYou should also consider edge cases, such as an empty array or an array with a single element. In these cases, you need to handle the situation accordingly, such as returning an error message or the single element itself.\n\n### Optimization\nIn terms of optimization, this problem has a time complexity of O(n), where n is the number of elements in the array. This is because you need to iterate through all elements in the array to find the maximum value.\n\n### Next Step\nWhat data structure or variable do you think you can use to keep track of the maximum value encountered so far, and how will you initialize it before iterating through the array?",
+      "hintMetadata": {
+        "category": "request",
+        "level": 1,
+        "targetedConcept": "Problem Solving"
+      },
+      "workflow": {
+        "triggeredBy": "hint_request",
+        "savedAt": "2026-06-27T03:56:45.301Z",
+        "providerPreference": [
+          "groq",
+          "gemini",
+          "huggingface",
+          "openai",
+          "static-fallback"
+        ]
+      }
+    }
+  },
+  {
     "id": "trace-run-438yQlaYuz6DaRqZyEbztJTTToXjFO1f-1782475669758",
     "timestamp": "2026-06-26T12:07:49.758Z",
     "userId": "438yQlaYuz6DaRqZyEbztJTTToXjFO1f",
@@ -8474,250 +10346,6 @@
       "recommendedDifficulty": "Easy",
       "summary": "• STANDING: This student is currently at a beginner skill level, demonstrating enthusiasm and readiness to develop their coding proficiency.\n• KEY STRENGTHS: While specific strengths haven't been formally identified yet, it's encouraging to note a relatively higher mastery score in Linked Lists (73), along with decent foundational scores in Arrays (62) and Strings (63), which are excellent starting points.\n• AREAS TO IMPROVE: There are significant opportunities for growth across a wide range of fundamental data structures and algorithms, including HashMap, Linked List, Stack, Binary Search, Trees, Graphs, DFS, BFS, Grid problems, Directed Graphs, Cycle Detection, Design principles, Multi-Source BFS, and Topological Sort.\n• RECOMMENDED FOCUS: To build a solid foundation and boost confidence, the immediate focus should be on strengthening core understanding and application of Binary Search (currently 39), HashMap (56), and Stack (56). Mastering these foundational concepts will be crucial for progressing to more complex topics like Trees and Graphs.",
       "trendExplanation": "• Your recent activity shows consistent engagement with 10 attempts recently and 4 submissions in the last 48 hours, indicating a steady learning velocity and commitment to practice.\n\n• You've made excellent progress in Strings, achieving a 100% success rate, which is a significant win! However, there's a clear decline in your success with Linked List and HashMap problems (now at 0% for both), and you're consistently struggling with Hard difficulty problems (0% success rate) as evidenced by 3 consecutive incorrect submissions recently.\n\n• To regain momentum, leverage your strength in Strings to build confidence, then take a strategic step back on Linked List and HashMap. Focus on revisiting fundamentals and tackling medium-level problems in those areas to rebuild your success rate. For Hard problems, consider breaking them down or practicing prerequisite medium-level concepts first, rather than pushing through repeated incorrect submissions, to foster a more positive learning loop."
-    }
-  },
-  {
-    "id": "trace-run-Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z-1781850910171",
-    "timestamp": "2026-06-19T06:35:10.171Z",
-    "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
-    "trigger": "run",
-    "status": "completed",
-    "decisions": [
-      "[2026-06-19T06:35:10.184Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T06:35:10.186Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T06:35:10.244Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
-      "[2026-06-19T06:35:10.246Z] Executed Node: getTopicStatsNode",
-      "[2026-06-19T06:35:10.246Z] Executed Node: tool:getTopicStats",
-      "[2026-06-19T06:35:10.259Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
-      "[2026-06-19T06:35:10.260Z] Executed Node: getSubmissionsNode",
-      "[2026-06-19T06:35:10.260Z] Executed Node: tool:getSubmissions",
-      "[2026-06-19T06:35:10.306Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
-      "[2026-06-19T06:35:10.308Z] Executed Node: getRecentActivityNode",
-      "[2026-06-19T06:35:10.308Z] Executed Node: tool:getRecentActivity",
-      "[2026-06-19T06:35:10.315Z] D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.",
-      "[2026-06-19T06:35:10.317Z] Executed Node: analyzeMasteryNode",
-      "[2026-06-19T06:35:10.319Z] Executed Node: detectTrendsNode",
-      "[2026-06-19T06:35:10.331Z] Executed Node: assessDifficultyNode",
-      "[2026-06-19T06:35:10.332Z] Executed Node: classifyLevelNode",
-      "[2026-06-19T06:35:10.334Z] Executed Node: identifyStrengthsNode",
-      "[2026-06-19T06:35:10.338Z] Executed Node: identifyWeaknessesNode",
-      "[2026-06-19T06:35:10.380Z] Executed Node: generateRecommendationsNode",
-      "[2026-06-19T06:35:10.386Z] D7 (Significance check): Calculated profile metrics differ significantly from baseline. Routing to saveProfileNode.",
-      "[2026-06-19T06:35:10.387Z] Executed Node: saveProfileNode",
-      "[2026-06-19T06:35:10.387Z] Executed Node: tool:saveProfile",
-      "[2026-06-19T06:35:23.988Z] Run finalized: status = completed"
-    ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory",
-      "getTopicStatsNode",
-      "tool:getTopicStats",
-      "getSubmissionsNode",
-      "tool:getSubmissions",
-      "getRecentActivityNode",
-      "tool:getRecentActivity",
-      "analyzeMasteryNode",
-      "detectTrendsNode",
-      "assessDifficultyNode",
-      "classifyLevelNode",
-      "identifyStrengthsNode",
-      "identifyWeaknessesNode",
-      "generateRecommendationsNode",
-      "saveProfileNode",
-      "tool:saveProfile"
-    ],
-    "prompts": [
-      {
-        "type": "profile_summary",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Beginner\n- Strengths: None identified yet\n- Areas for Improvement: HashMap, Linked List, Stack, Binary Search, Trees, Graphs, DFS, BFS, Grid, Directed Graph, Cycle Detection, Design, Multi-Source BFS, Topological Sort\n- Topic Mastery Scores: {\"Arrays\":62,\"Strings\":63,\"HashMap\":56,\"Linked List\":73,\"Stack\":56,\"Binary Search\":39,\"Trees\":52,\"Graphs\":49,\"DFS\":45,\"BFS\":52,\"Grid\":48,\"Directed Graph\":0,\"Cycle Detection\":0,\"Design\":0,\"Multi-Source BFS\":34,\"Topological Sort\":0}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• STANDING: This student is currently at a beginner skill level, just starting their journey in algorithmic problem-solving. This is an excellent time to establish strong foundational knowledge.\n• KEY STRENGTHS: At this initial stage, specific strengths are still being identified, which is perfectly normal as you build your foundational knowledge across various topics.\n• AREAS TO IMPROVE: There are clear opportunities to grow in fundamental data structures such as HashMap, Linked List, Stack, Trees, and in critical algorithms like Binary Search, DFS, BFS, and various Graph concepts including Grid problems, Directed Graphs, Cycle Detection, Design, Multi-Source BFS, and Topological Sort.\n• RECOMMENDED FOCUS: To build a strong foundation, it would be beneficial to first focus on strengthening your understanding of core data structures like HashMap (56%) and Stack (56%), alongside improving your mastery of fundamental algorithms such as Binary Search (39%). Reinforcing concepts in Arrays (62%) and Strings (63%) would also provide a solid base before tackling more advanced topics.",
-        "timestamp": "2026-06-19T06:35:17.114Z"
-      },
-      {
-        "type": "trend_explanation",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * Linked List: Declining (from 80% to 0%)\n  * HashMap: Declining (from 75% to 0%)\n  * Strings: Improving (from 60% to 100%)\n  * Struggling recently with 3 consecutive incorrect submissions.\n  * Moderate activity: 4 submission attempts in the last 48 hours.\n  * Struggling with Hard difficulty problems (success rate: 0%).\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• Your consistent recent activity, including 4 submissions in the last 48 hours and 10 attempts overall, demonstrates strong engagement and a good pace in your coding journey.\n• You've shown remarkable improvement and mastery in Strings, reaching a 100% success rate – that's fantastic! However, it appears your focus has shifted away from Linked Lists and HashMaps, where your success rates have declined to 0%. This might be connected to your current struggle with Hard difficulty problems, where you have a 0% success rate and have encountered 3 consecutive incorrect submissions.\n• Capitalize on your Strings mastery by applying those techniques to new problems. To regain momentum and tackle Hard problems more effectively, consider revisiting Linked List and HashMap concepts with some targeted practice on Medium difficulty problems. This will help strengthen your foundational skills before re-engaging with Hard challenges that may combine these data structures.",
-        "timestamp": "2026-06-19T06:35:23.988Z"
-      }
-    ],
-    "request": {
-      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z"
-    },
-    "response": {
-      "success": true,
-      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
-      "level": "Beginner",
-      "confidence": 0.5,
-      "mastery": {
-        "Arrays": 62,
-        "Strings": 63,
-        "HashMap": 56,
-        "Linked List": 73,
-        "Stack": 56,
-        "Binary Search": 39,
-        "Trees": 52,
-        "Graphs": 49,
-        "DFS": 45,
-        "BFS": 52,
-        "Grid": 48,
-        "Directed Graph": 0,
-        "Cycle Detection": 0,
-        "Design": 0,
-        "Multi-Source BFS": 34,
-        "Topological Sort": 0
-      },
-      "strongAreas": [],
-      "weakAreas": [
-        "HashMap",
-        "Linked List",
-        "Stack",
-        "Binary Search",
-        "Trees",
-        "Graphs",
-        "DFS",
-        "BFS",
-        "Grid",
-        "Directed Graph",
-        "Cycle Detection",
-        "Design",
-        "Multi-Source BFS",
-        "Topological Sort"
-      ],
-      "trends": [
-        "Linked List: Declining (from 80% to 0%)",
-        "HashMap: Declining (from 75% to 0%)",
-        "Strings: Improving (from 60% to 100%)",
-        "Struggling recently with 3 consecutive incorrect submissions.",
-        "Moderate activity: 4 submission attempts in the last 48 hours.",
-        "Struggling with Hard difficulty problems (success rate: 0%)."
-      ],
-      "profileStatus": "SAVED",
-      "easySolved": 0,
-      "mediumSolved": 3,
-      "hardSolved": 0,
-      "solvedCount": 3,
-      "recommendedFocus": "Directed Graph",
-      "recommendedDifficulty": "Easy",
-      "summary": "• STANDING: This student is currently at a beginner skill level, just starting their journey in algorithmic problem-solving. This is an excellent time to establish strong foundational knowledge.\n• KEY STRENGTHS: At this initial stage, specific strengths are still being identified, which is perfectly normal as you build your foundational knowledge across various topics.\n• AREAS TO IMPROVE: There are clear opportunities to grow in fundamental data structures such as HashMap, Linked List, Stack, Trees, and in critical algorithms like Binary Search, DFS, BFS, and various Graph concepts including Grid problems, Directed Graphs, Cycle Detection, Design, Multi-Source BFS, and Topological Sort.\n• RECOMMENDED FOCUS: To build a strong foundation, it would be beneficial to first focus on strengthening your understanding of core data structures like HashMap (56%) and Stack (56%), alongside improving your mastery of fundamental algorithms such as Binary Search (39%). Reinforcing concepts in Arrays (62%) and Strings (63%) would also provide a solid base before tackling more advanced topics.",
-      "trendExplanation": "• Your consistent recent activity, including 4 submissions in the last 48 hours and 10 attempts overall, demonstrates strong engagement and a good pace in your coding journey.\n• You've shown remarkable improvement and mastery in Strings, reaching a 100% success rate – that's fantastic! However, it appears your focus has shifted away from Linked Lists and HashMaps, where your success rates have declined to 0%. This might be connected to your current struggle with Hard difficulty problems, where you have a 0% success rate and have encountered 3 consecutive incorrect submissions.\n• Capitalize on your Strings mastery by applying those techniques to new problems. To regain momentum and tackle Hard problems more effectively, consider revisiting Linked List and HashMap concepts with some targeted practice on Medium difficulty problems. This will help strengthen your foundational skills before re-engaging with Hard challenges that may combine these data structures."
-    }
-  },
-  {
-    "id": "trace-run-Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z-1781850807153",
-    "timestamp": "2026-06-19T06:33:27.153Z",
-    "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
-    "trigger": "run",
-    "status": "completed",
-    "decisions": [
-      "[2026-06-19T06:33:27.177Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T06:33:27.182Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T06:33:27.200Z] D1 (History sufficiency check): Insufficient history and getUserHistory tool already tried. Routing to bootstrap.",
-      "[2026-06-19T06:33:27.203Z] Executed Node: bootstrap",
-      "[2026-06-19T06:33:27.208Z] Executed Node: saveProfileNode",
-      "[2026-06-19T06:33:27.208Z] Executed Node: tool:saveProfile",
-      "[2026-06-19T06:33:35.809Z] Run finalized: status = completed"
-    ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory",
-      "bootstrap",
-      "saveProfileNode",
-      "tool:saveProfile"
-    ],
-    "prompts": [
-      {
-        "type": "profile_summary",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Unclassified\n- Strengths: None identified yet\n- Areas for Improvement: None identified yet\n- Topic Mastery Scores: {}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• STANDING: Currently unclassified, this indicates they are at the exciting starting point of their coding journey, with a fresh opportunity to learn and grow.\n• KEY STRENGTHS: Specific strengths are yet to be identified, which provides a fantastic blank canvas for developing and discovering new proficiencies as they begin to explore coding.\n• AREAS TO IMPROVE: Areas for improvement are not yet identified, meaning every new concept and practice session will directly contribute to building a robust skill set from the ground up.\n• RECOMMENDED FOCUS: As there are no topic mastery scores available, the recommended focus is to begin exploring foundational programming concepts to establish a solid and comprehensive understanding.",
-        "timestamp": "2026-06-19T06:33:31.995Z"
-      },
-      {
-        "type": "trend_explanation",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 0 submission attempts recently\n- Detected Trends:\n  * No significant trends detected yet.\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• LEARNING ACTIVITY: Your recent activity count of zero indicates a current pause in your coding velocity, suggesting no recent attempts at problem-solving or project work.\n• CURRENT TRENDS: With no recent submission attempts, there are no emerging patterns or trends in your coding habits to analyze at this time.\n• MOMENTUM ADVICE: To re-engage and build momentum, try tackling a very small coding task, perhaps reviewing a previous solution or starting on the first step of a new problem.",
-        "timestamp": "2026-06-19T06:33:35.809Z"
-      }
-    ],
-    "request": {
-      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z"
-    },
-    "response": {
-      "success": true,
-      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
-      "level": "Unclassified",
-      "confidence": 0.05,
-      "mastery": {},
-      "strongAreas": [],
-      "weakAreas": [],
-      "trends": [],
-      "profileStatus": "SAVED",
-      "easySolved": 0,
-      "mediumSolved": 0,
-      "hardSolved": 0,
-      "solvedCount": 0,
-      "recommendedFocus": "None",
-      "recommendedDifficulty": "Easy",
-      "summary": "• STANDING: Currently unclassified, this indicates they are at the exciting starting point of their coding journey, with a fresh opportunity to learn and grow.\n• KEY STRENGTHS: Specific strengths are yet to be identified, which provides a fantastic blank canvas for developing and discovering new proficiencies as they begin to explore coding.\n• AREAS TO IMPROVE: Areas for improvement are not yet identified, meaning every new concept and practice session will directly contribute to building a robust skill set from the ground up.\n• RECOMMENDED FOCUS: As there are no topic mastery scores available, the recommended focus is to begin exploring foundational programming concepts to establish a solid and comprehensive understanding.",
-      "trendExplanation": "• LEARNING ACTIVITY: Your recent activity count of zero indicates a current pause in your coding velocity, suggesting no recent attempts at problem-solving or project work.\n• CURRENT TRENDS: With no recent submission attempts, there are no emerging patterns or trends in your coding habits to analyze at this time.\n• MOMENTUM ADVICE: To re-engage and build momentum, try tackling a very small coding task, perhaps reviewing a previous solution or starting on the first step of a new problem."
-    }
-  },
-  {
-    "id": "trace-run-Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z-1781850807185",
-    "timestamp": "2026-06-19T06:33:27.185Z",
-    "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
-    "trigger": "run",
-    "status": "completed",
-    "decisions": [
-      "[2026-06-19T06:33:27.192Z] Executed Node: getUserHistoryNode",
-      "[2026-06-19T06:33:27.192Z] Executed Node: tool:getUserHistory",
-      "[2026-06-19T06:33:27.248Z] D1 (History sufficiency check): Insufficient history and getUserHistory tool already tried. Routing to bootstrap.",
-      "[2026-06-19T06:33:27.250Z] Executed Node: bootstrap",
-      "[2026-06-19T06:33:27.254Z] Executed Node: saveProfileNode",
-      "[2026-06-19T06:33:27.254Z] Executed Node: tool:saveProfile",
-      "[2026-06-19T06:33:35.723Z] Run finalized: status = completed"
-    ],
-    "nodes": [
-      "getUserHistoryNode",
-      "tool:getUserHistory",
-      "bootstrap",
-      "saveProfileNode",
-      "tool:saveProfile"
-    ],
-    "prompts": [
-      {
-        "type": "profile_summary",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Unclassified\n- Strengths: None identified yet\n- Areas for Improvement: None identified yet\n- Topic Mastery Scores: {}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• STANDING: You are at the exciting very beginning of your coding journey, with a skill level currently unclassified, indicating a fresh start and immense potential to grow.\n• KEY STRENGTHS: As you embark on this learning path, all your strengths are waiting to be discovered and honed. This is a fantastic opportunity to build a solid foundation from scratch.\n• AREAS TO IMPROVE: With no specific areas for improvement identified yet, every new concept you learn will contribute to defining and refining your path forward as you progress.\n• RECOMMENDED FOCUS: To begin, we recommend focusing on fundamental programming concepts to establish a strong base, such as variables, data types, control flow, and functions.",
-        "timestamp": "2026-06-19T06:33:31.287Z"
-      },
-      {
-        "type": "trend_explanation",
-        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 0 submission attempts recently\n- Detected Trends:\n  * No significant trends detected yet.\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
-        "response": "• Your recent activity count of 0 indicates a very low current learning velocity, suggesting a pause in your coding submission attempts.\n• With no recent submissions, there are currently no significant patterns or trends to analyze in your coding activity.\n• To build momentum, try starting with a small, manageable coding task or revisiting a familiar concept. Setting a brief, dedicated time slot for even a quick coding session can help you restart your progress.",
-        "timestamp": "2026-06-19T06:33:35.722Z"
-      }
-    ],
-    "request": {
-      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z"
-    },
-    "response": {
-      "success": true,
-      "userId": "Nzpf4NN1Dd7ljC0mcbNvxA7bYXenRD5Z",
-      "level": "Unclassified",
-      "confidence": 0.05,
-      "mastery": {},
-      "strongAreas": [],
-      "weakAreas": [],
-      "trends": [],
-      "profileStatus": "SAVED",
-      "easySolved": 0,
-      "mediumSolved": 0,
-      "hardSolved": 0,
-      "solvedCount": 0,
-      "recommendedFocus": "None",
-      "recommendedDifficulty": "Easy",
-      "summary": "• STANDING: You are at the exciting very beginning of your coding journey, with a skill level currently unclassified, indicating a fresh start and immense potential to grow.\n• KEY STRENGTHS: As you embark on this learning path, all your strengths are waiting to be discovered and honed. This is a fantastic opportunity to build a solid foundation from scratch.\n• AREAS TO IMPROVE: With no specific areas for improvement identified yet, every new concept you learn will contribute to defining and refining your path forward as you progress.\n• RECOMMENDED FOCUS: To begin, we recommend focusing on fundamental programming concepts to establish a strong base, such as variables, data types, control flow, and functions.",
-      "trendExplanation": "• Your recent activity count of 0 indicates a very low current learning velocity, suggesting a pause in your coding submission attempts.\n• With no recent submissions, there are currently no significant patterns or trends to analyze in your coding activity.\n• To build momentum, try starting with a small, manageable coding task or revisiting a familiar concept. Setting a brief, dedicated time slot for even a quick coding session can help you restart your progress."
     }
   }
 ]

@@ -8,6 +8,7 @@ export interface User {
   bio?: string;
   role?: string;
   language?: string;
+  image?: string;
   createdAt?: string;
 }
 
@@ -39,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             bio: data.user.bio,
             role: data.user.role,
             language: data.user.language,
+            image: data.user.image,
             createdAt: data.user.createdAt,
           });
         } else {

@@ -10,6 +10,7 @@ import problemRoutes from './features/problems/routes/problem.routes.js';
 import progressRoutes from './features/progress/routes/progress.routes.js';
 import mentorRoutes from './features/mentor/routes/mentor.routes.js';
 import profileRoutes from './features/profiles/routes/profile.routes.js';
+import problemRecommendationRoutes from './ai/problem-recommendation-agent/problem-recommendation.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
@@ -53,7 +54,8 @@ app.all('/api/auth/*', (req, res, next) => {
   return toNodeHandler(auth)(req, res);
 });
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Comprehensive Request/Response Logging Middleware
 const formatBodyForTerminal = (body: any): string => {
@@ -205,6 +207,9 @@ app.use('/api/mentor', mentorRoutes);
 
 // Mount AI profile & assessment routes
 app.use('/api/ai/profile', profileRoutes);
+
+// Mount AI problem recommendation routes
+app.use('/api/ai/problem-recommendation', problemRecommendationRoutes);
 
 // Mount Code Evaluation Agent route
 app.use('/api', evalRouter);

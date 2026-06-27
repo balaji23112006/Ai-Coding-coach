@@ -178,6 +178,7 @@ export class AuthController {
       bio: (req.user as any).bio || '',
       role: (req.user as any).role || '',
       language: (req.user as any).language || '',
+      image: req.user.image || '',
       createdAt: (req.user as any).createdAt || new Date().toISOString(),
     });
   }
@@ -188,13 +189,14 @@ export class AuthController {
     }
 
     try {
-      const { fullName, bio, role, language } = req.body;
+      const { fullName, bio, role, language, image } = req.body;
 
       const updated = await authService.updateUser(req.user.id, {
         fullName,
         bio,
         role,
         language,
+        image,
       });
 
       return res.status(200).json({
@@ -207,6 +209,7 @@ export class AuthController {
           bio: updated.bio,
           role: updated.role,
           language: updated.language,
+          image: updated.image || '',
           createdAt: updated.createdAt,
         },
       });

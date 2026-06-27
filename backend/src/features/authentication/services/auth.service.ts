@@ -27,7 +27,7 @@ export class AuthService {
 
   async updateUser(
     userId: string,
-    data: { fullName?: string; bio?: string; role?: string; language?: string },
+    data: { fullName?: string; bio?: string; role?: string; language?: string; image?: string },
   ) {
     return prisma.user.update({
       where: { id: userId },
