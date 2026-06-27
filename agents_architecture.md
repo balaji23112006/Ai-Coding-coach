@@ -182,6 +182,35 @@ Located in [supervisor-agent/node.ts](file:///c:/A/PROJECT/Practice/Ai-Coding-co
 
 ---
 
+## Agent Triggers
+
+Every agent has specific entry points and trigger conditions tied to student actions and system events.
+
+### 1. Supervisor Agent
+* **Trigger:** Triggered via `POST /api/ai/supervisor/run` on key user actions:
+  * `request_problem`: User asks for a new challenge or learning track node.
+  * `request_hint`: User requests assistance in the editor.
+  * `submission_completed` / `submission_failed`: Standardized compiler/test suite results.
+  * `profile_refresh`: User manually refreshes profile metrics.
+  * `agent_output`: A sub-agent completes execution and returns output back to the coordinator.
+
+### 2. Mentor Agent
+* **Trigger:** Triggered under two conditions:
+  * **User Chat Messages:** When a user types a custom conceptual query into the Socratic Mentor sidebar chat interface (`POST /api/mentor/chat`).
+  * **Supervisor Escalation:** Triggered automatically by the **Supervisor Agent** if the user experiences `failedAttempts >= 3` on a problem, overriding normal workflow routes to provide active guidance.
+
+### 3. Profile Agent
+* **Trigger:** Triggered in the background:
+  * **Submission Finalization:** Whenever a code submission is processed (`POST /api/submissions/submit`), the backend fires a background job to update the user's mastery models.
+  * **Manual Refresh:** When the user clicks the "Refresh AI Profile" button in their Profile tab (`POST /api/ai/profile/run`).
+
+### 4. Problem Recommendation Agent
+* **Trigger:** Triggered in the background:
+  * **Successful Code Resolution:** Promptly after a student gets an `Accepted` status on a problem submission, the client initiates the `/api/ai/problem-recommendation/run-background` endpoint.
+  * **Roadmap/Dashboard Load:** Polled on load to render the next learning steps if recommendations are pending.
+
+---
+
 ## Agent Interactions & Data Flow
 
 ```
