@@ -4,6 +4,7 @@ import { profileRepository } from '../repository/profile.repository.js';
 import { profileSummaryService } from '../../../ai/profile-agent/services/ProfileSummaryService.js';
 import { agentLogger } from '../../../ai/profile-agent/services/AgentLogger.js';
 import { langfuse } from '../../../providers/langfuse/index.js';
+import { authMiddleware, adminMiddleware } from '../../../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -11,7 +12,7 @@ const router = Router();
  * GET /api/ai/profile/logs
  * Retrieves the developer logs for the profile assessment agent.
  */
-router.get('/logs', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.get('/logs', authMiddleware, adminMiddleware, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const logs = agentLogger.getLogs(50);
     res.status(200).json({

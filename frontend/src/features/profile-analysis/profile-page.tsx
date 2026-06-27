@@ -36,6 +36,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useProfileAgent } from '@/hooks/useProfileAgent';
 import { badges, languages, roles } from './data/profile-data';
+import { AdminUsersTab } from './components/admin-users-tab';
 import type { PreferencesState, ThemePreference } from './types';
 
 // --- Animation Variants ---
@@ -255,7 +256,7 @@ function renderStructuredFeedback(text: string) {
 
 // --- Main Page Component ---
 export function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai-profile'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'preferences' | 'ai-profile' | 'users'>('profile');
   const [showSignOut, setShowSignOut] = useState(false);
 
   const [systemIsDark, setSystemIsDark] = useState(
@@ -523,6 +524,19 @@ export function ProfilePage() {
           >
             Settings
           </button>
+          {user?.role === 'admin' && (
+            <button
+              onClick={() => setActiveTab('users')}
+              className={cn(
+                'border-b-2 px-4 py-2.5 text-sm font-bold transition-colors',
+                activeTab === 'users'
+                  ? 'border-violet-500 text-white'
+                  : 'border-transparent text-slate-500 hover:text-slate-300',
+              )}
+            >
+              Users Management
+            </button>
+          )}
         </div>
 
         {/* Render Active Tab */}
@@ -955,7 +969,7 @@ export function ProfilePage() {
                   </Card>
                 </motion.div>
               </>
-            ) : (
+            ) : activeTab === 'preferences' ? (
               <>
                 {/* Appearance Settings */}
                 <motion.section
@@ -1117,7 +1131,9 @@ export function ProfilePage() {
                   </div>
                 </motion.section>
               </>
-            )}
+            ) : activeTab === 'users' ? (
+              <AdminUsersTab />
+            ) : null}
           </motion.div>
         </AnimatePresence>
       </main>

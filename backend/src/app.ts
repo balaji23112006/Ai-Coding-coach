@@ -12,6 +12,7 @@ import mentorRoutes from './features/mentor/routes/mentor.routes.js';
 import profileRoutes from './features/profiles/routes/profile.routes.js';
 import problemRecommendationRoutes from './ai/problem-recommendation-agent/problem-recommendation.routes.js';
 import supervisorRoutes from './features/supervisor/routes/supervisor.routes.js';
+import adminRoutes from './features/admin/routes/admin.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
@@ -217,6 +218,9 @@ app.use('/api', evalRouter);
 
 // Mount event-driven supervisor orchestration
 app.use('/api/ai/supervisor', supervisorRoutes);
+
+// Mount Admin Management routes
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

@@ -214,14 +214,16 @@ export function TopNavigation({ isDark, setIsDark, activeTab }: TopNavigationPro
                     <User className="h-3.5 w-3.5 text-violet-500" /> Account
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium"
-                    to="/agent-logs"
-                  >
-                    <Terminal className="h-3.5 w-3.5 text-violet-500" /> Agent Logs
-                  </Link>
-                </DropdownMenuItem>
+                {user?.role === 'admin' && (
+                  <DropdownMenuItem asChild>
+                    <Link
+                      className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium"
+                      to="/agent-logs"
+                    >
+                      <Terminal className="h-3.5 w-3.5 text-violet-500" /> Agent Logs
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator className={isDark ? 'bg-white/[0.04]' : 'bg-slate-100'} />
                 <DropdownMenuItem
                   onClick={handleLogout}
