@@ -1,6 +1,5 @@
 import { ICodeRunner, CodeExecutionResult } from '../../types/execution.types.js';
-import { executeProcess } from '../../sandbox/ProcessExecutor.js';
-import { checkDockerAvailability } from '../../sandbox/DockerDetector.js';
+import { runWithDockerOrFallback } from '../../sandbox/RemoteDockerExecutor.js';
 
 /**
  * Placeholder C++ runner.
@@ -9,21 +8,23 @@ import { checkDockerAvailability } from '../../sandbox/DockerDetector.js';
  */
 export class CppRunner implements ICodeRunner {
   async run(sourceCode: string, timeoutMs: number): Promise<CodeExecutionResult> {
-    const useDocker = checkDockerAvailability();
     // Simplified: treat C++ as JavaScript to keep execution flow functional.
-    if (useDocker) {
-      return executeProcess({
+    return runWithDockerOrFallback(
+      'cpp',
+      {
         command: 'docker',
         args: ['run', '-i', '--rm', '--memory=128m', '--cpus=0.5', 'node:18-alpine', 'node'],
         stdin: sourceCode,
         timeoutMs,
-      });
-    }
-    return executeProcess({
-      command: 'node',
-      args: ['--max-old-space-size=128'],
-      stdin: sourceCode,
-      timeoutMs,
-    });
+      },
+      {
+        command: 'node',
+        args: ['--max-old-space-size=128'],
+        stdin: sourceCode,
+        timeoutMs,
+      },
+      timeoutMs
+    );
   }
 }
+

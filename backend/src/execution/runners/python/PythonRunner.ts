@@ -1,13 +1,13 @@
 import { ICodeRunner, CodeExecutionResult } from '../../types/execution.types.js';
-import { executeProcess } from '../../sandbox/ProcessExecutor.js';
-import { checkDockerAvailability } from '../../sandbox/DockerDetector.js';
+import { runWithDockerOrFallback } from '../../sandbox/RemoteDockerExecutor.js';
 
 export class PythonRunner implements ICodeRunner {
   async run(sourceCode: string, timeoutMs: number): Promise<CodeExecutionResult> {
-    const useDocker = checkDockerAvailability();
+    const localCommand = process.platform === 'win32' ? 'python' : 'python3';
 
-    if (useDocker) {
-      return executeProcess({
+    return runWithDockerOrFallback(
+      'python',
+      {
         command: 'docker',
         args: [
           'run',
@@ -21,16 +21,15 @@ export class PythonRunner implements ICodeRunner {
         ],
         stdin: sourceCode,
         timeoutMs,
-      });
-    } else {
-      // Use 'python' on Windows host, and 'python3' on Linux/macOS
-      const localCommand = process.platform === 'win32' ? 'python' : 'python3';
-      return executeProcess({
+      },
+      {
         command: localCommand,
         args: ['-'],
         stdin: sourceCode,
         timeoutMs,
-      });
-    }
+      },
+      timeoutMs
+    );
   }
 }
+
