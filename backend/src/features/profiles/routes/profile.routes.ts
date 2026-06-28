@@ -4,6 +4,7 @@ import { profileRepository } from '../repository/profile.repository.js';
 import { profileSummaryService } from '../../../ai/profile-agent/services/ProfileSummaryService.js';
 import { agentLogger } from '../../../ai/profile-agent/services/AgentLogger.js';
 import { langfuse } from '../../../providers/langfuse/index.js';
+import { createAgentCallback } from '../../../providers/langfuse/langchain.js';
 import { authMiddleware, adminMiddleware } from '../../../middlewares/auth.middleware.js';
 
 const router = Router();
@@ -41,7 +42,20 @@ router.post('/run', async (req: Request, res: Response, next: NextFunction): Pro
   agentLogger.logRequest(traceId, { userId });
 
   try {
-    const finalState = await profileGraph.invoke({ userId, traceId });
+    const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'profile-agent' });
+    const finalState = await profileGraph.invoke(
+      { userId, traceId },
+      {
+        callbacks: callback ? [callback] : undefined,
+        runName: 'profile-workflow-manual',
+        tags: ['profile-agent', 'langgraph', 'manual-run'],
+        metadata: {
+          langfuseUserId: userId,
+          langfuseSessionId: traceId,
+          feature: 'profile-agent',
+        }
+      }
+    );
 
     let summary = '';
     let trendExplanation = '';
@@ -183,9 +197,21 @@ router.post(
     const traceId = `trace-refresh-${userId}-${Date.now()}`;
     agentLogger.startRun(userId, 'refresh', traceId);
     agentLogger.logRequest(traceId, { userId });
-
     try {
-      const finalState = await profileGraph.invoke({ userId, traceId });
+      const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'profile-agent' });
+      const finalState = await profileGraph.invoke(
+        { userId, traceId },
+        {
+          callbacks: callback ? [callback] : undefined,
+          runName: 'profile-workflow-refresh',
+          tags: ['profile-agent', 'langgraph', 'refresh-run'],
+          metadata: {
+            langfuseUserId: userId,
+            langfuseSessionId: traceId,
+            feature: 'profile-agent',
+          }
+        }
+      );
 
       let summary = '';
       let trendExplanation = '';

@@ -77,6 +77,26 @@ export function createSupervisorCallback(context: SupervisorTracingContext) {
   });
 }
 
+export function createAgentCallback(context: {
+  userId?: string;
+  sessionId?: string;
+  agentName: string;
+  tags?: string[];
+}) {
+  if (!hasConfiguredLangfuseCredentials()) {
+    return undefined;
+  }
+
+  initializeTracing();
+
+  return new CallbackHandler({
+    userId: context.userId,
+    sessionId: context.sessionId,
+    tags: [context.agentName, 'langgraph', ...(context.tags || [])],
+    traceMetadata: { feature: context.agentName },
+  });
+}
+
 export async function shutdownSupervisorTracing() {
   if (tracingSdk) {
     try {

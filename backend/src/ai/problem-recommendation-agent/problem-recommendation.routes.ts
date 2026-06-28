@@ -4,6 +4,7 @@ import { problemRecommendationGraph } from "./problemRecommendationGraph.js";
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 import { RECOMMENDATION_CONFIG } from "./config.js";
 import { agentLogger } from "../profile-agent/services/AgentLogger.js";
+import { createAgentCallback } from '../../providers/langfuse/langchain.js';
 
 const router = Router();
 
@@ -64,9 +65,20 @@ router.post(
           const controller = new AbortController();
           const timeout = setTimeout(() => controller.abort("Recommendation graph timeout"), RECOMMENDATION_CONFIG.GRAPH_TIMEOUT_MS);
 
+          const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'problem-recommendation-agent' });
           const result = await problemRecommendationGraph.invoke(
             { userId, traceId },
-            { signal: controller.signal }
+            {
+              signal: controller.signal,
+              callbacks: callback ? [callback] : undefined,
+              runName: 'problem-recommendation-workflow',
+              tags: ['problem-recommendation-agent', 'langgraph'],
+              metadata: {
+                langfuseUserId: userId,
+                langfuseSessionId: traceId,
+                feature: 'problem-recommendation-agent',
+              }
+            }
           );
 
           clearTimeout(timeout);

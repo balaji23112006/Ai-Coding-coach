@@ -203,8 +203,6 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
-  const lastTriggeredResultRef = useRef<ExecutionResult | null>(null);
-
   const { user } = useAuth();
   const [showEvaluation, setShowEvaluation] = useState(false);
   const [isEvaluating, setIsEvaluating] = useState(false);
@@ -270,28 +268,6 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     };
   }, [isRunning, isSubmitting, runCode, submitCode]);
 
-  // Auto-prompt mentor when submission fails or has errors
-  useEffect(() => {
-    if (!runResult || isRunning || isSubmitting) return;
-
-    const isFailure =
-      runResult.status === 'Runtime Error' ||
-      runResult.status === 'Compile Error' ||
-      runResult.status === 'Wrong Answer';
-
-    // Prevent repeated triggering on the same execution result
-    if (runResult === lastTriggeredResultRef.current) return;
-
-    if (isFailure) {
-      lastTriggeredResultRef.current = runResult;
-      const autoOpen = localStorage.getItem('skill-lens-autoOpenMentor') !== 'false';
-      if (autoOpen && !mentor.isLoading && !mentor.isOpen) {
-        // Auto-open mentor with a slight delay so UI settles first
-        const t = setTimeout(() => mentor.toggleOpen(), 1200);
-        return () => clearTimeout(t);
-      }
-    }
-  }, [runResult, isRunning, isSubmitting, mentor.isLoading, mentor.isOpen, mentor.toggleOpen]);
 
   // Celebration on Accepted & trigger Recommendation Popup
   useEffect(() => {

@@ -13,6 +13,7 @@ import { profileGraph } from '../../../ai/profile-agent/profileGraph.js';
 import { agentLogger } from '../../../ai/profile-agent/services/AgentLogger.js';
 import { profileSummaryService } from '../../../ai/profile-agent/services/ProfileSummaryService.js';
 import { langfuse } from '../../../providers/langfuse/index.js';
+import { createAgentCallback } from '../../../providers/langfuse/langchain.js';
 
 type QuestionWithTestCases = {
   id: string;
@@ -461,9 +462,20 @@ else:
       agentLogger.startRun(userId, 'submission', traceId);
       agentLogger.logRequest(traceId, { userId, submissionId: submission.id });
 
+      const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'profile-agent' });
+
       // Run the profile agent assessment graph in the background
       profileGraph
-        .invoke({ userId, traceId })
+        .invoke({ userId, traceId }, {
+          callbacks: callback ? [callback] : undefined,
+          runName: 'profile-workflow',
+          tags: ['profile-agent', 'langgraph'],
+          metadata: {
+            langfuseUserId: userId,
+            langfuseSessionId: traceId,
+            feature: 'profile-agent',
+          }
+        })
         .then(async (finalState) => {
           let summary = '';
           let trendExplanation = '';

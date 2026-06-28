@@ -29,6 +29,7 @@ export async function huggingFaceChat(params: {
   maxTokens?: number;
   userId?: string;
   sessionId?: string;
+  traceId?: string;
 }): Promise<string> {
   if (!isHuggingFaceConfigured()) {
     throw new Error('HUGGINGFACE_API_TOKEN is not configured (must start with hf_)');
@@ -47,6 +48,7 @@ export async function huggingFaceChat(params: {
         model,
         userId: params.userId,
         sessionId: params.sessionId,
+        traceId: params.traceId,
         input: {
           systemPrompt: params.systemPrompt,
           userMessage: params.userMessage,

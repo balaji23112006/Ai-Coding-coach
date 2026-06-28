@@ -26,6 +26,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import logoNoBg from '@/assets/logo_no_background.png';
+
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/dashboard' as const },
   { label: 'Practice', icon: Code2, to: '/practice' as const },
@@ -83,14 +85,11 @@ export function TopNavigation({ isDark, setIsDark, activeTab }: TopNavigationPro
       <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <Link className="flex shrink-0 items-center gap-3" to="/dashboard">
-          <span
-            className={cn(
-              'flex h-8 w-8 items-center justify-center rounded-lg shadow-sm transition-transform hover:scale-105',
-              isDark ? 'bg-violet-600 text-white' : 'bg-white text-violet-600',
-            )}
-          >
-            <MapIcon className="h-4 w-4" />
-          </span>
+          <img
+            src={logoNoBg}
+            alt="Skill Lens Logo"
+            className="h-8 w-auto object-contain transition-transform hover:scale-105"
+          />
           <span className="hidden text-lg font-bold tracking-tight text-white sm:block">
             Skill Lens
           </span>

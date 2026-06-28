@@ -80,6 +80,7 @@ export async function traceLLMCall<T>(params: {
   metadata?: Record<string, unknown>;
   userId?: string;
   sessionId?: string;
+  traceId?: string;
   call: () => Promise<{
     output: T;
     raw?: unknown;
@@ -96,6 +97,7 @@ export async function traceLLMCall<T>(params: {
 
   const startTime = new Date();
   const trace = langfuse.trace({
+    id: params.traceId,
     name: params.traceName,
     input: sanitizeForTrace(params.input),
     userId: params.userId,

@@ -92,12 +92,15 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     agentLogger.logNodeExecution(traceId, 'Cache Check', { hit: false });
 
     // ─── Step 1: Fetch hint history ─────────────────────────────────────────────
+    const historySpan = langfuse ? trace.span({ name: 'Fetch History', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Fetch History');
     const hintHistory = getHintHistory(userId, questionId);
     logger.info(`[MentorAgent] Found ${hintHistory.length} previous hints`);
     agentLogger.logDecision(traceId, `Found ${hintHistory.length} previous hints`);
+    if (historySpan) historySpan.end({ output: { historyCount: hintHistory.length } });
 
     // ─── Step 2: Fetch question metadata ────────────────────────────────────────
+    const metadataSpan = langfuse ? trace.span({ name: 'Fetch Metadata', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Fetch Metadata');
     let questionTitle = 'Coding Problem';
     let questionDescription = '';
@@ -117,24 +120,31 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       }
     }
     agentLogger.logDecision(traceId, `Question Title: "${questionTitle}"`);
+    if (metadataSpan) metadataSpan.end({ output: { questionTitle } });
 
     // ─── Step 3: Classify error type ────────────────────────────────────────────
+    const classifySpan = langfuse ? trace.span({ name: 'Classify Error', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Classify Error');
     const category = classifyError(request);
     logger.info(`[MentorAgent] Classified error category: ${category}`);
     agentLogger.logDecision(traceId, `Classified error category: ${category}`);
+    if (classifySpan) classifySpan.end({ output: { category } });
 
     // ─── Step 4: Identify concept gap ───────────────────────────────────────────
+    const conceptSpan = langfuse ? trace.span({ name: 'Identify Concept', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Identify Concept');
     const targetedConcept = identifyConcept(request, category);
     logger.info(`[MentorAgent] Targeted concept: ${targetedConcept}`);
     agentLogger.logDecision(traceId, `Targeted concept: ${targetedConcept}`);
+    if (conceptSpan) conceptSpan.end({ output: { targetedConcept } });
 
     // ─── Step 5: Determine hint escalation level ─────────────────────────────────
+    const escalationSpan = langfuse ? trace.span({ name: 'Determine Escalation', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Determine Escalation');
     const level = determineHintLevel(hintHistory);
     logger.info(`[MentorAgent] Hint escalation level: ${level}`);
     agentLogger.logDecision(traceId, `Hint escalation level: ${level}`);
+    if (escalationSpan) escalationSpan.end({ output: { level } });
 
     // ─── Step 6: Build Socratic system prompt ────────────────────────────────────
     const executionOutput = [request.executionResult?.stdout, request.executionResult?.stderr]
@@ -155,6 +165,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     });
 
     // ─── Step 7: Call LLM — FREE provider chain ────────────────────────────────
+    const llmSpan = langfuse ? trace.span({ name: 'Call LLM', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Call LLM');
     let mentorFeedback = '';
     let providerUsed = 'static-fallback';
@@ -183,6 +194,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       maxTokens: 8192,
       userId,
       sessionId: questionId,
+      traceId,
     };
 
     const providerFailures: string[] = [];
@@ -269,6 +281,8 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
       );
     }
 
+    if (llmSpan) llmSpan.end({ output: { providerUsed, feedbackLength: mentorFeedback.length } });
+
     // Log the prompt and raw LLM response in AgentLogger
     agentLogger.logPrompt(
       traceId,
@@ -278,9 +292,11 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
     );
 
     // ─── Step 8: Run guardrail check ────────────────────────────────────────────
+    const guardrailSpan = langfuse ? trace.span({ name: 'Check Guardrail', startTime: new Date() }) : null;
     agentLogger.logNodeExecution(traceId, 'Check Guardrail');
     if (mentorFeedback) {
       const guardrailResult = checkGuardrail(mentorFeedback);
+      if (guardrailSpan) guardrailSpan.end({ output: guardrailResult });
       if (!guardrailResult.passed) {
         logger.warn(`[MentorAgent] Guardrail triggered: ${guardrailResult.reason}`);
         agentLogger.logDecision(
@@ -295,6 +311,7 @@ export async function runMentorAgent(request: MentorRequest): Promise<MentorResp
         traceId,
         'LLM failed or returned empty response. Using fallback response.',
       );
+      if (guardrailSpan) guardrailSpan.end({ output: { passed: false, reason: 'LLM failed' } });
       mentorFeedback = getFallbackResponse(category, level);
     }
 
