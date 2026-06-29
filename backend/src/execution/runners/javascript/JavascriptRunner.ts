@@ -7,7 +7,7 @@ export class JavascriptRunner implements ICodeRunner {
       'javascript',
       {
         command: 'docker',
-        args: ['run', '-i', '--rm', '--memory=128m', '--cpus=0.5', 'node:18-alpine', 'node'],
+        args: ['run', '-i', '--rm', '--memory=128m', '--cpus=0.5', 'node:22-alpine', 'node'],
         stdin: sourceCode,
         timeoutMs,
       },
