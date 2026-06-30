@@ -4,15 +4,31 @@ import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sphere, Text } from '@react-three/drei';
 import * as THREE from 'three';
-import { Bot, CheckCircle2, Lock, PlayCircle, Loader2, RefreshCw, Target } from 'lucide-react';
+import { Bot, CheckCircle2, Lock, PlayCircle, Loader2, RefreshCw, Target, Activity } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { TopNavigation } from '@/components/common/top-navigation';
 import { useAuth } from '@/features/authentication/hooks/use-auth';
+import { AiRoadmapPanel } from './components/ai-roadmap-panel';
 
 // --- Extended Data with Stats (All Zeroed) ---
-export type NodeStatus = 'completed' | 'current' | 'locked';
+export type NodeStatus = 'completed' | 'in-progress' | 'current' | 'locked';
+
+export const mapNodeIdToTopic = (id: string): string => {
+  const map: Record<string, string> = {
+    basics: 'All',
+    arrays: 'Arrays',
+    strings: 'Strings',
+    hashmaps: 'HashMap',
+    linkedlists: 'Linked List',
+    stack: 'Stack',
+    'binary-search': 'Binary Search',
+    trees: 'Trees',
+    graphs: 'Graphs',
+  };
+  return map[id] || 'All';
+};
 
 export interface RoadmapNode {
   id: string;
@@ -387,13 +403,17 @@ export function RoadmapPage() {
     };
   }, []);
 
-  // Scroll Progress for the curved path
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 15 });
+  const overallCompletion = data?.stats?.overallCompletion ?? 0;
+  const completedTopicsCount = data?.stats?.completedTopicsCount ?? 0;
+  const totalProblemsSolved = data?.stats?.totalProblemsSolved ?? 0;
+  
+  // Calculate completion percentage based on current node
+  const nodes = data?.roadmapNodes || roadmapNodes;
+  const mastery = data?.skillMastery || skillMastery;
+  
+  const currentNodeIndex = nodes.findIndex((n: any) => n.status === 'current' || n.status === 'in-progress');
+  const targetProgress = currentNodeIndex === -1 ? 1 : currentNodeIndex / (nodes.length || 1);
+  const smoothProgress = useSpring(targetProgress, { stiffness: 40, damping: 20 });
 
   const themeClass = isDark
     ? 'dark bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a103c] via-[#0d081e] to-[#070510] text-slate-100'
@@ -403,14 +423,8 @@ export function RoadmapPage() {
     ? 'rounded-2xl border border-white/[0.06] bg-[#120d20]/80 backdrop-blur-xl shadow-xl'
     : 'rounded-2xl border border-slate-200/80 bg-white/90 backdrop-blur-xl shadow-xl';
 
-  const nodes = data?.roadmapNodes || roadmapNodes;
-  const mastery = data?.skillMastery || skillMastery;
-  const overallCompletion = data?.stats?.overallCompletion ?? 0;
-  const completedTopicsCount = data?.stats?.completedTopicsCount ?? 0;
-  const totalProblemsSolved = data?.stats?.totalProblemsSolved ?? 0;
-
   // Calculate current stage title dynamically
-  const currentStageNode = nodes.find((n: any) => n.status === 'current');
+  const currentStageNode = nodes.find((n: any) => n.status === 'current' || n.status === 'in-progress');
   const currentStageTitle = currentStageNode ? currentStageNode.title : 'All Mastered!';
 
   // Dynamic AI coach advice
@@ -531,6 +545,7 @@ export function RoadmapPage() {
                 const isLeft = node.position === 'left';
                 const isLocked = node.status === 'locked';
                 const isCurrent = node.status === 'current';
+                const isInProgress = node.status === 'in-progress';
                 const isExpanded = expandedNode === node.id;
 
                 return (
@@ -555,7 +570,7 @@ export function RoadmapPage() {
                         panelClass,
                         'hover:scale-[1.02] hover:shadow-[0_15px_30px_rgba(139,92,246,0.2)]',
                         isLocked && !isExpanded ? 'opacity-80' : 'opacity-100',
-                        isCurrent &&
+                        (isCurrent || isInProgress) &&
                           (isDark
                             ? 'bg-violet-500/10 shadow-[0_0_20px_rgba(139,92,246,0.3)] ring-2 ring-violet-500'
                             : 'bg-violet-50 shadow-xl ring-2 ring-violet-500'),
@@ -582,13 +597,17 @@ export function RoadmapPage() {
                                 : 'bg-slate-200 text-slate-500'
                               : isCurrent
                                 ? 'bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.6)]'
-                                : 'bg-emerald-500 text-white',
+                                : isInProgress
+                                  ? 'bg-amber-500 text-white shadow-[0_0_15px_rgba(245,158,11,0.6)]'
+                                  : 'bg-emerald-500 text-white',
                           )}
                         >
                           {isLocked ? (
                             <Lock className="h-4 w-4" />
                           ) : isCurrent ? (
                             <PlayCircle className="h-4 w-4" />
+                          ) : isInProgress ? (
+                            <Activity className="h-4 w-4" />
                           ) : (
                             <CheckCircle2 className="h-4 w-4" />
                           )}
@@ -602,10 +621,12 @@ export function RoadmapPage() {
                         )}
                       >
                         {isCurrent
-                          ? 'In Progress'
-                          : isLocked
-                            ? 'Requires Previous Module'
-                            : 'Mastered'}
+                          ? 'Up Next'
+                          : isInProgress
+                            ? 'In Progress'
+                            : isLocked
+                              ? 'Requires Previous Module'
+                              : 'Mastered'}
                       </p>
 
                       <div className="flex items-center gap-3">
@@ -690,15 +711,35 @@ export function RoadmapPage() {
                                   </p>
                                 </div>
                               </div>
-                              <Link to="/practice" className="mt-6 block w-full">
-                                <Button className="w-full bg-violet-600 font-bold text-white hover:bg-violet-500">
-                                  {isLocked
-                                    ? 'View Prerequisites'
-                                    : isCurrent
-                                      ? 'Continue Practice'
-                                      : 'Review Problems'}
-                                </Button>
-                              </Link>
+                              {isLocked ? (
+                                <Link
+                                  to={
+                                    currentStageNode && mapNodeIdToTopic(currentStageNode.id) !== 'All'
+                                      ? `/practice?topic=${encodeURIComponent(mapNodeIdToTopic(currentStageNode.id))}`
+                                      : '/practice'
+                                  }
+                                  className="mt-6 block w-full"
+                                >
+                                  <Button className="w-full bg-slate-600 font-bold text-white hover:bg-slate-500">
+                                    {currentStageNode
+                                      ? `Practice ${currentStageNode.title} First`
+                                      : 'View Prerequisites'}
+                                  </Button>
+                                </Link>
+                              ) : (
+                                <Link
+                                  to={
+                                    mapNodeIdToTopic(node.id) !== 'All'
+                                      ? `/practice?topic=${encodeURIComponent(mapNodeIdToTopic(node.id))}`
+                                      : '/practice'
+                                  }
+                                  className="mt-6 block w-full"
+                                >
+                                  <Button className="w-full bg-violet-600 font-bold text-white hover:bg-violet-500">
+                                    {isCurrent ? 'Continue Practice' : 'Review Problems'}
+                                  </Button>
+                                </Link>
+                              )}
                             </div>
                           </motion.div>
                         )}
@@ -734,6 +775,8 @@ export function RoadmapPage() {
 
           {/* Right Column: Sticky Sidebar Stats */}
           <div className="h-fit space-y-6 md:sticky md:top-28">
+            <AiRoadmapPanel isDark={isDark} />
+
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

@@ -524,19 +524,23 @@ router.get('/roadmap', authMiddleware, async (req, res, next) => {
       };
     });
 
-    // Calculate status (completed, current, locked)
+    // Calculate status (completed, in-progress, current, locked)
     const roadmapNodes = nodes.map((node, index) => {
-      let status: 'completed' | 'current' | 'locked' = 'locked';
-      const isNodeSolved = node.solved >= 1;
+      let status: 'completed' | 'in-progress' | 'current' | 'locked' = 'locked';
+      
+      const isNodeFullyCompleted = node.total > 0 && node.solved >= node.total;
+      const isNodeInProgress = node.solved > 0 && node.solved < node.total;
 
-      if (isNodeSolved) {
+      if (isNodeFullyCompleted) {
         status = 'completed';
+      } else if (isNodeInProgress) {
+        status = 'in-progress';
       } else if (index === 0) {
         status = 'current';
       } else {
         const prevNode = nodes[index - 1];
-        const isPrevCompleted = prevNode.solved >= 1;
-        if (isPrevCompleted) {
+        const isPrevFullyCompleted = prevNode.total > 0 && prevNode.solved >= prevNode.total;
+        if (isPrevFullyCompleted) {
           status = 'current';
         } else {
           status = 'locked';

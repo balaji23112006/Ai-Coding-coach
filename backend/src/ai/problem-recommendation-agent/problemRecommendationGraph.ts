@@ -11,6 +11,7 @@ import { determineDifficultyNode } from "./nodes/determineDifficulty.node.js";
 import { searchProblemsNode } from "./nodes/searchProblems.node.js";
 import { rankProblemsNode } from "./nodes/rankProblems.node.js";
 import { generateExplanationNode } from "./nodes/generateExplanation.node.js";
+import { generateRoadmapNode } from "./nodes/generateRoadmap.node.js";
 
 export const workflow = new StateGraph(
   ProblemRecommendationState
@@ -23,7 +24,8 @@ export const workflow = new StateGraph(
   .addNode("determineDifficulty", determineDifficultyNode)
   .addNode("searchProblems", searchProblemsNode)
   .addNode("rankProblems", rankProblemsNode)
-  .addNode("generateExplanation", generateExplanationNode);
+  .addNode("generateExplanation", generateExplanationNode)
+  .addNode("generateRoadmap", generateRoadmapNode);
 export const problemRecommendationGraph =
   workflow
     .addEdge(START, "getProfile")
@@ -35,5 +37,6 @@ export const problemRecommendationGraph =
     .addEdge("determineDifficulty", "searchProblems")
     .addEdge("searchProblems", "rankProblems")
     .addEdge("rankProblems", "generateExplanation")
-    .addEdge("generateExplanation", END)
+    .addEdge("generateExplanation", "generateRoadmap")
+    .addEdge("generateRoadmap", END)
     .compile();

@@ -1,5 +1,83 @@
 [
   {
+    "id": "trace-submission-XjXBcjbh0wrloL8hnnrIHpYLBa6VO6vz-1782810202204",
+    "timestamp": "2026-06-30T09:03:22.204Z",
+    "userId": "XjXBcjbh0wrloL8hnnrIHpYLBa6VO6vz",
+    "trigger": "submission",
+    "status": "completed",
+    "decisions": [
+      "[2026-06-30T09:03:22.215Z] Executed Node: getUserHistoryNode",
+      "[2026-06-30T09:03:22.218Z] Executed Node: tool:getUserHistory",
+      "[2026-06-30T09:03:22.642Z] D1 (History sufficiency check): Solved count/submissions sufficient. Routing to Topic Stats check.",
+      "[2026-06-30T09:03:22.645Z] Executed Node: getTopicStatsNode",
+      "[2026-06-30T09:03:22.645Z] Executed Node: tool:getTopicStats",
+      "[2026-06-30T09:03:23.198Z] D2 (Topic stats check): Sufficient topic stats found. Routing to Submissions check.",
+      "[2026-06-30T09:03:23.201Z] Executed Node: getSubmissionsNode",
+      "[2026-06-30T09:03:23.201Z] Executed Node: tool:getSubmissions",
+      "[2026-06-30T09:03:23.472Z] D3 (Submissions check): Meaningful submissions list found. Routing to Recent Activity check.",
+      "[2026-06-30T09:03:23.474Z] Executed Node: getRecentActivityNode",
+      "[2026-06-30T09:03:23.474Z] Executed Node: tool:getRecentActivity",
+      "[2026-06-30T09:03:23.749Z] D4 (Recent activity check): Sufficient activity stream found. Routing to analyzeMasteryNode.",
+      "[2026-06-30T09:03:23.751Z] Executed Node: analyzeMasteryNode",
+      "[2026-06-30T09:03:23.759Z] Executed Node: detectTrendsNode",
+      "[2026-06-30T09:03:24.037Z] Executed Node: assessDifficultyNode",
+      "[2026-06-30T09:03:24.043Z] Executed Node: classifyLevelNode",
+      "[2026-06-30T09:03:24.049Z] Executed Node: identifyStrengthsNode",
+      "[2026-06-30T09:03:24.056Z] Executed Node: identifyWeaknessesNode",
+      "[2026-06-30T09:03:24.953Z] Executed Node: generateRecommendationsNode",
+      "[2026-06-30T09:03:24.960Z] D7 (Significance check): Calculated profile metrics differ significantly from baseline. Routing to saveProfileNode.",
+      "[2026-06-30T09:03:24.962Z] Executed Node: saveProfileNode",
+      "[2026-06-30T09:03:24.962Z] Executed Node: tool:saveProfile",
+      "[2026-06-30T09:03:38.352Z] Run finalized: status = completed"
+    ],
+    "nodes": [
+      "getUserHistoryNode",
+      "tool:getUserHistory",
+      "getTopicStatsNode",
+      "tool:getTopicStats",
+      "getSubmissionsNode",
+      "tool:getSubmissions",
+      "getRecentActivityNode",
+      "tool:getRecentActivity",
+      "analyzeMasteryNode",
+      "detectTrendsNode",
+      "assessDifficultyNode",
+      "classifyLevelNode",
+      "identifyStrengthsNode",
+      "identifyWeaknessesNode",
+      "generateRecommendationsNode",
+      "saveProfileNode",
+      "tool:saveProfile"
+    ],
+    "prompts": [
+      {
+        "type": "profile_summary",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student progress data:\n- Skill Level: Intermediate\n- Strengths: Strings, Trees\n- Areas for Improvement: Trees, Stack, Binary Search, Linked List, Graphs, DFS, BFS, Backtracking, Multi-Source BFS, Grid\n- Topic Mastery Scores: {\"Trees\":90,\"Strings\":92,\"Stack\":46,\"Binary Search\":44,\"Arrays\":68,\"Linked List\":44,\"Graphs\":56,\"DFS\":58,\"BFS\":56,\"Backtracking\":44,\"Multi-Source BFS\":27,\"Grid\":48}\n\nBased ONLY on this data, write a structured, encouraging profile summary.\nProvide your assessment as a list of bullet points starting with the '•' character. Each point should cover a specific aspect:\n• STANDING: Summarize their current standing based on their skill level.\n• KEY STRENGTHS: Highlight what they are doing well based on their strengths.\n• AREAS TO IMPROVE: Recommend what they should improve based on their weak areas.\n• RECOMMENDED FOCUS: Suggest what topics they should focus on next.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• STANDING: You are at an Intermediate skill level, demonstrating a promising foundation in your coding journey.\n• KEY STRENGTHS: You show excellent command over Strings (92% mastery) and a very strong understanding of Trees (90% mastery), indicating a solid grasp of these important data structures and their applications.\n• AREAS TO IMPROVE: There are significant opportunities to enhance your skills in foundational areas such as Stack (46% mastery) and Linked Lists (44% mastery), along with key algorithms like Binary Search (44% mastery). More advanced topics including Backtracking (44% mastery), Grid problems (48% mastery), and Multi-Source BFS (27% mastery) are also areas where you can make substantial progress. Furthermore, Graph-related concepts (Graphs: 56%, DFS: 58%, BFS: 56%) present clear pathways for development.\n• RECOMMENDED FOCUS: To build a more comprehensive and robust skill set, prioritize strengthening your understanding and practical application of Stack and Linked List. Concurrently, dedicating time to mastering Binary Search and the fundamental Graph traversal algorithms (DFS and BFS) will create a strong base for effectively tackling more complex algorithms and problem types like Multi-Source BFS and Backtracking.",
+        "timestamp": "2026-06-30T09:03:32.215Z"
+      },
+      {
+        "type": "trend_explanation",
+        "prompt": "\nYou are an expert AI Coding Coach. Analyze the following student activity trends:\n- Recent Activity Count: 10 submission attempts recently\n- Detected Trends:\n  * Trees: Declining (from 88% to 67%)\n  * Currently on a 3-problem solved streak!\n  * Struggling recently with 3 consecutive incorrect submissions.\n  * Moderate activity: 1 submission attempts in the last 48 hours.\n\nBased ONLY on these trends, write a brief, coaching-focused explanation.\nProvide your analysis as a list of bullet points starting with the '•' character. Each point should cover:\n• LEARNING ACTIVITY: Explain what their activity volume says about their velocity.\n• CURRENT TRENDS: Highlight any patterns in their recent coding submissions.\n• MOMENTUM ADVICE: Provide actionable advice on how to improve their momentum.\nDo NOT use markdown headers or markdown bullets. Just use the '•' character at the start of each line.\n",
+        "response": "• LEARNING ACTIVITY: Your activity shows 10 recent attempts, indicating good overall engagement, but the single submission in the last 48 hours suggests a recent slowdown in your velocity. Maintaining a more consistent pace, even with just a problem or two every other day, can be beneficial.\n\n• CURRENT TRENDS: It's fantastic that you were on a 3-problem solved streak, which demonstrates strong problem-solving capabilities. However, you've recently hit a roadblock with 3 consecutive incorrect submissions, particularly reflected in your declining performance in Trees from 88% to 67%. This pinpoints Trees as an area needing focused attention right now.\n\n• MOMENTUM ADVICE: Capitalize on the positive feeling from your solved streak and use it to re-energize your approach. When facing incorrect submissions, especially in Trees, take a step back to review the underlying concepts or try a slightly easier Tree problem to rebuild confidence before tackling more complex ones. Increase your engagement frequency to regain momentum, remembering that every attempt, correct or incorrect, is an opportunity to learn and grow.",
+        "timestamp": "2026-06-30T09:03:38.352Z"
+      }
+    ],
+    "request": {
+      "userId": "XjXBcjbh0wrloL8hnnrIHpYLBa6VO6vz",
+      "submissionId": "cmr0f5vgw0002ml64ifgxarvn"
+    },
+    "response": {
+      "success": true,
+      "userId": "XjXBcjbh0wrloL8hnnrIHpYLBa6VO6vz",
+      "level": "Intermediate",
+      "easySolved": 8,
+      "mediumSolved": 12,
+      "hardSolved": 2,
+      "solvedCount": 22
+    }
+  },
+  {
     "id": "trace-submission-XjXBcjbh0wrloL8hnnrIHpYLBa6VO6vz-1782380551167",
     "timestamp": "2026-06-25T09:42:31.167Z",
     "userId": "XjXBcjbh0wrloL8hnnrIHpYLBa6VO6vz",

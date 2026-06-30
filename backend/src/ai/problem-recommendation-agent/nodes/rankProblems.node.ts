@@ -5,7 +5,7 @@ export async function rankProblemsNode(
   state: typeof ProblemRecommendationState.State
 ) {
   try {
-    const recommendations = rankProblems(
+    const recommendations = await rankProblems(
       state.candidateProblems ?? [],
       state.weakTopics ?? [],
       state.mistakeAnalysis

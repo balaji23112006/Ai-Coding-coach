@@ -26,4 +26,6 @@ export const ProblemRecommendationState =
     recommendations: Annotation<CandidateProblem[]>(),
 
     explanation: Annotation<string>(),
+    
+    roadmap: Annotation<string>(),
   });

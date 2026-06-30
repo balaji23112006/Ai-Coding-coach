@@ -98,7 +98,13 @@ export function PracticePage() {
   // Filters & Pagination State
   const [searchTerm, setSearchTerm] = useState('');
   const [difficulty, setDifficulty] = useState<Difficulty | 'All'>('All');
-  const [topic, setTopic] = useState<string>('All');
+  const [topic, setTopic] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('topic') || 'All';
+    }
+    return 'All';
+  });
   const [perPage, setPerPage] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalItems, setTotalItems] = useState(0);
