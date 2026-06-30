@@ -111,7 +111,7 @@ export function AiRoadmapPanel({ isDark = false }: AiRoadmapPanelProps) {
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-[200px]">
+      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-[300px] max-h-[500px]">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-full gap-3 opacity-50">
             <Loader2 className="w-8 h-8 animate-spin text-violet-500" />
