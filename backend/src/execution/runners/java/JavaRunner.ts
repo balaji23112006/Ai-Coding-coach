@@ -1,6 +1,5 @@
 import { ICodeRunner, CodeExecutionResult } from '../../types/execution.types.js';
-import { executeProcess } from '../../sandbox/ProcessExecutor.js';
-import { checkDockerAvailability } from '../../sandbox/DockerDetector.js';
+import { runWithDockerOrFallback } from '../../sandbox/RemoteDockerExecutor.js';
 
 /**
  * Placeholder Java runner.
@@ -9,21 +8,23 @@ import { checkDockerAvailability } from '../../sandbox/DockerDetector.js';
  */
 export class JavaRunner implements ICodeRunner {
   async run(sourceCode: string, timeoutMs: number): Promise<CodeExecutionResult> {
-    const useDocker = checkDockerAvailability();
     // For simplicity, treat Java source as JavaScript – this avoids runtime errors during development.
-    if (useDocker) {
-      return executeProcess({
+    return runWithDockerOrFallback(
+      'java',
+      {
         command: 'docker',
-        args: ['run', '-i', '--rm', '--memory=128m', '--cpus=0.5', 'node:18-alpine', 'node'],
+        args: ['run', '-i', '--rm', '--memory=128m', '--cpus=0.5', 'node:22-alpine', 'node'],
         stdin: sourceCode,
         timeoutMs,
-      });
-    }
-    return executeProcess({
-      command: 'node',
-      args: ['--max-old-space-size=128'],
-      stdin: sourceCode,
-      timeoutMs,
-    });
+      },
+      {
+        command: 'node',
+        args: ['--max-old-space-size=128'],
+        stdin: sourceCode,
+        timeoutMs,
+      },
+      timeoutMs
+    );
   }
 }
+

@@ -4,6 +4,8 @@ import { profileRepository } from '../repository/profile.repository.js';
 import { profileSummaryService } from '../../../ai/profile-agent/services/ProfileSummaryService.js';
 import { agentLogger } from '../../../ai/profile-agent/services/AgentLogger.js';
 import { langfuse } from '../../../providers/langfuse/index.js';
+import { createAgentCallback } from '../../../providers/langfuse/langchain.js';
+import { authMiddleware, adminMiddleware } from '../../../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -11,7 +13,7 @@ const router = Router();
  * GET /api/ai/profile/logs
  * Retrieves the developer logs for the profile assessment agent.
  */
-router.get('/logs', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.get('/logs', authMiddleware, adminMiddleware, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const logs = agentLogger.getLogs(50);
     res.status(200).json({
@@ -40,7 +42,20 @@ router.post('/run', async (req: Request, res: Response, next: NextFunction): Pro
   agentLogger.logRequest(traceId, { userId });
 
   try {
-    const finalState = await profileGraph.invoke({ userId, traceId });
+    const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'profile-agent' });
+    const finalState = await profileGraph.invoke(
+      { userId, traceId },
+      {
+        callbacks: callback ? [callback] : undefined,
+        runName: 'profile-workflow-manual',
+        tags: ['profile-agent', 'langgraph', 'manual-run'],
+        metadata: {
+          langfuseUserId: userId,
+          langfuseSessionId: traceId,
+          feature: 'profile-agent',
+        }
+      }
+    );
 
     let summary = '';
     let trendExplanation = '';
@@ -111,9 +126,35 @@ router.get('/:userId', async (req: Request, res: Response, next: NextFunction): 
       return;
     }
 
-    const profile = await profileRepository.getProfile(userId);
+    let profile = await profileRepository.getProfile(userId);
     if (!profile) {
-      res.status(404).json({ error: `No profile record found for user ID: ${userId}` });
+      try {
+        profile = await profileRepository.saveProfile({
+          user: { connect: { id: userId } },
+          skills: {},
+          solvedCount: 0,
+          easySolved: 0,
+          mediumSolved: 0,
+          hardSolved: 0,
+          learningTrack: 'Software Engineering',
+          experienceLevel: 'Beginner',
+          recommendedFocus: 'Arrays & Hashing',
+          recommendedDifficulty: 'Easy',
+        });
+      } catch (err) {
+        console.warn(
+          `[Profile API] Could not auto-bootstrap profile for user ${userId}:`,
+          err instanceof Error ? err.message : String(err),
+        );
+      }
+    }
+
+    if (!profile) {
+      res.status(200).json({
+        success: true,
+        profile: null,
+        message: `No profile record found for user ID: ${userId}`,
+      });
       return;
     }
 
@@ -156,9 +197,21 @@ router.post(
     const traceId = `trace-refresh-${userId}-${Date.now()}`;
     agentLogger.startRun(userId, 'refresh', traceId);
     agentLogger.logRequest(traceId, { userId });
-
     try {
-      const finalState = await profileGraph.invoke({ userId, traceId });
+      const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'profile-agent' });
+      const finalState = await profileGraph.invoke(
+        { userId, traceId },
+        {
+          callbacks: callback ? [callback] : undefined,
+          runName: 'profile-workflow-refresh',
+          tags: ['profile-agent', 'langgraph', 'refresh-run'],
+          metadata: {
+            langfuseUserId: userId,
+            langfuseSessionId: traceId,
+            feature: 'profile-agent',
+          }
+        }
+      );
 
       let summary = '';
       let trendExplanation = '';

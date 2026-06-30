@@ -11,9 +11,12 @@ import progressRoutes from './features/progress/routes/progress.routes.js';
 import mentorRoutes from './features/mentor/routes/mentor.routes.js';
 import profileRoutes from './features/profiles/routes/profile.routes.js';
 import problemRecommendationRoutes from './ai/problem-recommendation-agent/problem-recommendation.routes.js';
+import supervisorRoutes from './features/supervisor/routes/supervisor.routes.js';
+import adminRoutes from './features/admin/routes/admin.routes.js';
 import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
+import { evalRouter } from './agents/code_evaluation_agent/api.js';
 import { executionLogs } from './shared/utils/executionLogger.js';
 import { traceApiResponse } from './observability/langfuse.js';
 
@@ -52,7 +55,8 @@ app.all('/api/auth/*', (req, res, next) => {
   return toNodeHandler(auth)(req, res);
 });
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Comprehensive Request/Response Logging Middleware
 const formatBodyForTerminal = (body: any): string => {
@@ -206,10 +210,16 @@ app.use('/api/mentor', mentorRoutes);
 app.use('/api/ai/profile', profileRoutes);
 
 // Mount AI problem recommendation routes
-app.use(
-  '/api/ai/problem-recommendation',
-  problemRecommendationRoutes
-);
+app.use('/api/ai/problem-recommendation', problemRecommendationRoutes);
+
+// Mount Code Evaluation Agent route
+app.use('/api', evalRouter);
+
+// Mount event-driven supervisor orchestration
+app.use('/api/ai/supervisor', supervisorRoutes);
+
+// Mount Admin Management routes
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint placeholder
 app.get('/health', (_req, res) => {

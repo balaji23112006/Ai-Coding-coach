@@ -6,7 +6,8 @@ import { RECOMMENDATION_CONFIG } from "../config.js";
 export async function rankProblems(
   candidateProblems: CandidateProblem[],
   weakTopics: string[],
-  mistakeAnalysis?: MistakeAnalysis
+  mistakeAnalysis?: MistakeAnalysis,
+  traceId?: string
 ): Promise<CandidateProblem[]> {
   if (!candidateProblems || candidateProblems.length === 0) {
     return [];
@@ -19,20 +20,14 @@ export async function rankProblems(
 
   const primaryMistake = mistakeAnalysis?.primaryMistake || "None";
   const evidence = mistakeAnalysis?.evidence?.join("; ") || "None";
-  
-  const candidatesContext = candidateProblems.map((p, index) => {
-    return `
-[ID: ${index}]
+  const targetTopic = weakTopics.length > 0 ? weakTopics[0] : RECOMMENDATION_CONFIG.FALLBACK_TOPIC;
+
+  const problemsContext = candidateProblems.map((p, idx) => `
+ID: ${idx}
 Title: ${p.title}
 Difficulty: ${p.difficulty}
-Topics: ${p.topics?.join(", ")}
+Topics: ${(p.topics?.map(t => t.topic.name) || []).join(", ")}
 Description snippet: ${p.description ? p.description.substring(0, 150) : ""}...
-    `.trim();
-  }).join("\n\n");
-
-  const systemPrompt = `You are an expert AI Coding Coach ranking problems for a student.
-The student has the following weakness profile:
-- Weak Topics: ${weakTopics.join(", ") || "None specified"}
 - Current Identified Flaw: ${primaryMistake}
 - Flaw Evidence: ${evidence}
 
@@ -104,4 +99,67 @@ DO NOT output markdown backticks like \`\`\`json. Output RAW JSON array only.`;
       })
       .sort((a, b) => (b.score || 0) - (a.score || 0));
   }
+=======
+export function rankProblems(
+  candidateProblems: CandidateProblem[],
+  weakTopics: string[],
+  mistakeAnalysis?: MistakeAnalysis
+): CandidateProblem[] {
+  const primaryMistake = mistakeAnalysis?.primaryMistake || "None";
+  const scores = RECOMMENDATION_CONFIG.SCORES;
+
+  return candidateProblems
+    .map((problem) => {
+      let score = scores.TOPIC_MATCH; // Base score
+
+      // Weak topic match
+      if (
+        weakTopics.length > 0 &&
+        problem.topics?.includes(weakTopics[0])
+      ) {
+        score += scores.WEAK_TOPIC_BONUS;
+      }
+
+      // Mistake-based boosting
+      const topics = (problem.topics || []).map((t: string) => t.toLowerCase());
+
+      if (primaryMistake === "Recursion Handling" || primaryMistake === "Stack Overflow") {
+        if (topics.some((t: string) => t.includes("recursion") || t.includes("dfs") || t.includes("tree") || t.includes("backtracking"))) {
+          score += scores.MEDIUM_PROBLEM; // Reuse config score
+        }
+      } else if (primaryMistake === "Array Indexing") {
+        if (topics.some((t: string) => t.includes("array") || t.includes("string") || t.includes("index") || t.includes("two pointers") || t.includes("sliding window"))) {
+          score += scores.MEDIUM_PROBLEM;
+        }
+      } else if (primaryMistake === "Tree Traversal") {
+        if (topics.some((t: string) => t.includes("tree") || t.includes("dfs") || t.includes("bfs"))) {
+          score += scores.MEDIUM_PROBLEM;
+        }
+      } else if (
+        primaryMistake === "Null/Undefined Handling" || 
+        primaryMistake === "Edge Case Failures" ||
+        primaryMistake === "Compile Error" ||
+        primaryMistake === "Runtime Error" ||
+        primaryMistake === "Wrong Answer"
+      ) {
+        // Boost Easy questions and basic structure questions for fundamental mistakes
+        if (problem.difficulty === "Easy") {
+          score += scores.EASY_PROBLEM;
+        } else {
+          score += scores.HARD_PROBLEM;
+        }
+      } else if (primaryMistake === "Time Limit Exceeded") {
+        // Boost problems that have efficient solution patterns or simpler structures
+        if (problem.difficulty === "Easy" || problem.difficulty === "Medium") {
+          score += scores.TOPIC_MATCH;
+        }
+      }
+
+      return {
+        ...problem,
+        score,
+      };
+    })
+    .sort((a, b) => (b.score || 0) - (a.score || 0));
+>>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
 }

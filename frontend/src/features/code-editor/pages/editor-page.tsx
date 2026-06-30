@@ -21,6 +21,9 @@ import { OutputConsole } from '../components/output-console';
 import { useCodeEditor } from '../hooks/use-code-editor';
 import { useMentor } from '../hooks/use-mentor';
 import type { Problem, ExecutionResult } from '../types/editor-types';
+import { useAuth } from '@/features/authentication';
+import { EvaluationPanel } from '../components/evaluation-panel';
+import { cn } from '@/lib/utils';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -201,6 +204,9 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const [leftCollapsed, setLeftCollapsed] = useState(false);
   const [bottomCollapsed, setBottomCollapsed] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const { user } = useAuth();
+  const [showEvaluation, setShowEvaluation] = useState(false);
+  const [isEvaluating, setIsEvaluating] = useState(false);
   const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
   const [hasDismissedRecommendation, setHasDismissedRecommendation] = useState(false);
   const lastTriggeredResultRef = useRef<ExecutionResult | null>(null);
@@ -266,9 +272,6 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     };
   }, [isRunning, isSubmitting, runCode, submitCode]);
 
-  // Auto-prompt mentor when submission fails or has errors
-  useEffect(() => {
-    if (!runResult || isRunning || isSubmitting) return;
 
     const isFailure =
       runResult.status === 'Runtime Error' ||
@@ -289,15 +292,32 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     }
   }, [runResult, isRunning, isSubmitting, isMentorLoading, isMentorOpen, toggleMentorOpen]);
 
-  // Celebration on Accepted
+  // Celebration on Accepted & trigger Recommendation Popup
   useEffect(() => {
     if (submitResult?.status === 'Accepted') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowCelebration(true);
       const t = setTimeout(() => setShowCelebration(false), 4000);
-      return () => clearTimeout(t);
+
+      let timer: number | undefined;
+      if (!hasDismissedRecommendation) {
+        timer = window.setTimeout(() => {
+          setShowRecommendationPopup(true);
+        }, 3500);
+      }
+      
+      return () => {
+        clearTimeout(t);
+        if (timer) clearTimeout(timer);
+      };
     }
-  }, [submitResult?.id, submitResult?.status]);
+  }, [submitResult?.id, submitResult?.status, hasDismissedRecommendation]);
+
+  // Reset popup states on problem change
+  useEffect(() => {
+    setHasDismissedRecommendation(false);
+    setShowRecommendationPopup(false);
+  }, [problem.id]);
 
   // Show recommendation popup after celebration (3 seconds)
   useEffect(() => {
@@ -444,7 +464,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm">
           <div className="animate-in zoom-in-95 fade-in w-full max-w-md rounded-2xl border border-cyan-500/20 bg-slate-950 p-6 shadow-2xl shadow-cyan-900/20 duration-300">
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 text-slate-300">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-900/40">
                   <BrainCircuit className="h-5 w-5 text-white" />
                 </div>
@@ -452,7 +472,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                   <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                     AI Recommendation
                   </p>
-                  <p className="text-xs font-bold uppercase tracking-wider text-cyan-400">
+                  <p className="text-xs font-bold uppercase tracking-wider text-cyan-400 animate-pulse">
                     🎯 Next Problem
                   </p>
                 </div>
@@ -497,7 +517,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                 <>
                   {isLoadingRecommendations ? (
                     <div className="flex flex-col items-center justify-center gap-3 py-6 text-cyan-400">
-                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+                      <Loader2 className="h-6 w-6 animate-spin" />
                       <span className="text-xs font-semibold animate-pulse">Analyzing and generating recommendation...</span>
                     </div>
                   ) : recommendationError ? (
@@ -505,11 +525,11 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                       {recommendationError}
                     </div>
                   ) : recommendations.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-4 text-slate-300">
                       {mistakeAnalysis && mistakeAnalysis.primaryMistake !== "None" && (
                         <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-3.5">
                           <div className="flex items-center gap-2">
-                            <span className="h-1.5 w-1.5 rounded-full bg-rose-400" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
                             <p className="text-[10px] font-bold uppercase tracking-wider text-rose-400">
                               Detected Learning Gap: {mistakeAnalysis.primaryMistake}
                             </p>
@@ -521,7 +541,11 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                           )}
                         </div>
                       )}
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
                       <div>
                         <p className="text-lg font-bold text-white mb-2">
                           {recommendations[0]?.title}
@@ -549,7 +573,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                           ))}
                         </div>
                       </div>
-        
+
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                           Explanation:
@@ -558,7 +582,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                           {recommendationExplanation}
                         </p>
                       </div>
-        
+
                       <div className="mt-5 flex items-center gap-3">
                         <button
                           onClick={() => {
@@ -643,7 +667,10 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
           {/* Mentor Toggle Button */}
           <button
             id="mentor-toggle-btn"
-            onClick={mentor.toggleOpen}
+            onClick={() => {
+              setShowEvaluation(false);
+              mentor.toggleOpen();
+            }}
             className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition ${
               mentor.isOpen
                 ? 'border-amber-500/50 bg-amber-500/15 text-amber-400'
@@ -753,12 +780,20 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
             {!bottomCollapsed && (
               <ActionButtons
                 isRunning={isRunning}
-                isSubmitting={isSubmitting}
+                isSubmitting={isSubmitting || isEvaluating}
                 onRun={runCode}
-                onSubmit={submitCode}
+                onSubmit={() => {
+                  if (mentor.isOpen) {
+                    mentor.toggleOpen();
+                  }
+                  setShowEvaluation(true);
+                }}
                 onReset={resetCode}
                 isCoachOpen={mentor.isOpen}
-                onToggleCoach={mentor.toggleOpen}
+                onToggleCoach={() => {
+                  setShowEvaluation(false);
+                  mentor.toggleOpen();
+                }}
               />
             )}
           </div>
@@ -774,6 +809,22 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
               onClose={mentor.toggleOpen}
               onRequestHint={handleRequestHint}
               onSendMessage={mentor.sendMessage}
+            />
+          </div>
+        )}
+
+        {/* Right — Evaluation Panel (slide in) */}
+        {showEvaluation && (
+          <div className="animate-in slide-in-from-right-4 hidden h-full w-full shrink-0 overflow-hidden duration-200 md:block md:w-[25%]">
+            <EvaluationPanel
+              problemId={problem.id}
+              submittedCode={currentCode}
+              testCases={problem.testCases}
+              userId={user?.id || 'anonymous'}
+              language={selectedLanguage}
+              onClose={() => setShowEvaluation(false)}
+              isEvaluating={isEvaluating}
+              setIsEvaluating={setIsEvaluating}
             />
           </div>
         )}

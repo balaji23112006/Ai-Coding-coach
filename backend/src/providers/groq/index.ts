@@ -46,6 +46,7 @@ export async function groqChat(params: {
   maxTokens?: number;
   userId?: string;
   sessionId?: string;
+  traceId?: string;
 }): Promise<string> {
   if (!isGroqConfigured()) {
     throw new Error('GROQ_API_KEY is not configured (must start with gsk_)');
@@ -71,6 +72,7 @@ export async function groqChat(params: {
         model,
         userId: params.userId,
         sessionId: params.sessionId,
+        traceId: params.traceId,
         input: {
           systemPrompt: params.systemPrompt,
           userMessage: params.userMessage,

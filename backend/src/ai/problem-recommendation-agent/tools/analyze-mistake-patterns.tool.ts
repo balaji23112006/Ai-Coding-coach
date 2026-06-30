@@ -4,7 +4,8 @@ import { ExtendedSubmission } from "../types/recommendation-state.js";
 import { RECOMMENDATION_CONFIG } from "../config.js";
 
 export async function analyzeMistakePatterns(
-  submissions: ExtendedSubmission[]
+  submissions: ExtendedSubmission[],
+  traceId?: string
 ): Promise<MistakeAnalysis> {
   const failedSubmissions = (submissions ?? []).filter(
     (s) => s.status !== "ACCEPTED"

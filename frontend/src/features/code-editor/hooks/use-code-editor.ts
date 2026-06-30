@@ -313,7 +313,7 @@ export function useCodeEditor(
 
 
 
-  // Fast heuristic recommendation (instantly fetches next problem)
+  // Poll for recommendation from the backend agent
   useEffect(() => {
     if (!showRecommendationUI || !user?.id) return;
 
@@ -321,38 +321,56 @@ export function useCodeEditor(
 
     setIsLoadingRecommendations(true);
 
-    const fetchFastRec = async () => {
+    let active = true;
+    let timerId: number | null = null;
+    let pollAttempts = 0;
+
+    const poll = async () => {
       try {
-        const res = await fetch('/api/questions?limit=100');
-        if (!res.ok) throw new Error('Failed to fetch questions');
-        const data = await res.json();
-        
-        // Simple heuristic: Pick a question that isn't the current one
-        const others = data.items.filter((q: any) => q.id !== problemId);
-        // Prefer problems with the same difficulty
-        // Or just pick a random one for now
-        const randomQ = others[Math.floor(Math.random() * others.length)];
-        
-        if (randomQ) {
-          setRecommendations([{
-            title: randomQ.title,
-            slug: randomQ.slug,
-            difficulty: randomQ.difficulty,
-            topics: randomQ.topics || []
-          }]);
-          setRecommendationExplanation('Here is another problem to practice your skills!');
+        const res = await fetch('/api/ai/problem-recommendation/latest', {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            Pragma: 'no-cache',
+            Expires: '0',
+          },
+        });
+        if (!res.ok) throw new Error('Failed to fetch recommendation');
+        const json = await res.json();
+        const data = json.success ? json.data : null;
+        const isUpdating = json.success ? json.isUpdating : false;
+
+        if (!active) return;
+
+        if (data && !isUpdating) {
+          // Found completed recommendation
+          setRecommendations(data.recommendations || []);
+          setRecommendationExplanation(data.explanation || '');
+          setMistakeAnalysis(data.mistakeAnalysis || null);
+          setIsLoadingRecommendations(false);
         } else {
-          setRecommendationError('No more problems available right now.');
+          // If still updating or no recommendation found, poll again up to 20 times (60 seconds)
+          if (pollAttempts < 20) {
+            pollAttempts++;
+            timerId = window.setTimeout(poll, 3000);
+          } else {
+            setRecommendationError('Recommendation generation timed out.');
+            setIsLoadingRecommendations(false);
+          }
         }
       } catch (err) {
-        setRecommendationError('Failed to fetch next problem.');
-      } finally {
+        if (!active) return;
+        setRecommendationError('Failed to fetch recommendation.');
         setIsLoadingRecommendations(false);
       }
     };
 
-    void fetchFastRec();
-  }, [showRecommendationUI, user?.id, problemId, recommendations.length, recommendationError]);
+    void poll();
+
+    return () => {
+      active = false;
+      if (timerId) window.clearTimeout(timerId);
+    };
+  }, [showRecommendationUI, user?.id, recommendations.length, recommendationError]);
 
   const resetCode = () => {
     setCurrentCode(templates[selectedLanguage]);

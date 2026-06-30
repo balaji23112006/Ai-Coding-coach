@@ -581,6 +581,7 @@ export function DashboardPage() {
               data={dashboardData}
               aiSummary={aiSummary}
               trendExplanation={trendExplanation}
+              profile={profile}
             />
             <WeakAreas
               panelClass={panelClass}
@@ -599,7 +600,7 @@ export function DashboardPage() {
 
 function Hero() {
   const typewriterText =
-    'Ready to level up today? Every problem solved brings you one step closer to mastering coding interviews.';
+    'Elevate your craft, one challenge at a time.';
 
   return (
     <motion.section
@@ -1107,12 +1108,14 @@ function AiInsights({
   data,
   aiSummary,
   trendExplanation,
+  profile,
 }: {
   panelClass: string;
   isDark: boolean;
   data: any;
   aiSummary: string;
   trendExplanation: string;
+  profile: any;
 }) {
   const solvedCount = data?.stats?.solved ?? 0;
   const insights: Array<{ text: string; badge: string }> = [];
@@ -1185,6 +1188,63 @@ function AiInsights({
         ))}
       </div>
 
+<<<<<<< HEAD
+=======
+      {profile && (
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div
+            className={cn(
+              'rounded-xl border p-4 flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]',
+              isDark ? 'border-white/[0.04] bg-[#161618] hover:bg-[#18181b]' : 'border-slate-100 bg-slate-50 hover:bg-slate-100/80',
+            )}
+          >
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", isDark ? "bg-violet-500/10 text-violet-400" : "bg-violet-100 text-violet-700")}>
+              <Bot className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Skill Level</p>
+              <p className={cn("text-xs font-semibold mt-0.5", isDark ? "text-slate-200" : "text-slate-800")}>
+                {profile.experienceLevel || 'Beginner'}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              'rounded-xl border p-4 flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]',
+              isDark ? 'border-white/[0.04] bg-[#161618] hover:bg-[#18181b]' : 'border-slate-100 bg-slate-50 hover:bg-slate-100/80',
+            )}
+          >
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", isDark ? "bg-cyan-500/10 text-cyan-400" : "bg-cyan-100 text-cyan-700")}>
+              <Target className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Target Focus</p>
+              <p className={cn("text-xs font-semibold mt-0.5", isDark ? "text-slate-200" : "text-slate-800")}>
+                {profile.recommendedFocus || 'Arrays & Hashing'}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              'rounded-xl border p-4 flex items-center gap-3 transition-all duration-300 hover:scale-[1.02]',
+              isDark ? 'border-white/[0.04] bg-[#161618] hover:bg-[#18181b]' : 'border-slate-100 bg-slate-50 hover:bg-slate-100/80',
+            )}
+          >
+            <div className={cn("flex h-8 w-8 items-center justify-center rounded-lg", isDark ? "bg-emerald-500/10 text-emerald-400" : "bg-emerald-100 text-emerald-700")}>
+              <Trophy className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Target Difficulty</p>
+              <p className={cn("text-xs font-semibold mt-0.5", isDark ? "text-slate-200" : "text-slate-800")}>
+                {profile.recommendedDifficulty || 'Easy'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+>>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
     </motion.section>
   );
 }

@@ -3,6 +3,8 @@ import { prisma } from "../../database/prisma.js";
 import { problemRecommendationGraph } from "./problemRecommendationGraph.js";
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 import { RECOMMENDATION_CONFIG } from "./config.js";
+import { agentLogger } from "../profile-agent/services/AgentLogger.js";
+import { createAgentCallback } from '../../providers/langfuse/langchain.js';
 
 const router = Router();
 
@@ -38,6 +40,11 @@ router.post(
         }
       }
 
+      // Generate a traceId for agent logs visibility
+      const traceId = `trace-rec-${userId}-${Date.now()}`;
+      agentLogger.startRun(userId, 'recommendation', traceId);
+      agentLogger.logRequest(traceId, { userId });
+
       // Create a pending recommendation record
       const recommendation = await prisma.recommendation.create({
         data: {
@@ -58,9 +65,20 @@ router.post(
           const controller = new AbortController();
           const timeout = setTimeout(() => controller.abort("Recommendation graph timeout"), RECOMMENDATION_CONFIG.GRAPH_TIMEOUT_MS);
 
+          const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'problem-recommendation-agent' });
           const result = await problemRecommendationGraph.invoke(
-            { userId },
-            { signal: controller.signal }
+            { userId, traceId },
+            {
+              signal: controller.signal,
+              callbacks: callback ? [callback] : undefined,
+              runName: 'problem-recommendation-workflow',
+              tags: ['problem-recommendation-agent', 'langgraph'],
+              metadata: {
+                langfuseUserId: userId,
+                langfuseSessionId: traceId,
+                feature: 'problem-recommendation-agent',
+              }
+            }
           );
 
           clearTimeout(timeout);
@@ -73,7 +91,10 @@ router.post(
               data: result as any,
             },
           });
-        } catch (error) {
+
+          agentLogger.logResponse(traceId, result);
+          await agentLogger.finalizeRun(traceId, 'completed');
+        } catch (error: any) {
           console.error("Error in background recommendation agent:", error);
           try {
             await prisma.recommendation.update({
@@ -86,6 +107,7 @@ router.post(
           } catch (updateError) {
             console.error("Failed to update recommendation status to FAILED:", updateError);
           }
+          await agentLogger.finalizeRun(traceId, 'failed', error.message || String(error));
         }
       })();
 

@@ -44,6 +44,7 @@ export async function geminiChat(params: {
   maxTokens?: number;
   userId?: string;
   sessionId?: string;
+  traceId?: string;
 }): Promise<string> {
   if (isOAuthToken) {
     // Use REST API directly with Bearer token (for AQ. / ya29. OAuth tokens)
@@ -54,6 +55,9 @@ export async function geminiChat(params: {
           generationName: 'gemini-generate-content',
           provider: 'gemini',
           model: modelName,
+          userId: params.userId,
+          sessionId: params.sessionId,
+          traceId: params.traceId,
           input: {
             systemPrompt: params.systemPrompt,
             userMessage: params.userMessage,
@@ -124,6 +128,9 @@ export async function geminiChat(params: {
         generationName: 'gemini-generate-content',
         provider: 'gemini',
         model: modelName,
+        userId: params.userId,
+        sessionId: params.sessionId,
+        traceId: params.traceId,
         input: {
           systemPrompt: params.systemPrompt,
           userMessage: params.userMessage,

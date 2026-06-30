@@ -1,4 +1,4 @@
-import { graph } from '../../ai/supervisor-agent/graph.js';
+import { graph } from '../../ai/supervisor-agent/workflow.js';
 
 /**
  * LangGraph Workflow Runner

@@ -954,7 +954,11 @@ export function RoadmapPage() {
                           </div>
                           {rec.slug !== 'all-solved' && (
                             <div className="mt-3">
+<<<<<<< HEAD
                               <Link to={`/editor/${rec.slug}`}>
+=======
+                              <Link to="/editor/$problemSlug" params={{ problemSlug: rec.slug }}>
+>>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
                                 <Button size="sm" variant="secondary" className="w-full text-xs h-8">
                                   Solve Problem
                                 </Button>

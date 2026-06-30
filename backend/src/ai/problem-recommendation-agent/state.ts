@@ -10,6 +10,7 @@ import { MistakeAnalysis } from "./types/mistake-analysis.types.js";
 export const ProblemRecommendationState =
   Annotation.Root({
     userId: Annotation<string>(),
+    traceId: Annotation<string>(),
 
     profile: Annotation<UserProfile | null>(),
     submissions: Annotation<ExtendedSubmission[]>(),

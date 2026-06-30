@@ -8,7 +8,8 @@ export async function rankProblemsNode(
     const recommendations = await rankProblems(
       state.candidateProblems ?? [],
       state.weakTopics ?? [],
-      state.mistakeAnalysis
+      state.mistakeAnalysis,
+      state.traceId
     );
     return { recommendations };
   } catch (error) {

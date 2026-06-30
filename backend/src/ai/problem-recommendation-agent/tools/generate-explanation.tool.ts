@@ -6,7 +6,8 @@ export async function generateExplanation(
   weakTopics: string[],
   difficulty: string,
   recommendations: CandidateProblem[],
-  mistakeAnalysis?: MistakeAnalysis
+  mistakeAnalysis?: MistakeAnalysis,
+  traceId?: string
 ) {
   const problem = recommendations[0];
 
@@ -20,6 +21,7 @@ export async function generateExplanation(
       difficulty,
       recommendationTitle: problem.title,
       mistakeAnalysis,
+      traceId,
     });
   } catch (error) {
     let fallback = `Based on your recent performance, we recommend tackling "${problem.title}". `;

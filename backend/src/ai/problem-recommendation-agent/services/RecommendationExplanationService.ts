@@ -1,5 +1,7 @@
 import { RECOMMENDATION_CONFIG } from "../config.js";
 import { groqChat } from "../../../providers/groq/index.js";
+import { geminiChat } from "../../../providers/google/index.js";
+import { agentLogger } from "../../../ai/profile-agent/services/AgentLogger.js";
 
 export class RecommendationExplanationService {
   async generateRecommendationExplanation(params: {
@@ -7,6 +9,7 @@ export class RecommendationExplanationService {
     difficulty: string;
     recommendationTitle: string;
     mistakeAnalysis?: any;
+    traceId?: string;
   }): Promise<string> {
     const primaryMistake = params.mistakeAnalysis?.primaryMistake || "None";
     const evidence = params.mistakeAnalysis?.evidence?.join(", ") || "";
@@ -32,20 +35,65 @@ STRICT RULES:
 `;
 
     try {
-      return await groqChat({
+      const response = await groqChat({
         systemPrompt: "You are an expert AI Coding Coach generating personalized problem recommendations.",
         userMessage: prompt,
         temperature: 0.3,
         maxTokens: 150
       });
-    } catch (error) {
-      console.error("[RecommendationExplanationService] Groq failed:", error);
 
-      if (params.mistakeAnalysis && params.mistakeAnalysis.primaryMistake !== "None") {
-        return `We noticed several ${params.mistakeAnalysis.primaryMistake.toLowerCase()}-related issues in your recent attempts. Practicing "${params.recommendationTitle}" will help strengthen your skills in this area while reinforcing your ${weakTopic} fundamentals.`;
+      if (params.traceId) {
+        agentLogger.logPrompt(
+          params.traceId,
+          "groq",
+          `[SYSTEM PROMPT]:\nYou are an expert AI Coding Coach generating personalized problem recommendations.\n\n[USER MESSAGE]:\n${prompt}`,
+          response
+        );
+        agentLogger.logDecision(params.traceId, `Successfully generated recommendation explanation using Groq LLM.`);
       }
 
-      return `Recommended "${params.recommendationTitle}" because your focus area is ${weakTopic} and your target difficulty is ${params.difficulty}.`;
+      return response;
+    } catch (error) {
+      console.error("[RecommendationExplanationService] Groq failed, attempting Gemini fallback:", error);
+      const groqErrorMsg = error instanceof Error ? error.message : String(error);
+
+      if (params.traceId) {
+        agentLogger.logDecision(params.traceId, `Groq LLM call failed for recommendation explanation: ${groqErrorMsg}`);
+      }
+
+      try {
+        const response = await geminiChat({
+          systemPrompt: "You are an expert AI Coding Coach generating personalized problem recommendations.",
+          userMessage: prompt,
+          temperature: 0.3,
+          maxTokens: 150
+        });
+
+        if (params.traceId) {
+          agentLogger.logPrompt(
+            params.traceId,
+            "gemini",
+            `[SYSTEM PROMPT]:\nYou are an expert AI Coding Coach generating personalized problem recommendations.\n\n[USER MESSAGE]:\n${prompt}`,
+            response
+          );
+          agentLogger.logDecision(params.traceId, `Successfully generated recommendation explanation using Gemini LLM fallback.`);
+        }
+
+        return response;
+      } catch (geminiError) {
+        console.error("[RecommendationExplanationService] Gemini failed:", geminiError);
+        const geminiErrorMsg = geminiError instanceof Error ? geminiError.message : String(geminiError);
+
+        if (params.traceId) {
+          agentLogger.logDecision(params.traceId, `Gemini LLM call failed for recommendation explanation: ${geminiErrorMsg}`);
+        }
+
+        if (params.mistakeAnalysis && params.mistakeAnalysis.primaryMistake !== "None") {
+          return `We noticed several ${params.mistakeAnalysis.primaryMistake.toLowerCase()}-related issues in your recent attempts. Practicing "${params.recommendationTitle}" will help strengthen your skills in this area while reinforcing your ${weakTopic} fundamentals.`;
+        }
+
+        return `Recommended "${params.recommendationTitle}" because your focus area is ${weakTopic} and your target difficulty is ${params.difficulty}.`;
+      }
     }
   }
 }

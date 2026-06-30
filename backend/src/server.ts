@@ -9,6 +9,7 @@ import express from 'express';
 import cors from 'cors';
 import { executionLogs } from './shared/utils/executionLogger.js';
 import { flushLangfuse } from './observability/langfuse.js';
+import { registerWebSocketServer } from './shared/utils/websocket.js';
 
 const PORT = Number(process.env.PORT) || 8000;
 const LOGS_PORT = Number(process.env.LOGS_PORT) || 8001;
@@ -49,6 +50,7 @@ logsApp.get('/', (req, res) => {
 const logsServer = logsApp.listen(LOGS_PORT, () => {
   console.log(`[Logs] Server listening on http://localhost:${LOGS_PORT}`);
 });
+registerWebSocketServer(logsServer);
 
 logsServer.on('error', (err: any) => {
   if (err.code === 'EADDRINUSE') {

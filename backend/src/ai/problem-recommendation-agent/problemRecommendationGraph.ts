@@ -1,6 +1,7 @@
 import { START, END, StateGraph } from "@langchain/langgraph";
 
 import { ProblemRecommendationState } from "./state.js";
+import { agentLogger } from "../profile-agent/services/AgentLogger.js";
 
 import { getProfileNode } from "./nodes/getProfile.node.js";
 import { getSubmissionsNode } from "./nodes/getSubmissions.node.js";
@@ -13,19 +14,31 @@ import { rankProblemsNode } from "./nodes/rankProblems.node.js";
 import { generateExplanationNode } from "./nodes/generateExplanation.node.js";
 import { generateRoadmapNode } from "./nodes/generateRoadmap.node.js";
 
+function wrapNodeWithLogging(nodeName: string, nodeFn: any) {
+  return async (state: any) => {
+    const traceId = state.traceId;
+    if (traceId) {
+      agentLogger.logNodeExecution(traceId, nodeName);
+    }
+    const result = await nodeFn(state);
+    return result;
+  };
+}
+
 export const workflow = new StateGraph(
   ProblemRecommendationState
 )
-  .addNode("getProfile", getProfileNode)
-  .addNode("getSubmissions", getSubmissionsNode)
-  .addNode("analyzeSubmissions", analyzeSubmissionsNode)
-  .addNode("analyzeMistakes", analyzeMistakesNode)
-  .addNode("identifyWeakTopics", identifyWeakTopicsNode)
-  .addNode("determineDifficulty", determineDifficultyNode)
-  .addNode("searchProblems", searchProblemsNode)
-  .addNode("rankProblems", rankProblemsNode)
-  .addNode("generateExplanation", generateExplanationNode)
-  .addNode("generateRoadmap", generateRoadmapNode);
+  .addNode("getProfile", wrapNodeWithLogging("getProfile", getProfileNode))
+  .addNode("getSubmissions", wrapNodeWithLogging("getSubmissions", getSubmissionsNode))
+  .addNode("analyzeSubmissions", wrapNodeWithLogging("analyzeSubmissions", analyzeSubmissionsNode))
+  .addNode("analyzeMistakes", wrapNodeWithLogging("analyzeMistakes", analyzeMistakesNode))
+  .addNode("identifyWeakTopics", wrapNodeWithLogging("identifyWeakTopics", identifyWeakTopicsNode))
+  .addNode("determineDifficulty", wrapNodeWithLogging("determineDifficulty", determineDifficultyNode))
+  .addNode("searchProblems", wrapNodeWithLogging("searchProblems", searchProblemsNode))
+  .addNode("rankProblems", wrapNodeWithLogging("rankProblems", rankProblemsNode))
+  .addNode("generateExplanation", wrapNodeWithLogging("generateExplanation", generateExplanationNode))
+  .addNode("generateRoadmap", wrapNodeWithLogging("generateRoadmap", generateRoadmapNode));
+
 export const problemRecommendationGraph =
   workflow
     .addEdge(START, "getProfile")

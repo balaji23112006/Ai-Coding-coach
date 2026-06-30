@@ -98,7 +98,7 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
       }
     };
 
-    child.on('close', (code) => {
+    child.on('close', (code, signal) => {
       cleanUp();
       const executionTime = Math.round(performance.now() - startTime);
 
@@ -108,9 +108,29 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
       if (isTimeout) {
         status = SubmissionStatus.TIMEOUT;
         success = false;
-      } else if (code !== 0) {
+        stderr = stderr + `\nTime Limit Exceeded: Your code took too long to execute (exceeded limit of ${timeoutMs}ms). This is often caused by an infinite loop or a highly inefficient algorithm.`;
+      } else if (isTruncated) {
         status = SubmissionStatus.RUNTIME_ERROR;
         success = false;
+        stderr = stderr + `\nOutput Limit Exceeded: Your program printed too much data to standard output (exceeded limit of 1MB). This is usually caused by an infinite loop containing print/console.log statements.`;
+      } else if (code !== 0 || signal) {
+        status = SubmissionStatus.RUNTIME_ERROR;
+        success = false;
+
+        // Map exit code / signals to specific error messages
+        const isOOM = (signal === 'SIGKILL' || code === 137);
+        const isSegfault = (signal === 'SIGSEGV' || code === 139 || code === 3221225477);
+        const isDivByZero = (signal === 'SIGFPE' || code === 136 || code === 3221225620);
+
+        if (isOOM) {
+          stderr = stderr + `\nOut of Memory: Your program exceeded the maximum memory limit (128 MB). This is usually caused by creating a very large array, an infinite recursion, or storing too many objects in memory.`;
+        } else if (isSegfault) {
+          stderr = stderr + `\nSegmentation Fault: Your program tried to access a restricted or invalid memory address. In C/C++, this is typically caused by out-of-bounds array access, dereferencing a null/wild pointer, or stack overflow from deep recursion.`;
+        } else if (isDivByZero) {
+          stderr = stderr + `\nArithmetic Exception: Division by zero or illegal arithmetic operation.`;
+        } else if (code === 126 || code === 127) {
+          stderr = stderr + `\nPermission Denied / Command Not Found: The executable could not be run or was not found in the sandbox.`;
+        }
       }
 
       if (stdout.length > MAX_OUTPUT_SIZE) {

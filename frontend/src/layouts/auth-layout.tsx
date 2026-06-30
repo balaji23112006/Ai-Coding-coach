@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import backgroundPhoto from '../assets/premium_photo-1661877737564-3dfd7282efcb.avif';
+import logoNoBg from '../assets/logo_no_background.png';
 
 type AuthLayoutProps = {
   children: ReactNode;
@@ -185,7 +186,11 @@ function AuthLayout({ children }: AuthLayoutProps) {
             variants={premiumFadeInItem}
             className="group flex cursor-pointer items-center gap-2"
           >
-            <div className="h-4 w-4 rounded bg-gradient-to-br from-cyan-400 to-purple-500 opacity-80" />
+            <img
+              src={logoNoBg}
+              alt="Skill Lens Logo"
+              className="h-6 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100"
+            />
             <span className="font-mono text-[11px] font-semibold tracking-wider text-slate-500 transition-colors group-hover:text-white">
               {'SL // CORE'}
             </span>

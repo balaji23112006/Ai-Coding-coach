@@ -31,3 +31,13 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     res.status(500).json({ error: 'Internal server error during authentication' });
   }
 };
+
+export const adminMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized: Session required' });
+  }
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden: Admin access required' });
+  }
+  next();
+};

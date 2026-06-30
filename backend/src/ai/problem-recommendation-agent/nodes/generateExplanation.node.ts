@@ -27,7 +27,8 @@ export async function generateExplanationNode(
       state.weakTopics ?? [],
       state.difficulty ?? "Easy",
       state.recommendations,
-      state.mistakeAnalysis
+      state.mistakeAnalysis,
+      state.traceId
     );
     return { explanation };
   } catch (error) {
