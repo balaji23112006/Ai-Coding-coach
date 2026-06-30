@@ -26,7 +26,7 @@ import { EvaluationPanel } from '../components/evaluation-panel';
 import { cn } from '@/lib/utils';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -271,7 +271,9 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isRunning, isSubmitting, runCode, submitCode]);
-
+  // Auto-open mentor on failure
+  useEffect(() => {
+    if (!runResult || isRunning || isSubmitting) return;
 
     const isFailure =
       runResult.status === 'Runtime Error' ||
@@ -541,11 +543,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                           )}
                         </div>
                       )}
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
                       <div>
                         <p className="text-lg font-bold text-white mb-2">
                           {recommendations[0]?.title}

@@ -32,7 +32,7 @@ import { AiHelper } from '@/components/common/ai-helper';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import type { ChartConfig } from '@/components/ui/chart';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
-import { useAuth } from '@/features/authentication';
+
 import { useProfileAgent } from '@/hooks/useProfileAgent';
 
 const activityChartConfig: ChartConfig = {
@@ -1188,8 +1188,6 @@ function AiInsights({
         ))}
       </div>
 
-<<<<<<< HEAD
-=======
       {profile && (
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div
@@ -1244,7 +1242,6 @@ function AiInsights({
           </div>
         </div>
       )}
->>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
     </motion.section>
   );
 }

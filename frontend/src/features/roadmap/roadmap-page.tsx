@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, Suspense, useMemo } from 'react';
 import { Link } from '@tanstack/react-router';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useSpring, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sphere, Text } from '@react-three/drei';
 import * as THREE from 'three';
@@ -713,11 +713,9 @@ export function RoadmapPage() {
                               </div>
                               {isLocked ? (
                                 <Link
-                                  to={
-                                    currentStageNode && mapNodeIdToTopic(currentStageNode.id) !== 'All'
+                                  to={(currentStageNode && mapNodeIdToTopic(currentStageNode.id) !== 'All'
                                       ? `/practice?topic=${encodeURIComponent(mapNodeIdToTopic(currentStageNode.id))}`
-                                      : '/practice'
-                                  }
+                                      : '/practice') as any}
                                   className="mt-6 block w-full"
                                 >
                                   <Button className="w-full bg-slate-600 font-bold text-white hover:bg-slate-500">
@@ -728,11 +726,9 @@ export function RoadmapPage() {
                                 </Link>
                               ) : (
                                 <Link
-                                  to={
-                                    mapNodeIdToTopic(node.id) !== 'All'
+                                  to={(mapNodeIdToTopic(node.id) !== 'All'
                                       ? `/practice?topic=${encodeURIComponent(mapNodeIdToTopic(node.id))}`
-                                      : '/practice'
-                                  }
+                                      : '/practice') as any}
                                   className="mt-6 block w-full"
                                 >
                                   <Button className="w-full bg-violet-600 font-bold text-white hover:bg-violet-500">
@@ -954,11 +950,7 @@ export function RoadmapPage() {
                           </div>
                           {rec.slug !== 'all-solved' && (
                             <div className="mt-3">
-<<<<<<< HEAD
-                              <Link to={`/editor/${rec.slug}`}>
-=======
                               <Link to="/editor/$problemSlug" params={{ problemSlug: rec.slug }}>
->>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
                                 <Button size="sm" variant="secondary" className="w-full text-xs h-8">
                                   Solve Problem
                                 </Button>
