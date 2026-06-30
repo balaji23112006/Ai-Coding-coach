@@ -66,7 +66,9 @@ async function executeRemotely(
   timeoutMs: number
 ): Promise<CodeExecutionResult> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  // Ensure HTTP request timeout has at least a 5-second safety margin over the code execution timeout
+  const httpTimeout = Math.max(timeoutMs, payload.timeoutMs + 5000);
+  const timer = setTimeout(() => controller.abort(), httpTimeout);
 
   try {
     const executeUrl = `${url.replace(/\/$/, '')}/execute`;
