@@ -1,4 +1,4 @@
-import type { Difficulty, Question, TestCase } from '@/features/practice/types';
+import type { Difficulty, Question, TestCase } from '@/features/assessments/practice/types';
 
 export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'java' | 'cpp';
 export type EditorLanguage = SupportedLanguage;

@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { AgentLogsPage } from '@/features/agent-logs/agent-logs-page';
+import { AgentLogsPage } from '@/features/profile-analysis/agent-logs/agent-logs-page';
 import { useAuth } from '@/features/authentication';
 import { useEffect } from 'react';
 
