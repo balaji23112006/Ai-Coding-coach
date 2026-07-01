@@ -112,25 +112,29 @@ Organized as an asynchronous stateful graph inside [problemRecommendationGraph.t
 graph TD
     START([Start]) --> getProfile[getProfileNode]
     getProfile --> getSubmissions[getSubmissionsNode]
-    getSubmissions --> identifyWeakTopics[identifyWeakTopicsNode]
-    identifyWeakTopics --> analyzeMistakes[analyzeMistakesNode]
-    analyzeMistakes --> determineDifficulty[determineDifficultyNode]
+    getSubmissions --> analyzeSubmissions[analyzeSubmissionsNode]
+    analyzeSubmissions --> analyzeMistakes[analyzeMistakesNode]
+    analyzeMistakes --> identifyWeakTopics[identifyWeakTopicsNode]
+    identifyWeakTopics --> determineDifficulty[determineDifficultyNode]
     determineDifficulty --> searchProblems[searchProblemsNode]
     searchProblems --> rankProblems[rankProblemsNode]
     rankProblems --> generateExplanation[generateExplanationNode]
-    generateExplanation --> END([End])
+    generateExplanation --> generateRoadmap[generateRoadmapNode]
+    generateRoadmap --> END([End])
 ```
 
 ### Core Nodes & Tools
 Located in [problem-recommendation-agent/nodes/](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/) and [tools/](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/):
 * **[getProfileNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/getProfile.node.ts) / [get-user-profile](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/get-user-profile.tool.ts):** Fetches the student's mastery profile compiled by the Profile Agent.
 * **[getSubmissionsNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/getSubmissions.node.ts) / [get-submission-history](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/get-submission-history.tool.ts):** Queries past code submissions to inspect actual implementation habits.
-* **[identifyWeakTopicsNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/identifyWeakTopics.node.ts) / [identify-weak-topics](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/identify-weak-topics.tool.ts):** Identifies target learning tags where student mastery or progress is lagging.
+* **[analyzeSubmissionsNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/analyzeSubmissions.node.ts) / [analyze-submissions](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/analyze-submissions.tool.ts):** Filters and processes retrieved submission logs for analysis.
 * **[analyzeMistakesNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/analyzeMistakes.node.ts) / [analyze-mistake-patterns](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/analyze-mistake-patterns.tool.ts):** Inspects failed test metadata to classify logical gaps (e.g., index out of bounds, infinite recursion).
+* **[identifyWeakTopicsNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/identifyWeakTopics.node.ts) / [identify-weak-topics](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/identify-weak-topics.tool.ts):** Identifies target learning tags where student mastery or progress is lagging.
 * **[determineDifficultyNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/determineDifficulty.node.ts) / [determine-difficulty](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/determine-difficulty.tool.ts):** Decides whether the next problem should be Easy, Medium, or Hard based on the user's current success rate.
 * **[searchProblemsNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/searchProblems.node.ts) / [search-problems](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/search-problems.tool.ts):** Queries the database question bank for unsolved problems fitting the targeted topic and difficulty.
 * **[rankProblemsNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/rankProblems.node.ts) / [rank-problems](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/rank-problems.tool.ts):** Filters and ranks matching candidates.
 * **[generateExplanationNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/generateExplanation.node.ts) / [generate-explanation](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/generate-explanation.tool.ts):** Calls the LLM to explain the pedagogy behind recommending the chosen problem.
+* **[generateRoadmapNode](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/nodes/generateRoadmap.node.ts) / [generate-roadmap](file:///c:/A/PROJECT/Practice/Ai-Coding-coach/backend/src/ai/problem-recommendation-agent/tools/generate-roadmap.tool.ts):** Triggers LLM call to output a structured 3-phase JSON learning roadmap/path addressing the student's weaknesses.
 
 ---
 
