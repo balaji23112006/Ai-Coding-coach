@@ -1,6 +1,6 @@
 import { prisma } from '../../../../database/prisma.js';
 import { SubmissionStatus } from '@prisma/client';
-import { SubmissionWithQuestion } from '../../../skill-gap-analysis/profiles/types/profile.types.js';
+import { SubmissionWithQuestion } from '../../../profiles/types/profile.types.js';
 
 export interface GetSubmissionsParams {
   userId: string;

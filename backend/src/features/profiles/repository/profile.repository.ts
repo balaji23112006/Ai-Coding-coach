@@ -1,4 +1,4 @@
-import { prisma } from '../../../../database/prisma.js';
+import { prisma } from '../../../database/prisma.js';
 import { Prisma, UserProfile } from '@prisma/client';
 
 export class ProfileRepository {

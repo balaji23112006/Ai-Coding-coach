@@ -1,4 +1,4 @@
-import { profileRepository } from "../../../skill-gap-analysis/profiles/repository/profile.repository.js";
+import { profileRepository } from "../../../profiles/repository/profile.repository.js";
 
 export async function getUserProfile(
   userId: string

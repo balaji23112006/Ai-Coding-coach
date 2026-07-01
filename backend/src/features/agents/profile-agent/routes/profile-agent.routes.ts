@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { profileGraph } from '../profileGraph.js';
-import { profileRepository } from '../../../skill-gap-analysis/profiles/repository/profile.repository.js';
+import { profileRepository } from '../../../profiles/repository/profile.repository.js';
 import { profileSummaryService } from '../services/ProfileSummaryService.js';
 import { agentLogger } from '../services/AgentLogger.js';
 import { langfuse } from '../../../../providers/langfuse/index.js';

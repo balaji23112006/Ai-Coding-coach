@@ -9,9 +9,9 @@ import {
 import { NotFoundError } from '../../../../utils/errors/custom.errors.js';
 import { prisma } from '../../../../database/prisma.js';
 import { logger } from '../../../../utils/logger.js';
-import { profileGraph } from '../../../ai-agents/profile-agent/profileGraph.js';
-import { agentLogger } from '../../../ai-agents/profile-agent/services/AgentLogger.js';
-import { profileSummaryService } from '../../../ai-agents/profile-agent/services/ProfileSummaryService.js';
+import { profileGraph } from '../../../agents/profile-agent/profileGraph.js';
+import { agentLogger } from '../../../agents/profile-agent/services/AgentLogger.js';
+import { profileSummaryService } from '../../../agents/profile-agent/services/ProfileSummaryService.js';
 import { langfuse } from '../../../../providers/langfuse/index.js';
 import { createAgentCallback } from '../../../../providers/langfuse/langchain.js';
 

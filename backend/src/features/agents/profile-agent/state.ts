@@ -1,7 +1,7 @@
 import { Annotation } from '@langchain/langgraph';
 import { UserHistoryResult } from './tools/getUserHistory.js';
 import { TopicStat } from './tools/getTopicStats.js';
-import { SubmissionWithQuestion } from '../../skill-gap-analysis/profiles/types/profile.types.js';
+import { SubmissionWithQuestion } from '../../profiles/types/profile.types.js';
 import { RecentActivityItem } from './tools/getRecentActivity.js';
 
 export const ProfileAgentState = Annotation.Root({
