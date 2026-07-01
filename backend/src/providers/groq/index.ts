@@ -12,7 +12,7 @@
 
 import Groq from 'groq-sdk';
 import dotenv from 'dotenv';
-import { logger } from '../../shared/utils/logger.js';
+import { logger } from '../../utils/logger.js';
 import { traceLLMCall } from '../../observability/langfuse.js';
 
 dotenv.config();

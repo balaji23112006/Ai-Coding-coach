@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { fromNodeHeaders } from 'better-auth/node';
-import { auth } from '../../../lib/auth.js';
+import { auth } from '../services/auth.js';
 import { signupSchema, loginSchema } from '../schemas/auth.validation.js';
 import { AuthService } from '../services/auth.service.js';
 

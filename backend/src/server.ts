@@ -7,9 +7,9 @@ validateEnv();
 import app from './app.js';
 import express from 'express';
 import cors from 'cors';
-import { executionLogs } from './shared/utils/executionLogger.js';
+import { executionLogs } from './utils/executionLogger.js';
 import { flushLangfuse } from './observability/langfuse.js';
-import { registerWebSocketServer } from './shared/utils/websocket.js';
+import { registerWebSocketServer } from './utils/websocket.js';
 
 const PORT = Number(process.env.PORT) || 8000;
 const LOGS_PORT = Number(process.env.LOGS_PORT) || 8001;
