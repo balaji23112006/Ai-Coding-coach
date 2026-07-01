@@ -12,6 +12,7 @@ import { determineDifficultyNode } from "./nodes/determineDifficulty.node.js";
 import { searchProblemsNode } from "./nodes/searchProblems.node.js";
 import { rankProblemsNode } from "./nodes/rankProblems.node.js";
 import { generateExplanationNode } from "./nodes/generateExplanation.node.js";
+import { generateRoadmapNode } from "./nodes/generateRoadmap.node.js";
 
 function wrapNodeWithLogging(nodeName: string, nodeFn: any) {
   return async (state: any) => {
@@ -35,7 +36,9 @@ export const workflow = new StateGraph(
   .addNode("determineDifficulty", wrapNodeWithLogging("determineDifficulty", determineDifficultyNode))
   .addNode("searchProblems", wrapNodeWithLogging("searchProblems", searchProblemsNode))
   .addNode("rankProblems", wrapNodeWithLogging("rankProblems", rankProblemsNode))
-  .addNode("generateExplanation", wrapNodeWithLogging("generateExplanation", generateExplanationNode));
+  .addNode("generateExplanation", wrapNodeWithLogging("generateExplanation", generateExplanationNode))
+  .addNode("generateRoadmap", wrapNodeWithLogging("generateRoadmap", generateRoadmapNode));
+
 export const problemRecommendationGraph =
   workflow
     .addEdge(START, "getProfile")
@@ -47,5 +50,6 @@ export const problemRecommendationGraph =
     .addEdge("determineDifficulty", "searchProblems")
     .addEdge("searchProblems", "rankProblems")
     .addEdge("rankProblems", "generateExplanation")
-    .addEdge("generateExplanation", END)
+    .addEdge("generateExplanation", "generateRoadmap")
+    .addEdge("generateRoadmap", END)
     .compile();

@@ -17,7 +17,6 @@ import { requestIdMiddleware } from './middlewares/requestId.middleware.js';
 import { errorMiddleware } from './middlewares/error.middleware.js';
 import { checkDockerAvailability } from './execution/sandbox/DockerDetector.js';
 import { evalRouter } from './agents/code_evaluation_agent/api.js';
-
 import { executionLogs } from './shared/utils/executionLogger.js';
 import { traceApiResponse } from './observability/langfuse.js';
 
@@ -139,8 +138,8 @@ app.use((req, res, next) => {
         try {
           parsedBody = JSON.parse(body);
         } catch {
-          // Ignore parsing errors for non-JSON string responses
-        }
+  parsedBody = body;
+}
       }
 
       const logEntry = {

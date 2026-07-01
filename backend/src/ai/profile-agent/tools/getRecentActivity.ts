@@ -49,35 +49,35 @@ export async function getRecentActivity(userId: string, limit = 10): Promise<Rec
     }
 
     // 2. Fetch profile creation & update times
-    const profile = await prisma.userProfile.findUnique({
-      where: { userId },
+const profile = await prisma.userProfile.findUnique({
+  where: { userId },
+});
+
+if (profile) {
+  activities.push({
+    type: 'PROFILE_CREATION',
+    timestamp: profile.createdAt,
+    description: `Skill profile initialized.`,
+    meta: {
+      learningTrack: profile.learningTrack,
+      experienceLevel: profile.experienceLevel,
+    },
+  });
+
+  if (profile.updatedAt.getTime() !== profile.createdAt.getTime()) {
+    activities.push({
+      type: 'PROFILE_UPDATE',
+      timestamp: profile.updatedAt,
+      description: `Skill profile updated.`,
+      meta: {
+        learningTrack: profile.learningTrack,
+        experienceLevel: profile.experienceLevel,
+        skills: profile.skills,
+        solvedCount: profile.solvedCount,
+      },
     });
-
-    if (profile) {
-      activities.push({
-        type: 'PROFILE_CREATION',
-        timestamp: profile.createdAt,
-        description: `Skill profile initialized.`,
-        meta: {
-          learningTrack: profile.learningTrack,
-          experienceLevel: profile.experienceLevel,
-        },
-      });
-
-      if (profile.updatedAt.getTime() !== profile.createdAt.getTime()) {
-        activities.push({
-          type: 'PROFILE_UPDATE',
-          timestamp: profile.updatedAt,
-          description: `Skill profile updated.`,
-          meta: {
-            learningTrack: profile.learningTrack,
-            experienceLevel: profile.experienceLevel,
-            skills: profile.skills,
-            solvedCount: profile.solvedCount,
-          },
-        });
-      }
-    }
+  }
+}
 
     // Sort all activities chronologically, newest first, and slice to limit
     return activities.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).slice(0, limit);

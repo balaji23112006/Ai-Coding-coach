@@ -26,6 +26,7 @@ import { EvaluationPanel } from '../components/evaluation-panel';
 import { cn } from '@/lib/utils';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -187,7 +188,7 @@ export function EditorPage() {
     );
   }
 
-  return <EditorWorkspace problem={problem} />;
+  return <EditorWorkspace key={problem.id} problem={problem} />;
 }
 
 function EditorWorkspace({ problem }: { problem: Problem }) {
@@ -208,6 +209,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [showRecommendationPopup, setShowRecommendationPopup] = useState(false);
   const [hasDismissedRecommendation, setHasDismissedRecommendation] = useState(false);
+  const lastTriggeredResultRef = useRef<ExecutionResult | null>(null);
 
   const {
     isCodeLoading,
@@ -243,6 +245,8 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     executionResult: runResult,
   });
 
+  const { isLoading: isMentorLoading, isOpen: isMentorOpen, toggleOpen: toggleMentorOpen } = mentor;
+
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -267,7 +271,28 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isRunning, isSubmitting, runCode, submitCode]);
+  // Auto-open mentor on failure
+  useEffect(() => {
+    if (!runResult || isRunning || isSubmitting) return;
 
+    const isFailure =
+      runResult.status === 'Runtime Error' ||
+      runResult.status === 'Compile Error' ||
+      runResult.status === 'Wrong Answer';
+
+    // Prevent repeated triggering on the same execution result
+    if (runResult === lastTriggeredResultRef.current) return;
+
+    if (isFailure) {
+      lastTriggeredResultRef.current = runResult;
+      const autoOpen = localStorage.getItem('skill-lens-autoOpenMentor') !== 'false';
+      if (autoOpen && !isMentorLoading && !isMentorOpen) {
+        // Auto-open mentor with a slight delay so UI settles first
+        const t = setTimeout(() => toggleMentorOpen(), 1200);
+        return () => clearTimeout(t);
+      }
+    }
+  }, [runResult, isRunning, isSubmitting, isMentorLoading, isMentorOpen, toggleMentorOpen]);
 
   // Celebration on Accepted & trigger Recommendation Popup
   useEffect(() => {
@@ -295,6 +320,29 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
     setHasDismissedRecommendation(false);
     setShowRecommendationPopup(false);
   }, [problem.id]);
+
+  // Show recommendation popup after celebration (3 seconds)
+  useEffect(() => {
+    if (submitResult?.status === 'Accepted' && !hasDismissedRecommendation) {
+      const timer = setTimeout(() => {
+        setShowRecommendationPopup(true);
+      }, 3500); 
+      return () => clearTimeout(timer);
+    }
+  }, [submitResult?.status, hasDismissedRecommendation]);
+  
+  // Reset dismissed state on new submission
+  useEffect(() => {
+    if (isSubmitting) {
+       // eslint-disable-next-line react-hooks/set-state-in-effect
+       setHasDismissedRecommendation(false);
+       // eslint-disable-next-line react-hooks/set-state-in-effect
+       setShowRecommendationPopup(false);
+       // eslint-disable-next-line react-hooks/set-state-in-effect
+       setShowRecommendationUI(false);
+    }
+  }, [isSubmitting, setShowRecommendationUI]);
+
 
   // Map runResult status to mentor trigger event
   const getMentorTrigger = (): Parameters<typeof mentor.requestHint>[0] => {
@@ -711,6 +759,7 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                   </button>
                 </div>
               ) : (
+                <>
                 <OutputConsole
                   activeTab={activeConsoleTab}
                   setActiveTab={setActiveConsoleTab}
@@ -722,6 +771,8 @@ function EditorWorkspace({ problem }: { problem: Problem }) {
                   problem={problem}
                   submissionHistory={submissionHistory}
                 />
+</>
+                
               )}
             </div>
             {!bottomCollapsed && (

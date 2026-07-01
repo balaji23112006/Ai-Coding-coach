@@ -172,4 +172,41 @@ router.get(
   }
 );
 
+router.get(
+  "/roadmap",
+  authMiddleware,
+  async (req: any, res: any) => {
+    try {
+      const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(400).json({ success: false, error: "Missing userId" });
+      }
+
+      const latestCompleted = await prisma.recommendation.findFirst({
+        where: { userId, status: 'COMPLETED' },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      if (!latestCompleted) {
+        return res.status(200).json({
+          success: true,
+          data: { roadmap: null }
+        });
+      }
+
+      const data = latestCompleted.data as any;
+      res.status(200).json({
+        success: true,
+        data: {
+          roadmap: data?.roadmap || null
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching roadmap:", error);
+      res.status(500).json({ success: false, error: "Failed to fetch roadmap" });
+    }
+  }
+);
+
 export default router;

@@ -32,6 +32,7 @@ import { AiHelper } from '@/components/common/ai-helper';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import type { ChartConfig } from '@/components/ui/chart';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
+
 import { useProfileAgent } from '@/hooks/useProfileAgent';
 
 const activityChartConfig: ChartConfig = {

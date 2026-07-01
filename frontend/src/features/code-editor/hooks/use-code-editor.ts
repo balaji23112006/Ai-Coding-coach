@@ -316,6 +316,7 @@ export function useCodeEditor(
   // Poll for recommendation from the backend agent
   useEffect(() => {
     if (!showRecommendationUI || !user?.id) return;
+
     if (recommendations.length > 0 || recommendationError) return;
 
     setIsLoadingRecommendations(true);

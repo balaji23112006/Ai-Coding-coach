@@ -45,14 +45,15 @@ export class AuthController {
         asResponse: true,
       });
 
-      // Forward headers (e.g. Set-Cookie) using append for multi-value set-cookie
       authResponse.headers.forEach((value: string, key: string) => {
-        if (key.toLowerCase() === 'set-cookie') {
-          res.append(key, value);
-        } else {
+        if (key.toLowerCase() !== 'set-cookie') {
           res.setHeader(key, value);
         }
       });
+      const setCookies = authResponse.headers.getSetCookie();
+      if (setCookies && setCookies.length > 0) {
+        res.setHeader('set-cookie', setCookies);
+      }
 
       if (!authResponse.ok) {
         const errData = await authResponse.json().catch(() => ({ message: 'Sign up failed' }));
@@ -102,14 +103,15 @@ export class AuthController {
         asResponse: true,
       });
 
-      // Forward headers (e.g. Set-Cookie) using append for multi-value set-cookie
       authResponse.headers.forEach((value: string, key: string) => {
-        if (key.toLowerCase() === 'set-cookie') {
-          res.append(key, value);
-        } else {
+        if (key.toLowerCase() !== 'set-cookie') {
           res.setHeader(key, value);
         }
       });
+      const setCookies = authResponse.headers.getSetCookie();
+      if (setCookies && setCookies.length > 0) {
+        res.setHeader('set-cookie', setCookies);
+      }
 
       if (!authResponse.ok) {
         const errData = await authResponse.json().catch(() => ({ message: 'Invalid credentials' }));
@@ -133,14 +135,15 @@ export class AuthController {
         asResponse: true,
       });
 
-      // Forward headers (e.g. Set-Cookie) using append for multi-value set-cookie
       authResponse.headers.forEach((value: string, key: string) => {
-        if (key.toLowerCase() === 'set-cookie') {
-          res.append(key, value);
-        } else {
+        if (key.toLowerCase() !== 'set-cookie') {
           res.setHeader(key, value);
         }
       });
+      const setCookies = authResponse.headers.getSetCookie();
+      if (setCookies && setCookies.length > 0) {
+        res.setHeader('set-cookie', setCookies);
+      }
 
       // Explicitly clear session cookie
       res.clearCookie('better-auth.session_token', { path: '/' });

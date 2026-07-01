@@ -60,6 +60,8 @@ export class ProfileSummaryService {
           ],
           temperature: 0.3,
           max_tokens: 500,
+        }, {
+          signal: AbortSignal.timeout(15000),
         });
 
         const output = res.choices[0]?.message?.content || '';

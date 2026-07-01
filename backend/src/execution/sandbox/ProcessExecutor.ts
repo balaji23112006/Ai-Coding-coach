@@ -9,9 +9,7 @@ export interface ExecuteOptions {
   stdin: string;
   timeoutMs: number;
 }
-
-const MAX_OUTPUT_SIZE = 1024 * 1024; // 1MB limit
-
+const MAX_OUTPUT_SIZE = 64 * 1024; // 64KB limit
 export async function executeProcess(options: ExecuteOptions): Promise<CodeExecutionResult> {
   const { command, args, stdin, timeoutMs } = options;
   const startTime = performance.now();
@@ -61,7 +59,7 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
   const checkOutputLimits = () => {
     if (stdout.length > MAX_OUTPUT_SIZE || stderr.length > MAX_OUTPUT_SIZE) {
       isTruncated = true;
-      logger.warn('Output buffer threshold exceeded (1MB). Aborting execution.');
+      logger.warn('Output buffer threshold exceeded (64KB). Aborting execution.');
       if (!finished) {
         try {
           child.kill('SIGKILL');
@@ -136,10 +134,13 @@ export async function executeProcess(options: ExecuteOptions): Promise<CodeExecu
       }
 
       if (stdout.length > MAX_OUTPUT_SIZE) {
-        stdout = stdout.slice(0, MAX_OUTPUT_SIZE) + '\n[Output truncated: Exceeded 1MB limit]';
+        stdout = stdout.slice(0, MAX_OUTPUT_SIZE) + '\n[Output truncated: Exceeded 64KB limit]';
+        isTruncated = true;
       }
       if (stderr.length > MAX_OUTPUT_SIZE) {
-        stderr = stderr.slice(0, MAX_OUTPUT_SIZE) + '\n[Error output truncated: Exceeded 1MB limit]';
+        stderr =
+          stderr.slice(0, MAX_OUTPUT_SIZE) + '\n[Error output truncated: Exceeded 64KB limit]';
+        isTruncated = true;
       }
 
       resolve({

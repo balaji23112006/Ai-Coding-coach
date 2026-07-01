@@ -1,5 +1,6 @@
 import { codeExecutionService } from './services/CodeExecutionService.js';
 import dotenv from 'dotenv';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import path from 'path';
 
 // Load environment variables

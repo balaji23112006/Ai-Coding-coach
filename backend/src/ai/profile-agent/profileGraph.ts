@@ -64,7 +64,7 @@ async function traceNode<T>(
     span.end({
       output: result,
     });
-    await langfuse.flushAsync();
+    langfuse.flushAsync().catch(console.error);
     return result;
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
@@ -78,7 +78,7 @@ async function traceNode<T>(
     trace.update({
       output: { error: err.message },
     });
-    await langfuse.flushAsync();
+    langfuse.flushAsync().catch(console.error);
     throw error;
   }
 }
@@ -114,7 +114,7 @@ async function traceTool<T>(
     span.end({
       output: result,
     });
-    await langfuse.flushAsync();
+    langfuse.flushAsync().catch(console.error);
     return result;
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
@@ -125,7 +125,7 @@ async function traceTool<T>(
     span.end({
       output: { error: err.message },
     });
-    await langfuse.flushAsync();
+    langfuse.flushAsync().catch(console.error);
     throw error;
   }
 }

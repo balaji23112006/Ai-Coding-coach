@@ -230,7 +230,9 @@ for (let i = 0; i < testCases.length; i++) {
     if (resultJson === expectedJson) {
       passed++;
     } else {
-      details.push(\`Test case \${i} failed. Expected \${expectedJson}, got \${resultJson}\`);
+      const eStr = expectedJson.length > 200 ? expectedJson.substring(0, 200) + '...[truncated]' : expectedJson;
+      const rStr = resultJson.length > 200 ? resultJson.substring(0, 200) + '...[truncated]' : resultJson;
+      details.push(\`Test case \${i} failed. Expected \${eStr}, got \${rStr}\`);
     }
   } catch (e) {
     details.push(\`Test case \${i} threw error: \${e.message}\`);
@@ -352,7 +354,9 @@ for i, tc in enumerate(test_cases):
         if result_json == expected_json:
             passed += 1
         else:
-            details.append(f"Test case {i} failed. Expected {expected_json}, got {result_json}")
+            e_str = expected_json if len(expected_json) < 200 else expected_json[:200] + '...[truncated]'
+            r_str = result_json if len(result_json) < 200 else result_json[:200] + '...[truncated]'
+            details.append(f"Test case {i} failed. Expected {e_str}, got {r_str}")
     except Exception as e:
         details.append(f"Test case {i} threw error: {str(e)}")
 
@@ -462,11 +466,15 @@ else:
       agentLogger.startRun(userId, 'submission', traceId);
       agentLogger.logRequest(traceId, { userId, submissionId: submission.id });
 
+      // Run the profile agent assessment graph in the background with a 30s timeout
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort('Timeout exceeded for background profile assessment'), 30000);
+
       const callback = createAgentCallback({ userId, sessionId: traceId, agentName: 'profile-agent' });
 
-      // Run the profile agent assessment graph in the background
       profileGraph
-        .invoke({ userId, traceId }, {
+        .invoke({ userId, traceId }, { 
+          signal: controller.signal,
           callbacks: callback ? [callback] : undefined,
           runName: 'profile-workflow',
           tags: ['profile-agent', 'langgraph'],
@@ -477,18 +485,19 @@ else:
           }
         })
         .then(async (finalState) => {
-          let summary = '';
-          let trendExplanation = '';
+          clearTimeout(timeout);
+          let _summary = '';
+          let _trendExplanation = '';
           if (finalState.profileStatus !== 'BOOTSTRAP') {
             try {
-              summary = await profileSummaryService.generateProfileSummary({
+              _summary = await profileSummaryService.generateProfileSummary({
                 level: finalState.level,
                 mastery: finalState.mastery,
                 strongAreas: finalState.strongAreas,
                 weakAreas: finalState.weakAreas,
                 traceId,
               });
-              trendExplanation = await profileSummaryService.generateTrendExplanation({
+              _trendExplanation = await profileSummaryService.generateTrendExplanation({
                 trends: finalState.trends,
                 recentActivityCount: finalState.recentActivity.length,
                 traceId,
@@ -510,12 +519,13 @@ else:
             solvedCount: finalState.solvedCount,
           });
           await agentLogger.finalizeRun(traceId, 'completed');
-          await langfuse.flushAsync();
+          langfuse.flushAsync().catch(console.error);
         })
         .catch(async (error) => {
+          clearTimeout(timeout);
           console.error('[Submission Service] Background profile assessment error:', error);
           await agentLogger.finalizeRun(traceId, 'failed', error.message || String(error));
-          await langfuse.flushAsync();
+          langfuse.flushAsync().catch(console.error);
         });
     }
 
@@ -931,7 +941,11 @@ for i, tc in enumerate(test_cases):
         if compare_outputs(final_actual, tc["expected"]):
             passed += 1
         else:
-            details.append(f"Test case {i} failed. Expected {json.dumps(tc['expected'])}, got {json.dumps(final_actual)}")
+            e_json = json.dumps(tc['expected'])
+            r_json = json.dumps(final_actual)
+            e_str = e_json if len(e_json) < 200 else e_json[:200] + '...[truncated]'
+            r_str = r_json if len(r_json) < 200 else r_json[:200] + '...[truncated]'
+            details.append(f"Test case {i} failed. Expected {e_str}, got {r_str}")
     except Exception as e:
         details.append(f"Test case {i} threw error: {str(e)}")
 

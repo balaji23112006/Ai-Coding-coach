@@ -27,14 +27,15 @@ export class ProfileRepository {
    * @param profile The profile update payload including the target userId.
    */
   async updateProfile(
-    profile: { userId: string } & Prisma.UserProfileUpdateInput,
-  ): Promise<UserProfile> {
-    const { userId, ...data } = profile;
-    return prisma.userProfile.update({
-      where: { userId },
-      data,
-    });
-  }
+  profile: { userId: string } & Prisma.UserProfileUpdateInput,
+): Promise<UserProfile> {
+  const { userId, ...data } = profile;
+
+  return prisma.userProfile.update({
+    where: { userId },
+    data,
+  });
+}
 }
 
 export const profileRepository = new ProfileRepository();

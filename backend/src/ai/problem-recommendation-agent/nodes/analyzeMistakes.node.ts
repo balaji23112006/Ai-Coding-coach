@@ -5,7 +5,10 @@ export async function analyzeMistakesNode(
   state: typeof ProblemRecommendationState.State
 ) {
   try {
-    const mistakeAnalysis = analyzeMistakePatterns(state.submissions ?? []);
+    const mistakeAnalysis = await analyzeMistakePatterns(
+      state.submissions ?? [],
+      state.traceId
+    );
     return { mistakeAnalysis };
   } catch (error) {
     console.error("[Node: analyzeMistakes] Error:", error);
