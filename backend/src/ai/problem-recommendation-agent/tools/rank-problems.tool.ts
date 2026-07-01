@@ -26,14 +26,20 @@ export async function rankProblems(
 ID: ${idx}
 Title: ${p.title}
 Difficulty: ${p.difficulty}
-Topics: ${(p.topics?.map(t => t.topic.name) || []).join(", ")}
+Topics: ${(p.topics || []).join(", ")}
 Description snippet: ${p.description ? p.description.substring(0, 150) : ""}...
-- Current Identified Flaw: ${primaryMistake}
-- Flaw Evidence: ${evidence}
+`).join("\n");
+
+  const prompt = `
+Student's Current Identified Flaw: ${primaryMistake}
+Flaw Evidence: ${evidence}
+Target Topic: ${targetTopic}
 
 Below is a list of candidate problems.
 Evaluate each problem on how well it helps the student address their specific logical flaws and weak topics.
 Score each problem from 0 to 100 (100 being the perfect problem to solve their specific weakness).
+
+${problemsContext}
 
 Return ONLY a JSON array of objects in EXACTLY this format, sorted from highest score to lowest score:
 [
@@ -45,8 +51,8 @@ DO NOT output markdown backticks like \`\`\`json. Output RAW JSON array only.`;
 
   try {
     const responseText = await groqChat({
-      systemPrompt,
-      userMessage: `Rank these candidate problems:\n\n${candidatesContext}`,
+      systemPrompt: "You are an expert AI Coding Coach. Rank the candidate problems based on how well they address the student's weaknesses. Output ONLY raw JSON array, nothing else.",
+      userMessage: prompt,
       temperature: 0.1,
       maxTokens: 600,
     });
@@ -92,6 +98,42 @@ DO NOT output markdown backticks like \`\`\`json. Output RAW JSON array only.`;
         if (weakTopics.length > 0 && problem.topics?.includes(weakTopics[0])) {
           score += scores.WEAK_TOPIC_BONUS;
         }
+
+        // Mistake-based boosting
+        const topics = (problem.topics || []).map((t) => t.toLowerCase());
+
+        if (primaryMistake === "Recursion Handling" || primaryMistake === "Stack Overflow") {
+          if (topics.some((t: string) => t.includes("recursion") || t.includes("dfs") || t.includes("tree") || t.includes("backtracking"))) {
+            score += scores.MEDIUM_PROBLEM; // Reuse config score
+          }
+        } else if (primaryMistake === "Array Indexing") {
+          if (topics.some((t: string) => t.includes("array") || t.includes("string") || t.includes("index") || t.includes("two pointers") || t.includes("sliding window"))) {
+            score += scores.MEDIUM_PROBLEM;
+          }
+        } else if (primaryMistake === "Tree Traversal") {
+          if (topics.some((t: string) => t.includes("tree") || t.includes("dfs") || t.includes("bfs"))) {
+            score += scores.MEDIUM_PROBLEM;
+          }
+        } else if (
+          primaryMistake === "Null/Undefined Handling" || 
+          primaryMistake === "Edge Case Failures" ||
+          primaryMistake === "Compile Error" ||
+          primaryMistake === "Runtime Error" ||
+          primaryMistake === "Wrong Answer"
+        ) {
+          // Boost Easy questions and basic structure questions for fundamental mistakes
+          if (problem.difficulty === "Easy") {
+            score += scores.EASY_PROBLEM;
+          } else {
+            score += scores.HARD_PROBLEM;
+          }
+        } else if (primaryMistake === "Time Limit Exceeded") {
+          // Boost problems that have efficient solution patterns or simpler structures
+          if (problem.difficulty === "Easy" || problem.difficulty === "Medium") {
+            score += scores.TOPIC_MATCH;
+          }
+        }
+
         return {
           ...problem,
           score,
@@ -99,67 +141,4 @@ DO NOT output markdown backticks like \`\`\`json. Output RAW JSON array only.`;
       })
       .sort((a, b) => (b.score || 0) - (a.score || 0));
   }
-=======
-export function rankProblems(
-  candidateProblems: CandidateProblem[],
-  weakTopics: string[],
-  mistakeAnalysis?: MistakeAnalysis
-): CandidateProblem[] {
-  const primaryMistake = mistakeAnalysis?.primaryMistake || "None";
-  const scores = RECOMMENDATION_CONFIG.SCORES;
-
-  return candidateProblems
-    .map((problem) => {
-      let score = scores.TOPIC_MATCH; // Base score
-
-      // Weak topic match
-      if (
-        weakTopics.length > 0 &&
-        problem.topics?.includes(weakTopics[0])
-      ) {
-        score += scores.WEAK_TOPIC_BONUS;
-      }
-
-      // Mistake-based boosting
-      const topics = (problem.topics || []).map((t: string) => t.toLowerCase());
-
-      if (primaryMistake === "Recursion Handling" || primaryMistake === "Stack Overflow") {
-        if (topics.some((t: string) => t.includes("recursion") || t.includes("dfs") || t.includes("tree") || t.includes("backtracking"))) {
-          score += scores.MEDIUM_PROBLEM; // Reuse config score
-        }
-      } else if (primaryMistake === "Array Indexing") {
-        if (topics.some((t: string) => t.includes("array") || t.includes("string") || t.includes("index") || t.includes("two pointers") || t.includes("sliding window"))) {
-          score += scores.MEDIUM_PROBLEM;
-        }
-      } else if (primaryMistake === "Tree Traversal") {
-        if (topics.some((t: string) => t.includes("tree") || t.includes("dfs") || t.includes("bfs"))) {
-          score += scores.MEDIUM_PROBLEM;
-        }
-      } else if (
-        primaryMistake === "Null/Undefined Handling" || 
-        primaryMistake === "Edge Case Failures" ||
-        primaryMistake === "Compile Error" ||
-        primaryMistake === "Runtime Error" ||
-        primaryMistake === "Wrong Answer"
-      ) {
-        // Boost Easy questions and basic structure questions for fundamental mistakes
-        if (problem.difficulty === "Easy") {
-          score += scores.EASY_PROBLEM;
-        } else {
-          score += scores.HARD_PROBLEM;
-        }
-      } else if (primaryMistake === "Time Limit Exceeded") {
-        // Boost problems that have efficient solution patterns or simpler structures
-        if (problem.difficulty === "Easy" || problem.difficulty === "Medium") {
-          score += scores.TOPIC_MATCH;
-        }
-      }
-
-      return {
-        ...problem,
-        score,
-      };
-    })
-    .sort((a, b) => (b.score || 0) - (a.score || 0));
->>>>>>> 50135a0dd293396eb86051404ff2daf39f4a26b6
 }

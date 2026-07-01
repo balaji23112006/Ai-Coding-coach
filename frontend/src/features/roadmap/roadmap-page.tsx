@@ -263,6 +263,17 @@ export function RoadmapPage() {
   const [pollCount, setPollCount] = useState(0);
   const [recTimestamp, setRecTimestamp] = useState<number | null>(null);
   const [showRecSection, setShowRecSection] = useState(false);
+  const [timeAgo, setTimeAgo] = useState(0);
+
+  useEffect(() => {
+    if (recTimestamp) {
+      setTimeAgo(Math.floor((Date.now() - recTimestamp) / 60000));
+      const interval = setInterval(() => {
+        setTimeAgo(Math.floor((Date.now() - recTimestamp) / 60000));
+      }, 60000);
+      return () => clearInterval(interval);
+    }
+  }, [recTimestamp]);
 
   // Polling logic for recommendations
   useEffect(() => {
@@ -969,7 +980,7 @@ export function RoadmapPage() {
 
                       {recTimestamp && (
                         <div className="text-[10px] text-right text-slate-500 mt-2 italic">
-                          Recommended {Math.floor((Date.now() - recTimestamp) / 60000)} minutes ago
+                          Recommended {timeAgo === 0 ? 'just now' : `${timeAgo} minute${timeAgo > 1 ? 's' : ''} ago`}
                         </div>
                       )}
                     </div>
