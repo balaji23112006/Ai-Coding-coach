@@ -875,15 +875,6 @@ export async function saveEvalResult(report: any): Promise<any> {
       testsTotal: report.testResults?.total || 0,
       user: userConnect,
       question: report.problemId ? { connect: { id: report.problemId } } : undefined,
-      testResults: {
-        create: (report.testResults?.results || []).map((tr: any) => ({
-          testCaseId: String(tr.testCase),
-          passed: tr.passed,
-          expectedOutput: tr.expected || '',
-          actualOutput: tr.actual || '',
-          stderr: tr.error || '',
-        })),
-      },
     },
   });
 

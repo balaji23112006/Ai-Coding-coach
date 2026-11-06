@@ -78,14 +78,8 @@ function validateSignupForm(form: SignupForm) {
 
   if (!form.password) {
     errors.password = 'Password is required.';
-  } else if (form.password.length < 8) {
-    errors.password = 'Use at least 8 characters.';
-  } else if (!/[A-Z]/.test(form.password)) {
-    errors.password = 'Include at least one uppercase letter.';
-  } else if (!/[a-z]/.test(form.password)) {
-    errors.password = 'Include at least one lowercase letter.';
-  } else if (!/[0-9]/.test(form.password)) {
-    errors.password = 'Include at least one number.';
+  } else if (form.password.length < 6) {
+    errors.password = 'Use at least 6 characters.';
   }
 
   if (!form.confirmPassword) {
